@@ -1,6 +1,6 @@
 {
-  "name": "edu-www",
-  "version": "0.1.0",
+  "name": "vue-www-framework",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
