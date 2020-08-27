@@ -1,6 +1,7 @@
 import BasicLayout from "@/components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
+import Notes from "@/views/notes.vue";
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
         path: "/my",
         name: "My",
         component: My
+      },
+      {
+        path: "/notes",
+        name: "Notes",
+        component: Notes
       }
     ]
   }

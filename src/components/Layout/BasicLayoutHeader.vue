@@ -5,54 +5,60 @@
         <router-link :to="{ name: 'Home' }">
           <img class="header-logo" src="~@/assets/images/home-logo.png" />
         </router-link>
-        <nav class="header-nav" v-if="false">
-          <router-link :to="{ name: 'Home' }" class="header-nav-item"
-            >首页</router-link
+        <nav class="header-nav" v-if="true">
+          <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
+            家灵感
+          </router-link>
+          <router-link :to="{ name: 'My' }" class="header-nav-item My"
+            >斗西课堂</router-link
           >
-          <router-link :to="{ name: 'My' }" class="header-nav-item"
-            >个人</router-link
+          <router-link :to="{ name: 'Notes' }" class="header-nav-item Notes"
+            >愿望笔记</router-link
           >
         </nav>
       </div>
-      <div class="header-ft" v-if="false">
-        <div
-          class="bar-info-container"
-          v-if="!userInfo.id"
-          @click="handleNavToLogin"
-        >
-          <span class="header-loginandregister">登录</span>
-          <el-divider direction="vertical"></el-divider>
-          <span class="header-loginandregister">注册</span>
-        </div>
-        <el-dropdown
-          style="height: 100%;"
-          @command="handleCommand"
-          v-if="userInfo.id"
-        >
-          <div class="bar-info-container">
-            <i
-              v-if="!userInfo.avatar_url"
-              class="el-icon-user-solid userInfo-avatar"
-            ></i>
-            <img v-else class="userInfo-avatar" :src="userInfo.avatar_url" />
-            <span class="userInfo-name">{{ userInfo.real_name }}</span>
-            <i class="el-icon-arrow-down el-icon--right"></i>
+      <div class="header-ft">
+        <router-link :to="{ name: 'Notes' }" class="PLAN-link">
+          PLAN GO
+        </router-link>
+        <div class="user-handle-container">
+          <el-avatar icon="el-icon-user-solid"></el-avatar>
+          <div class="user-handle_show">
+            <div class="show-container" v-if="false">
+              <div class="login-content">
+                <el-avatar
+                  :size="60"
+                  class="login-user-image"
+                  icon="el-icon-user-solid"
+                ></el-avatar>
+                <p style="" class="login-title">您还没登录</p>
+                <p class="login-desc">登陆后即可体验更多功能</p>
+              </div>
+              <div class="new-el-divider"></div>
+              <div class="handle-button">
+                <el-button size="mini" type="text">登陆 / 注册</el-button>
+              </div>
+            </div>
+            <div class="show-container landing" v-if="true">
+              <div class="login-content">
+                <el-avatar
+                  :size="60"
+                  class="login-user-image"
+                  icon="el-icon-user-solid"
+                ></el-avatar>
+                <p style="" class="login-title">用户名</p>
+                <p class="user-logo">会员</p>
+                <p class="login-desc">会员到期时间:2020-02-02</p>
+              </div>
+              <div class="new-el-divider"></div>
+              <div class="handle-button">
+                <el-button size="mini" @click="handleLogout" type="text"
+                  >退出登陆</el-button
+                >
+              </div>
+            </div>
           </div>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item icon="el-icon-user" command="GoMy"
-              >个人设置</el-dropdown-item
-            >
-            <el-dropdown-item icon="el-icon-setting" command="GoSetting"
-              >账号安全</el-dropdown-item
-            >
-            <el-dropdown-item
-              icon="el-icon-video-pause"
-              command="Logout"
-              divided
-              >退出</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </el-dropdown>
+        </div>
       </div>
     </div>
   </header>
@@ -62,22 +68,16 @@ import { mapState } from "vuex";
 import DataStore from "@/globals/storage/index";
 export default {
   data() {
-    return {};
+    return {
+      visible: true
+    };
   },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
-    handleCommand(command) {
-      this[`handle${command}`]();
-    },
     handleGoMy() {
       this.$router.push({ name: "My" });
-    },
-    handleNavToLogin() {
-      // this.$router.push({ name: "AuthPhoneLogin" });
-      // eslint-disable-next-line
-      console.log('loginAndRegister');
     },
     handleLogout() {
       DataStore.removeToken();
@@ -96,7 +96,6 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 60px;
-
     .header-hd,
     .header-bd,
     .header-ft {
@@ -106,70 +105,211 @@ export default {
     }
 
     .header-logo {
-      width: 110px;
-      margin-right: 40px;
+      width: 104px;
+      height: 36px;
+      margin-right: 65px;
       vertical-align: middle;
     }
 
     .header-nav {
-      display: inline-block;
+      display: flex;
       .header-nav-item {
-        position: relative;
-        font-size: 14px;
+        font-size: 16px;
         line-height: 40px;
         color: #666;
-        margin-right: 32px;
+        margin-right: 83px;
         text-decoration: none;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
         &.router-link-exact-active {
           color: #35b558;
-          &:after {
-            position: absolute;
-            content: "";
-            width: 110%;
-            height: 4px;
-            background: #35b558;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
+        }
+        &:hover {
+          color: #35b558;
+        }
+      }
+      .Home {
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          background: url("./../../assets/images/jlg-wxz.png") no-repeat center;
+          background-size: contain;
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+        &.router-link-exact-active {
+          &:before {
+            background: url("./../../assets/images/jlg-xz.png") no-repeat center;
+            background-size: contain;
+            vertical-align: middle;
+          }
+        }
+        &:hover {
+          &:before {
+            background: url("./../../assets/images/jlg-xz.png") no-repeat center;
+            background-size: contain;
+            vertical-align: middle;
+          }
+        }
+      }
+      .My {
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 18px;
+          height: 17.96px;
+          background: url("./../../assets/images/dxkt-wxz.png") no-repeat center;
+          background-size: contain;
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+        &:after {
+          content: "";
+          display: inline-block;
+          width: 17.79px;
+          height: 17.79px;
+          background: url("./../../assets/images/dxkt-zhuangshi.png") no-repeat
+            center;
+          background-size: contain;
+          position: relative;
+          bottom: 12px;
+        }
+        &.router-link-exact-active {
+          &:before {
+            background: url("./../../assets/images/dxkt-xz.png") no-repeat
+              center;
+            background-size: contain;
+            vertical-align: middle;
+          }
+        }
+        &:hover {
+          &:before {
+            background: url("./../../assets/images/dxkt-xz.png") no-repeat
+              center;
+            background-size: contain;
+            vertical-align: middle;
+          }
+        }
+      }
+      .Notes {
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 16.38px;
+          height: 20.03px;
+          background: url("./../../assets/images/ywbj-wxz.png") no-repeat center;
+          background-size: contain;
+          vertical-align: middle;
+          margin-right: 6px;
+        }
+        &.router-link-exact-active {
+          &:before {
+            background: url("./../../assets/images/ywbj-xz.png") no-repeat
+              center;
+            background-size: contain;
+            vertical-align: middle;
+          }
+        }
+        &:hover {
+          &:before {
+            background: url("./../../assets/images/ywbj-xz.png") no-repeat
+              center;
+            background-size: contain;
+            vertical-align: middle;
           }
         }
       }
     }
-
-    .page-header-right {
-      height: 100%;
+  }
+  .header-ft {
+    display: flex;
+    align-items: center;
+    .PLAN-link {
+      text-decoration: none;
+      color: #fff;
+      background-color: #14af64;
+      width: 104px;
+      height: 36px;
+      font-size: 16px;
+      font-family: Noto Sans S Chinese;
+      font-weight: 500;
+      text-align: center;
+      line-height: 36px;
+      margin-right: 74px;
     }
-
-    .bar-info-container {
+    .user-handle-container {
+      position: relative;
+      height: 100%;
       display: flex;
       align-items: center;
-      height: 100%;
-      padding: 0 20px;
-      transition: all 0.2s ease;
-      cursor: pointer;
       &:hover {
-        // background-color: #ecf5ff;
+        .user-handle_show {
+          display: inline-block;
+        }
       }
-      .userInfo-name {
-        font-size: 14px;
-        vertical-align: middle;
-      }
-      .userInfo-avatar {
-        display: inline-block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
-        text-align: center;
-        background-color: #ccc;
+      .user-image {
+        width: 40px;
+        height: 40px;
+        background: rgba(177, 177, 177, 1);
         border-radius: 50%;
-        outline: none;
-        margin: 0 10px;
+      }
+      .user-handle_show {
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 196px;
+        height: 196px;
+        display: none;
+        .show-container {
+          background-color: #fff;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+          padding: 10px 10px 0;
+          .login-content {
+            text-align: center;
+            .login-title {
+              font-size: 18px;
+              font-family: Noto Sans S Chinese;
+              font-weight: 400;
+              line-height: 31px;
+            }
+            .user-logo {
+              display: inline-block;
+              padding: 2px 5px;
+              background: #f49672;
+              border-radius: 8px;
+              font-size: 12px;
+              line-height: 16px;
+              color: #ffffff;
+            }
+            .login-desc {
+              font-size: 12px;
+              font-family: Noto Sans S Chinese;
+              font-weight: 400;
+              line-height: 20px;
+              color: #c4c4c4;
+              padding: 10px 0;
+            }
+          }
+          .new-el-divider {
+            width: 100%;
+            height: 1px;
+            background: #ededed;
+            margin-top: 25px;
+          }
+          .handle-button {
+            text-align: center;
+          }
+        }
+        .landing {
+          .new-el-divider {
+            margin-top: 0;
+          }
+        }
       }
     }
-  }
-  .header-loginandregister {
-    color: #666;
   }
 }
 </style>
