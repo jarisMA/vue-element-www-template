@@ -1,9 +1,6 @@
 <template>
   <div class="home-page" v-loading="loading">
-    <div class="banner-section">
-      BANNER
-      <icon-svg svg-class="homework-svg-class" svg-name="demo"></icon-svg>
-    </div>
+    <div class="banner-section"></div>
   </div>
 </template>
 
@@ -21,6 +18,7 @@ export default {
 
 <style type="text/css" lang="less" scoped>
 .home-page {
-  padding: 20px 0 80px;
+  height: 900px;
+  background: #fcfcfc;
 }
 </style>

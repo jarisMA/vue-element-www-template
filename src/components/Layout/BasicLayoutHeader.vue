@@ -1,11 +1,11 @@
 <template>
   <header class="page-header">
-    <div class="header-content container-1080">
+    <div class="header-content container-1200">
       <div class="header-hd">
         <router-link :to="{ name: 'Home' }">
-          <img class="header-logo" src="" />
+          <img class="header-logo" src="~@/assets/images/home-logo.png" />
         </router-link>
-        <nav class="header-nav">
+        <nav class="header-nav" v-if="false">
           <router-link :to="{ name: 'Home' }" class="header-nav-item"
             >首页</router-link
           >
@@ -14,7 +14,7 @@
           >
         </nav>
       </div>
-      <div class="header-ft">
+      <div class="header-ft" v-if="false">
         <div
           class="bar-info-container"
           v-if="!userInfo.id"
@@ -106,8 +106,7 @@ export default {
     }
 
     .header-logo {
-      height: 40px;
-      min-width: 40px;
+      width: 110px;
       margin-right: 40px;
       vertical-align: middle;
     }

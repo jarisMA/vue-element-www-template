@@ -1,8 +1,7 @@
 <template>
   <footer class="page-footer">
     <div class="container-1080">
-      Copyright © 2013-2018 jiker.com All Rights Reserved. 京ICP备17070664号-5
-      京公网安备11010802013056
+      Copyright © 2020 home-plan.com All Rights Reserved
     </div>
   </footer>
 </template>
