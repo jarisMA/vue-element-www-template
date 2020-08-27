@@ -263,10 +263,23 @@ export default {
         width: 196px;
         height: 196px;
         display: none;
+        padding-top: 9px;
         .show-container {
+          position: relative;
           background-color: #fff;
           box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
           padding: 10px 10px 0;
+          &:after {
+            position: absolute;
+            top: -9px;
+            right: 8%;
+            content: "";
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid #fff;
+            z-index: 999;
+            filter: drop-shadow(0px -3px 4px rgba(0, 0, 0, 0.12));
+          }
           .login-content {
             text-align: center;
             .login-title {
