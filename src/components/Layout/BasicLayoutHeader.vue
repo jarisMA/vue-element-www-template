@@ -117,7 +117,7 @@ export default {
         font-size: 16px;
         line-height: 40px;
         color: #666;
-        margin-right: 83px;
+        margin-right: 80px;
         text-decoration: none;
         font-weight: 500;
         display: flex;
@@ -135,21 +135,24 @@ export default {
           display: inline-block;
           width: 24px;
           height: 24px;
-          background: url("./../../assets/images/jlg-wxz.png") no-repeat center;
+          background: url("./../../assets/images/jlg-wxz@2x.png") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
         }
         &.router-link-exact-active {
           &:before {
-            background: url("./../../assets/images/jlg-xz.png") no-repeat center;
+            background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
+              center;
             background-size: contain;
             vertical-align: middle;
           }
         }
         &:hover {
           &:before {
-            background: url("./../../assets/images/jlg-xz.png") no-repeat center;
+            background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
+              center;
             background-size: contain;
             vertical-align: middle;
           }
@@ -161,7 +164,8 @@ export default {
           display: inline-block;
           width: 18px;
           height: 17.96px;
-          background: url("./../../assets/images/dxkt-wxz.png") no-repeat center;
+          background: url("./../../assets/images/dxkt-wxz@2x.png") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -171,15 +175,15 @@ export default {
           display: inline-block;
           width: 17.79px;
           height: 17.79px;
-          background: url("./../../assets/images/dxkt-zhuangshi.png") no-repeat
-            center;
+          background: url("./../../assets/images/dxkt-zhuangshi@2x.png")
+            no-repeat center;
           background-size: contain;
           position: relative;
           bottom: 12px;
         }
         &.router-link-exact-active {
           &:before {
-            background: url("./../../assets/images/dxkt-xz.png") no-repeat
+            background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -187,7 +191,7 @@ export default {
         }
         &:hover {
           &:before {
-            background: url("./../../assets/images/dxkt-xz.png") no-repeat
+            background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -200,14 +204,15 @@ export default {
           display: inline-block;
           width: 16.38px;
           height: 20.03px;
-          background: url("./../../assets/images/ywbj-wxz.png") no-repeat center;
+          background: url("./../../assets/images/ywbj-wxz@2x.png") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
         }
         &.router-link-exact-active {
           &:before {
-            background: url("./../../assets/images/ywbj-xz.png") no-repeat
+            background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -215,7 +220,7 @@ export default {
         }
         &:hover {
           &:before {
-            background: url("./../../assets/images/ywbj-xz.png") no-repeat
+            background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
