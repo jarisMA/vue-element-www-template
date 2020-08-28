@@ -10,7 +10,7 @@
             家灵感
           </router-link>
           <router-link :to="{ name: 'My' }" class="header-nav-item My"
-            >斗西课堂</router-link
+            >斗西学院</router-link
           >
           <router-link :to="{ name: 'Notes' }" class="header-nav-item Notes"
             >愿望笔记</router-link
@@ -116,7 +116,7 @@ export default {
       .header-nav-item {
         font-size: 16px;
         line-height: 40px;
-        color: #666;
+        color: #000000;
         margin-right: 80px;
         text-decoration: none;
         font-weight: 500;
@@ -142,6 +142,7 @@ export default {
           margin-right: 6px;
         }
         &.router-link-exact-active {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
               center;
@@ -150,6 +151,7 @@ export default {
           }
         }
         &:hover {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
               center;
@@ -182,6 +184,7 @@ export default {
           bottom: 12px;
         }
         &.router-link-exact-active {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
               center;
@@ -190,6 +193,7 @@ export default {
           }
         }
         &:hover {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
               center;
@@ -211,6 +215,7 @@ export default {
           margin-right: 6px;
         }
         &.router-link-exact-active {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
               center;
@@ -219,6 +224,7 @@ export default {
           }
         }
         &:hover {
+          transition: all 0.1s;
           &:before {
             background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
               center;

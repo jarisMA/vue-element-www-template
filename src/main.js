@@ -7,7 +7,6 @@ import ElementUI from "element-ui";
 import "@/styles/reset.less";
 import "@/styles/common.less";
 import "@/styles/theme/index.css";
-
 Vue.use(IconSvg);
 Vue.use(ElementUI);
 Vue.config.productionTip = false;
