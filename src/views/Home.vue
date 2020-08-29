@@ -16,18 +16,7 @@
                 v-for="item in [1, 2, 3, 4, 5, 6, 7, 8]"
                 :key="item"
               >
-                <div class="article-item">
-                  <img
-                    src="~@/assets/images/lgttp_1@2x.png"
-                    alt=""
-                    class="item-img"
-                  />
-                  <div class="item-text">
-                    <p class="text">
-                      小型住宅设计，带分隔夹层 | 妙屋集 {{ item }}
-                    </p>
-                  </div>
-                </div>
+                <inspirationImgModule></inspirationImgModule>
               </swiper-slide>
               <div
                 class="swiper-button-prev"
@@ -58,6 +47,7 @@
 <script>
 import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
+import inspirationImgModule from "./../components/inspirationImgModule.vue";
 export default {
   name: "Home",
   data() {
@@ -88,7 +78,8 @@ export default {
   },
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
+    inspirationImgModule
   },
   directives: {
     swiper: directive
@@ -119,13 +110,16 @@ export default {
         background-color: #14af64;
         width: 280px;
         height: 64px;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
         outline: none;
         border: none;
         font-size: 24px;
         font-family: Source Han Sans CN;
         font-weight: 500;
         color: #ffffff;
+        &:hover {
+          transition: all 0.2s;
+          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+        }
       }
     }
   }
@@ -218,33 +212,6 @@ export default {
               height: 100%;
               width: 380px !important;
             }
-            .article-item {
-              width: 380px;
-              height: 413px;
-              .item-img {
-                width: 380px;
-                height: 284px;
-              }
-              .item-text {
-                display: block;
-                width: 100%;
-                height: 129px;
-                padding: 25px;
-                font-size: 22px;
-                font-family: Noto Sans S Chinese;
-                font-weight: 500;
-                line-height: 37px;
-                color: #333333;
-                background-color: #fff;
-                text-align: left;
-                .text {
-                  display: -webkit-box;
-                  -webkit-box-orient: vertical;
-                  -webkit-line-clamp: 2;
-                  overflow: hidden;
-                }
-              }
-            }
           }
         }
       }
@@ -261,6 +228,10 @@ export default {
       color: #ffffff;
       background-color: #14af64;
       margin: 393px 0 135px 0;
+      &:hover {
+        transition: all 0.2s;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+      }
       .look-article-text {
         display: inline-block;
       }
