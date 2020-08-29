@@ -2,6 +2,7 @@ import BasicLayout from "@/components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
 import Notes from "@/views/notes.vue";
+import InspirationImg from "@/views/InspirationImg.vue";
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
         path: "/notes",
         name: "Notes",
         component: Notes
+      },
+      {
+        path: "/inspiration/img",
+        name: "InspirationImg",
+        component: InspirationImg
       }
     ]
   }

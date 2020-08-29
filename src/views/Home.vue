@@ -16,7 +16,7 @@
                 v-for="item in [1, 2, 3, 4, 5, 6, 7, 8]"
                 :key="item"
               >
-                <inspirationImgModule></inspirationImgModule>
+                <InspirationImgModule></InspirationImgModule>
               </swiper-slide>
               <div
                 class="swiper-button-prev"
@@ -47,7 +47,8 @@
 <script>
 import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
-import inspirationImgModule from "./../components/inspirationImgModule.vue";
+import InspirationImgModule from "./../components/InspirationImgModule";
+
 export default {
   name: "Home",
   data() {
@@ -79,7 +80,7 @@ export default {
   components: {
     Swiper,
     SwiperSlide,
-    inspirationImgModule
+    InspirationImgModule
   },
   directives: {
     swiper: directive
