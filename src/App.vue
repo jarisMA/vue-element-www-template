@@ -9,4 +9,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+body {
+  min-width: 1200px;
+}
 </style>

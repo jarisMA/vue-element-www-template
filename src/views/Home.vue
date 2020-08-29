@@ -1,7 +1,9 @@
 <template>
   <div class="home-page" v-loading="loading">
-    <div class="banner-section">
-      <button class="apply">申请免费使用</button>
+    <div class="banner-container">
+      <div class="banner-section">
+        <button class="apply">申请免费使用</button>
+      </div>
     </div>
     <!-- 最新博文 -->
     <div class="article-container">
@@ -71,15 +73,6 @@ export default {
         navigation: {
           nextEl: ".swiper-button-next",
           prevEl: ".swiper-button-prev"
-        },
-        on: {
-          resize: () => {
-            // this.$refs.swiper.$swiper.changeDirection(
-            //   window.innerWidth <= 960
-            //     ? 'vertical'
-            //     : 'horizontal'
-            // )
-          }
         }
       }
     };
@@ -107,26 +100,33 @@ export default {
 .home-page {
   height: 900px;
   background: #f4f6f3;
-  .banner-section {
+  .banner-container {
     background: url("./../assets/images/Lark20200828-191144.png") no-repeat
       center;
     background-size: cover;
     width: 100%;
     height: 900px;
-    .apply {
-      position: absolute;
-      left: 375px;
-      bottom: 200px;
-      background-color: #14af64;
-      width: 280px;
-      height: 64px;
-      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-      outline: none;
-      border: none;
-      font-size: 24px;
-      font-family: Source Han Sans CN;
-      font-weight: 500;
-      color: #FFFFFF;
+    text-align: center;
+    .banner-section {
+      position: relative;
+      width: 1200px;
+      height: 100%;
+      margin: 0 auto;
+      .apply {
+        position: absolute;
+        left: 20px;
+        bottom: 200px;
+        background-color: #14af64;
+        width: 280px;
+        height: 64px;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+        outline: none;
+        border: none;
+        font-size: 24px;
+        font-family: Source Han Sans CN;
+        font-weight: 500;
+        color: #ffffff;
+      }
     }
   }
   .article-container {
@@ -188,25 +188,29 @@ export default {
             bottom: 0;
             margin-top: 0;
           }
-          .swiper-button-prev{
-            &:after{
-              content: '';
+          .swiper-button-prev {
+            &:after {
+              content: "";
               display: inline-block;
-              background: url("./../assets/images/zxbw-gd-z@2x.png") no-repeat center;
+              background: url("./../assets/images/zxbw-gd-z@2x.png") no-repeat
+                center;
               background-size: cover;
               width: 100px;
               height: 100px;
             }
+            left: 0;
           }
-          .swiper-button-next{
-            &:after{
-              content: '';
+          .swiper-button-next {
+            &:after {
+              content: "";
               display: inline-block;
-              background: url("./../assets/images/zxbw-gd-y@2x.png") no-repeat center;
+              background: url("./../assets/images/zxbw-gd-y@2x.png") no-repeat
+                center;
               background-size: cover;
               width: 100px;
               height: 100px;
             }
+            right: 0;
           }
           .swiper {
             display: flex;
@@ -254,7 +258,7 @@ export default {
       font-family: Noto Sans S Chinese;
       font-weight: 500;
       line-height: 16px;
-      color: #FFFFFF;
+      color: #ffffff;
       background-color: #14af64;
       margin: 393px 0 135px 0;
       .look-article-text {
