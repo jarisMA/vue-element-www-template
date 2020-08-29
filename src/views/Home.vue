@@ -1,7 +1,7 @@
 <template>
   <div class="home-page" v-loading="loading">
     <div class="banner-section">
-      <el-button class="apply" type="primary">申请免费使用</el-button>
+      <button class="apply">申请免费使用</button>
     </div>
     <!-- 最新博文 -->
     <div class="article-container">
@@ -41,14 +41,14 @@
           </div>
         </div>
       </div>
-      <el-button class="look-article" type="primary">
+      <button class="look-article">
         <p class="look-article-text">查看更多</p>
         <img
           src="~@/assets/images/zxbw-ckgd-gd@2x.png"
           alt=""
           class="item-img"
         />
-      </el-button>
+      </button>
     </div>
   </div>
 </template>
@@ -115,9 +115,18 @@ export default {
     height: 900px;
     .apply {
       position: absolute;
-      left: 380px;
-      bottom: 214px;
+      left: 375px;
+      bottom: 200px;
       background-color: #14af64;
+      width: 280px;
+      height: 64px;
+      box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+      outline: none;
+      border: none;
+      font-size: 24px;
+      font-family: Source Han Sans CN;
+      font-weight: 500;
+      color: #FFFFFF;
     }
   }
   .article-container {
@@ -177,6 +186,27 @@ export default {
             background: rgba(191, 191, 191, 0.61);
             top: 0;
             bottom: 0;
+            margin-top: 0;
+          }
+          .swiper-button-prev{
+            &:after{
+              content: '';
+              display: inline-block;
+              background: url("./../assets/images/zxbw-gd-z@2x.png") no-repeat center;
+              background-size: cover;
+              width: 100px;
+              height: 100px;
+            }
+          }
+          .swiper-button-next{
+            &:after{
+              content: '';
+              display: inline-block;
+              background: url("./../assets/images/zxbw-gd-y@2x.png") no-repeat center;
+              background-size: cover;
+              width: 100px;
+              height: 100px;
+            }
           }
           .swiper {
             display: flex;
@@ -216,6 +246,15 @@ export default {
       }
     }
     .look-article {
+      width: 130px;
+      height: 42px;
+      outline: none;
+      border: none;
+      font-size: 16px;
+      font-family: Noto Sans S Chinese;
+      font-weight: 500;
+      line-height: 16px;
+      color: #FFFFFF;
       background-color: #14af64;
       margin: 393px 0 135px 0;
       .look-article-text {
@@ -225,7 +264,7 @@ export default {
         width: 16px;
         height: 16px;
         display: inline-block;
-        vertical-align: text-top;
+        vertical-align: bottom;
         margin-left: 10px;
       }
     }
