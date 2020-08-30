@@ -27,6 +27,9 @@ export default {
   width: 380px;
   height: 413px;
   font-size: 0;
+  &:hover {
+    cursor: pointer;
+  }
   .item-img {
     width: 380px;
     height: 284px;

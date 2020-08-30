@@ -1,8 +1,8 @@
 import BasicLayout from "@/components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
-import Notes from "@/views/notes.vue";
-import InspirationImage from "@/views/InspirationImage.vue";
+import Note from "@/views/Note.vue";
+import Blog from "@/views/Blog.vue";
 
 const routes = [
   {
@@ -22,14 +22,14 @@ const routes = [
         component: My
       },
       {
-        path: "/notes",
-        name: "Notes",
-        component: Notes
+        path: "/note",
+        name: "Note",
+        component: Note
       },
       {
-        path: "/inspiration/image",
-        name: "InspirationImage",
-        component: InspirationImage
+        path: "/blog",
+        name: "Blog",
+        component: Blog
       }
     ]
   }

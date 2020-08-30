@@ -25,7 +25,9 @@
         <div
           :class="[
             'filtration-content',
-            filtrationShow ? 'filtration-content-active' : ''
+            'animated',
+            'fadeInDown',
+            filtrationShow ? 'filtration-content-active slideInLeft' : ''
           ]"
         >
           <div class="content-list">
@@ -121,8 +123,9 @@ export default {
         width: 1200px;
         display: flex;
         align-items: center;
-        margin: 0 auto;
+        margin: 0 auto 30px;
         padding-left: 10px;
+
         .header-logo {
           display: flex;
           justify-content: center;
@@ -170,7 +173,7 @@ export default {
       }
       .filtration-content {
         width: 1200px;
-        margin: 30px auto 0;
+        margin: 0 auto;
         display: none;
         .content-list {
           margin-bottom: 15px;
@@ -209,6 +212,9 @@ export default {
               font-size: 14px;
               font-family: Noto Sans S Chinese;
               color: #dfdfdf;
+              &:hover {
+                cursor: pointer;
+              }
             }
             .header,
             .active {
@@ -221,8 +227,6 @@ export default {
         }
       }
       .filtration-content-active {
-        opacity: 1;
-        animation: show 0.5s;
         display: inline-block;
       }
     }
@@ -245,16 +249,6 @@ export default {
         }
       }
     }
-  }
-}
-@keyframes show {
-  0% {
-    opacity: 0;
-    display: inline-block;
-  }
-  100% {
-    opacity: 1;
-    display: inline-block;
   }
 }
 </style>

@@ -12,13 +12,13 @@
           <router-link :to="{ name: 'My' }" class="header-nav-item My"
             >斗西学院</router-link
           >
-          <router-link :to="{ name: 'Notes' }" class="header-nav-item Notes"
+          <router-link :to="{ name: 'Note' }" class="header-nav-item Notes"
             >愿望笔记</router-link
           >
         </nav>
       </div>
       <div class="header-ft">
-        <router-link :to="{ name: 'Notes' }" class="PLAN-link">
+        <router-link :to="{ name: 'Note' }" class="PLAN-link">
           PLAN GO
         </router-link>
         <div class="user-handle-container">
