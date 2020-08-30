@@ -81,7 +81,7 @@
       <div class="inspiration-img_section">
         <div class="inspiration-img_list">
           <div class="item" v-for="item in 10" :key="item">
-            <InspirationImgModule></InspirationImgModule>
+            <InspirationImageModule></InspirationImageModule>
           </div>
         </div>
       </div>
@@ -89,7 +89,7 @@
   </div>
 </template>
 <script>
-import InspirationImgModule from "./../components/InspirationImgModule";
+import InspirationImageModule from "./../components/InspirationImageModule";
 
 export default {
   data() {
@@ -98,7 +98,7 @@ export default {
     };
   },
   components: {
-    InspirationImgModule
+    InspirationImageModule
   },
   methods: {
     filtrationShowHandle() {
