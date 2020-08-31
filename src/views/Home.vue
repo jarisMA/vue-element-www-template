@@ -42,7 +42,12 @@
       </button>
     </div>
     <!-- 铁粉内测 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="closed-alpha_container">
         <div class="header">
           <p class="header-logo">PLAN GO</p>
@@ -58,7 +63,12 @@
       </div>
     </el-dialog>
     <!-- 登陆扫码 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="wx-login_container">
         <div class="header">
           <img
@@ -74,7 +84,12 @@
       </div>
     </el-dialog>
     <!-- 手机登陆 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="login_container">
         <div class="header">
           <img
@@ -125,7 +140,12 @@
       </div>
     </el-dialog>
     <!-- 身份选择 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="identity-selector_container">
         <div class="header">
           <img
@@ -151,7 +171,12 @@
       </div>
     </el-dialog>
     <!-- 家居爱好者选择 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="home-decoration_container">
         <div class="header">
           <img
@@ -180,7 +205,12 @@
       </div>
     </el-dialog>
     <!-- 设计师选择 -->
-    <el-dialog :visible.sync="show" width="416px" :show-close="false" center>
+    <el-dialog
+      :visible.sync="showFalse"
+      width="416px"
+      :show-close="false"
+      center
+    >
       <div class="stylist_container">
         <div class="header">
           <img
@@ -207,7 +237,7 @@
       </div>
     </el-dialog>
     <!-- 装修机构 -->
-    <el-dialog :visible="false" width="416px" :show-close="false" center>
+    <el-dialog :visible.sync="show" width="416px" :show-close="false" center>
       <div class="decoration-company_container">
         <div class="header">
           <img
@@ -261,6 +291,7 @@ export default {
         consent: false,
         Sent: false
       },
+      showFlase: false,
       show: true,
       loading: false,
       swiperOption: {
@@ -329,6 +360,7 @@ export default {
         &:hover {
           transition: all 0.2s;
           box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+          cursor: pointer;
         }
       }
     }
@@ -441,6 +473,7 @@ export default {
       &:hover {
         transition: all 0.2s;
         box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
       }
       .look-article-text {
         display: inline-block;
@@ -486,6 +519,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 10px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .title {
@@ -517,6 +553,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 10px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .logo {
@@ -550,6 +589,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 10px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .logo {
@@ -581,6 +623,9 @@ export default {
       line-height: 20px;
       color: #ffffff;
       border: none;
+      &:hover {
+        cursor: pointer;
+      }
     }
     .Sent {
       background-color: #999999;
@@ -595,6 +640,9 @@ export default {
         border: 1px solid #c6c6c6;
         border-radius: 50%;
         margin-right: 8px;
+        &:hover {
+          cursor: pointer;
+        }
       }
       .consent_active {
         background-color: #14af64;
@@ -607,6 +655,9 @@ export default {
         a {
           text-decoration: none;
           color: #14af64;
+          &:hover {
+            cursor: pointer;
+          }
         }
       }
     }
@@ -624,6 +675,7 @@ export default {
       border: none;
       &:hover {
         box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+        cursor: pointer;
       }
     }
     .login-active {
@@ -681,6 +733,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 25px 25px 0;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .title {
@@ -701,6 +756,9 @@ export default {
         border: 1px solid rgba(125, 125, 125, 0.6);
         margin: 0 5.5px;
         text-align: center;
+        &:hover {
+          cursor: pointer;
+        }
         .diy {
           width: 108px;
           height: 108px;
@@ -766,6 +824,7 @@ export default {
     margin-bottom: 63px;
     &:hover {
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
   }
   .home-decoration-button-active {
@@ -780,6 +839,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 25px 25px 0;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .title {
@@ -801,6 +863,9 @@ export default {
         margin: 0 5.5px;
         text-align: center;
         padding-top: 19px;
+        &:hover {
+          cursor: pointer;
+        }
         .diy {
           width: 108px;
           height: 108px;
@@ -866,6 +931,7 @@ export default {
     margin-bottom: 63px;
     &:hover {
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
   }
   .stylist-button-active {
@@ -880,6 +946,9 @@ export default {
       width: 30px;
       height: 30px;
       margin: 25px 25px 0;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .title {
@@ -901,6 +970,9 @@ export default {
         margin: 0 5.5px;
         text-align: center;
         padding-top: 19px;
+        &:hover {
+          cursor: pointer;
+        }
         .diy {
           width: 108px;
           height: 108px;
@@ -966,6 +1038,7 @@ export default {
     margin-bottom: 63px;
     &:hover {
       box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
     }
   }
   .decoration-company-button-active {
