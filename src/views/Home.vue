@@ -291,7 +291,7 @@ export default {
         consent: false,
         Sent: false
       },
-      showFlase: false,
+      showFalse: false,
       show: true,
       loading: false,
       swiperOption: {
