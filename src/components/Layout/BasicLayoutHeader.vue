@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'Home' }">
           <img class="header-logo" src="~@/assets/images/home-logo.png" />
         </router-link>
-        <nav class="header-nav" v-if="false">
+        <nav class="header-nav">
           <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
             家灵感
           </router-link>
@@ -18,13 +18,13 @@
         </nav>
       </div>
       <div class="header-ft">
-        <router-link :to="{ name: 'Note' }" class="PLAN-link" v-if="false">
+        <router-link :to="{ name: 'Note' }" class="PLAN-link">
           PLAN GO
         </router-link>
-        <div class="user-handle-container" v-if="false">
+        <div class="user-handle-container">
           <el-avatar icon="el-icon-user-solid"></el-avatar>
           <div class="user-handle_show">
-            <div class="show-container" v-if="true">
+            <div class="show-container">
               <div class="login-content">
                 <el-avatar
                   :size="60"
@@ -36,7 +36,9 @@
               </div>
               <div class="new-el-divider"></div>
               <div class="handle-button">
-                <el-button size="mini" type="text">登陆 / 注册</el-button>
+                <el-button size="mini" @click="wxLogin" type="text"
+                  >登陆 / 注册</el-button
+                >
               </div>
             </div>
             <div class="show-container landing" v-if="false">
@@ -78,6 +80,11 @@ export default {
   methods: {
     handleGoMy() {
       this.$router.push({ name: "My" });
+    },
+    wxLogin() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+      this.$store.commit("DIALOG_SHOW", true);
+
     },
     handleLogout() {
       DataStore.removeToken();
@@ -256,11 +263,6 @@ export default {
       height: 100%;
       display: flex;
       align-items: center;
-      &:hover {
-        .user-handle_show {
-          display: inline-block;
-        }
-      }
       .user-image {
         width: 40px;
         height: 40px;
@@ -275,6 +277,7 @@ export default {
         height: 196px;
         display: none;
         padding-top: 9px;
+        z-index: 9999;
         .show-container {
           position: relative;
           background-color: #fff;
@@ -331,6 +334,11 @@ export default {
           .new-el-divider {
             margin-top: 0;
           }
+        }
+      }
+      &:hover {
+        .user-handle_show {
+          display: inline-block;
         }
       }
     }

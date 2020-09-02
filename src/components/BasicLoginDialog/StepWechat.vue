@@ -5,7 +5,7 @@
     </div>
     <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
     <p class="title">请用微信扫码登陆 / 注册</p>
-    <div id="qrcode"></div>
+    <div class="qrcode-container" id="qrcode"></div>
     <img
       v-if="false"
       src="~@/assets/images/tc-ewm@2x.png"
@@ -34,7 +34,7 @@ export default {
           state: "born2code",
           // href: "https://passport.jiker.vip/css/qrcode.css"
           href:
-            "data:text/css;base64,LmltcG93ZXJCb3ggLnRpdGxlIHsKICAgIGRpc3BsYXk6IG5vbmU7Cn0KLnBhbmVsQ29udGVudCAud3JwX2NvZGUgewogICAgd2lkdGg6IDI0MHB4OwogICAgaGVpZ2h0OiAyNDBweDsKfQouaW1wb3dlckJveCAuc3RhdHVzLnN0YXR1c19icm93c2VyIHsKICAgIGRpc3BsYXk6IG5vbmU7Cn0KLmltcG93ZXJCb3ggLnN0YXR1c19pY29uIHsKICAgIG1hcmdpbi10b3A6IDEwcHg7Cn0KLmltcG93ZXJCb3ggLnFyY29kZSB7CiAgICAvKmJvcmRlcjpub25lOyovCiAgICBwYWRkaW5nOiAzMHB4OwogICAgd2lkdGg6IDIyMHB4OwogICAgaGVpZ2h0OiAyMjBweDsKfQouaW1wb3dlckJveCAuanNfd3hfZGVmYXVsdF90aXB7CiAgICBkaXNwbGF5OiBub25lOwp9Ci5pbXBvd2VyQm94ICN3eF9hZnRlcl9zY2FuLCAjd3hfYWZ0ZXJfY2FuY2VsLCN3eF9kZWZhdWx0X3RpcHsKICAgIHBhZGRpbmc6IDUycHggMTRweDsKICAgIHRleHQtYWxpZ246IGxlZnQ7Cn0KLmltcG93ZXJCb3ggLnN0YXR1c190eHQgewogICAgbWFyZ2luLXRvcDoxMnB4Owp9"
+            "data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIyMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMjBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30g"
         });
       });
     }
@@ -77,5 +77,8 @@ export default {
     font-family: Noto Sans S Chinese;
     color: #5f5f5f;
   }
+}
+.qrcode-container{
+  height: 340px;
 }
 </style>

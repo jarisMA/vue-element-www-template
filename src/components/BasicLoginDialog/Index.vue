@@ -1,13 +1,13 @@
 <template>
   <div>
-    <el-dialog :visible.sync="loginDialogVisible" width="416px" center>
+    <el-dialog :visible.sync="dialogShow" width="416px" center>
       <StepWechat v-if="loginDialogVisible === 1" />
     </el-dialog>
   </div>
 </template>
 
 <script type="text/javascript">
-import { mapState } from "vuex";
+// import { mapState } from "vuex";
 import StepWechat from "./StepWechat.vue";
 export default {
   components: {
@@ -16,10 +16,21 @@ export default {
   prop: {},
   created() {},
   data() {
-    return {};
+    return {
+    };
   },
   computed: {
-    ...mapState(["loginDialogVisible"])
+    loginDialogVisible () {
+      return this.$store.state.loginDialogVisible
+    },
+    dialogShow: {
+      get: function () {
+        return this.$store.state.dialogShow
+      },
+      set:function(value) {
+        this.$store.commit('DIALOG_SHOW', value)
+      }
+    }
   },
   methods: {}
 };
