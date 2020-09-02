@@ -5,7 +5,7 @@
         <router-link :to="{ name: 'Home' }">
           <img class="header-logo" src="~@/assets/images/home-logo.png" />
         </router-link>
-        <nav class="header-nav" v-if="true">
+        <nav class="header-nav" v-if="false">
           <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
             家灵感
           </router-link>
@@ -24,7 +24,7 @@
         <div class="user-handle-container">
           <el-avatar icon="el-icon-user-solid"></el-avatar>
           <div class="user-handle_show">
-            <div class="show-container" v-if="false">
+            <div class="show-container" v-if="true">
               <div class="login-content">
                 <el-avatar
                   :size="60"
@@ -39,7 +39,7 @@
                 <el-button size="mini" type="text">登陆 / 注册</el-button>
               </div>
             </div>
-            <div class="show-container landing" v-if="true">
+            <div class="show-container landing" v-if="false">
               <div class="login-content">
                 <el-avatar
                   :size="60"

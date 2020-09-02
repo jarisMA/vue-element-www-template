@@ -1,12 +1,10 @@
 const PREFIX_API = process.env.VUE_APP_HOST;
 
 export default {
-  smsSend: `${PREFIX_API}/sms/send`,
-  smsLogin: `${PREFIX_API}/sms/login`,
-  qiniuToken: `${PREFIX_API}/qiniu/token`,
-  socialWechat: `${PREFIX_API}/auth/social/wechat`,
-  socialWechatUrl: `${PREFIX_API}/auth/social/wechat/url`,
-  userInfo: `${PREFIX_API}/user/user-info`,
-  userWechatBind: `${PREFIX_API}/user/wechat-bind`,
-  userPhoneBind: `${PREFIX_API}/user/phone-bind`
+  users: `${PREFIX_API}/api/web/users`,
+  logout: `${PREFIX_API}/api/web/logout`,
+  userInfo: `${PREFIX_API}/api/web/users/user-info`,
+  wechatAuth: `${PREFIX_API}/api/web/wechat/auth`,
+  smsRegisterCode: `${PREFIX_API}/api/web/sms/register-code`,
+  smsVerify: `${PREFIX_API}/api/web/sms/verify`
 };

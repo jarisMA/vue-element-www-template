@@ -6,7 +6,7 @@
       </div>
     </div>
     <!-- 最新博文 -->
-    <div class="article-container">
+    <div class="article-container" v-if="false">
       <div class="article-section">
         <p class="article-title">最新博文</p>
         <div class="article-ima_list">
@@ -41,6 +41,7 @@
         />
       </button>
     </div>
+
     <!-- 铁粉内测 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -62,6 +63,7 @@
         <p class="desc">想优先体验可微信扫码<br />添加工作人员邀请开通</p>
       </div>
     </el-dialog>
+
     <!-- 登陆扫码 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -83,6 +85,7 @@
         <p class="desc">扫码后关注暖刻公众号，完成登录</p>
       </div>
     </el-dialog>
+
     <!-- 手机登陆 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -139,6 +142,7 @@
         </div>
       </div>
     </el-dialog>
+
     <!-- 身份选择 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -170,6 +174,7 @@
         </div>
       </div>
     </el-dialog>
+
     <!-- 家居爱好者选择 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -204,6 +209,7 @@
         </button>
       </div>
     </el-dialog>
+
     <!-- 设计师选择 -->
     <el-dialog
       :visible.sync="showFalse"
@@ -236,6 +242,7 @@
         <button class="stylist-button stylist-button-active">确认</button>
       </div>
     </el-dialog>
+
     <!-- 装修机构 -->
     <el-dialog :visible.sync="show" width="416px" :show-close="false" center>
       <div class="decoration-company_container">
@@ -292,7 +299,7 @@ export default {
         Sent: false
       },
       showFalse: false,
-      show: true,
+      show: false,
       loading: false,
       swiperOption: {
         loop: true,
