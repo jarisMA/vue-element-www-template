@@ -18,10 +18,10 @@
         </nav>
       </div>
       <div class="header-ft">
-        <router-link :to="{ name: 'Note' }" class="PLAN-link">
+        <router-link :to="{ name: 'Note' }" class="PLAN-link" v-if="false">
           PLAN GO
         </router-link>
-        <div class="user-handle-container">
+        <div class="user-handle-container" v-if="false">
           <el-avatar icon="el-icon-user-solid"></el-avatar>
           <div class="user-handle_show">
             <div class="show-container" v-if="true">
