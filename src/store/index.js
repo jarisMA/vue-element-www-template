@@ -3,6 +3,7 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
+    loginDialogVisible: 0,
     userInfo: {
       id: 2,
       phone: null,
@@ -16,6 +17,9 @@ export default new Vuex.Store({
     }
   },
   mutations: {
+    UPDATA_LOGINDIAL_VISIBLE(state, loginDialogVisible) {
+      state.loginDialogVisible = loginDialogVisible;
+    },
     USERINFO(state, userInfo) {
       state.userInfo = userInfo;
     },

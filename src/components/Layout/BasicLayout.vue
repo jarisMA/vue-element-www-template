@@ -3,16 +3,19 @@
     <BasicLayoutHeader />
     <router-view class="page-basic-body" />
     <BasicLayoutFooter />
+    <BasicLoginDialog />
   </div>
 </template>
 <script type="text/javascript">
 import BasicLayoutHeader from "./BasicLayoutHeader.vue";
 import BasicLayoutFooter from "./BasicLayoutFooter.vue";
+import BasicLoginDialog from "./../BasicLoginDialog/Index.vue";
 
 export default {
   components: {
     BasicLayoutHeader,
-    BasicLayoutFooter
+    BasicLayoutFooter,
+    BasicLoginDialog
   }
 };
 </script>

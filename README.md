@@ -5,17 +5,23 @@
 yarn install
 ```
 
+## 配置 HOST
+
+```
+127.0.0.1 www.home-plan.cn
+```
+
 ## Touch .env.local
 
 ```
 NODE_ENV=development
-VUE_APP_HOST=https://api.example.com
+VUE_APP_HOST=https://api.home-plan.cn
 ```
 
 ## Compiles and hot-reloads for development
 
 ```
-yarn serve
+sudo yarn serve
 ```
 
 ## Element
