@@ -3,7 +3,7 @@
     <el-dialog :visible.sync="dialogShow" width="416px" center>
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
-      <StepMessage v-if="loginDialogVisible === 3" />
+      <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
     </el-dialog>
   </div>
 </template>
@@ -13,12 +13,14 @@
 import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepMessage from "./StepMessage.vue";
+import StepObjective from "./StepObjective.vue";
 
 export default {
   components: {
     StepWechat,
     StepPhone,
-    StepMessage
+    StepMessage,
+    StepObjective
   },
   prop: {},
   created() {},
@@ -38,7 +40,11 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    handleSumbit(identity, objective, other) {
+      console.log(identity, objective, other);
+    }
+  }
 };
 </script>
 

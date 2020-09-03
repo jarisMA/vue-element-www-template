@@ -3,8 +3,8 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    dialogShow: false,
-    loginDialogVisible: 0,
+    dialogShow: true,
+    loginDialogVisible: 3,
     userInfo: {
       id: 2,
       phone: null,
