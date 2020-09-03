@@ -78,7 +78,7 @@ export default {
     color: #5f5f5f;
   }
 }
-.qrcode-container{
+.qrcode-container {
   height: 340px;
 }
 </style>

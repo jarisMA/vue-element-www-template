@@ -84,7 +84,6 @@ export default {
     wxLogin() {
       this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       this.$store.commit("DIALOG_SHOW", true);
-
     },
     handleLogout() {
       DataStore.removeToken();
