@@ -34,7 +34,9 @@ const userService = {
     );
   },
   getUserInfo: function() {
-    return request.get(API.userInfo);
+    return request.get(API.userInfo,{},{
+      withCredentials: true
+    });
   },
   updateUserInfo: function({
     nickname,

@@ -46,8 +46,26 @@ export default new Vuex.Store({
       state.userInfo.avatar_url = userInfo.avatar_url;
       state.userInfo.sex = userInfo.gender;
       state.userInfo.unionid = userInfo.unionid;
+      if(userInfo.phone_number) state.userInfo.phone = userInfo.phone_number
     },
     DEL_DIALOG_SHOW(state) {
+      state.dialogShow = false;
+      state.loginDialogVisible = 0;
+      state.userInfo = {
+        id: 2,
+        phone: null,
+        name: null,
+        real_name: null,
+        sex: null,
+        birthday: null,
+        introduction: null,
+        avatar_url: null,
+        unionid: null,
+        code: null,
+        codeKey: null
+      }
+    },
+    END_DIALOG_SHOW(state) {
       state.dialogShow = false;
       state.loginDialogVisible = 0;
     },

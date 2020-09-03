@@ -173,6 +173,11 @@ export default {
           font-size: 16px;
           font-family: Noto Sans S Chinese;
           color: #999999;
+          &:hover{
+            background: #14af64;
+            color: #fff;
+            border-color: #14af64;;
+          }
         }
       }
       .is-active .el-radio-button__inner {

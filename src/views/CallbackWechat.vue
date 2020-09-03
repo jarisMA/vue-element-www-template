@@ -13,14 +13,12 @@ export default {
     ) {
       authService.wechatAuth(code).then(res => {
         this.$router.push({ path: "/" });
-        console.log(res);
-        if (!res.userInfo.phone_number) {
+        this.$store.commit("SET_WC_USER", res.userInfo);
+        if (res.userInfo && !res.userInfo.phone_number) {
           this.$store.commit("DIALOG_SHOW", true);
           this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
-          this.$store.commit("SET_WC_USER", res);
         } else {
           this.$store.commit("SET_TOKEN", res.token);
-          this.$store.commit("SET_WC_USER", res.userInfo);
           this.$store.commit("DIALOG_SHOW", false);
           this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
         }

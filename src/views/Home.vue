@@ -49,6 +49,8 @@ import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
 import InspirationImageModule from "./../components/InspirationImageModule";
 import cookies from "js-cookie";
+import userService from "@/globals/service/user.js";
+
 export default {
   name: "Home",
   data() {
@@ -70,7 +72,11 @@ export default {
   },
   created() {
     const token = cookies.get("web_token");
-    console.log(token);
+    if(token) {
+      userService.getUserInfo().then(res => {
+        this.$store.commit("SET_WC_USER", res);
+      })
+    }
   },
   methods: {
     prev() {

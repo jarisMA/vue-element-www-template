@@ -1,13 +1,13 @@
 import axios from "axios";
 import { Message } from "element-ui";
 import DataStore from "@/globals/storage/index";
-
+import cookies from "js-cookie";
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
 axiosInstance.interceptors.request.use(
   config => {
     const newConfig = { ...config };
-    const TOKEN = DataStore.getToken();
+    const TOKEN = cookies.get("web_token");
     if (TOKEN) {
       newConfig["headers"]["Authorization"] = "Bearer " + TOKEN;
     }

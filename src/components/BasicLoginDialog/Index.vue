@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :visible.sync="dialogShow" width="416px" center>
+    <el-dialog :visible.sync="dialogShow" width="416px" center :before-close="handleClose">
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
       <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
@@ -9,7 +9,6 @@
 </template>
 
 <script type="text/javascript">
-// import { mapState } from "vuex";
 import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
@@ -41,6 +40,9 @@ export default {
     }
   },
   methods: {
+    handleClose () {
+      this.$store.commit("DEL_DIALOG_SHOW");
+    },
     handleSumbit(identity, objective, other = null) {
       const {
         phone,
@@ -51,7 +53,6 @@ export default {
         code,
         codeKey
       } = this.$store.state.userInfo;
-      console.log(identity, objective, other);
       const data = {
         study_title: identity,
         study_objective: objective,
@@ -65,7 +66,7 @@ export default {
       };
       if (other) data.study_objective_display = other;
       userService.create(data).then(() => {
-        this.$store.commit("DEL_DIALOG_SHOW");
+        this.$store.commit("END_DIALOG_SHOW");
       });
     }
   }

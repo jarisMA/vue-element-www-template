@@ -2,7 +2,7 @@
   <!-- 手机登陆 -->
   <div class="login_container">
     <div class="header">
-      <img src="~@/assets/images/tc-qx@2x.png" alt="" class="header-cancel" />
+      <img src="~@/assets/images/tc-qx@2x.png" alt="" class="header-cancel" @click="show" />
     </div>
     <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
     <div class="content">
@@ -32,7 +32,8 @@
             @click="getCode"
             :class="['code-get', pohoneLogin.Sent ? ' Sent' : '']"
           >
-            发送验证码
+            <span v-if="codeTime == 60">发送验证码</span>
+            <span  v-if="codeTime !== 60">{{codeTime}}秒<br/>可再次获取</span>
           </button>
         </el-form-item>
       </el-form>
@@ -64,6 +65,7 @@ import smsService from "./../../globals/service/sms.js";
 export default {
   data() {
     return {
+      codeTime: 60,
       loginButton: false,
       codeKey: null,
       Sent: true,
@@ -86,6 +88,9 @@ export default {
     };
   },
   methods: {
+    show() {
+      this.$store.commit("DEL_DIALOG_SHOW");
+    },
     verify() {
       if (!this.pohoneLogin.consent) {
         return this.$message({
@@ -135,12 +140,18 @@ export default {
           .smsRegisterCode({ phone_number: this.pohoneLogin.phone })
           .then(res => {
             this.codeKey = res.key;
-            setTimeout(() => {
-              this.Sent = true;
-              this.pohoneLogin.Sent = true;
-            }, 30000);
           });
         this.pohoneLogin.Sent = false;
+        this.codeTime = 60
+        var myVar = setInterval(() => {
+          this.codeTime -= 1;
+        }, 6000);
+        setTimeout(() => {
+          this.Sent = true;
+          this.pohoneLogin.Sent = true;
+          clearInterval(myVar);
+          this.codeTime = 60
+        }, 60000);
       }
     },
     getInput(value) {

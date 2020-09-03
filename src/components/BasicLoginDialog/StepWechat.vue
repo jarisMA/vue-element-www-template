@@ -28,8 +28,7 @@ export default {
   },
   methods: {
     show() {
-      this.$store.commit("DIALOG_SHOW", false);
-      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
+      this.$store.commit("DEL_DIALOG_SHOW");
     },
     showQrCode() {
       this.$nextTick(function() {
