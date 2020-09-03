@@ -4,7 +4,6 @@ import DataStore from "@/globals/storage/index";
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
-
 axiosInstance.interceptors.request.use(
   config => {
     const newConfig = { ...config };

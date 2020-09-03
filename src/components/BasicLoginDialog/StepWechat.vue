@@ -1,7 +1,12 @@
 <template>
   <div class="wx-login_container">
     <div class="header">
-      <img src="~@/assets/images/tc-qx@2x.png" alt="" class="header-cancel" />
+      <img
+        src="~@/assets/images/tc-qx@2x.png"
+        alt=""
+        class="header-cancel"
+        @click="show"
+      />
     </div>
     <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
     <p class="title">请用微信扫码登陆 / 注册</p>
@@ -22,6 +27,10 @@ export default {
     this.showQrCode();
   },
   methods: {
+    show() {
+      this.$store.commit("DIALOG_SHOW", false);
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
+    },
     showQrCode() {
       this.$nextTick(function() {
         new window.WxLogin({

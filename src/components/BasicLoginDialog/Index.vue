@@ -12,14 +12,13 @@
 // import { mapState } from "vuex";
 import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
-import StepMessage from "./StepMessage.vue";
 import StepObjective from "./StepObjective.vue";
+import userService from "./../../globals/service/user.js";
 
 export default {
   components: {
     StepWechat,
     StepPhone,
-    StepMessage,
     StepObjective
   },
   prop: {},
@@ -37,12 +36,37 @@ export default {
       },
       set: function(value) {
         this.$store.commit("DIALOG_SHOW", value);
+        this.$store.commit("DEL_DIALOG_SHOW");
       }
     }
   },
   methods: {
-    handleSumbit(identity, objective, other) {
+    handleSumbit(identity, objective, other = null) {
+      const {
+        phone,
+        name,
+        sex,
+        avatar_url,
+        unionid,
+        code,
+        codeKey
+      } = this.$store.state.userInfo;
       console.log(identity, objective, other);
+      const data = {
+        study_title: identity,
+        study_objective: objective,
+        unionid,
+        nickname: name,
+        avatar_url,
+        gender: sex,
+        phone_number: phone,
+        verification_key: codeKey,
+        verification_code: code
+      };
+      if (other) data.study_objective_display = other;
+      userService.create(data).then(() => {
+        this.$store.commit("DEL_DIALOG_SHOW");
+      });
     }
   }
 };

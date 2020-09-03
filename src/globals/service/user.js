@@ -14,18 +14,24 @@ const userService = {
     study_objective,
     study_objective_display
   }) {
-    return request.post(API.users, {
-      phone_number,
-      verification_key,
-      verification_code,
-      unionid,
-      nickname,
-      avatar_url,
-      gender,
-      study_title,
-      study_objective,
-      study_objective_display
-    });
+    return request.post(
+      API.users,
+      {
+        phone_number,
+        verification_key,
+        verification_code,
+        unionid,
+        nickname,
+        avatar_url,
+        gender,
+        study_title,
+        study_objective,
+        study_objective_display
+      },
+      {
+        withCredentials: true
+      }
+    );
   },
   getUserInfo: function() {
     return request.get(API.userInfo);

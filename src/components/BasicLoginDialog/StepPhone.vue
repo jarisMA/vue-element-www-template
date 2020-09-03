@@ -23,7 +23,7 @@
         </el-form-item>
         <el-form-item prop="code">
           <el-input
-            placeholder="请输入6位短信验证码"
+            placeholder="请输入4位短信验证码"
             v-model="pohoneLogin.code"
             @input="GetcodeInput"
           ></el-input>
@@ -65,7 +65,7 @@ export default {
   data() {
     return {
       loginButton: false,
-      ocdeKey: null,
+      codeKey: null,
       Sent: true,
       pohoneLogin: {
         phone: null,
@@ -93,7 +93,7 @@ export default {
           type: "warning"
         });
       }
-      if (!this.ocdeKey) {
+      if (!this.codeKey) {
         return this.$message({
           message: "请先获取验证短信",
           type: "warning"
@@ -103,11 +103,16 @@ export default {
         if (valid) {
           smsService
             .smsVerify({
-              verification_key: this.ocdeKey,
+              verification_key: this.codeKey,
               verification_code: this.pohoneLogin.code,
               phone_number: this.pohoneLogin.phone
             })
             .then(() => {
+              this.$store.commit("SET_PHONE_CODE_KEY", {
+                codeKey: this.codeKey,
+                code: this.pohoneLogin.code,
+                phone: this.pohoneLogin.phone
+              });
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
             });
         }
@@ -129,7 +134,7 @@ export default {
         smsService
           .smsRegisterCode({ phone_number: this.pohoneLogin.phone })
           .then(res => {
-            this.ocdeKey = res.key;
+            this.codeKey = res.key;
             setTimeout(() => {
               this.Sent = true;
               this.pohoneLogin.Sent = true;

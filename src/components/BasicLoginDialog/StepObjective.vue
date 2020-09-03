@@ -90,9 +90,9 @@ export default {
     return {
       studyObjectiveDisplay: null,
       temp: {
-        '家居爱好者': 0,
-        '设计师': 1,
-        '装修机构': 2
+        家居爱好者: 0,
+        设计师: 1,
+        装修机构: 2
       },
       objectiveIdentity: {
         children: []

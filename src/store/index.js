@@ -3,8 +3,9 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
-    dialogShow: true,
-    loginDialogVisible: 3,
+    token: null,
+    dialogShow: false,
+    loginDialogVisible: 0,
     userInfo: {
       id: 2,
       phone: null,
@@ -14,7 +15,9 @@ export default new Vuex.Store({
       birthday: null,
       introduction: null,
       avatar_url: null,
-      unionid: null
+      unionid: null,
+      code: null,
+      codeKey: null
     }
   },
   mutations: {
@@ -22,7 +25,6 @@ export default new Vuex.Store({
       state.dialogShow = value;
     },
     UPDATA_LOGINDIAL_VISIBLE(state, loginDialogVisible) {
-      console.log(loginDialogVisible);
       state.loginDialogVisible = loginDialogVisible;
     },
     USERINFO(state, userInfo) {
@@ -34,12 +36,23 @@ export default new Vuex.Store({
     UPDATA_PHONE(state, phone) {
       state.userInfo.phone = phone;
     },
+    SET_PHONE_CODE_KEY(state, data) {
+      state.userInfo.phone = data.phone;
+      state.userInfo.code = data.code;
+      state.userInfo.codeKey = data.codeKey;
+    },
     SET_WC_USER(state, userInfo) {
       state.userInfo.name = userInfo.nickname;
       state.userInfo.avatar_url = userInfo.avatar_url;
       state.userInfo.sex = userInfo.gender;
       state.userInfo.unionid = userInfo.unionid;
-      state.loginDialogVisible = 2;
+    },
+    DEL_DIALOG_SHOW(state) {
+      state.dialogShow = false;
+      state.loginDialogVisible = 0;
+    },
+    SET_TOKEN(state, token) {
+      state.token = token;
     }
   },
   actions: {},

@@ -48,7 +48,7 @@
 import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
 import InspirationImageModule from "./../components/InspirationImageModule";
-
+import cookies from "js-cookie";
 export default {
   name: "Home",
   data() {
@@ -68,7 +68,10 @@ export default {
       }
     };
   },
-  created() {},
+  created() {
+    const token = cookies.get("web_token");
+    console.log(token);
+  },
   methods: {
     prev() {
       this.$refs.swiper.$swiper.slidePrev();
