@@ -2,7 +2,7 @@
   <div>
     <el-dialog :visible.sync="dialogShow" width="416px" center>
       <StepWechat v-if="loginDialogVisible === 1" />
-      <StepObjective v-if="loginDialogVisible === 3" />
+      <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
     </el-dialog>
   </div>
 </template>
@@ -35,7 +35,11 @@ export default {
       }
     }
   },
-  methods: {}
+  methods: {
+    handleSumbit(identity, objective, other) {
+      console.log(identity, objective, other);
+    }
+  }
 };
 </script>
 
