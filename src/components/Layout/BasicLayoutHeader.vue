@@ -22,9 +22,12 @@
           PLAN GO
         </router-link>
         <div class="user-handle-container">
-          <el-avatar icon="el-icon-user-solid"></el-avatar>
+          <el-avatar
+            icon="el-icon-user-solid"
+            :src="userInfo.avatar_url"
+          ></el-avatar>
           <div class="user-handle_show">
-            <div class="show-container">
+            <div class="show-container" v-if="!userInfo.avatar_url">
               <div class="login-content">
                 <el-avatar
                   :size="60"
@@ -41,14 +44,15 @@
                 >
               </div>
             </div>
-            <div class="show-container landing" v-if="false">
+            <div class="show-container landing" v-if="userInfo.avatar_url">
               <div class="login-content">
                 <el-avatar
                   :size="60"
                   class="login-user-image"
                   icon="el-icon-user-solid"
+                  :src="userInfo.avatar_url"
                 ></el-avatar>
-                <p style="" class="login-title">用户名</p>
+                <p style="" class="login-title">{{ userInfo.name }}</p>
                 <p class="user-logo">会员</p>
                 <p class="login-desc">会员到期时间:2020-02-02</p>
               </div>
@@ -84,7 +88,6 @@ export default {
     wxLogin() {
       this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       this.$store.commit("DIALOG_SHOW", true);
-
     },
     handleLogout() {
       DataStore.removeToken();

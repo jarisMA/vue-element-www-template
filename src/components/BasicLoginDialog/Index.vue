@@ -2,6 +2,8 @@
   <div>
     <el-dialog :visible.sync="dialogShow" width="416px" center>
       <StepWechat v-if="loginDialogVisible === 1" />
+      <StepPhone v-if="loginDialogVisible === 2" />
+      <StepMessage v-if="loginDialogVisible === 3" />
     </el-dialog>
   </div>
 </template>
@@ -9,26 +11,30 @@
 <script type="text/javascript">
 // import { mapState } from "vuex";
 import StepWechat from "./StepWechat.vue";
+import StepPhone from "./StepPhone.vue";
+import StepMessage from "./StepMessage.vue";
+
 export default {
   components: {
-    StepWechat
+    StepWechat,
+    StepPhone,
+    StepMessage
   },
   prop: {},
   created() {},
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
-    loginDialogVisible () {
-      return this.$store.state.loginDialogVisible
+    loginDialogVisible() {
+      return this.$store.state.loginDialogVisible;
     },
     dialogShow: {
-      get: function () {
-        return this.$store.state.dialogShow
+      get: function() {
+        return this.$store.state.dialogShow;
       },
-      set:function(value) {
-        this.$store.commit('DIALOG_SHOW', value)
+      set: function(value) {
+        this.$store.commit("DIALOG_SHOW", value);
       }
     }
   },

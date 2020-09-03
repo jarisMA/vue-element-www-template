@@ -41,7 +41,7 @@ const successRes = res => {
     case res.data.error_code === 0:
       return res.data.data;
     case res.data.error_code === 1:
-      Message.error(res.data.message);
+      Message.error(res.data.message || "服务器发送错误，请稍后再试");
       return Promise.reject(res.data);
     default:
       return res.data;
