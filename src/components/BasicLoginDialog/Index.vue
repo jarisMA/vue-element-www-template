@@ -48,7 +48,7 @@ export default {
     handleClose() {
       this.$store.commit("DEL_DIALOG_SHOW");
     },
-    handleSumbit(identity, objective, other = null) {
+    handleSumbit(identity, objective, other) {
       const {
         phone,
         name,
