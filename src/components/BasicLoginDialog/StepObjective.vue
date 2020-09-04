@@ -40,10 +40,12 @@
           <div
             @click="handleSelectIdentity(item)"
             v-for="item in objectiveIdentity.children"
-            :key="item.id"
+            :key="item.name"
             :class="[
               'content-item',
-              objectiveIdentity.select === item.id ? 'content-item-active' : ''
+              objectiveIdentity.select === item.name
+                ? 'content-item-active'
+                : ''
             ]"
           >
             <div
@@ -51,7 +53,7 @@
               :style="{
                 backgroundImage:
                   'url(' +
-                  (objectiveIdentity.select === item.id
+                  (objectiveIdentity.select === item.name
                     ? item.image_select
                     : item.image) +
                   ')'
@@ -115,12 +117,12 @@ export default {
     },
     // 选择身份状态
     handleSelectIdentity(item) {
-      this.objectiveIdentity.select = item.id;
+      this.objectiveIdentity.select = item.name;
       this.otherObjective = "";
     },
     // 输入其他目标
     handleInput() {
-      this.objectiveIdentity.select = 0;
+      this.objectiveIdentity.select = "";
     },
     handleSubmit() {
       const objectiveIdentity = this.objectiveIdentity;
@@ -173,10 +175,10 @@ export default {
           font-size: 16px;
           font-family: Noto Sans S Chinese;
           color: #999999;
-          &:hover{
+          &:hover {
             background: #14af64;
             color: #fff;
-            border-color: #14af64;;
+            border-color: #14af64;
           }
         }
       }

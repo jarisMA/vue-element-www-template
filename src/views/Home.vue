@@ -72,10 +72,10 @@ export default {
   },
   created() {
     const token = cookies.get("web_token");
-    if(token) {
+    if (token) {
       userService.getUserInfo().then(res => {
         this.$store.commit("SET_WC_USER", res);
-      })
+      });
     }
   },
   methods: {

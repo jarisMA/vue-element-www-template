@@ -2,7 +2,12 @@
   <!-- 手机登陆 -->
   <div class="login_container">
     <div class="header">
-      <img src="~@/assets/images/tc-qx@2x.png" alt="" class="header-cancel" @click="show" />
+      <img
+        src="~@/assets/images/tc-qx@2x.png"
+        alt=""
+        class="header-cancel"
+        @click="show"
+      />
     </div>
     <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
     <div class="content">
@@ -33,7 +38,7 @@
             :class="['code-get', pohoneLogin.Sent ? ' Sent' : '']"
           >
             <span v-if="codeTime == 60">发送验证码</span>
-            <span  v-if="codeTime !== 60">{{codeTime}}秒<br/>可再次获取</span>
+            <span v-if="codeTime !== 60">{{ codeTime }}秒<br />可再次获取</span>
           </button>
         </el-form-item>
       </el-form>
@@ -142,7 +147,7 @@ export default {
             this.codeKey = res.key;
           });
         this.pohoneLogin.Sent = false;
-        this.codeTime = 60
+        this.codeTime = 60;
         var myVar = setInterval(() => {
           this.codeTime -= 1;
         }, 6000);
@@ -150,7 +155,7 @@ export default {
           this.Sent = true;
           this.pohoneLogin.Sent = true;
           clearInterval(myVar);
-          this.codeTime = 60
+          this.codeTime = 60;
         }, 60000);
       }
     },

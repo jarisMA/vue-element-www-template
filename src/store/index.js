@@ -46,7 +46,7 @@ export default new Vuex.Store({
       state.userInfo.avatar_url = userInfo.avatar_url;
       state.userInfo.sex = userInfo.gender;
       state.userInfo.unionid = userInfo.unionid;
-      if(userInfo.phone_number) state.userInfo.phone = userInfo.phone_number
+      if (userInfo.phone_number) state.userInfo.phone = userInfo.phone_number;
     },
     DEL_DIALOG_SHOW(state) {
       state.dialogShow = false;
@@ -63,7 +63,7 @@ export default new Vuex.Store({
         unionid: null,
         code: null,
         codeKey: null
-      }
+      };
     },
     END_DIALOG_SHOW(state) {
       state.dialogShow = false;

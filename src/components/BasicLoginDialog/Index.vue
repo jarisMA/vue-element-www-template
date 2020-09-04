@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-dialog :visible.sync="dialogShow" width="416px" center :before-close="handleClose">
+    <el-dialog
+      :visible.sync="dialogShow"
+      width="416px"
+      center
+      :before-close="handleClose"
+    >
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
       <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
@@ -40,7 +45,7 @@ export default {
     }
   },
   methods: {
-    handleClose () {
+    handleClose() {
       this.$store.commit("DEL_DIALOG_SHOW");
     },
     handleSumbit(identity, objective, other = null) {
@@ -54,8 +59,8 @@ export default {
         codeKey
       } = this.$store.state.userInfo;
       const data = {
-        study_title: identity,
-        study_objective: objective,
+        identity: identity,
+        remark: objective || other,
         unionid,
         nickname: name,
         avatar_url,
@@ -64,7 +69,6 @@ export default {
         verification_key: codeKey,
         verification_code: code
       };
-      if (other) data.study_objective_display = other;
       userService.create(data).then(() => {
         this.$store.commit("END_DIALOG_SHOW");
       });

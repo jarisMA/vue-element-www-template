@@ -10,9 +10,8 @@ const userService = {
     nickname,
     avatar_url,
     gender,
-    study_title,
-    study_objective,
-    study_objective_display
+    identity,
+    remark
   }) {
     return request.post(
       API.users,
@@ -24,9 +23,8 @@ const userService = {
         nickname,
         avatar_url,
         gender,
-        study_title,
-        study_objective,
-        study_objective_display
+        identity,
+        remark
       },
       {
         withCredentials: true
@@ -34,25 +32,27 @@ const userService = {
     );
   },
   getUserInfo: function() {
-    return request.get(API.userInfo,{},{
-      withCredentials: true
-    });
+    return request.get(
+      API.userInfo,
+      {},
+      {
+        withCredentials: true
+      }
+    );
   },
   updateUserInfo: function({
     nickname,
     avatar_url,
     gender,
-    study_title,
-    study_objective,
-    study_objective_display
+    identity,
+    remark
   }) {
     return request.put(API.userInfo, {
       nickname,
       avatar_url,
       gender,
-      study_title,
-      study_objective,
-      study_objective_display
+      identity,
+      remark
     });
   }
 };

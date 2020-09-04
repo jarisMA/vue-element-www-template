@@ -91,7 +91,7 @@ export default {
       this.$store.commit("DIALOG_SHOW", true);
     },
     handleLogout() {
-      cookies.remove('web_token', { path: '/', domain: '.home-plan.cn' });
+      cookies.remove("web_token", { path: "/", domain: ".home-plan.cn" });
       DataStore.removeToken();
       window.location.reload();
     }
