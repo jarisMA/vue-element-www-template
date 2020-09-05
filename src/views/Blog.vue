@@ -4,21 +4,21 @@
       <div class="filtration-section">
         <div class="filtration-header">
           <div class="header-logo" @click="filtrationShowHandle">
-            <img src="~@/assets/images/sx.svg" class="logo-img" />
+            <img src="~@/assets/images/filtrate_logo.svg" class="logo-img" />
             <p class="logo-title">筛选</p>
             <img
               v-if="!filtrationShow"
-              src="~@/assets/images/sxsq.svg"
+              src="~@/assets/images/direction_logo-1.svg"
               class="logo-image"
             />
             <img
               v-if="filtrationShow"
-              src="~@/assets/images/sxzk.svg"
+              src="~@/assets/images/direction_logo-2.svg"
               class="logo-image"
             />
           </div>
           <div class="header-input">
-            <img src="~@/assets/images/ss.svg" class="innput-logo" />
+            <img src="~@/assets/images/inquire_logo.svg" class="innput-logo" />
             <input type="text" class="input-content" />
           </div>
         </div>
@@ -37,7 +37,7 @@
               <p class="item-title">客厅</p>
               <p class="item-title">餐厅</p>
               <p class="item-title">卧室</p>
-              <p class="item-title">书房</p>
+              <p class="item-title active">书房</p>
               <p class="item-title">儿童房</p>
               <p class="item-title">卫生间</p>
               <p class="item-title">玄关</p>
@@ -49,12 +49,12 @@
             <div class="list-content">
               <p class="item-title header active">全部</p>
               <p class="item-title">北欧</p>
-              <p class="item-title">日系</p>
+              <p class="item-title active">日系</p>
               <p class="item-title">法式</p>
               <p class="item-title">英式</p>
               <p class="item-title">美式</p>
-              <p class="item-title">中式</p>
-              <p class="item-title">现代</p>
+              <p class="item-title active">中式</p>
+              <p class="item-title active">现代</p>
               <p class="item-title">复古</p>
             </div>
           </div>
@@ -65,15 +65,15 @@
               <p class="item-title">纯白</p>
               <p class="item-title">木色</p>
               <p class="item-title">灰色</p>
-              <p class="item-title">蓝色</p>
+              <p class="item-title active">蓝色</p>
               <p class="item-title">绿色</p>
               <p class="item-title">黄色</p>
-              <p class="item-title">米色</p>
+              <p class="item-title active">米色</p>
               <p class="item-title">多彩</p>
               <p class="item-title">莫兰迪</p>
               <p class="item-title">马卡龙</p>
               <p class="item-title">黑白</p>
-              <p class="item-title">星空</p>
+              <p class="item-title active">星空</p>
             </div>
           </div>
         </div>

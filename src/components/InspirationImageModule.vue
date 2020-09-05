@@ -1,6 +1,6 @@
 <template>
   <div class="inspiration-item">
-    <img src="~@/assets/images/lgttp_1@2x.png" alt="" class="item-img" />
+    <img src="~@/assets/images/dwelling.png" alt="" class="item-img" />
     <div class="item-text">
       <p class="text">小型住宅设计，带分隔夹层 | 妙屋集</p>
     </div>

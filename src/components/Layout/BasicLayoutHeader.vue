@@ -2,8 +2,8 @@
   <header class="page-header">
     <div class="header-content container-1200">
       <div class="header-hd">
-        <router-link :to="{ name: 'Home' }">
-          <img class="header-logo" src="~@/assets/images/logo.svg" />
+        <router-link class="header-logo_img" :to="{ name: 'Home' }">
+          <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </router-link>
         <nav class="header-nav">
           <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
@@ -74,16 +74,32 @@
 import { mapState } from "vuex";
 import DataStore from "@/globals/storage/index";
 import cookies from "js-cookie";
+import userService from "@/globals/service/user.js";
+
 export default {
   data() {
     return {
       visible: true
     };
   },
+  created() {
+    this.getUserData();
+  },
+  watch: {
+    $route: "getUserData"
+  },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
+    getUserData() {
+      const token = cookies.get("web_token");
+      if (token) {
+        userService.getUserInfo().then(res => {
+          this.$store.commit("SET_WC_USER", res);
+        });
+      }
+    },
     handleGoMy() {
       this.$router.push({ name: "My" });
     },
@@ -109,6 +125,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     height: 60px;
+    font-size: 0;
     .header-hd,
     .header-bd,
     .header-ft {
@@ -116,14 +133,15 @@ export default {
       align-items: center;
       height: 100%;
     }
-
-    .header-logo {
+    .header-logo_img {
       width: 104px;
-      height: 36px;
       margin-right: 65px;
-      vertical-align: middle;
+      .header-logo {
+        width: 104px;
+        height: 36px;
+        vertical-align: middle;
+      }
     }
-
     .header-nav {
       display: flex;
       .header-nav-item {
@@ -148,7 +166,8 @@ export default {
           display: inline-block;
           width: 24px;
           height: 24px;
-          background: url("./../../assets/images/jlg-wxz.svg") no-repeat center;
+          background: url("./../../assets/images/link_logo-1.svg") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -156,7 +175,9 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/jlg-xz.svg") no-repeat center;
+            margin-right: 6px;
+            background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
+              center;
             background-size: contain;
             vertical-align: middle;
           }
@@ -164,7 +185,9 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/jlg-xz.svg") no-repeat center;
+            margin-right: 6px;
+            background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
+              center;
             background-size: contain;
             vertical-align: middle;
           }
@@ -174,9 +197,10 @@ export default {
         &:before {
           content: "";
           display: inline-block;
-          width: 18px;
-          height: 17.96px;
-          background: url("./../../assets/images/dxxy-wxz.svg") no-repeat center;
+          width: 24px;
+          height: 24px;
+          background: url("./../../assets/images/link_logo-2.svg") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -186,7 +210,8 @@ export default {
           display: inline-block;
           width: 17.79px;
           height: 17.79px;
-          background: url("./../../assets/images/dxxy-xxx.svg") no-repeat center;
+          background: url("./../../assets/images/link_logo-2_star.svg")
+            no-repeat center;
           background-size: contain;
           position: relative;
           bottom: 12px;
@@ -194,7 +219,7 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/dxxy-xz.svg") no-repeat
+            background: url("./../../assets/images/link_logo-2_1.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -203,7 +228,7 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/dxxy-xz.svg") no-repeat
+            background: url("./../../assets/images/link_logo-2_1.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -214,9 +239,10 @@ export default {
         &:before {
           content: "";
           display: inline-block;
-          width: 16.38px;
-          height: 20.03px;
-          background: url("./../../assets/images/ywbj-wxz.svg") no-repeat center;
+          width: 24px;
+          height: 24px;
+          background: url("./../../assets/images/link_logo-3.svg") no-repeat
+            center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -224,7 +250,7 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/ywbj-xz.svg") no-repeat
+            background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -233,7 +259,7 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/ywbj-xz.svg") no-repeat
+            background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -258,6 +284,10 @@ export default {
       line-height: 36px;
       margin-right: 74px;
       border: 1px solid #14af64;
+      &:hover {
+        color: #fff;
+        background-color: #14af64;
+      }
     }
     .user-handle-container {
       position: relative;

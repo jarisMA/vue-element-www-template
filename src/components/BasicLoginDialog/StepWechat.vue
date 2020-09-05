@@ -2,18 +2,18 @@
   <div class="wx-login_container">
     <div class="header">
       <img
-        src="~@/assets/images/tc-qx.svg"
+        src="~@/assets/images/close_logo.png"
         alt=""
         class="header-cancel"
         @click="show"
       />
     </div>
-    <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
+    <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
     <p class="title">请用微信扫码登陆 / 注册</p>
     <div class="qrcode-container" id="qrcode"></div>
     <img
       v-if="false"
-      src="~@/assets/images/tc-ewmzw.svg"
+      src="~@/assets/images/wx-QR_code.svg"
       alt=""
       class="image"
     />

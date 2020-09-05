@@ -10,10 +10,14 @@
       <div class="closed-alpha_container">
         <div class="header">
           <p class="header-logo">PLAN GO</p>
-          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
+          <img
+            src="~@/assets/images/close_logo.png"
+            alt=""
+            class="header-cancel"
+          />
         </div>
         <p class="title">铁粉内测阶段</p>
-        <img src="~@/assets/images/tc-ewmzw.svg" alt="" class="image" />
+        <img src="~@/assets/images/wx-QR_code.svg" alt="" class="image" />
         <p class="desc">想优先体验可微信扫码<br />添加工作人员邀请开通</p>
       </div>
     </el-dialog>
@@ -27,11 +31,15 @@
     >
       <div class="wx-login_container">
         <div class="header">
-          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
+          <img
+            src="~@/assets/images/close_logo.png"
+            alt=""
+            class="header-cancel"
+          />
         </div>
-        <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
+        <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
         <p class="title">请用微信扫码登陆 / 注册</p>
-        <img src="~@/assets/images/tc-ewmzw.svg" alt="" class="image" />
+        <img src="~@/assets/images/wx-QR_code.svg" alt="" class="image" />
         <p class="desc">扫码后关注暖刻公众号，完成登录</p>
       </div>
     </el-dialog>
@@ -45,9 +53,13 @@
     >
       <div class="login_container">
         <div class="header">
-          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
+          <img
+            src="~@/assets/images/close_logo.png"
+            alt=""
+            class="header-cancel"
+          />
         </div>
-        <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
+        <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
         <div class="content">
           <p class="title">绑定手机</p>
           <el-form
@@ -98,7 +110,7 @@
     >
       <div class="identity-selector_container">
         <div class="header">
-          <img src="~@/assets/images/logo.svg" alt="" class="header-logo" />
+          <img src="~@/assets/images/logo_1.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -127,7 +139,7 @@
       <div class="home-decoration_container">
         <div class="header">
           <img
-            src="~@/assets/images/tc-jjahz-fh@2x.png"
+            src="~@/assets/images/return_logo.png"
             alt=""
             class="header-logo"
           />
@@ -162,7 +174,7 @@
       <div class="stylist_container">
         <div class="header">
           <img
-            src="~@/assets/images/tc-jjahz-fh@2x.png"
+            src="~@/assets/images/return_logo.png"
             alt=""
             class="header-logo"
           />
@@ -190,7 +202,7 @@
       <div class="decoration-company_container">
         <div class="header">
           <img
-            src="~@/assets/images/tc-jjahz-fh@2x.png"
+            src="~@/assets/images/return_logo.png"
             alt=""
             class="header-logo"
           />
@@ -520,14 +532,16 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/xzx-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_3-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/sjs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_1-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -541,7 +555,8 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/xzx-xz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_3-2.svg") no-repeat
+            center;
         }
         .study {
           background: url("~@/assets/images/dldlsjs-xz.svg") no-repeat center;
@@ -623,14 +638,16 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/sjs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_1-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/zzsjs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_5-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -726,14 +743,16 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/sjgzs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_2-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/zxgs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_4-1.svg") no-repeat
+            center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -747,10 +766,12 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/sjgzs-xz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_2-2.svg") no-repeat
+            center;
         }
         .study {
-          background: url("~@/assets/images/zxgs-wxz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_4-1.svg") no-repeat
+            center;
         }
         .item-title {
           color: #14af64;

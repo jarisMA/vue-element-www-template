@@ -41,12 +41,12 @@
         <button class="look-article">
           <p class="look-article-text">查看更多</p>
           <img
-            src="~@/assets/images/zxbw-ckgd-gd@2x.png"
+            src="~@/assets/images/direction_logo-4.png"
             alt=""
             class="item-img"
           />
         </button>
-        <img src="~@/assets/images/yw-tc-ewm.svg" class="look-wx_imag" />
+        <img src="~@/assets/images/direction_logo-3.svg" class="look-wx_imag" />
       </div>
     </div>
   </div>
@@ -56,8 +56,6 @@
 import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
 import InspirationImageModule from "./../components/InspirationImageModule";
-import cookies from "js-cookie";
-import userService from "@/globals/service/user.js";
 
 export default {
   name: "Home",
@@ -77,14 +75,6 @@ export default {
         }
       }
     };
-  },
-  created() {
-    const token = cookies.get("web_token");
-    if (token) {
-      userService.getUserInfo().then(res => {
-        this.$store.commit("SET_WC_USER", res);
-      });
-    }
   },
   methods: {
     prev() {
@@ -110,7 +100,7 @@ export default {
   height: 900px;
   background: #f4f6f3;
   .banner-container {
-    background: url("./../assets/images/banner-zhu.svg") no-repeat center;
+    background: url("./../assets/images/banner_1.svg") no-repeat center;
     background-size: cover;
     width: 100%;
     height: 702px;
@@ -124,7 +114,7 @@ export default {
         position: absolute;
         left: 0px;
         bottom: 200px;
-        background: url("./../assets/images/banner-zhu-an.svg") no-repeat center;
+        background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
         background-size: contain;
         width: 290px;
         height: 74px;
@@ -140,13 +130,18 @@ export default {
           filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
           cursor: pointer;
         }
+        &:active {
+          background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
+            center;
+          color: #fff;
+        }
       }
     }
   }
   .banner-2-container {
     width: 100%;
     height: 600px;
-    background: url("./../assets/images/banner2.svg") no-repeat center;
+    background: url("./../assets/images/banner_2.svg") no-repeat center;
     background-size: cover;
     position: relative;
     .look {
@@ -156,7 +151,7 @@ export default {
       bottom: 145px;
       width: 246.89px;
       height: 66.94px;
-      background: url("./../assets/images/banner2-an.svg") no-repeat center;
+      background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
       background-size: cover;
       border: none;
       outline: none;
@@ -169,6 +164,10 @@ export default {
         transition: all 0.1s;
         filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
         cursor: pointer;
+      }
+      &:active {
+        background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
+        color: #fff;
       }
     }
   }
@@ -235,7 +234,7 @@ export default {
             &:after {
               content: "";
               display: inline-block;
-              background: url("./../assets/images/zxbw-gd-z@2x.png") no-repeat
+              background: url("./../assets/images/previous_logo.png") no-repeat
                 center;
               background-size: cover;
               width: 100px;
@@ -247,7 +246,7 @@ export default {
             &:after {
               content: "";
               display: inline-block;
-              background: url("./../assets/images/zxbw-gd-y@2x.png") no-repeat
+              background: url("./../assets/images/next_logo.png") no-repeat
                 center;
               background-size: cover;
               width: 100px;
@@ -280,7 +279,7 @@ export default {
         font-weight: 500;
         line-height: 16px;
         color: #ffffff;
-        background: url("./../assets/images/zxbw-ckgd-an.svg") no-repeat center;
+        background: url("./../assets/images/buttom_6-1-bg.svg") no-repeat center;
         background-size: contain;
         border: none;
         outline: none;

@@ -3,13 +3,13 @@
   <div class="login_container">
     <div class="header">
       <img
-        src="~@/assets/images/tc-qx.svg"
+        src="~@/assets/images/close_logo.png"
         alt=""
         class="header-cancel"
         @click="show"
       />
     </div>
-    <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
+    <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
     <div class="content">
       <p class="title">绑定手机</p>
       <el-form
@@ -56,7 +56,10 @@
       </div>
       <button
         type="button"
-        :class="['login-button', loginButton ? 'login-active' : '']"
+        :class="[
+          'login-button',
+          loginButton && pohoneLogin.consent ? 'login-active' : ''
+        ]"
         @click="verify"
       >
         完成
@@ -150,7 +153,7 @@ export default {
         this.codeTime = 60;
         var myVar = setInterval(() => {
           this.codeTime -= 1;
-        }, 6000);
+        }, 1000);
         setTimeout(() => {
           this.Sent = true;
           this.pohoneLogin.Sent = true;
@@ -241,7 +244,8 @@ export default {
         }
       }
       .consent_active {
-        background: url("./../../assets/images/xy-xz.svg") no-repeat center;
+        background: url("./../../assets/images/buttom_5-1-bg.svg") no-repeat
+          center;
         background-size: cover;
         padding: none;
         border: #000;
@@ -270,18 +274,24 @@ export default {
       color: #ffffff;
       outline: none;
       border: none;
-      background: url("./../../assets/images/zxbw-ckgd-an.svg") no-repeat center;
+      background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat
+        center;
       background-size: contain;
       border: none;
       outline: none;
       padding: 0 4px 4px 0;
       &:hover {
-        box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
+        filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.3));
+        cursor: not-allowed;
+        outline: none;
       }
     }
     .login-active {
-      background: #14af64;
+      background: url("./../../assets/images/buttom_4-2-bg.svg") no-repeat
+        center;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
 }

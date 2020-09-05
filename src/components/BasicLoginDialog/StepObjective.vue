@@ -3,7 +3,7 @@
     <div class="step-objective_container" v-show="!studyObjectiveDisplay">
       <div class="identity-selector_container">
         <div class="header">
-          <img src="~@/assets/images/logo.svg" alt="" class="header-logo" />
+          <img src="~@/assets/images/logo_1.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -25,7 +25,7 @@
       <div class="header">
         <img
           @click="handleBack"
-          src="~@/assets/images/tc-jjahz-fh@2x.png"
+          src="~@/assets/images/return_logo.png"
           alt=""
           class="header-logo"
         />
@@ -179,11 +179,13 @@ export default {
         }
       }
       /deep/.el-radio-button__inner {
-        transition: all 0.1s;
-        background: url("./../../assets/images/cjxx-wxz.svg") no-repeat center;
-        background-size: cover;
+        transition: all 0s;
+        outline: none;
+        background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
+          center;
+        background-size: 343px !important;
         &:hover {
-          background: url("./../../assets/images/cjxx-sbxt.svg") no-repeat
+          background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
             center;
           width: 326px !important;
           height: 54px !important;
@@ -191,11 +193,12 @@ export default {
           color: #14af64;
           z-index: 999;
         }
-      }
-      .is-active .el-radio-button__inner {
-        background: url("./../../assets/images/cjxx-xz.svg") no-repeat center;
-        background-size: cover;
-        color: #fff;
+        &:active {
+          background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
+            center;
+          background-size: 343px !important;
+          color: #fff;
+        }
       }
     }
   }
@@ -254,10 +257,12 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/sjgzs-xz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_2-2.svg") no-repeat
+            center;
         }
         .study {
-          background: url("~@/assets/images/zxgs-xz.svg") no-repeat center;
+          background: url("~@/assets/images/profession_4-2.svg") no-repeat
+            center;
         }
         .item-title {
           color: #14af64;
@@ -281,7 +286,7 @@ export default {
   .decoration-company-button {
     width: 206px;
     height: 46px;
-    background: url("./../../assets/images/wc-wtx.svg") no-repeat center;
+    background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat center;
     background-size: cover;
     color: #fff;
     font-size: 20px;
@@ -293,6 +298,7 @@ export default {
     margin-bottom: 63px;
     cursor: not-allowed;
     padding: 0 4px 4px 0;
+    transition: all 0s;
     &:hover {
       filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.3));
     }
@@ -300,7 +306,7 @@ export default {
   .decoration-company-button-active {
     background: #14af64;
     cursor: pointer;
-    background: url("./../../assets/images/wc-tx.svg") no-repeat center;
+    background: url("./../../assets/images/buttom_4-2-bg.svg") no-repeat center;
     background-size: cover;
   }
 }

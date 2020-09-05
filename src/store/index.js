@@ -4,8 +4,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     token: null,
-    dialogShow: false,
-    loginDialogVisible: 0,
+    dialogShow: true,
+    loginDialogVisible: 2,
     userInfo: {
       id: 2,
       phone: null,
