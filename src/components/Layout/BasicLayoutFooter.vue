@@ -1,6 +1,6 @@
 <template>
   <footer class="page-footer">
-    <div class="container-1080">
+    <div class="container-1200">
       <div class="left">
         Copyright © 2020 home-plan.com All Rights Reserved
         <a class="beian" target="_blank" href="http://www.beian.miit.gov.cn/"
@@ -30,7 +30,7 @@ export default {
   font-weight: bold;
   text-align: center;
   background-color: #14af64;
-  .container-1080 {
+  .container-1200 {
     height: 100%;
     display: flex;
     justify-content: space-between;
