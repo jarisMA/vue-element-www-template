@@ -3,7 +3,7 @@
     <div class="header-content container-1200">
       <div class="header-hd">
         <router-link :to="{ name: 'Home' }">
-          <img class="header-logo" src="~@/assets/images/home-logo.png" />
+          <img class="header-logo" src="~@/assets/images/logo.svg" />
         </router-link>
         <nav class="header-nav">
           <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
@@ -23,6 +23,7 @@
         </router-link>
         <div class="user-handle-container">
           <el-avatar
+            class="el-avatar-border"
             icon="el-icon-user-solid"
             :src="userInfo.avatar_url"
           ></el-avatar>
@@ -147,8 +148,7 @@ export default {
           display: inline-block;
           width: 24px;
           height: 24px;
-          background: url("./../../assets/images/jlg-wxz@2x.png") no-repeat
-            center;
+          background: url("./../../assets/images/jlg-wxz.svg") no-repeat center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -156,8 +156,7 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
-              center;
+            background: url("./../../assets/images/jlg-xz.svg") no-repeat center;
             background-size: contain;
             vertical-align: middle;
           }
@@ -165,8 +164,7 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/jlg-xz@2x.png") no-repeat
-              center;
+            background: url("./../../assets/images/jlg-xz.svg") no-repeat center;
             background-size: contain;
             vertical-align: middle;
           }
@@ -178,8 +176,7 @@ export default {
           display: inline-block;
           width: 18px;
           height: 17.96px;
-          background: url("./../../assets/images/dxkt-wxz@2x.png") no-repeat
-            center;
+          background: url("./../../assets/images/dxxy-wxz.svg") no-repeat center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -189,8 +186,7 @@ export default {
           display: inline-block;
           width: 17.79px;
           height: 17.79px;
-          background: url("./../../assets/images/dxkt-zhuangshi@2x.png")
-            no-repeat center;
+          background: url("./../../assets/images/dxxy-xxx.svg") no-repeat center;
           background-size: contain;
           position: relative;
           bottom: 12px;
@@ -198,7 +194,7 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
+            background: url("./../../assets/images/dxxy-xz.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -207,7 +203,7 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/dxkt-xz@2x.png") no-repeat
+            background: url("./../../assets/images/dxxy-xz.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -220,8 +216,7 @@ export default {
           display: inline-block;
           width: 16.38px;
           height: 20.03px;
-          background: url("./../../assets/images/ywbj-wxz@2x.png") no-repeat
-            center;
+          background: url("./../../assets/images/ywbj-wxz.svg") no-repeat center;
           background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
@@ -229,7 +224,7 @@ export default {
         &.router-link-exact-active {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
+            background: url("./../../assets/images/ywbj-xz.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -238,7 +233,7 @@ export default {
         &:hover {
           transition: all 0.1s;
           &:before {
-            background: url("./../../assets/images/ywbj-xz@2x.png") no-repeat
+            background: url("./../../assets/images/ywbj-xz.svg") no-repeat
               center;
             background-size: contain;
             vertical-align: middle;
@@ -252,8 +247,8 @@ export default {
     align-items: center;
     .PLAN-link {
       text-decoration: none;
-      color: #fff;
-      background-color: #14af64;
+      color: #14af64;
+      background-color: #fff;
       width: 104px;
       height: 36px;
       font-size: 16px;
@@ -262,12 +257,16 @@ export default {
       text-align: center;
       line-height: 36px;
       margin-right: 74px;
+      border: 1px solid #14af64;
     }
     .user-handle-container {
       position: relative;
       height: 100%;
       display: flex;
       align-items: center;
+      .el-avatar-border {
+        border: 1px solid #14af64;
+      }
       .user-image {
         width: 40px;
         height: 40px;
@@ -333,6 +332,9 @@ export default {
           }
           .handle-button {
             text-align: center;
+          }
+          .login-user-image {
+            border: 1px solid #14af64;
           }
         }
         .landing {

@@ -40,13 +40,7 @@ const userService = {
       }
     );
   },
-  updateUserInfo: function({
-    nickname,
-    avatar_url,
-    gender,
-    identity,
-    remark
-  }) {
+  updateUserInfo: function({ nickname, avatar_url, gender, identity, remark }) {
     return request.put(API.userInfo, {
       nickname,
       avatar_url,

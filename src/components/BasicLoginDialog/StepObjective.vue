@@ -3,11 +3,7 @@
     <div class="step-objective_container" v-show="!studyObjectiveDisplay">
       <div class="identity-selector_container">
         <div class="header">
-          <img
-            src="~@/assets/images/home-logo.png"
-            alt=""
-            class="header-logo"
-          />
+          <img src="~@/assets/images/logo.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -167,23 +163,38 @@ export default {
       width: 100%;
       .content-item {
         width: 100%;
+        height: 54px;
         margin-bottom: 40px;
         .el-radio-button,
         .el-radio-button__orig-radio,
         .el-radio-button__inner {
           width: 100% !important;
-          font-size: 16px;
+          height: 54px !important;
+          font-size: 20px;
           font-family: Noto Sans S Chinese;
-          color: #999999;
+          color: #fff;
           &:hover {
-            background: #14af64;
-            color: #fff;
-            border-color: #14af64;
+            filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
           }
         }
       }
+      /deep/.el-radio-button__inner {
+        transition: all 0.1s;
+        background: url("./../../assets/images/cjxx-wxz.svg") no-repeat center;
+        background-size: cover;
+        &:hover {
+          background: url("./../../assets/images/cjxx-sbxt.svg") no-repeat
+            center;
+          width: 326px !important;
+          height: 54px !important;
+          background-size: 343px !important;
+          color: #14af64;
+          z-index: 999;
+        }
+      }
       .is-active .el-radio-button__inner {
-        background: #14af64;
+        background: url("./../../assets/images/cjxx-xz.svg") no-repeat center;
+        background-size: cover;
         color: #fff;
       }
     }
@@ -243,12 +254,10 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/tc-zxjg-sj-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/sjgzs-xz.svg") no-repeat center;
         }
         .study {
-          background: url("~@/assets/images/tc-zxjg-zx-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/zxgs-xz.svg") no-repeat center;
         }
         .item-title {
           color: #14af64;
@@ -270,9 +279,11 @@ export default {
     }
   }
   .decoration-company-button {
-    width: 200px;
-    height: 40px;
-    background: #999999;
+    width: 206px;
+    height: 46px;
+    background: url("./../../assets/images/wc-wtx.svg") no-repeat center;
+    background-size: cover;
+    color: #fff;
     font-size: 20px;
     font-family: Noto Sans S Chinese;
     font-weight: 500;
@@ -281,13 +292,16 @@ export default {
     outline: none;
     margin-bottom: 63px;
     cursor: not-allowed;
+    padding: 0 4px 4px 0;
     &:hover {
-      box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
+      filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.3));
     }
   }
   .decoration-company-button-active {
     background: #14af64;
     cursor: pointer;
+    background: url("./../../assets/images/wc-tx.svg") no-repeat center;
+    background-size: cover;
   }
 }
 </style>

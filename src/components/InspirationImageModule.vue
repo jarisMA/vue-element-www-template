@@ -27,17 +27,22 @@ export default {
   width: 380px;
   height: 413px;
   font-size: 0;
+  border: 2px solid #000;
   &:hover {
     cursor: pointer;
+    border-color: #14af64;
+    .item-text {
+      border-color: #14af64;
+    }
   }
   .item-img {
-    width: 380px;
+    width: 376px;
     height: 284px;
   }
   .item-text {
     display: block;
     width: 100%;
-    height: 129px;
+    height: 128px;
     padding: 25px;
     font-size: 22px;
     font-family: Noto Sans S Chinese;
@@ -46,6 +51,7 @@ export default {
     color: #333333;
     background-color: #fff;
     text-align: left;
+    border-bottom: 2px solid #000;
     .text {
       display: -webkit-box;
       -webkit-box-orient: vertical;

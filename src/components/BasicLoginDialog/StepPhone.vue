@@ -3,13 +3,13 @@
   <div class="login_container">
     <div class="header">
       <img
-        src="~@/assets/images/tc-qx@2x.png"
+        src="~@/assets/images/tc-qx.svg"
         alt=""
         class="header-cancel"
         @click="show"
       />
     </div>
-    <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
+    <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
     <div class="content">
       <p class="title">绑定手机</p>
       <el-form
@@ -201,6 +201,10 @@ export default {
       color: #000000;
       margin-bottom: 21px;
     }
+    /deep/.el-input {
+      border: 1px solid #000 !important;
+      border-radius: 2px !important;
+    }
     .code-get {
       display: inline-block;
       width: 110px;
@@ -214,7 +218,7 @@ export default {
       font-weight: 400;
       line-height: 20px;
       color: #ffffff;
-      border: none;
+      border: 1px solid #000 !important;
       &:hover {
         cursor: pointer;
       }
@@ -237,8 +241,10 @@ export default {
         }
       }
       .consent_active {
-        background-color: #14af64;
-        border-color: #14af64;
+        background: url("./../../assets/images/xy-xz.svg") no-repeat center;
+        background-size: cover;
+        padding: none;
+        border: #000;
       }
       .consent-title {
         display: flex;
@@ -255,17 +261,20 @@ export default {
       }
     }
     .login-button {
-      width: 200px;
-      height: 40px;
-      background: #999999;
+      width: 206px;
+      height: 46px;
       margin: 102px auto 63px;
-      border: none;
       font-size: 20px;
       font-family: Noto Sans S Chinese;
       font-weight: 500;
       color: #ffffff;
       outline: none;
       border: none;
+      background: url("./../../assets/images/zxbw-ckgd-an.svg") no-repeat center;
+      background-size: contain;
+      border: none;
+      outline: none;
+      padding: 0 4px 4px 0;
       &:hover {
         box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.3);
         cursor: pointer;

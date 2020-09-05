@@ -5,8 +5,13 @@
         <button class="apply">申请免费使用</button>
       </div>
     </div>
+    <div class="banner-2-container">
+      <div class="banner-2-section">
+        <button class="look">查看详情</button>
+      </div>
+    </div>
     <!-- 最新博文 -->
-    <div class="article-container" v-if="false">
+    <div class="article-container" v-if="true">
       <div class="article-section">
         <p class="article-title">最新博文</p>
         <div class="article-ima_list">
@@ -32,14 +37,17 @@
           </div>
         </div>
       </div>
-      <button class="look-article">
-        <p class="look-article-text">查看更多</p>
-        <img
-          src="~@/assets/images/zxbw-ckgd-gd@2x.png"
-          alt=""
-          class="item-img"
-        />
-      </button>
+      <div class="look-container">
+        <button class="look-article">
+          <p class="look-article-text">查看更多</p>
+          <img
+            src="~@/assets/images/zxbw-ckgd-gd@2x.png"
+            alt=""
+            class="item-img"
+          />
+        </button>
+        <img src="~@/assets/images/yw-tc-ewm.svg" class="look-wx_imag" />
+      </div>
     </div>
   </div>
 </template>
@@ -102,11 +110,10 @@ export default {
   height: 900px;
   background: #f4f6f3;
   .banner-container {
-    background: url("./../assets/images/Lark20200828-191144.png") no-repeat
-      center;
+    background: url("./../assets/images/banner-zhu.svg") no-repeat center;
     background-size: cover;
     width: 100%;
-    height: 900px;
+    height: 702px;
     text-align: center;
     .banner-section {
       position: relative;
@@ -115,22 +122,53 @@ export default {
       margin: 0 auto;
       .apply {
         position: absolute;
-        left: 20px;
+        left: 0px;
         bottom: 200px;
-        background-color: #14af64;
-        width: 280px;
-        height: 64px;
+        background: url("./../assets/images/banner-zhu-an.svg") no-repeat center;
+        background-size: contain;
+        width: 290px;
+        height: 74px;
         outline: none;
         border: none;
         font-size: 24px;
         font-family: Source Han Sans CN;
         font-weight: 500;
-        color: #ffffff;
+        padding: 0 10px 10px 0;
+        color: #14af64;
         &:hover {
-          transition: all 0.2s;
-          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
+          transition: all 0.1s;
+          filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
           cursor: pointer;
         }
+      }
+    }
+  }
+  .banner-2-container {
+    width: 100%;
+    height: 600px;
+    background: url("./../assets/images/banner2.svg") no-repeat center;
+    background-size: cover;
+    position: relative;
+    .look {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 145px;
+      width: 246.89px;
+      height: 66.94px;
+      background: url("./../assets/images/banner2-an.svg") no-repeat center;
+      background-size: cover;
+      border: none;
+      outline: none;
+      font-size: 24px;
+      font-family: Noto Sans S Chinese;
+      font-weight: 500;
+      color: #000000;
+      padding: 0 8px 7px 0;
+      &:hover {
+        transition: all 0.1s;
+        filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
+        cursor: pointer;
       }
     }
   }
@@ -227,32 +265,48 @@ export default {
         }
       }
     }
-    .look-article {
-      width: 130px;
-      height: 42px;
-      outline: none;
-      border: none;
-      font-size: 16px;
-      font-family: Noto Sans S Chinese;
-      font-weight: 500;
-      line-height: 16px;
-      color: #ffffff;
-      background-color: #14af64;
-      margin: 393px 0 135px 0;
-      &:hover {
-        transition: all 0.2s;
-        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.3);
-        cursor: pointer;
+    .look-container {
+      width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      .look-article {
+        width: 134px;
+        height: 46px;
+        padding: 0 4px 4px 0;
+        outline: none;
+        border: none;
+        font-size: 16px;
+        font-family: Noto Sans S Chinese;
+        font-weight: 500;
+        line-height: 16px;
+        color: #ffffff;
+        background: url("./../assets/images/zxbw-ckgd-an.svg") no-repeat center;
+        background-size: contain;
+        border: none;
+        outline: none;
+        margin: 393px 0 135px 0;
+        &:hover {
+          transition: all 0.2s;
+          filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
+          cursor: pointer;
+        }
+        .look-article-text {
+          display: inline-block;
+        }
+        .item-img {
+          width: 16px;
+          height: 16px;
+          display: inline-block;
+          vertical-align: bottom;
+          margin-left: 10px;
+        }
       }
-      .look-article-text {
-        display: inline-block;
-      }
-      .item-img {
-        width: 16px;
-        height: 16px;
-        display: inline-block;
-        vertical-align: bottom;
-        margin-left: 10px;
+      .look-wx_imag {
+        position: absolute;
+        right: 0;
+        bottom: 10px;
+        height: 138px;
+        width: 138px;
       }
     }
   }

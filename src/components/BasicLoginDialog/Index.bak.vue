@@ -10,14 +10,10 @@
       <div class="closed-alpha_container">
         <div class="header">
           <p class="header-logo">PLAN GO</p>
-          <img
-            src="~@/assets/images/tc-qx@2x.png"
-            alt=""
-            class="header-cancel"
-          />
+          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
         </div>
         <p class="title">铁粉内测阶段</p>
-        <img src="~@/assets/images/tc-ewm@2x.png" alt="" class="image" />
+        <img src="~@/assets/images/tc-ewmzw.svg" alt="" class="image" />
         <p class="desc">想优先体验可微信扫码<br />添加工作人员邀请开通</p>
       </div>
     </el-dialog>
@@ -31,15 +27,11 @@
     >
       <div class="wx-login_container">
         <div class="header">
-          <img
-            src="~@/assets/images/tc-qx@2x.png"
-            alt=""
-            class="header-cancel"
-          />
+          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
         </div>
-        <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
+        <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
         <p class="title">请用微信扫码登陆 / 注册</p>
-        <img src="~@/assets/images/tc-ewm@2x.png" alt="" class="image" />
+        <img src="~@/assets/images/tc-ewmzw.svg" alt="" class="image" />
         <p class="desc">扫码后关注暖刻公众号，完成登录</p>
       </div>
     </el-dialog>
@@ -53,13 +45,9 @@
     >
       <div class="login_container">
         <div class="header">
-          <img
-            src="~@/assets/images/tc-qx@2x.png"
-            alt=""
-            class="header-cancel"
-          />
+          <img src="~@/assets/images/tc-qx.svg" alt="" class="header-cancel" />
         </div>
-        <img src="~@/assets/images/tc-wdl-logo@2x.png" alt="" class="logo" />
+        <img src="~@/assets/images/sblogo.svg" alt="" class="logo" />
         <div class="content">
           <p class="title">绑定手机</p>
           <el-form
@@ -110,11 +98,7 @@
     >
       <div class="identity-selector_container">
         <div class="header">
-          <img
-            src="~@/assets/images/home-logo.png"
-            alt=""
-            class="header-logo"
-          />
+          <img src="~@/assets/images/logo.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -536,16 +520,14 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-jjahz-diy-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/xzx-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-jjahz-sjs-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/sjs-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -559,12 +541,10 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/tc-jjahz-diy-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/xzx-xz.svg") no-repeat center;
         }
         .study {
-          background: url("~@/assets/images/tc-jjahz-sjs-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/dldlsjs-xz.svg") no-repeat center;
         }
         .item-title {
           color: #14af64;
@@ -643,16 +623,14 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-jjahz-sjs-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/sjs-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-sjs-zz-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/zzsjs-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -666,12 +644,10 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/tc-jjahz-sjs-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/dldlsjs-xz.svg") no-repeat center;
         }
         .study {
-          background: url("~@/assets/images/tc-sjs-zz-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/zzdldlsjs-xz.svg") no-repeat center;
         }
         .item-title {
           color: #14af64;
@@ -750,16 +726,14 @@ export default {
         .diy {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-zxjg-sj-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/sjgzs-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
         .study {
           width: 108px;
           height: 108px;
-          background: url("~@/assets/images/tc-zxjg-zx-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/zxgs-wxz.svg") no-repeat center;
           background-size: cover;
           margin: 0 auto;
         }
@@ -773,12 +747,10 @@ export default {
       .content-item-active {
         border: 1px solid #14af64;
         .diy {
-          background: url("~@/assets/images/tc-zxjg-sj-xz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/sjgzs-xz.svg") no-repeat center;
         }
         .study {
-          background: url("~@/assets/images/tc-zxjg-zx-wxz@2x.png") no-repeat
-            center;
+          background: url("~@/assets/images/zxgs-wxz.svg") no-repeat center;
         }
         .item-title {
           color: #14af64;

@@ -4,21 +4,21 @@
       <div class="filtration-section">
         <div class="filtration-header">
           <div class="header-logo" @click="filtrationShowHandle">
-            <img src="~@/assets/images/sx@2x.png" class="logo-img" />
+            <img src="~@/assets/images/sx.svg" class="logo-img" />
             <p class="logo-title">筛选</p>
             <img
               v-if="!filtrationShow"
-              src="~@/assets/images/sx-gd-wzk@2x.png"
+              src="~@/assets/images/sxsq.svg"
               class="logo-image"
             />
             <img
               v-if="filtrationShow"
-              src="~@/assets/images/sx-gd-zk@2x.png"
+              src="~@/assets/images/sxzk.svg"
               class="logo-image"
             />
           </div>
           <div class="header-input">
-            <img src="~@/assets/images/ss@2x.png" class="innput-logo" />
+            <img src="~@/assets/images/ss.svg" class="innput-logo" />
             <input type="text" class="input-content" />
           </div>
         </div>
@@ -156,9 +156,10 @@ export default {
           justify-content: space-around;
           align-items: center;
           padding-left: 30px;
+          border: 1px solid #14af64;
           .innput-logo {
-            width: 15px;
-            height: 15px;
+            width: 20px;
+            height: 20px;
             margin-right: 20px;
           }
           .input-content {
@@ -168,6 +169,7 @@ export default {
             outline: none;
             font-size: 14px;
             font-family: Noto Sans S Chinese;
+            margin-right: 8px;
           }
         }
       }
@@ -222,6 +224,7 @@ export default {
               border: none;
               color: #fff;
               font-weight: 500;
+              border: 1px solid #000;
             }
           }
         }
