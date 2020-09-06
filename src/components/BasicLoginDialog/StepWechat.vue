@@ -2,7 +2,7 @@
   <div class="wx-login_container">
     <div class="header">
       <img
-        src="~@/assets/images/close_logo.png"
+        src="~@/assets/images/close_logo.svg"
         alt=""
         class="header-cancel"
         @click="show"
@@ -17,7 +17,7 @@
       alt=""
       class="image"
     />
-    <p class="desc">扫码后关注暖刻公众号，完成登录</p>
+    <p v-if="false" class="desc">扫码后关注暖刻公众号，完成登录</p>
   </div>
 </template>
 

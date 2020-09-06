@@ -9,7 +9,13 @@
       </div>
       <div class="right">
         <p class="title">联系邮箱：kf@home-plan.cn</p>
-        <img src="~@/assets/images/wx-logo.svg" alt="" class="image" />
+        <div class="img-hover">
+          <img src="~@/assets/images/wx-logo.svg" alt="" class="image" />
+          <img
+            src="~@/assets/images/direction_logo-3.svg"
+            class="look-wx_imag"
+          />
+        </div>
       </div>
     </div>
   </footer>
@@ -38,13 +44,32 @@ export default {
     .right {
       display: flex;
       align-items: center;
-      .image {
+      .img-hover {
         height: 42px;
         width: 42px;
         border-radius: 50%;
         border: 1px solid #fff;
         margin-left: 36px;
         padding: 5px;
+        position: relative;
+        font-size: 0;
+        .image {
+          height: 30px;
+          width: 30px;
+        }
+        .look-wx_imag {
+          display: none;
+          position: absolute;
+          width: 138px;
+          height: 138px;
+          top: -157px;
+          left: -70px;
+        }
+        &:hover {
+          .look-wx_imag {
+            display: inline-block;
+          }
+        }
       }
     }
   }

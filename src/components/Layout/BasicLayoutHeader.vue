@@ -6,7 +6,11 @@
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </router-link>
         <nav class="header-nav">
-          <router-link :to="{ name: 'Home' }" class="header-nav-item Home">
+          <router-link
+            :to="{ name: 'Home' }"
+            class="header-nav-item Home"
+            v-if="false"
+          >
             家灵感
           </router-link>
           <router-link :to="{ name: 'My' }" class="header-nav-item My"
@@ -95,9 +99,14 @@ export default {
     getUserData() {
       const token = cookies.get("web_token");
       if (token) {
-        userService.getUserInfo().then(res => {
-          this.$store.commit("SET_WC_USER", res);
-        });
+        userService
+          .getUserInfo()
+          .then(res => {
+            this.$store.commit("SET_WC_USER", res);
+          })
+          .catch(() => {
+            this.handleLogout();
+          });
       }
     },
     handleGoMy() {

@@ -11,7 +11,7 @@
         <div class="header">
           <p class="header-logo">PLAN GO</p>
           <img
-            src="~@/assets/images/close_logo.png"
+            src="~@/assets/images/close_logo.svg"
             alt=""
             class="header-cancel"
           />
@@ -32,7 +32,7 @@
       <div class="wx-login_container">
         <div class="header">
           <img
-            src="~@/assets/images/close_logo.png"
+            src="~@/assets/images/close_logo.svg"
             alt=""
             class="header-cancel"
           />
@@ -54,7 +54,7 @@
       <div class="login_container">
         <div class="header">
           <img
-            src="~@/assets/images/close_logo.png"
+            src="~@/assets/images/close_logo.svg"
             alt=""
             class="header-cancel"
           />

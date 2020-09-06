@@ -46,7 +46,6 @@
             class="item-img"
           />
         </button>
-        <img src="~@/assets/images/direction_logo-3.svg" class="look-wx_imag" />
       </div>
     </div>
   </div>
@@ -267,7 +266,6 @@ export default {
     .look-container {
       width: 1200px;
       margin: 0 auto;
-      position: relative;
       .look-article {
         width: 134px;
         height: 46px;
@@ -299,13 +297,6 @@ export default {
           vertical-align: bottom;
           margin-left: 10px;
         }
-      }
-      .look-wx_imag {
-        position: absolute;
-        right: 0;
-        bottom: 10px;
-        height: 138px;
-        width: 138px;
       }
     }
   }
