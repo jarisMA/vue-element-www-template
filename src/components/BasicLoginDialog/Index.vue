@@ -5,6 +5,8 @@
       width="416px"
       center
       :before-close="handleClose"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
     >
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
