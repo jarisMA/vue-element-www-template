@@ -51,7 +51,14 @@
           ]"
         ></div>
         <div class="consent-title">
-          同意<a>《服务协议》</a>和 <a>《隐私政策》</a>
+          同意
+          <router-link :to="{ name: 'Protocol' }">
+            《服务协议》
+          </router-link>
+          和
+          <router-link :to="{ name: 'Policy' }">
+            《隐私政策》
+          </router-link>
         </div>
       </div>
       <button
