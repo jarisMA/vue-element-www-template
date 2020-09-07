@@ -14,11 +14,11 @@
 </template>
 <style lang="less" scoped>
 .bg-container {
-  background-color: #f7f7fb;
+  background-color: #e1eced;
   height: 100vh;
 }
 .policy-container {
-  width: 1200px;
+  width: 800px;
   margin: 0 auto;
   padding-bottom: 30px;
   .header {
