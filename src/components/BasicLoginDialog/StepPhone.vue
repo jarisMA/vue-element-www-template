@@ -164,7 +164,6 @@ export default {
     },
     getInput(value) {
       let reg = /^1[3456789]\d{9}$/;
-      console.log(reg.test(value), this.Sent);
       if (reg.test(value) && this.Sent) {
         this.Sent = false;
         this.pohoneLogin.Sent = true;

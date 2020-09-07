@@ -18,9 +18,9 @@
         </nav>
       </div>
       <div class="header-ft">
-        <router-link :to="{ name: 'Note' }" class="PLAN-link" v-if="false">
+        <p  class="PLAN-link">
           PLAN GO
-        </router-link>
+        </p>
         <div class="user-handle-container">
           <el-avatar
             class="el-avatar-border"
