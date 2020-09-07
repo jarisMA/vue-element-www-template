@@ -1,5 +1,4 @@
 <template>
-  <!-- 手机登陆 -->
   <div class="login_container">
     <div class="header">
       <img
