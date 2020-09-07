@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="header-ft">
-        <router-link :to="{ name: 'Note' }" class="PLAN-link">
+        <router-link :to="{ name: 'Note' }" class="PLAN-link" v-if="false">
           PLAN GO
         </router-link>
         <div class="user-handle-container">
@@ -54,8 +54,7 @@
                   :src="userInfo.avatar_url"
                 ></el-avatar>
                 <p style="" class="login-title">{{ userInfo.name }}</p>
-                <p class="user-logo">会员</p>
-                <p class="login-desc">会员到期时间:2020-02-02</p>
+                <p class="user-logo">普通会员</p>
               </div>
               <div class="new-el-divider"></div>
               <div class="handle-button">
@@ -350,6 +349,7 @@ export default {
               font-size: 12px;
               line-height: 16px;
               color: #ffffff;
+              margin: 5px 0 15px;
             }
             .login-desc {
               font-size: 12px;
@@ -357,7 +357,6 @@ export default {
               font-weight: 400;
               line-height: 20px;
               color: #c4c4c4;
-              padding: 10px 0;
             }
           }
           .new-el-divider {

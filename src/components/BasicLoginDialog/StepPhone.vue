@@ -89,7 +89,7 @@ export default {
           { max_age: 11, validator: /^1[3456789]\d{9}$/, trigger: "blur" }
         ],
         code: [
-          { required: true, message: "请输入验证码", trigger: "change" },
+          { required: true, message: "请输入验证码", trigger: "blur" },
           { max_age: 4, validator: /^\d{4}$/, trigger: "blur" }
         ]
       }
@@ -164,6 +164,7 @@ export default {
     },
     getInput(value) {
       let reg = /^1[3456789]\d{9}$/;
+      console.log(reg.test(value), this.Sent);
       if (reg.test(value) && this.Sent) {
         this.Sent = false;
         this.pohoneLogin.Sent = true;
@@ -223,11 +224,14 @@ export default {
       color: #ffffff;
       border: 1px solid #000 !important;
       &:hover {
-        cursor: pointer;
+        cursor: not-allowed;
       }
     }
     .Sent {
       background: #14af64;
+      &:hover {
+        cursor: pointer;
+      }
     }
     .consent-button_section {
       display: flex;

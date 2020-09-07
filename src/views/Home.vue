@@ -96,7 +96,6 @@ export default {
 
 <style type="text/css" lang="less" scoped>
 .home-page {
-  height: 900px;
   background: #f4f6f3;
   .banner-container {
     background: url("./../assets/images/banner_1.svg") no-repeat center;
