@@ -24,8 +24,7 @@
         <div class="user-handle-container">
           <el-avatar
             class="el-avatar-border"
-            icon="el-icon-user-solid"
-            :src="userInfo.avatar_url"
+            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
           ></el-avatar>
           <div class="user-handle_show">
             <div class="show-container" v-if="!userInfo.avatar_url">
@@ -33,7 +32,7 @@
                 <el-avatar
                   :size="60"
                   class="login-user-image"
-                  icon="el-icon-user-solid"
+                  :src="userLogo"
                 ></el-avatar>
                 <p class="login-title">您还没登录</p>
                 <p class="login-desc">登录后即可体验更多功能</p>
@@ -50,7 +49,6 @@
                 <el-avatar
                   :size="60"
                   class="login-user-image"
-                  icon="el-icon-user-solid"
                   :src="userInfo.avatar_url"
                 ></el-avatar>
                 <p style="" class="login-title">{{ userInfo.name }}</p>
@@ -74,11 +72,11 @@ import { mapState } from "vuex";
 import DataStore from "@/globals/storage/index";
 import cookies from "js-cookie";
 import userService from "@/globals/service/user.js";
-
 export default {
   data() {
     return {
-      visible: true
+      visible: true,
+      userLogo: require("@/assets/images/user_logo.svg")
     };
   },
   created() {
@@ -154,7 +152,7 @@ export default {
         color: #000000;
         margin-right: 80px;
         text-decoration: none;
-        font-weight: 500;
+        font-weight: 600;
         display: flex;
         align-items: center;
         cursor: pointer;
@@ -286,9 +284,9 @@ export default {
       font-family: Noto Sans S Chinese;
       font-weight: 500;
       text-align: center;
-      line-height: 36px;
+      line-height: 32px;
       margin-right: 74px;
-      border: 1px solid #14af64;
+      border: 2px solid #14af64;
       &:hover {
         color: #fff;
         background-color: #14af64;
@@ -301,7 +299,8 @@ export default {
       display: flex;
       align-items: center;
       .el-avatar-border {
-        border: 1px solid #14af64;
+        border: 2px solid #14af64;
+        background-color: transparent;
       }
       .user-image {
         width: 40px;
@@ -370,7 +369,8 @@ export default {
             text-align: center;
           }
           .login-user-image {
-            border: 1px solid #14af64;
+            border: 2px solid #14af64;
+            background-color: transparent;
           }
         }
         .landing {

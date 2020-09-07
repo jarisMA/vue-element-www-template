@@ -216,6 +216,11 @@ export default {
               color: #dfdfdf;
               &:hover {
                 cursor: pointer;
+                background: #14af64;
+                border: none;
+                color: #fff;
+                font-weight: 500;
+                border: 1px solid #000;
               }
             }
             .header,
