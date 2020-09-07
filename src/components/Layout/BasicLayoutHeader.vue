@@ -35,7 +35,7 @@
                   class="login-user-image"
                   icon="el-icon-user-solid"
                 ></el-avatar>
-                <p style="" class="login-title">您还没登录</p>
+                <p class="login-title">您还没登录</p>
                 <p class="login-desc">登陆后即可体验更多功能</p>
               </div>
               <div class="new-el-divider"></div>
@@ -292,6 +292,7 @@ export default {
       &:hover {
         color: #fff;
         background-color: #14af64;
+        cursor: pointer;
       }
     }
     .user-handle-container {
