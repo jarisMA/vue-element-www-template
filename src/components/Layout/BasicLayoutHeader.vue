@@ -13,12 +13,8 @@
           >
             家灵感
           </router-link>
-          <router-link :to="{ name: 'My' }" class="header-nav-item My"
-            >斗西学院</router-link
-          >
-          <router-link :to="{ name: 'Note' }" class="header-nav-item Notes"
-            >愿望笔记</router-link
-          >
+          <span class="header-nav-item My">斗西学院</span>
+          <span class="header-nav-item Notes">愿望笔记</span>
         </nav>
       </div>
       <div class="header-ft">
@@ -162,6 +158,7 @@ export default {
         font-weight: 500;
         display: flex;
         align-items: center;
+        cursor: pointer;
         &.router-link-exact-active {
           color: #35b558;
         }

@@ -6,9 +6,9 @@ function resolve(dir) {
 
 module.exports = {
   devServer: {
-    open: true,
-    host: "www.home-plan.cn",
-    port: 80
+    // open: true,
+    // host: "www.home-plan.cn",
+    // port: 80
     // proxy: {
     //   "/api": {
     //     // target: "https://api.home-plan.cn"
