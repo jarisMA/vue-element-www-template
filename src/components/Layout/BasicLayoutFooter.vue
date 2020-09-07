@@ -2,7 +2,7 @@
   <footer class="page-footer">
     <div class="container-1200">
       <div class="left">
-        Copyright © 2020 home-plan.com All Rights Reserved
+        Copyright © 2020 home-plan.cn All Rights Reserved
         <a class="beian" target="_blank" href="https://beian.miit.gov.cn/"
           >沪ICP备2020026846号</a
         >

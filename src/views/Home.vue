@@ -100,7 +100,9 @@ export default {
   .banner-container {
     background: url("./../assets/images/banner_1.svg") no-repeat center;
     background-size: cover;
-    width: 100%;
+    background-repeat: no-repeat;
+    max-width: 1920px;
+    margin: 0 auto;
     height: 702px;
     text-align: center;
     .banner-section {
@@ -137,11 +139,13 @@ export default {
     }
   }
   .banner-2-container {
-    width: 100%;
     height: 600px;
     background: url("./../assets/images/banner_2.svg") no-repeat center;
     background-size: cover;
+    background-repeat: no-repeat;
+    max-width: 1920px;
     position: relative;
+    margin: 0 auto;
     .look {
       position: absolute;
       left: 50%;
@@ -150,7 +154,7 @@ export default {
       width: 246.89px;
       height: 66.94px;
       background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
-      background-size: cover;
+      background-size: contain;
       border: none;
       outline: none;
       font-size: 24px;

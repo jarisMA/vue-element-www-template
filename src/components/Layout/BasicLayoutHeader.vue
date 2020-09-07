@@ -1,6 +1,6 @@
 <template>
   <header class="page-header">
-    <div class="header-content container-1200">
+    <div class="header-content">
       <div class="header-hd">
         <router-link class="header-logo_img" :to="{ name: 'Home' }">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
@@ -128,6 +128,10 @@ export default {
     align-items: center;
     height: 60px;
     font-size: 0;
+    width: 80%;
+    min-width: 1200px;
+    max-width: 1920px;
+    margin: 0 auto;
     .header-hd,
     .header-bd,
     .header-ft {
