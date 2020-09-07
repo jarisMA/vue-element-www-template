@@ -9,7 +9,7 @@
       />
     </div>
     <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
-    <p class="title">请用微信扫码登陆 / 注册</p>
+    <p class="title">请用微信扫码登录 / 注册</p>
     <div class="qrcode-container" id="qrcode"></div>
     <img
       v-if="false"

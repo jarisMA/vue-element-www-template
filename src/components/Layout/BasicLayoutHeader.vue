@@ -36,12 +36,12 @@
                   icon="el-icon-user-solid"
                 ></el-avatar>
                 <p class="login-title">您还没登录</p>
-                <p class="login-desc">登陆后即可体验更多功能</p>
+                <p class="login-desc">登录后即可体验更多功能</p>
               </div>
               <div class="new-el-divider"></div>
               <div class="handle-button">
                 <el-button size="mini" @click="wxLogin" type="text"
-                  >登陆 / 注册</el-button
+                  >登录 / 注册</el-button
                 >
               </div>
             </div>
@@ -59,7 +59,7 @@
               <div class="new-el-divider"></div>
               <div class="handle-button">
                 <el-button size="mini" @click="handleLogout" type="text"
-                  >退出登陆</el-button
+                  >退出登录</el-button
                 >
               </div>
             </div>

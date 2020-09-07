@@ -22,7 +22,7 @@
       </div>
     </el-dialog>
 
-    <!-- 登陆扫码 -->
+    <!-- 登录扫码 -->
     <el-dialog
       :visible.sync="showFalse"
       width="416px"
@@ -38,13 +38,13 @@
           />
         </div>
         <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
-        <p class="title">请用微信扫码登陆 / 注册</p>
+        <p class="title">请用微信扫码登录 / 注册</p>
         <img src="~@/assets/images/wx-QR_code.svg" alt="" class="image" />
         <p class="desc">扫码后关注暖刻公众号，完成登录</p>
       </div>
     </el-dialog>
 
-    <!-- 手机登陆 -->
+    <!-- 手机登录 -->
     <el-dialog
       :visible.sync="showFalse"
       width="416px"
