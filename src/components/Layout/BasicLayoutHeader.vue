@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="header-ft">
-        <p  class="PLAN-link">
+        <p class="PLAN-link">
           PLAN GO
         </p>
         <div class="user-handle-container">
