@@ -125,6 +125,7 @@ export default {
         font-weight: 500;
         padding: 0 10px 10px 0;
         color: #396efe;
+        transition: all 0.1s;
         &:hover {
           transition: all 0.1s;
           filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
@@ -134,7 +135,7 @@ export default {
           color: #fff;
         }
         &:active {
-          background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
+          background: url("./../assets/images/buttom_1-2-bg.svg") no-repeat
             center;
           color: #fff;
         }
@@ -165,6 +166,7 @@ export default {
       font-weight: 500;
       color: #000000;
       padding: 0 8px 7px 0;
+      transition: all 0.2s;
       &:hover {
         transition: all 0.1s;
         filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
@@ -173,7 +175,7 @@ export default {
         color: #fff;
       }
       &:active {
-        background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
+        background: url("./../assets/images/buttom_2-3-bg.svg") no-repeat center;
         color: #fff;
       }
     }

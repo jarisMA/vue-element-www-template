@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="245.569" height="66.828" viewBox="0 0 245.569 66.828">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #ffe100;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #282828;
+        stroke-linecap: round;
+        stroke-width: 2px;
+      }
+
+      .cls-1, .cls-3, .cls-4 {
+        stroke-linejoin: round;
+      }
+
+      .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-4 {
+        fill: #7a55ff;
+      }
+    </style>
+  </defs>
+  <g id="组_4437" data-name="组 4437" transform="translate(-1034.089 -835.731)">
+    <line id="直线_65" data-name="直线 65" class="cls-1" x2="4.142" y2="5.134" transform="translate(1035.873 895.921) rotate(-5)"/>
+    <path id="路径_1270" data-name="路径 1270" class="cls-2" d="M0,0,4.034,4.191" transform="matrix(0.999, 0.035, -0.035, 0.999, 1274.163, 837.662)"/>
+    <rect id="矩形_1130" data-name="矩形 1130" class="cls-3" width="237.892" height="58.943" transform="translate(1040.231 841.922)"/>
+    <line id="直线_64" data-name="直线 64" class="cls-1" x2="5.035" y2="5.134" transform="translate(1273.089 895.731)"/>
+    <rect id="矩形_1131" data-name="矩形 1131" class="cls-4" width="237.892" height="58.943" transform="translate(1035.089 836.731)"/>
+  </g>
+</svg>
