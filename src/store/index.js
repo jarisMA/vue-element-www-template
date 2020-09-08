@@ -1,8 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "../router";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
+    data_url: {
+      1: "Home",
+      2: "My",
+      3: "Note",
+      4: "Blog"
+    },
     token: null,
     dialogShow: false,
     loginDialogVisible: 0,
@@ -17,10 +24,20 @@ export default new Vuex.Store({
       avatar_url: null,
       unionid: null,
       code: null,
-      codeKey: null
+      codeKey: null,
+      vip_expired: null
     }
   },
   mutations: {
+    LINK_ROUTER(state, index) {
+      if (state.userInfo.avatar_url) {
+        const name = state.data_url[index];
+        router.push({ name });
+      } else {
+        state.loginDialogVisible = 1;
+        state.dialogShow = true;
+      }
+    },
     DIALOG_SHOW(state, value) {
       state.dialogShow = value;
     },
@@ -47,6 +64,10 @@ export default new Vuex.Store({
       state.userInfo.sex = userInfo.gender;
       state.userInfo.unionid = userInfo.unionid;
       if (userInfo.phone_number) state.userInfo.phone = userInfo.phone_number;
+      const vip_expired = userInfo.vip_expired;
+      const newDate = new Date().getTime();
+      const beforeDate = new Date(vip_expired).getTime();
+      if (beforeDate > newDate) state.userInfo.vip_expired = vip_expired;
     },
     DEL_DIALOG_SHOW(state) {
       state.dialogShow = false;

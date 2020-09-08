@@ -2,19 +2,19 @@
   <header class="page-header">
     <div class="header-content">
       <div class="header-hd">
-        <router-link class="header-logo_img" :to="{ name: 'Home' }">
+        <span class="header-logo_img" @click="linkRputer(1)">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
-        </router-link>
+        </span>
         <nav class="header-nav">
-          <router-link
-            :to="{ name: 'Home' }"
-            class="header-nav-item Home"
-            v-if="false"
-          >
+          <span class="header-nav-item Home" v-if="false">
             家灵感
-          </router-link>
-          <span class="header-nav-item My">斗西学院</span>
-          <span class="header-nav-item Notes">愿望笔记</span>
+          </span>
+          <span class="header-nav-item My" @click="linkRputer(2)"
+            >斗西学院</span
+          >
+          <span class="header-nav-item Notes" @click="linkRputer(3)"
+            >愿望笔记</span
+          >
         </nav>
       </div>
       <div class="header-ft">
@@ -52,7 +52,12 @@
                   :src="userInfo.avatar_url"
                 ></el-avatar>
                 <p style="" class="login-title">{{ userInfo.name }}</p>
-                <p class="user-logo">普通会员</p>
+                <p class="user-logo">
+                  {{ userInfo.vip_expired ? "vip会员" : "普通会员" }}
+                </p>
+                <p class="user-vip_time" v-if="userInfo.vip_expired">
+                  {{ userInfo.vip_expired }}
+                </p>
               </div>
               <div class="new-el-divider"></div>
               <div class="handle-button">
@@ -89,12 +94,16 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    linkRputer(index) {
+      this.$store.commit("LINK_ROUTER", index);
+    },
     getUserData() {
       const token = cookies.get("web_token");
       if (token) {
         userService
           .getUserInfo()
           .then(res => {
+            console.log(res);
             this.$store.commit("SET_WC_USER", res);
           })
           .catch(() => {
@@ -130,7 +139,7 @@ export default {
     align-items: center;
     height: 60px;
     font-size: 0;
-    width: 80%;
+    width: 1200px;
     min-width: 1200px;
     max-width: 1920px;
     margin: 0 auto;
@@ -360,13 +369,14 @@ export default {
               font-size: 12px;
               line-height: 16px;
               color: #ffffff;
-              margin: 5px 0 15px;
+              margin: 5px 0 8px;
             }
-            .login-desc {
+            .user-vip_time {
               font-size: 12px;
               font-family: Noto Sans S Chinese;
               font-weight: 400;
               line-height: 20px;
+              margin-bottom: 10px;
               color: #c4c4c4;
             }
           }
