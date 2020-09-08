@@ -214,7 +214,7 @@ export default {
   }
   .logo {
     width: 100px;
-    height: 82.65px;
+    height: 83px;
     margin: 29px auto 39px;
   }
   .content {
@@ -302,7 +302,6 @@ export default {
       border: none;
       background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat
         center;
-      background-size: contain;
       border: none;
       outline: none;
       padding: 0 4px 4px 0;

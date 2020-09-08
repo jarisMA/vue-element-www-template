@@ -65,7 +65,7 @@ export default {
   }
   .logo {
     width: 100px;
-    height: 82.65px;
+    height: 83px;
     margin: 29px auto;
   }
   .title {

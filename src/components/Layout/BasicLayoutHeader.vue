@@ -133,6 +133,7 @@ export default {
 .page-header {
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+  z-index: 2;
   .header-content {
     display: flex;
     justify-content: space-between;
@@ -186,7 +187,6 @@ export default {
           height: 24px;
           background: url("./../../assets/images/link_logo-1.svg") no-repeat
             center;
-          background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
         }
@@ -196,7 +196,6 @@ export default {
             margin-right: 6px;
             background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
               center;
-            background-size: contain;
             vertical-align: middle;
           }
         }
@@ -206,7 +205,6 @@ export default {
             margin-right: 6px;
             background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
               center;
-            background-size: contain;
             vertical-align: middle;
           }
         }
@@ -219,18 +217,16 @@ export default {
           height: 24px;
           background: url("./../../assets/images/link_logo-2.svg") no-repeat
             center;
-          background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
         }
         &:after {
           content: "";
           display: inline-block;
-          width: 17.79px;
-          height: 17.79px;
+          width: 18px;
+          height: 18px;
           background: url("./../../assets/images/link_logo-2_star.svg")
             no-repeat center;
-          background-size: contain;
           position: relative;
           bottom: 12px;
         }
@@ -239,7 +235,6 @@ export default {
           &:before {
             background: url("./../../assets/images/link_logo-2_1.svg") no-repeat
               center;
-            background-size: contain;
             vertical-align: middle;
           }
         }
@@ -261,7 +256,6 @@ export default {
           height: 24px;
           background: url("./../../assets/images/link_logo-3.svg") no-repeat
             center;
-          background-size: contain;
           vertical-align: middle;
           margin-right: 6px;
         }
@@ -270,7 +264,6 @@ export default {
           &:before {
             background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
               center;
-            background-size: contain;
             vertical-align: middle;
           }
         }
@@ -279,7 +272,6 @@ export default {
           &:before {
             background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
               center;
-            background-size: contain;
             vertical-align: middle;
           }
         }

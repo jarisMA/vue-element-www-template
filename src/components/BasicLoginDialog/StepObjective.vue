@@ -143,8 +143,8 @@ export default {
   .header {
     text-align: left;
     .header-logo {
-      width: 114px;
-      height: 26px;
+      width: 110px;
+      height: 25.25px;
       margin: 30px 30px 0;
     }
   }
@@ -162,13 +162,13 @@ export default {
     /deep/ .el-radio-group {
       width: 100%;
       .content-item {
-        width: 100%;
+        width: 330px;
         height: 54px;
         margin-bottom: 40px;
         .el-radio-button,
         .el-radio-button__orig-radio,
         .el-radio-button__inner {
-          width: 100% !important;
+          width: 330px !important;
           height: 54px !important;
           font-size: 20px;
           font-family: Noto Sans S Chinese;
@@ -183,20 +183,20 @@ export default {
         outline: none;
         background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
           center;
-        background-size: 325px !important;
+        background-size: 330px !important;
         &:hover {
           background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
             center;
-          width: 326px !important;
+          width: 330px !important;
           height: 54px !important;
-          background-size: 339px !important;
+          background-size: 348px !important;
           color: #14af64;
           z-index: 999;
         }
         &:active {
           background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
             center;
-          background-size: 339px !important;
+          background-size: 348px !important;
           color: #fff;
         }
       }
@@ -287,7 +287,6 @@ export default {
     width: 206px;
     height: 46px;
     background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat center;
-    background-size: cover;
     color: #fff;
     font-size: 20px;
     font-family: Noto Sans S Chinese;
@@ -307,7 +306,6 @@ export default {
     background: #14af64;
     cursor: pointer;
     background: url("./../../assets/images/buttom_4-2-bg.svg") no-repeat center;
-    background-size: cover;
   }
 }
 </style>

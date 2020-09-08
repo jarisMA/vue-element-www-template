@@ -99,7 +99,6 @@ export default {
   background: #f4f6f3;
   .banner-container {
     background: url("./../assets/images/banner_1.svg") no-repeat center;
-    background-size: cover;
     background-repeat: no-repeat;
     max-width: 1920px;
     margin: 0 auto;
@@ -116,8 +115,8 @@ export default {
         bottom: 200px;
         background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
         background-size: cover;
-        width: 290px;
-        height: 74px;
+        width: 292px;
+        height: 76px;
         outline: none;
         border: none;
         font-size: 24px;
@@ -145,7 +144,6 @@ export default {
   .banner-2-container {
     height: 600px;
     background: url("./../assets/images/banner_2.svg") no-repeat center;
-    background-size: cover;
     background-repeat: no-repeat;
     max-width: 1920px;
     position: relative;
@@ -155,10 +153,9 @@ export default {
       left: 50%;
       transform: translateX(-50%);
       bottom: 145px;
-      width: 246.89px;
-      height: 66.94px;
+      width: 248px;
+      height: 69px;
       background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
-      background-size: cover;
       border: none;
       outline: none;
       font-size: 24px;
