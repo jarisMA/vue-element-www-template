@@ -172,7 +172,7 @@ export default {
           height: 54px !important;
           font-size: 20px;
           font-family: Noto Sans S Chinese;
-          color: #fff;
+          color: #14af64;
           &:hover {
             filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
           }
@@ -183,20 +183,20 @@ export default {
         outline: none;
         background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
           center;
-        background-size: 343px !important;
+        background-size: 325px !important;
         &:hover {
           background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
             center;
           width: 326px !important;
           height: 54px !important;
-          background-size: 343px !important;
+          background-size: 339px !important;
           color: #14af64;
           z-index: 999;
         }
         &:active {
           background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
             center;
-          background-size: 343px !important;
+          background-size: 339px !important;
           color: #fff;
         }
       }

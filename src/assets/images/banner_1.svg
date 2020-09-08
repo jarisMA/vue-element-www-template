@@ -14,7 +14,7 @@
       }
 
       .cls-4, .cls-9 {
-        fill: #00b35d;
+        fill: #396EFE;
       }
 
       .cls-4 {
@@ -36,7 +36,7 @@
       }
 
       .cls-5, .cls-6, .cls-7, .cls-8, .cls-9 {
-        stroke: #00c84b;
+        stroke: #396EFE;
       }
 
       .cls-6 {
@@ -44,22 +44,17 @@
       }
 
       .cls-7 {
-        fill: #c2f0aa;
+        fill: #80AEFF;
       }
 
       .cls-8 {
-        fill: #b7e1d2;
+        fill: #396EFE;
       }
 
       .cls-10 {
-        font-size: 45px;
-        font-family: SourceHanSansCN-Bold, Source Han Sans CN;
+        font-size: 42px;
+        font-family: Source Han Sans CN;
         font-weight: 700;
-      }
-
-      .cls-11 {
-        font-size: 20px;
-        font-family: SegoeUI, Segoe UI;
       }
     </style>
     <clipPath id="clip-path">
@@ -105,10 +100,7 @@
       <line id="直线_6" data-name="直线 6" class="cls-9" y1="56.93" transform="translate(-2021.77 2122.781)"/>
     </g>
     <g id="组_3834" data-name="组 3834" transform="translate(360 201.456)">
-      <text id="用圆形主题和橙色口音_创建圆润的室内" data-name="用圆形主题和橙色口音
-创建圆润的室内" class="cls-10" transform="translate(0 40)"><tspan x="0" y="0">用圆形主题和橙色口音</tspan><tspan x="0" y="77">创建圆润的室内</tspan></text>
-      <text id="With_a_round_theme_and_orange_accent_Create_a_rounded_interior" data-name="With a round theme and orange accent
-Create a rounded interior" class="cls-11" transform="translate(0 194)"><tspan x="0" y="0">WITH A ROUND THEME AND ORANGE ACCENT</tspan><tspan x="0" y="27">CREATE A ROUNDED INTERIOR</tspan></text>
+      <text id="创建一个PLAN_用快捷_简单的方式_规划你的家" data-name="创建一个PLAN_用快捷_简单的方式_规划你的家" class="cls-10" transform="translate(0 40)"><tspan x="0" y="0">创建一个PLAN，</tspan><tspan x="0" y="71">用快捷、简单的方式</tspan><tspan x="0" y="142">规划你的家。</tspan></text>
     </g>
   </g>
 </svg>

@@ -19,15 +19,15 @@
       </div>
       <div class="header-ft">
         <p class="PLAN-link">
-          PLAN GO
+          PLAN
         </p>
-        <div class="user-handle-container">
+        <div class="user-handle-container" @click="wxLogin">
           <el-avatar
             class="el-avatar-border"
             :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
           ></el-avatar>
-          <div class="user-handle_show">
-            <div class="show-container" v-if="!userInfo.avatar_url">
+          <div class="user-handle_show" v-if="userInfo.avatar_url">
+            <!-- <div class="show-container" v-if="!userInfo.avatar_url">
               <div class="login-content">
                 <el-avatar
                   :size="60"
@@ -43,8 +43,8 @@
                   >登录 / 注册</el-button
                 >
               </div>
-            </div>
-            <div class="show-container landing" v-if="userInfo.avatar_url">
+            </div> -->
+            <div class="show-container landing">
               <div class="login-content">
                 <el-avatar
                   :size="60"
@@ -106,8 +106,10 @@ export default {
       this.$router.push({ name: "My" });
     },
     wxLogin() {
-      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
-      this.$store.commit("DIALOG_SHOW", true);
+      if (!this.userInfo.avatar_url) {
+        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+        this.$store.commit("DIALOG_SHOW", true);
+      }
     },
     handleLogout() {
       cookies.remove("web_token", { path: "/", domain: ".home-plan.cn" });
@@ -280,7 +282,7 @@ export default {
     align-items: center;
     .PLAN-link {
       text-decoration: none;
-      color: #14af64;
+      color: #396efe;
       background-color: #fff;
       width: 104px;
       height: 36px;
@@ -290,10 +292,15 @@ export default {
       text-align: center;
       line-height: 32px;
       margin-right: 74px;
-      border: 2px solid #14af64;
+      border: 2px solid #396efe;
       &:hover {
         color: #fff;
-        background-color: #14af64;
+        background-color: #396efe;
+        cursor: pointer;
+      }
+      &:active {
+        color: #fff;
+        background-color: #396efe;
         cursor: pointer;
       }
     }

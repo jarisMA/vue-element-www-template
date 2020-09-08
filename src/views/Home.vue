@@ -2,7 +2,7 @@
   <div class="home-page" v-loading="loading">
     <div class="banner-container">
       <div class="banner-section">
-        <button class="apply">申请免费使用</button>
+        <button class="apply">创建PLAN</button>
       </div>
     </div>
     <div class="banner-2-container">
@@ -115,7 +115,7 @@ export default {
         left: 0px;
         bottom: 200px;
         background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
-        background-size: contain;
+        background-size: cover;
         width: 290px;
         height: 74px;
         outline: none;
@@ -124,11 +124,14 @@ export default {
         font-family: Source Han Sans CN;
         font-weight: 500;
         padding: 0 10px 10px 0;
-        color: #14af64;
+        color: #396efe;
         &:hover {
           transition: all 0.1s;
           filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
           cursor: pointer;
+          background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
+            center;
+          color: #fff;
         }
         &:active {
           background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
@@ -154,7 +157,7 @@ export default {
       width: 246.89px;
       height: 66.94px;
       background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
-      background-size: contain;
+      background-size: cover;
       border: none;
       outline: none;
       font-size: 24px;
@@ -166,6 +169,8 @@ export default {
         transition: all 0.1s;
         filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
         cursor: pointer;
+        background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
+        color: #fff;
       }
       &:active {
         background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
