@@ -123,7 +123,6 @@ export default {
         });
       }
       this.$refs.phoneRefs.validate(valid => {
-        console.log(valid);
         if (valid) {
           const { unionid, avatar_url, sex, name } = this.$store.state.userInfo;
           smsService
@@ -142,7 +141,6 @@ export default {
                 code: this.pohoneLogin.code,
                 phone: this.pohoneLogin.phone
               });
-              console.log(res);
               if (res.token && res.userInfo.avatar_url)
                 return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
