@@ -2,17 +2,17 @@
   <header class="page-header">
     <div class="header-content">
       <div class="header-hd">
-        <span class="header-logo_img" @click="linkRputer(1)">
+        <span class="header-logo_img" @click="linkRputer(0)">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </span>
         <nav class="header-nav">
           <span class="header-nav-item Home" v-if="false">
             家灵感
           </span>
-          <span class="header-nav-item My" @click="linkRputer(2)"
+          <span class="header-nav-item My" @click="linkRputer(0)"
             >斗西学院</span
           >
-          <span class="header-nav-item Notes" @click="linkRputer(3)"
+          <span class="header-nav-item Notes" @click="linkRputer(0)"
             >愿望笔记</span
           >
         </nav>

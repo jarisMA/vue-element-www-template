@@ -5,7 +5,7 @@
       :width="loginDialogVisible == 4 ? '672px' : '416px'"
       center
       :before-close="handleClose"
-      :close-on-click-modal="false"
+      :close-on-click-modal="loginDialogVisible == 4"
       :close-on-press-escape="false"
     >
       <StepWechat v-if="loginDialogVisible === 1" />
@@ -46,15 +46,14 @@ export default {
       get: function() {
         return this.$store.state.dialogShow;
       },
-      set: function(value) {
-        this.$store.commit("DIALOG_SHOW", value);
-        this.$store.commit("DEL_DIALOG_SHOW");
+      set: function() {
+        this.$store.commit("END_DIALOG_SHOW");
       }
     }
   },
   methods: {
     handleClose() {
-      this.$store.commit("DEL_DIALOG_SHOW");
+      this.$store.commit("END_DIALOG_SHOW");
     },
     handleSumbit(identity, objective, other) {
       const {

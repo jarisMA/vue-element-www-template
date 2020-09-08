@@ -141,8 +141,11 @@ export default {
                 code: this.pohoneLogin.code,
                 phone: this.pohoneLogin.phone
               });
-              if (res.token && res.userInfo.avatar_url)
+              if (res.token && res.userInfo.avatar_url) {
+                this.$store.commit("SET_WC_USER", res.userInfo);
                 return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
+              }
+
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
             })
             .catch(err => {

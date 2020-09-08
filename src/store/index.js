@@ -34,7 +34,7 @@ export default new Vuex.Store({
       if (state.userInfo.avatar_url) {
         const name = state.data_url[index];
         if (index == 0) {
-          return (window.location.href = name);
+          return window.open(name, "_blank");
         }
         router.push({ name });
       } else {

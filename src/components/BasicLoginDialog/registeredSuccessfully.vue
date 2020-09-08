@@ -8,7 +8,7 @@
       />
     </div>
     <div class="content">
-      <div class="desc-content" v-if="false">
+      <div class="desc-content" v-if="vipTime()">
         <p>1年</p>
         <img src="~@/assets/images/jewel_logo.svg" alt="" class="desc-logo" />
         <p>会员权益已发放到您的账户</p>
@@ -21,10 +21,22 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
+
 export default {
+  computed: {
+    ...mapState(["userInfo"])
+  },
   methods: {
     show() {
       this.$store.commit("END_DIALOG_SHOW");
+    },
+    vipTime() {
+      const vip_expired = this.userInfo.vip_expired;
+      const newDate = new Date().getTime();
+      const beforeDate = new Date(vip_expired).getTime();
+      if (vip_expired && beforeDate > newDate) return true;
+      else return false;
     }
   }
 };
@@ -54,10 +66,22 @@ export default {
         width: 26px;
         height: 26px;
       }
+      position: relative;
+      padding-bottom: 20px;
+      &:after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        bottom: 0;
+        width: 330px;
+        height: 1px;
+        background-color: #14af64;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
     .title-content {
       display: inline-block;
-      margin-top: 20px;
       text-align: center;
       font-size: 22px;
       font-family: Noto Sans S Chinese;
@@ -66,18 +90,6 @@ export default {
       color: #777777;
       padding: 34px;
       padding-bottom: 0;
-      position: relative;
-      &:after {
-        content: "";
-        display: inline-block;
-        position: absolute;
-        top: 0;
-        width: 330px;
-        height: 1px;
-        background-color: #14af64;
-        left: 50%;
-        transform: translateX(-50%);
-      }
     }
   }
 }

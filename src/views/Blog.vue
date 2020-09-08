@@ -132,8 +132,8 @@ export default {
           align-items: center;
           margin-right: 30px;
           .logo-img {
-            width: 20px;
-            height: 20px;
+            width: 16px;
+            height: 16px;
             margin-right: 7px;
           }
           .logo-title {
@@ -158,8 +158,8 @@ export default {
           padding-left: 30px;
           border: 1px solid #14af64;
           .innput-logo {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             margin-right: 20px;
           }
           .input-content {
