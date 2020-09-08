@@ -16,7 +16,7 @@
         label-width="80px"
         :model="pohoneLogin"
         :rules="phoneRef"
-        ref="phoneRef"
+        ref="phoneRefs"
       >
         <el-form-item prop="phone">
           <el-input
@@ -51,11 +51,11 @@
         ></div>
         <div class="consent-title">
           同意
-          <router-link :to="{ name: 'Protocol' }">
+          <router-link tag="a" target="_blank" :to="{ name: 'Protocol' }">
             《服务协议》
           </router-link>
           和
-          <router-link :to="{ name: 'Policy' }">
+          <router-link tag="a" target="_blank" :to="{ name: 'Policy' }">
             《隐私政策》
           </router-link>
         </div>
@@ -92,11 +92,15 @@ export default {
       phoneRef: {
         phone: [
           { required: true, message: "请输入手机号码", trigger: "blur" },
-          { max_age: 11, validator: /^1[3456789]\d{9}$/, trigger: "blur" }
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: "目前只支持中国大陆的手机号码",
+            trigger: "blur"
+          }
         ],
         code: [
           { required: true, message: "请输入验证码", trigger: "blur" },
-          { max_age: 4, validator: /^\d{4}$/, trigger: "blur" }
+          { pattern: /^\d{4}$/, message: "请输入正确验证码", trigger: "blur" }
         ]
       }
     };
@@ -118,7 +122,8 @@ export default {
           type: "warning"
         });
       }
-      this.$refs.phoneRef.validate(valid => {
+      this.$refs.phoneRefs.validate(valid => {
+        console.log(valid);
         if (valid) {
           const { unionid, avatar_url, sex, name } = this.$store.state.userInfo;
           smsService
@@ -131,16 +136,18 @@ export default {
               avatar_url,
               gender: sex
             })
-            .then(() => {
+            .then(res => {
               this.$store.commit("SET_PHONE_CODE_KEY", {
                 codeKey: this.codeKey,
                 code: this.pohoneLogin.code,
                 phone: this.pohoneLogin.phone
               });
+              console.log(res);
+              if (res.token && res.userInfo.avatar_url)
+                return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
             })
             .catch(err => {
-              console.log(err);
               if (err.error_code == 1) {
                 this.codeKey = null;
                 this.pohoneLogin = {
@@ -163,6 +170,11 @@ export default {
       }
       if (!/^1[3456789]\d{9}$/.test(this.pohoneLogin.phone)) {
         this.pohoneLogin.code = null;
+        this.loginButton = false;
+        return this.$message({
+          message: "请填入正确的手机号码",
+          type: "warning"
+        });
       }
     },
     getCode() {

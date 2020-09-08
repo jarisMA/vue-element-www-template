@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="header-ft">
-        <p class="PLAN-link">
+        <p class="PLAN-link" @click="linkRputer(0)">
           PLAN
         </p>
         <div class="user-handle-container" @click="wxLogin">
@@ -103,7 +103,6 @@ export default {
         userService
           .getUserInfo()
           .then(res => {
-            console.log(res);
             this.$store.commit("SET_WC_USER", res);
           })
           .catch(() => {

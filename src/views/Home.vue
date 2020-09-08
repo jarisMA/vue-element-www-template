@@ -2,12 +2,12 @@
   <div class="home-page" v-loading="loading">
     <div class="banner-container">
       <div class="banner-section">
-        <button class="apply">创建PLAN</button>
+        <button class="apply" @click="linkRputer(0)">创建PLAN</button>
       </div>
     </div>
     <div class="banner-2-container">
       <div class="banner-2-section">
-        <button class="look">查看详情</button>
+        <button class="look" @click="linkRputer(0)">查看详情</button>
       </div>
     </div>
     <!-- 最新博文 -->
@@ -76,6 +76,9 @@ export default {
     };
   },
   methods: {
+    linkRputer(index) {
+      this.$store.commit("LINK_ROUTER", index);
+    },
     prev() {
       this.$refs.swiper.$swiper.slidePrev();
     },
@@ -148,6 +151,7 @@ export default {
     max-width: 1920px;
     position: relative;
     margin: 0 auto;
+    margin-bottom: 80px;
     .look {
       position: absolute;
       left: 50%;

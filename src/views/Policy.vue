@@ -14,7 +14,7 @@
 </template>
 <style lang="less" scoped>
 .bg-container {
-  background-color: #e1eced;
+  background-color: #fff;
   height: 100vh;
 }
 .policy-container {

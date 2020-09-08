@@ -355,7 +355,7 @@
 </template>
 <style lang="less" scoped>
 .bg-container {
-  background-color: #e1eced;
+  background-color: #fff;
 }
 .cprotocol-container {
   width: 800px;

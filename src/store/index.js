@@ -5,6 +5,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     data_url: {
+      0: "http://www.daylab.cn/",
       1: "Home",
       2: "My",
       3: "Note",
@@ -32,6 +33,9 @@ export default new Vuex.Store({
     LINK_ROUTER(state, index) {
       if (state.userInfo.avatar_url) {
         const name = state.data_url[index];
+        if (index == 0) {
+          return (window.location.href = name);
+        }
         router.push({ name });
       } else {
         state.loginDialogVisible = 1;

@@ -29,6 +29,6 @@ export default {
 }
 .page-basic-body {
   flex: 1;
-  background-color: #f8fafc;
+  background-color: transparent !important;
 }
 </style>
