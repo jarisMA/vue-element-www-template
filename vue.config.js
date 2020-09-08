@@ -11,7 +11,7 @@ module.exports = {
     port: 80
     // proxy: {
     //   "/api": {
-    //     // target: "https://api.home-plan.cn"
+    //     target: "https://api.home-plan.cn"
     //   }
     // }
   },

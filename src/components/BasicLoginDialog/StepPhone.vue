@@ -120,11 +120,16 @@ export default {
       }
       this.$refs.phoneRef.validate(valid => {
         if (valid) {
+          const { unionid, avatar_url, sex, name } = this.$store.state.userInfo;
           smsService
-            .smsVerify({
+            .bindingPhone({
               verification_key: this.codeKey,
               verification_code: this.pohoneLogin.code,
-              phone_number: this.pohoneLogin.phone
+              phone_number: this.pohoneLogin.phone,
+              unionid,
+              nickname: name,
+              avatar_url,
+              gender: sex
             })
             .then(() => {
               this.$store.commit("SET_PHONE_CODE_KEY", {
@@ -133,6 +138,18 @@ export default {
                 phone: this.pohoneLogin.phone
               });
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
+            })
+            .catch(err => {
+              console.log(err);
+              if (err.error_code == 1) {
+                this.codeKey = null;
+                this.pohoneLogin = {
+                  phone: null,
+                  code: null,
+                  Sent: false,
+                  consent: false
+                };
+              }
             });
         }
       });

@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       :visible.sync="dialogShow"
-      width="416px"
+      :width="loginDialogVisible == 4 ? '672px' : '416px'"
       center
       :before-close="handleClose"
       :close-on-click-modal="false"
@@ -11,6 +11,9 @@
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
       <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
+      <registeredSuccessfully
+        v-if="loginDialogVisible === 4"
+      ></registeredSuccessfully>
     </el-dialog>
   </div>
 </template>
@@ -19,13 +22,16 @@
 import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
+import registeredSuccessfully from "./registeredSuccessfully.vue";
+
 import userService from "./../../globals/service/user.js";
 
 export default {
   components: {
     StepWechat,
     StepPhone,
-    StepObjective
+    StepObjective,
+    registeredSuccessfully
   },
   prop: {},
   created() {},
@@ -72,7 +78,7 @@ export default {
         verification_code: code
       };
       userService.create(data).then(() => {
-        this.$store.commit("END_DIALOG_SHOW");
+        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
       });
     }
   }

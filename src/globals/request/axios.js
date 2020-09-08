@@ -21,7 +21,7 @@ const handleErrorRequest = error => {
   const status = response ? response.status : 408;
   if (response) {
     const { data } = response;
-    const message = data.message || "服务器发送错误，请稍后再试";
+    const message = data.msg || "服务器发送错误，请稍后再试";
     if (status === 401) {
       Message.error("登录状态过期，请重新登录");
       DataStore.clear();
@@ -40,7 +40,7 @@ const successRes = res => {
     case res.data.error_code === 0:
       return res.data.data;
     case res.data.error_code === 1:
-      Message.error(res.data.message || "服务器发送错误，请稍后再试");
+      Message.error(res.data.msg || "服务器发送错误，请稍后再试");
       return Promise.reject(res.data);
     default:
       return res.data;

@@ -11,6 +11,25 @@ const smsService = {
       verification_code,
       phone_number
     });
+  },
+  bindingPhone: ({
+    verification_key,
+    verification_code,
+    phone_number,
+    unionid,
+    nickname,
+    avatar_url,
+    gender
+  }) => {
+    return request.post(API.bindingPhone, {
+      verification_key,
+      verification_code,
+      phone_number,
+      unionid,
+      nickname,
+      avatar_url,
+      gender
+    });
   }
 };
 
