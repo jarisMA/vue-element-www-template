@@ -3,7 +3,7 @@
     <div class="step-objective_container" v-show="!studyObjectiveDisplay">
       <div class="identity-selector_container">
         <div class="header">
-          <img src="~@/assets/images/logo_1.svg" alt="" class="header-logo" />
+          <img src="~@/assets/images/logo_3.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -144,7 +144,7 @@ export default {
     text-align: left;
     .header-logo {
       width: 110px;
-      height: 25.25px;
+      height: 25px;
       margin: 30px 30px 0;
     }
   }
@@ -177,7 +177,6 @@ export default {
         }
       }
       /deep/.el-radio-button__inner {
-        transition: all 0s;
         outline: none;
         background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
           center;
@@ -291,7 +290,6 @@ export default {
     margin-bottom: 63px;
     cursor: not-allowed;
     padding: 0 4px 4px 0;
-    transition: all 0s;
     &:hover {
       filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.3));
     }

@@ -8,9 +8,7 @@ export default new Vuex.Store({
     data_url: {
       0: "http://www.daylab.cn/",
       1: "Home",
-      2: "My",
-      3: "Note",
-      4: "Blog"
+      2: "https://seller.shejijia.com/decoration/user/login"
     },
     token: null,
     dialogShow: false,
@@ -35,6 +33,9 @@ export default new Vuex.Store({
       if (state.userInfo.avatar_url) {
         const name = state.data_url[index];
         if (index == 0) {
+          return window.open(name, "_blank");
+        }
+        if (index == 2 && state.userInfo.avatar_url) {
           return window.open(name, "_blank");
         }
         router.push({ name });

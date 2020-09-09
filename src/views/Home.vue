@@ -2,12 +2,16 @@
   <div class="home-page" v-loading="loading">
     <div class="banner-container">
       <div class="banner-section">
-        <button class="apply" @click="linkRputer(0)">创建PLAN</button>
+        <div class="left">
+          <img src="~@/assets/images/banner-1_title.svg" class="title" />
+          <button class="apply" @click="linkRputer(0)"></button>
+        </div>
+        <img src="~@/assets/images/banner-1_image.svg" class="right" />
       </div>
     </div>
     <div class="banner-2-container">
       <div class="banner-2-section">
-        <button class="look" @click="linkRputer(0)">查看详情</button>
+        <button class="look" @click="linkRputer(0)"></button>
       </div>
     </div>
     <!-- 最新博文 -->
@@ -99,79 +103,87 @@ export default {
 
 <style type="text/css" lang="less" scoped>
 .home-page {
-  background: #f4f6f3;
   .banner-container {
-    background: url("./../assets/images/banner_1.svg") no-repeat center;
-    background-repeat: no-repeat;
-    max-width: 1920px;
-    margin: 0 auto;
+    background-color: #fcfcfc;
+    width: 100%;
     height: 702px;
     text-align: center;
     .banner-section {
-      position: relative;
       width: 1200px;
       height: 100%;
       margin: 0 auto;
-      .apply {
-        position: absolute;
-        left: 0px;
-        bottom: 200px;
-        background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
-        background-size: cover;
-        width: 292px;
-        height: 76px;
-        outline: none;
-        border: none;
-        font-size: 24px;
-        font-weight: 500;
-        padding: 0 10px 10px 0;
-        color: #396efe;
-        transition: all 0;
-        &:hover {
-          cursor: pointer;
-          background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
-            center;
-          color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .left {
+        height: 456px;
+        display: flex;
+        flex-direction: column;
+        .title {
+          width: 376px;
+          height: 181px;
+          margin-bottom: 136px;
         }
-        &:active {
-          background: url("./../assets/images/buttom_1-2-bg.svg") no-repeat
-            center;
-          color: #fff;
+        .apply {
+          background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
+          width: 300px;
+          height: 78px;
+          outline: none;
+          border: none;
+          &:hover {
+            cursor: pointer;
+            background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
+              center;
+          }
+          &:active {
+            background: url("./../assets/images/buttom_1-2-bg.svg") no-repeat
+              center;
+            height: 74px;
+          }
         }
+      }
+      .right {
+        width: 616px;
+        height: 456px;
       }
     }
   }
   .banner-2-container {
+    background: url("./../assets/images/banner_2-bg.svg") no-repeat center;
     height: 600px;
-    background: url("./../assets/images/banner_2.svg") no-repeat center;
-    background-repeat: no-repeat;
     max-width: 1920px;
+    background-size: 1920px;
     position: relative;
     margin: 0 auto;
     margin-bottom: 80px;
-    .look {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      bottom: 145px;
-      width: 248px;
-      height: 69px;
-      background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
-      border: none;
-      outline: none;
-      font-size: 24px;
-      font-weight: 500;
-      color: #000000;
-      padding: 0 8px 7px 0;
-      transition: all 0s;
-      &:hover {
-        cursor: pointer;
-        background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
-        color: #fff;
-      }
-      &:active {
-        background: url("./../assets/images/buttom_2-3-bg.svg") no-repeat center;
-        color: #fff;
+    text-align: center;
+    padding-top: 59px;
+    .banner-2-section {
+      background: url("./../assets/images/banner_2.svg") no-repeat center;
+      width: 1351.89px;
+      height: 542.831px;
+      background-size: 1351.89px;
+      margin: 0 auto;
+      position: relative;
+      .look {
+        position: absolute;
+        top: 330px;
+        left: 535px;
+        width: 300px;
+        height: 84px;
+        background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
+        border: none;
+        outline: none;
+        &:hover {
+          cursor: pointer;
+          background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat
+            center;
+        }
+        &:active {
+          background: url("./../assets/images/buttom_2-3-bg.svg") no-repeat
+            center;
+          height: 81px;
+        }
       }
     }
   }
@@ -286,7 +298,6 @@ export default {
         outline: none;
         margin: 393px 0 135px 0;
         &:hover {
-          transition: all 0s;
           cursor: pointer;
         }
         .look-article-text {

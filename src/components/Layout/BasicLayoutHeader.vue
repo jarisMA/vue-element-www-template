@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="header-ft">
-        <p class="PLAN-link" @click="linkRputer(0)">
+        <p class="PLAN-link" @click="linkRputer(2)">
           PLAN
         </p>
         <div class="user-handle-container" @click="wxLogin">
@@ -137,11 +137,11 @@ export default {
       height: 100%;
     }
     .header-logo_img {
-      width: 104px;
-      margin-right: 65px;
+      width: 164px;
+      margin-right: 40px;
       .header-logo {
-        width: 104px;
-        height: 36px;
+        width: 164px;
+        height: 46px;
         vertical-align: middle;
       }
     }

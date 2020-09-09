@@ -1,34 +1,39 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="245.569" height="66.828" viewBox="0 0 245.569 66.828">
-  <defs>
-    <style>
-      .cls-1, .cls-2 {
-        fill: #ffe100;
-      }
-
-      .cls-1, .cls-2, .cls-3, .cls-4 {
-        stroke: #282828;
-        stroke-linecap: round;
-        stroke-width: 2px;
-      }
-
-      .cls-1, .cls-3, .cls-4 {
-        stroke-linejoin: round;
-      }
-
-      .cls-3 {
-        fill: #fff;
-      }
-
-      .cls-4 {
-        fill: #7a55ff;
-      }
-    </style>
-  </defs>
-  <g id="组_4437" data-name="组 4437" transform="translate(-1034.089 -835.731)">
-    <line id="直线_65" data-name="直线 65" class="cls-1" x2="4.142" y2="5.134" transform="translate(1035.873 895.921) rotate(-5)"/>
-    <path id="路径_1270" data-name="路径 1270" class="cls-2" d="M0,0,4.034,4.191" transform="matrix(0.999, 0.035, -0.035, 0.999, 1274.163, 837.662)"/>
-    <rect id="矩形_1130" data-name="矩形 1130" class="cls-3" width="237.892" height="58.943" transform="translate(1040.231 841.922)"/>
-    <line id="直线_64" data-name="直线 64" class="cls-1" x2="5.035" y2="5.134" transform="translate(1273.089 895.731)"/>
-    <rect id="矩形_1131" data-name="矩形 1131" class="cls-4" width="237.892" height="58.943" transform="translate(1035.089 836.731)"/>
-  </g>
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 245.1 66" style="enable-background:new 0 0 245.1 66;" xml:space="preserve">
+<style type="text/css">
+	.st0{fill:none;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+	.st1{fill:#FFE100;stroke:#282828;stroke-width:1.999;stroke-linecap:round;stroke-miterlimit:3.998;}
+	.st2{fill:#FFFFFF;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+	.st3{fill:#7A55FF;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+	.st4{enable-background:new    ;}
+	.st5{fill:#FFFFFF;}
+</style>
+<g id="组_4437" transform="translate(-0.37 -0.519)">
+	<line id="直线_65" class="st0" x1="1.8" y1="60.2" x2="6.4" y2="64.9"/>
+	<path id="路径_1270" class="st1" d="M240.1,1.9l3.9,4.3"/>
+	<rect id="矩形_1130" x="6.1" y="6.2" class="st2" width="237.9" height="58.9"/>
+	<line id="直线_64" class="st0" x1="239" y1="60" x2="244" y2="65.1"/>
+	<rect id="矩形_1186" x="2.1" y="2" class="st3" width="237.9" height="58.9"/>
+	<g class="st4">
+		<path class="st5" d="M88.4,25c2.1,2.2,5.3,4.1,8.3,5.1c-0.4,0.3-0.9,1-1.2,1.4c-3.3-1.2-6.8-3.7-9-6.4V30h-1.8v-4.9
+			c-2.2,2.8-5.7,5.3-9,6.6c-0.3-0.4-0.8-1.1-1.2-1.4c2.9-1,6.1-3,8.2-5.3h-7.7v-1.6h9.6v-3h1.8v3h9.8V25H88.4z M75.5,40h20.4v1.6
+			H75.5V40z M92.2,30.8v7.8H79v-7.8H92.2z M90.4,32h-9.7v2h9.7V32z M90.4,35.3h-9.7v2h9.7V35.3z"/>
+		<path class="st5" d="M106.8,29.4c-0.3,0.6-0.6,1.1-1,1.7h12v11.4h-1.8v-0.9h-10.4v0.9h-1.7v-8.9c-1.2,1.3-2.6,2.5-4.3,3.5
+			c-0.2-0.4-0.8-1.1-1.1-1.4c2.7-1.6,4.8-3.8,6.2-6.3h-5.7v-1.5h6.5c0.3-0.6,0.6-1.2,0.8-1.8h-5.5v-1.4h6.1c0.2-0.6,0.4-1.1,0.5-1.7
+			c-2.2,0.1-4.5,0.2-6.6,0.2c0-0.4-0.2-1-0.4-1.4c5.8,0,13.1-0.4,16.8-1.2l1.1,1.3c-2.4,0.5-5.7,0.8-9.1,1c-0.2,0.6-0.4,1.2-0.6,1.8
+			h9.9v1.4h-10.4c-0.2,0.6-0.5,1.2-0.8,1.8h12.6v1.5H106.8z M116.1,32.4h-10.4v1.7h10.4V32.4z M116.1,35.3h-10.4V37h10.4V35.3z
+			 M116.1,40v-1.8h-10.4V40H116.1z"/>
+		<path class="st5" d="M130.4,36.3c0.2,0.5,0.5,1.2,0.6,1.5c-3.9,3-4.5,3.6-4.9,4.1v0c-0.2-0.4-0.7-1-1-1.3c0.4-0.4,1.2-1.1,1.2-2.3
+			v-8.6h-3.7v-1.7h5.4v10.2L130.4,36.3z M128,25.8c-0.8-1-2.4-2.6-3.7-3.7l1.1-1.2c1.3,1.1,3,2.5,3.7,3.5L128,25.8z M144.4,36.6
+			h-5.9v5.7h-1.8v-5.7h-6.1V35h6.1v-3.4H132v-1.7h4.8v-3.3h-5.5V25h7.9c0.8-1.3,1.7-3.2,2.3-4.6l1.8,0.6c-0.6,1.3-1.4,2.8-2.2,4h2.8
+			v1.7h-5.4v3.3h4.6v1.7h-4.6V35h5.9V36.6z M134.6,25c-0.3-1-1.2-2.7-2-3.9l1.6-0.6c0.8,1.2,1.8,2.7,2.1,3.7L134.6,25z"/>
+		<path class="st5" d="M146.4,31.1c0.6-1.6,0.9-4.2,1.1-6.1l1.3,0.2c-0.1,1.9-0.5,4.6-1,6.4L146.4,31.1z M149.3,20.4h1.7v21.9h-1.7
+			V20.4z M152.4,23.9c0.5,1.1,1.1,2.5,1.3,3.4l-1.2,0.6c-0.2-0.9-0.7-2.4-1.2-3.5L152.4,23.9z M168.5,28.2v1.4H153v-1.4h6.8v-1.7
+			h-5.6v-1.3h5.6v-1.5h-6.1v-1.4h6.1v-1.9h1.8v1.9h6.3v1.4h-6.3v1.5h5.7v1.3h-5.7v1.7H168.5z M166.7,40.3c0,0.9-0.2,1.4-0.9,1.6
+			c-0.7,0.3-1.7,0.3-3.4,0.3c-0.1-0.4-0.3-1.1-0.5-1.5c1.2,0,2.4,0,2.6,0c0.3,0,0.5-0.1,0.5-0.4v-1.7h-8.6v3.7h-1.7V30.9h12V40.3z
+			 M156.3,32.3v1.8h8.6v-1.8H156.3z M165,37.3v-1.8h-8.6v1.8H165z"/>
+	</g>
+</g>
 </svg>
