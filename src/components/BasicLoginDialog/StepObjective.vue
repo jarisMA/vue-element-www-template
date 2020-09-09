@@ -150,7 +150,6 @@ export default {
   }
   .title {
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
     margin: 74px auto 62px;
   }
@@ -171,7 +170,6 @@ export default {
           width: 330px !important;
           height: 54px !important;
           font-size: 20px;
-          font-family: Noto Sans S Chinese;
           color: #14af64;
           &:hover {
             filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
@@ -220,7 +218,6 @@ export default {
   .title {
     margin: 55px auto 45px;
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
   }
   .content {
@@ -241,7 +238,6 @@ export default {
         }
         .item-title {
           font-size: 14px;
-          font-family: Noto Sans S Chinese;
           color: #999999;
           margin-top: 10px;
         }
@@ -277,7 +273,6 @@ export default {
       border: none;
       padding-left: 28px;
       font-size: 14px;
-      font-family: Noto Sans S Chinese;
       color: #999999;
       border-radius: 2px;
       margin-bottom: 39px;
@@ -289,7 +284,6 @@ export default {
     background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat center;
     color: #fff;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     font-weight: 500;
     color: #ffffff;
     border: none;

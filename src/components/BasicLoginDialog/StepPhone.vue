@@ -235,7 +235,6 @@ export default {
     .title {
       text-align: left;
       font-size: 16px;
-      font-family: Noto Sans S Chinese;
       font-weight: 400;
       color: #000000;
       margin-bottom: 21px;
@@ -253,7 +252,6 @@ export default {
       outline: none;
       margin-left: 10px;
       font-size: 12px;
-      font-family: Noto Sans S Chinese;
       font-weight: 400;
       line-height: 20px;
       color: #ffffff;
@@ -292,7 +290,6 @@ export default {
       .consent-title {
         display: flex;
         font-size: 12px;
-        font-family: Noto Sans S Chinese;
         color: #878787;
         a {
           text-decoration: none;
@@ -308,7 +305,6 @@ export default {
       height: 46px;
       margin: 102px auto 63px;
       font-size: 20px;
-      font-family: Noto Sans S Chinese;
       font-weight: 500;
       color: #ffffff;
       outline: none;

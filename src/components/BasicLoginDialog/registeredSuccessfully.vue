@@ -84,7 +84,6 @@ export default {
       display: inline-block;
       text-align: center;
       font-size: 22px;
-      font-family: Noto Sans S Chinese;
       font-weight: 400;
       line-height: 37px;
       color: #777777;

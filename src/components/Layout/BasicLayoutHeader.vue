@@ -27,23 +27,6 @@
             :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
           ></el-avatar>
           <div class="user-handle_show" v-if="userInfo.avatar_url">
-            <!-- <div class="show-container" v-if="!userInfo.avatar_url">
-              <div class="login-content">
-                <el-avatar
-                  :size="60"
-                  class="login-user-image"
-                  :src="userLogo"
-                ></el-avatar>
-                <p class="login-title">您还没登录</p>
-                <p class="login-desc">登录后即可体验更多功能</p>
-              </div>
-              <div class="new-el-divider"></div>
-              <div class="handle-button">
-                <el-button size="mini" @click="wxLogin" type="text"
-                  >登录 / 注册</el-button
-                >
-              </div>
-            </div> -->
             <div class="show-container landing">
               <div class="login-content">
                 <el-avatar
@@ -51,12 +34,14 @@
                   class="login-user-image"
                   :src="userInfo.avatar_url"
                 ></el-avatar>
+                {{ userInfo.vip_expired }}
                 <p style="" class="login-title">{{ userInfo.name }}</p>
                 <p class="user-logo">
                   {{ userInfo.vip_expired ? "vip会员" : "普通会员" }}
                 </p>
                 <p class="user-vip_time" v-if="userInfo.vip_expired">
-                  {{ userInfo.vip_expired }}
+                  <span @click="linkRputer(1)">会员到期时间: </span
+                  >{{ userInfo.vip_expired }}
                 </p>
               </div>
               <div class="new-el-divider"></div>
@@ -85,6 +70,7 @@ export default {
     };
   },
   created() {
+    window.console.debug(123);
     this.getUserData();
   },
   watch: {
@@ -287,7 +273,6 @@ export default {
       width: 104px;
       height: 36px;
       font-size: 16px;
-      font-family: Noto Sans S Chinese;
       font-weight: 500;
       text-align: center;
       line-height: 32px;
@@ -348,7 +333,6 @@ export default {
             text-align: center;
             .login-title {
               font-size: 18px;
-              font-family: Noto Sans S Chinese;
               font-weight: 400;
               line-height: 31px;
             }
@@ -364,11 +348,15 @@ export default {
             }
             .user-vip_time {
               font-size: 12px;
-              font-family: Noto Sans S Chinese;
               font-weight: 400;
               line-height: 20px;
               margin-bottom: 10px;
               color: #c4c4c4;
+              span {
+                &:hover {
+                  cursor: pointer;
+                }
+              }
             }
           }
           .new-el-divider {

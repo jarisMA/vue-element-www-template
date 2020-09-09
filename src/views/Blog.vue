@@ -138,7 +138,6 @@ export default {
           }
           .logo-title {
             font-size: 14px;
-            font-family: Noto Sans S Chinese;
             color: #14af64;
           }
           .logo-image {
@@ -168,7 +167,6 @@ export default {
             border: none;
             outline: none;
             font-size: 14px;
-            font-family: Noto Sans S Chinese;
             margin-right: 8px;
           }
         }
@@ -184,7 +182,6 @@ export default {
           .list-title {
             display: inline-block;
             font-size: 14px;
-            font-family: Noto Sans S Chinese;
             line-height: 24px;
             color: #333333;
             position: relative;
@@ -212,7 +209,6 @@ export default {
               border-radius: 10px;
               border: 1px solid #e3e3e3;
               font-size: 14px;
-              font-family: Noto Sans S Chinese;
               color: #dfdfdf;
               &:hover {
                 cursor: pointer;

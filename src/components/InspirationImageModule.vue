@@ -45,7 +45,6 @@ export default {
     height: 128px;
     padding: 25px;
     font-size: 22px;
-    font-family: Noto Sans S Chinese;
     font-weight: 500;
     line-height: 37px;
     color: #333333;

@@ -71,7 +71,6 @@ export default {
   .title {
     margin-bottom: 22px;
     font-size: 22px;
-    font-family: Noto Sans S Chinese;
     color: #5f5f5f;
   }
   .image {
@@ -82,7 +81,6 @@ export default {
     margin: 24px auto 0;
     padding-bottom: 81px;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     color: #5f5f5f;
   }
 }

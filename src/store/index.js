@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import router from "../router";
+import moment from "@/utils/moment.js";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
@@ -68,7 +69,7 @@ export default new Vuex.Store({
       state.userInfo.sex = userInfo.gender;
       state.userInfo.unionid = userInfo.unionid;
       if (userInfo.phone_number) state.userInfo.phone = userInfo.phone_number;
-      const vip_expired = userInfo.vip_expired;
+      const vip_expired = moment.methods.getDate(userInfo.vip_expired);
       const newDate = new Date().getTime();
       const beforeDate = new Date(vip_expired).getTime();
       if (beforeDate > newDate) state.userInfo.vip_expired = vip_expired;

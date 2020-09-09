@@ -280,7 +280,6 @@ export default {
     justify-content: space-between;
     .header-logo {
       font-size: 16px;
-      font-family: Noto Sans S Chinese;
       font-weight: bold;
       color: #14af64;
       margin: 30px 30px 0;
@@ -296,7 +295,6 @@ export default {
   }
   .title {
     font-size: 34px;
-    font-family: Noto Sans S Chinese;
     font-weight: bold;
     color: #14af64;
     margin: 46px auto 55px;
@@ -307,7 +305,6 @@ export default {
   }
   .desc {
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     font-weight: 400;
     line-height: 34px;
     color: #363636;
@@ -336,7 +333,6 @@ export default {
   .title {
     margin-bottom: 22px;
     font-size: 22px;
-    font-family: Noto Sans S Chinese;
     color: #5f5f5f;
   }
   .image {
@@ -347,7 +343,6 @@ export default {
     margin: 24px auto 0;
     padding-bottom: 81px;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     color: #5f5f5f;
   }
 }
@@ -374,7 +369,6 @@ export default {
     .title {
       text-align: left;
       font-size: 16px;
-      font-family: Noto Sans S Chinese;
       font-weight: 400;
       color: #000000;
       margin-bottom: 21px;
@@ -388,7 +382,6 @@ export default {
       outline: none;
       margin-left: 10px;
       font-size: 12px;
-      font-family: Noto Sans S Chinese;
       font-weight: 400;
       line-height: 20px;
       color: #ffffff;
@@ -420,7 +413,6 @@ export default {
       .consent-title {
         display: flex;
         font-size: 12px;
-        font-family: Noto Sans S Chinese;
         color: #878787;
         a {
           text-decoration: none;
@@ -438,7 +430,6 @@ export default {
       margin: 102px auto 63px;
       border: none;
       font-size: 20px;
-      font-family: Noto Sans S Chinese;
       font-weight: 500;
       color: #ffffff;
       outline: none;
@@ -465,7 +456,6 @@ export default {
   }
   .title {
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
     margin: 74px auto 62px;
   }
@@ -484,7 +474,6 @@ export default {
         .el-radio-button__inner {
           width: 100% !important;
           font-size: 16px;
-          font-family: Noto Sans S Chinese;
           color: #999999;
         }
       }
@@ -511,7 +500,6 @@ export default {
   .title {
     margin: 55px auto 45px;
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
   }
   .content {
@@ -548,7 +536,6 @@ export default {
         .item-title {
           margin-top: 6px;
           font-size: 14px;
-          font-family: Noto Sans S Chinese;
           color: #999999;
         }
       }
@@ -574,7 +561,6 @@ export default {
       border: none;
       padding-left: 28px;
       font-size: 14px;
-      font-family: Noto Sans S Chinese;
       color: #999999;
       border-radius: 2px;
       margin-bottom: 39px;
@@ -585,7 +571,6 @@ export default {
     height: 40px;
     background: #999999;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     font-weight: 500;
     color: #ffffff;
     border: none;
@@ -616,7 +601,6 @@ export default {
   .title {
     margin: 55px auto 45px;
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
   }
   .content {
@@ -653,7 +637,6 @@ export default {
         }
         .item-title {
           font-size: 14px;
-          font-family: Noto Sans S Chinese;
           color: #999999;
           margin-top: 10px;
         }
@@ -679,7 +662,6 @@ export default {
       border: none;
       padding-left: 28px;
       font-size: 14px;
-      font-family: Noto Sans S Chinese;
       color: #999999;
       border-radius: 2px;
       margin-bottom: 39px;
@@ -690,7 +672,6 @@ export default {
     height: 40px;
     background: #999999;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     font-weight: 500;
     color: #ffffff;
     border: none;
@@ -721,7 +702,6 @@ export default {
   .title {
     margin: 55px auto 45px;
     font-size: 26px;
-    font-family: Noto Sans S Chinese;
     color: #000000;
   }
   .content {
@@ -758,7 +738,6 @@ export default {
         }
         .item-title {
           font-size: 14px;
-          font-family: Noto Sans S Chinese;
           color: #999999;
           margin-top: 10px;
         }
@@ -786,7 +765,6 @@ export default {
       border: none;
       padding-left: 28px;
       font-size: 14px;
-      font-family: Noto Sans S Chinese;
       color: #999999;
       border-radius: 2px;
       margin-bottom: 39px;
@@ -797,7 +775,6 @@ export default {
     height: 40px;
     background: #999999;
     font-size: 20px;
-    font-family: Noto Sans S Chinese;
     font-weight: 500;
     color: #ffffff;
     border: none;

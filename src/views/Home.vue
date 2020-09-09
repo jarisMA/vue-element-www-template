@@ -123,14 +123,11 @@ export default {
         outline: none;
         border: none;
         font-size: 24px;
-        font-family: Source Han Sans CN;
         font-weight: 500;
         padding: 0 10px 10px 0;
         color: #396efe;
-        transition: all 0.1s;
+        transition: all 0;
         &:hover {
-          transition: all 0.1s;
-          filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
           cursor: pointer;
           background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
             center;
@@ -163,14 +160,11 @@ export default {
       border: none;
       outline: none;
       font-size: 24px;
-      font-family: Noto Sans S Chinese;
       font-weight: 500;
       color: #000000;
       padding: 0 8px 7px 0;
-      transition: all 0.2s;
+      transition: all 0s;
       &:hover {
-        transition: all 0.1s;
-        filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
         cursor: pointer;
         background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat center;
         color: #fff;
@@ -193,7 +187,6 @@ export default {
         margin: 0 auto;
         padding: 100px 0 106px 0;
         font-size: 28px;
-        font-family: Noto Sans S Chinese;
         font-weight: 500;
         line-height: 28px;
         color: #000000;
@@ -284,7 +277,6 @@ export default {
         outline: none;
         border: none;
         font-size: 16px;
-        font-family: Noto Sans S Chinese;
         font-weight: 500;
         line-height: 16px;
         color: #ffffff;
@@ -294,8 +286,7 @@ export default {
         outline: none;
         margin: 393px 0 135px 0;
         &:hover {
-          transition: all 0.2s;
-          filter: drop-shadow(0px 3px 10px rgba(0, 0, 0, 0.3));
+          transition: all 0s;
           cursor: pointer;
         }
         .look-article-text {
