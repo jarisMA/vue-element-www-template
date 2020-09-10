@@ -1,7 +1,11 @@
 <template>
   <div class="registeredSuccessfullyTitle-container">
     <div class="header">
-      <img src="~@/assets/images/close_logo.svg" class="return-logo" />
+      <img
+        src="~@/assets/images/close_logo.svg"
+        class="return-logo"
+        @click="show"
+      />
     </div>
     <div class="content">
       <img src="~@/assets/images/succeed_logo.svg" class="content-logo" />
@@ -9,6 +13,15 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  methods: {
+    show() {
+      this.$store.commit("DEL_DIALOG_SHOW");
+    }
+  }
+};
+</script>
 <style lang="less" scoped>
 .registeredSuccessfullyTitle-container {
   padding-top: 25px;
@@ -21,6 +34,9 @@
       width: 30px;
       height: 30px;
       margin-right: 25px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .content {

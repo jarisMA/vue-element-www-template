@@ -2,7 +2,7 @@
   <header class="page-header">
     <div class="header-content">
       <div class="header-hd">
-        <span class="header-logo_img" @click="linkRputer(0)">
+        <span class="header-logo_img" @click="linkRputer(1)">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </span>
         <nav class="header-nav">

@@ -37,7 +37,12 @@ export default new Vuex.Store({
           return window.open(name, "_blank");
         }
         if (index == 2) {
-          return window.open(name, "_blank");
+          if (state.userInfo.vip_expired) {
+            return window.open(state.data_url[2], "_blank");
+          }
+          state.loginDialogVisible = 7;
+          state.dialogShow = true;
+          return;
         }
         if (index == 3) {
           return window.open(name, "_blank");

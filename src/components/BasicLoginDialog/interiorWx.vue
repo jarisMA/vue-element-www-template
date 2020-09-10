@@ -46,6 +46,9 @@ export default {
       width: 30px;
       height: 30px;
       margin-right: 25px;
+      &:hover {
+        cursor: pointer;
+      }
     }
   }
   .content {
