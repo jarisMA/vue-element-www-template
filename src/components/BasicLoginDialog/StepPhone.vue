@@ -55,7 +55,7 @@
             《服务协议》
           </router-link>
           和
-          <router-link tag="a" target="_blank" :to="{ name: 'Policy' }">
+          <router-link tag="a" target="_blank" :to="{ name: 'Protocol' }">
             《隐私政策》
           </router-link>
         </div>

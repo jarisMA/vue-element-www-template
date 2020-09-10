@@ -15,7 +15,7 @@
       </div>
     </div>
     <!-- 最新博文 -->
-    <div class="article-container" v-if="false">
+    <div class="article-container" v-if="true">
       <div class="article-section">
         <p class="article-title">最新博文</p>
         <div class="article-ima_list">
