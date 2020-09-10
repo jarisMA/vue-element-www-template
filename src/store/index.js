@@ -12,8 +12,8 @@ export default new Vuex.Store({
       3: "https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA"
     },
     token: null,
-    dialogShow: true,
-    loginDialogVisible: 3,
+    dialogShow: false,
+    loginDialogVisible: 0,
     userInfo: {
       id: 2,
       phone: null,
