@@ -12,8 +12,8 @@ export default new Vuex.Store({
       3: "https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA"
     },
     token: null,
-    dialogShow: false,
-    loginDialogVisible: 0,
+    dialogShow: true,
+    loginDialogVisible: 3,
     userInfo: {
       id: 2,
       phone: null,
@@ -49,6 +49,14 @@ export default new Vuex.Store({
         }
         if (index == 6) {
           state.loginDialogVisible = 6;
+          state.dialogShow = true;
+          return;
+        }
+        if (index == 7) {
+          if (state.userInfo.vip_expired) {
+            return window.open(state.data_url[2], "_blank");
+          }
+          state.loginDialogVisible = 7;
           state.dialogShow = true;
           return;
         }

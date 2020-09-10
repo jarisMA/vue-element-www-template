@@ -138,7 +138,6 @@ export default {
           &:active {
             background: url("./../assets/images/buttom_1-2-bg.svg") no-repeat
               center;
-            height: 74px;
           }
         }
       }
@@ -152,6 +151,7 @@ export default {
     background: url("./../assets/images/banner_2-bg.svg") no-repeat center;
     height: 600px;
     max-width: 1920px;
+    min-width: 1351.89px;
     background-size: 1920px;
     position: relative;
     margin: 0 auto;
@@ -182,7 +182,6 @@ export default {
         &:active {
           background: url("./../assets/images/buttom_2-3-bg.svg") no-repeat
             center;
-          height: 81px;
         }
       }
     }

@@ -5,7 +5,8 @@
       :width="
         loginDialogVisible == 4 ||
         loginDialogVisible == 5 ||
-        loginDialogVisible == 6
+        loginDialogVisible == 6 ||
+        loginDialogVisible == 8
           ? '672px'
           : '416px'
       "
@@ -14,7 +15,9 @@
       :close-on-click-modal="
         loginDialogVisible == 4 ||
           loginDialogVisible == 5 ||
-          loginDialogVisible == 6
+          loginDialogVisible == 6 ||
+          loginDialogVisible == 7 ||
+          loginDialogVisible == 8
       "
       :close-on-press-escape="false"
     >
@@ -26,6 +29,10 @@
       ></registeredSuccessfully>
       <wishLink v-if="loginDialogVisible === 5"></wishLink>
       <collegeLink v-if="loginDialogVisible === 6"></collegeLink>
+      <interiorWx v-if="loginDialogVisible == 7"></interiorWx>
+      <registeredSuccessfullyTitle
+        v-if="loginDialogVisible == 8"
+      ></registeredSuccessfullyTitle>
     </el-dialog>
   </div>
 </template>
@@ -37,9 +44,9 @@ import StepObjective from "./StepObjective.vue";
 import registeredSuccessfully from "./registeredSuccessfully.vue";
 import wishLink from "./wishLink.vue";
 import collegeLink from "./collegeLink.vue";
-
 import userService from "./../../globals/service/user.js";
-
+import interiorWx from "./interiorWx.vue";
+import registeredSuccessfullyTitle from "./registeredSuccessfullyTitle.vue";
 export default {
   components: {
     StepWechat,
@@ -47,7 +54,9 @@ export default {
     StepObjective,
     registeredSuccessfully,
     wishLink,
-    collegeLink
+    collegeLink,
+    interiorWx,
+    registeredSuccessfullyTitle
   },
   prop: {},
   created() {},
@@ -93,7 +102,7 @@ export default {
         verification_code: code
       };
       userService.create(data).then(() => {
-        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
+        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 8);
       });
     }
   }

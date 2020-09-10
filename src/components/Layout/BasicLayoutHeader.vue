@@ -18,7 +18,7 @@
         </nav>
       </div>
       <div class="header-ft">
-        <p class="PLAN-link" @click="linkRputer(2)">
+        <p class="PLAN-link" @click="linkRputer(7)">
           PLAN
         </p>
         <div class="user-handle-container" @click="wxLogin">

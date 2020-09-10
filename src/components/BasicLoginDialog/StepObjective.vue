@@ -159,7 +159,7 @@ export default {
     margin: 0 auto;
     padding-bottom: 74px;
     /deep/ .el-radio-group {
-      width: 100%;
+      width: 330px;
       .content-item {
         width: 330px;
         height: 54px;
@@ -171,6 +171,7 @@ export default {
           height: 54px !important;
           font-size: 20px;
           color: #14af64;
+          transition: all 0s;
           &:hover {
             filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
           }
@@ -181,6 +182,49 @@ export default {
         background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
           center;
         background-size: 330px !important;
+        transition: all 0s;
+        &:hover {
+          background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
+            center;
+          width: 330px !important;
+          height: 54px !important;
+          background-size: 348px !important;
+          color: #14af64;
+          z-index: 999;
+        }
+        &:active {
+          background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
+            center;
+          background-size: 348px !important;
+          color: #fff;
+        }
+      }
+    }
+    .el-radio-group {
+      width: 330px;
+      .content-item {
+        width: 330px;
+        height: 54px;
+        margin-bottom: 40px;
+        .el-radio-button,
+        .el-radio-button__orig-radio,
+        .el-radio-button__inner {
+          width: 330px !important;
+          height: 54px !important;
+          font-size: 20px;
+          color: #14af64;
+          transition: all 0s;
+          &:hover {
+            filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
+          }
+        }
+      }
+      .el-radio-button__inner {
+        outline: none;
+        background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
+          center;
+        background-size: 330px !important;
+        transition: all 0s;
         &:hover {
           background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
             center;

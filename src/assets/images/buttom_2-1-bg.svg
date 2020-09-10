@@ -1,40 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 24.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="图层_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 248.4 69.4" style="enable-background:new 0 0 248.4 69.4;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#7A55FF;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	.st1{fill:#EEEEEE;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	.st2{fill:none;stroke:#282828;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
-	.st3{enable-background:new    ;}
-</style>
-<g id="组_4520" transform="translate(-858.944 -1572.134)">
-	<g id="组_4437_1_" transform="translate(-172.23 739.269)">
-		<rect id="矩形_1130_1_" x="1040.2" y="841.9" class="st0" width="237.9" height="58.9"/>
-		<rect id="矩形_1131_1_" x="1032.7" y="834.2" class="st1" width="237.9" height="58.9"/>
-		<line id="直线_63_1_" class="st2" x1="1270.5" y1="834.3" x2="1278.1" y2="841.9"/>
-		<line id="直线_64_1_" class="st2" x1="1270.5" y1="893.2" x2="1278.1" y2="900.9"/>
-		<line id="直线_65_1_" class="st2" x1="1032.6" y1="893.2" x2="1040.2" y2="900.9"/>
-	</g>
-	<g class="st3">
-		<path d="M946.7,1596.5c2.1,2.2,5.3,4.1,8.3,5.1c-0.4,0.3-0.9,1-1.2,1.4c-3.3-1.2-6.8-3.7-9-6.4v4.9h-1.8v-4.9
-			c-2.2,2.8-5.7,5.3-9,6.6c-0.3-0.4-0.8-1.1-1.2-1.4c2.9-1,6.1-3,8.2-5.3h-7.7v-1.6h9.6v-3h1.8v3h9.8v1.6H946.7z M933.8,1611.5h20.4
-			v1.6h-20.4V1611.5z M950.6,1602.3v7.8h-13.2v-7.8H950.6z M948.8,1603.5h-9.7v2h9.7V1603.5z M948.8,1606.8h-9.7v2h9.7V1606.8z"/>
-		<path d="M965.2,1600.9c-0.3,0.6-0.6,1.1-1,1.7h12v11.4h-1.8v-0.9H964v0.9h-1.7v-8.9c-1.2,1.3-2.6,2.5-4.3,3.5
-			c-0.2-0.4-0.8-1.1-1.1-1.4c2.7-1.6,4.8-3.8,6.2-6.3h-5.7v-1.5h6.5c0.3-0.6,0.6-1.2,0.8-1.8h-5.5v-1.4h6.1c0.2-0.6,0.4-1.1,0.5-1.7
-			c-2.2,0.1-4.5,0.2-6.6,0.2c0-0.4-0.2-1-0.4-1.4c5.8,0,13.1-0.4,16.8-1.2l1.1,1.3c-2.4,0.5-5.7,0.8-9.1,1c-0.2,0.6-0.4,1.2-0.6,1.8
-			h9.9v1.4h-10.4c-0.2,0.6-0.5,1.2-0.8,1.8h12.6v1.5H965.2z M974.4,1603.9H964v1.7h10.4V1603.9z M974.4,1606.8H964v1.7h10.4V1606.8z
-			 M974.4,1611.5v-1.8H964v1.8H974.4z"/>
-		<path d="M988.8,1607.8c0.2,0.5,0.5,1.2,0.6,1.5c-3.9,3-4.5,3.6-4.9,4.1v0c-0.2-0.4-0.7-1-1-1.3c0.4-0.4,1.2-1.1,1.2-2.3v-8.6h-3.7
-			v-1.7h5.4v10.2L988.8,1607.8z M986.3,1597.3c-0.8-1-2.4-2.6-3.7-3.7l1.1-1.2c1.3,1.1,3,2.5,3.7,3.5L986.3,1597.3z M1002.8,1608.1
-			h-5.9v5.7h-1.8v-5.7H989v-1.7h6.1v-3.4h-4.8v-1.7h4.8v-3.3h-5.5v-1.7h7.9c0.8-1.3,1.7-3.2,2.3-4.6l1.8,0.6c-0.6,1.3-1.4,2.8-2.2,4
-			h2.8v1.7h-5.4v3.3h4.6v1.7h-4.6v3.4h5.9V1608.1z M992.9,1596.5c-0.3-1-1.2-2.7-2-3.9l1.6-0.6c0.8,1.2,1.8,2.7,2.1,3.7
-			L992.9,1596.5z"/>
-		<path d="M1004.7,1602.6c0.6-1.6,0.9-4.2,1.1-6.1l1.3,0.2c-0.1,1.9-0.5,4.6-1,6.4L1004.7,1602.6z M1007.7,1591.9h1.7v21.9h-1.7
-			V1591.9z M1010.7,1595.4c0.5,1.1,1.1,2.5,1.3,3.4l-1.2,0.6c-0.2-0.9-0.7-2.4-1.2-3.5L1010.7,1595.4z M1026.9,1599.7v1.4h-15.6
-			v-1.4h6.8v-1.7h-5.6v-1.3h5.6v-1.5h-6.1v-1.4h6.1v-1.9h1.8v1.9h6.3v1.4h-6.3v1.5h5.7v1.3h-5.7v1.7H1026.9z M1025,1611.8
-			c0,0.9-0.2,1.4-0.9,1.6c-0.7,0.3-1.7,0.3-3.4,0.3c-0.1-0.4-0.3-1.1-0.5-1.5c1.2,0,2.4,0,2.6,0c0.3,0,0.5-0.1,0.5-0.4v-1.7h-8.6
-			v3.7h-1.7v-11.4h12V1611.8z M1014.7,1603.8v1.8h8.6v-1.8H1014.7z M1023.3,1608.8v-1.8h-8.6v1.8H1023.3z"/>
-	</g>
-</g>
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="84" viewBox="0 0 300 84">
+  <g id="组_4537" data-name="组 4537" transform="translate(-120 -65)">
+    <g id="组_4520" data-name="组 4520" transform="translate(-713.358 -1499.5)">
+      <g id="组_4437" data-name="组 4437" transform="translate(-172.23 739.269)">
+        <rect id="矩形_1130" data-name="矩形 1130" width="237.892" height="58.943" transform="translate(1040.231 841.922)" fill="#7a55ff" stroke="#282828" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <rect id="矩形_1131" data-name="矩形 1131" width="237.892" height="58.943" transform="translate(1032.73 834.231)" fill="#eee" stroke="#282828" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line id="直线_63" data-name="直线 63" x2="7.642" y2="7.642" transform="translate(1270.481 834.279)" fill="#ffe100" stroke="#282828" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line id="直线_64" data-name="直线 64" x2="7.642" y2="7.642" transform="translate(1270.481 893.223)" fill="#ffe100" stroke="#282828" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+        <line id="直线_65" data-name="直线 65" x2="7.642" y2="7.642" transform="translate(1032.589 893.223)" fill="#ffe100" stroke="#282828" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+      </g>
+      <text id="查看详情" transform="translate(932 1612)" font-size="24" font-family="NotoSansHans-Medium, Noto Sans S Chinese" font-weight="500"><tspan x="0" y="0">查看详情</tspan></text>
+    </g>
+    <rect id="矩形_1189" data-name="矩形 1189" width="300" height="84" transform="translate(120 65)" fill="none"/>
+  </g>
 </svg>
