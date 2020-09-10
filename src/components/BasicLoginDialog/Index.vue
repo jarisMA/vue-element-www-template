@@ -2,10 +2,20 @@
   <div>
     <el-dialog
       :visible.sync="dialogShow"
-      :width="loginDialogVisible == 4 ? '672px' : '416px'"
+      :width="
+        loginDialogVisible == 4 ||
+        loginDialogVisible == 5 ||
+        loginDialogVisible == 6
+          ? '672px'
+          : '416px'
+      "
       center
       :before-close="handleClose"
-      :close-on-click-modal="loginDialogVisible == 4"
+      :close-on-click-modal="
+        loginDialogVisible == 4 ||
+          loginDialogVisible == 5 ||
+          loginDialogVisible == 6
+      "
       :close-on-press-escape="false"
     >
       <StepWechat v-if="loginDialogVisible === 1" />
@@ -14,6 +24,8 @@
       <registeredSuccessfully
         v-if="loginDialogVisible === 4"
       ></registeredSuccessfully>
+      <wishLink v-if="loginDialogVisible === 5"></wishLink>
+      <collegeLink v-if="loginDialogVisible === 6"></collegeLink>
     </el-dialog>
   </div>
 </template>
@@ -23,6 +35,8 @@ import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
 import registeredSuccessfully from "./registeredSuccessfully.vue";
+import wishLink from "./wishLink.vue";
+import collegeLink from "./collegeLink.vue";
 
 import userService from "./../../globals/service/user.js";
 
@@ -31,7 +45,9 @@ export default {
     StepWechat,
     StepPhone,
     StepObjective,
-    registeredSuccessfully
+    registeredSuccessfully,
+    wishLink,
+    collegeLink
   },
   prop: {},
   created() {},

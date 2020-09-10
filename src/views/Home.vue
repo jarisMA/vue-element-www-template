@@ -4,14 +4,14 @@
       <div class="banner-section">
         <div class="left">
           <img src="~@/assets/images/banner-1_title.svg" class="title" />
-          <button class="apply" @click="linkRputer(0)"></button>
+          <button class="apply" @click="linkRputer(2)"></button>
         </div>
         <img src="~@/assets/images/banner-1_image.svg" class="right" />
       </div>
     </div>
     <div class="banner-2-container">
       <div class="banner-2-section">
-        <button class="look" @click="linkRputer(0)"></button>
+        <button class="look" @click="linkRputer(3)"></button>
       </div>
     </div>
     <!-- 最新博文 -->

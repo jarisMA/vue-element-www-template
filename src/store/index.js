@@ -8,7 +8,8 @@ export default new Vuex.Store({
     data_url: {
       0: "http://www.daylab.cn/",
       1: "Home",
-      2: "https://seller.shejijia.com/decoration/user/login"
+      2: "https://seller.shejijia.com/decoration/user/login",
+      3: "https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA"
     },
     token: null,
     dialogShow: false,
@@ -35,8 +36,21 @@ export default new Vuex.Store({
         if (index == 0) {
           return window.open(name, "_blank");
         }
-        if (index == 2 && state.userInfo.avatar_url) {
+        if (index == 2) {
           return window.open(name, "_blank");
+        }
+        if (index == 3) {
+          return window.open(name, "_blank");
+        }
+        if (index == 5) {
+          state.loginDialogVisible = 5;
+          state.dialogShow = true;
+          return;
+        }
+        if (index == 6) {
+          state.loginDialogVisible = 6;
+          state.dialogShow = true;
+          return;
         }
         router.push({ name });
       } else {

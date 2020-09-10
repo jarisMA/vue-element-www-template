@@ -9,10 +9,10 @@
           <span class="header-nav-item Home" v-if="false">
             家灵感
           </span>
-          <span class="header-nav-item My" @click="linkRputer(0)"
-            >斗西学院</span
+          <span class="header-nav-item My" @click="linkRputer(6)"
+            >斗西学社</span
           >
-          <span class="header-nav-item Notes" @click="linkRputer(0)"
+          <span class="header-nav-item Notes" @click="linkRputer(5)"
             >愿望笔记</span
           >
         </nav>
