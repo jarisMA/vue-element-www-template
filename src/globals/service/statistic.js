@@ -6,16 +6,21 @@ const statisticService = {
   clickBlog: () => {
     return request.get(API.statisticLog, { slug: "click-blog" });
   },
-  // 点击 斗西课堂
+  // 点击 斗西学社
   clickCourse: () => {
     return request.get(API.statisticLog, { slug: "click-course" });
   },
-  // 点击 设计工作台 没有登陆
+  // 点击 愿望笔记
   clickNote: () => {
     return request.get(API.statisticLog, { slug: "click-plan-gust" });
   },
+
+  // 点击 设计工作台 没有登陆
+  clickPlanGust: () => {
+    return request.get(API.statisticLog, { slug: "click-plan-gust" });
+  },
   // 点击 设计工作台 已经登陆
-  clickPlan: () => {
+  clickPlanAuth: () => {
     return request.get(API.statisticLog, { slug: "click-plan-auth" });
   },
   // 点击 banner 1 按钮
