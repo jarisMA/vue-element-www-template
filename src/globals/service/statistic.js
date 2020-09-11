@@ -12,9 +12,8 @@ const statisticService = {
   },
   // 点击 愿望笔记
   clickNote: () => {
-    return request.get(API.statisticLog, { slug: "click-plan-gust" });
+    return request.get(API.statisticLog, { slug: "click-note" });
   },
-
   // 点击 设计工作台 没有登陆
   clickPlanGust: () => {
     return request.get(API.statisticLog, { slug: "click-plan-gust" });

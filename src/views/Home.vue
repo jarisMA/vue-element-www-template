@@ -71,6 +71,7 @@
 import { Swiper, SwiperSlide, directive } from "vue-awesome-swiper";
 import "swiper/swiper-bundle.css";
 import InspirationImageModule from "./../components/InspirationImageModule";
+import statisticService from "@/globals/service/statistic.js";
 
 export default {
   name: "Home",
@@ -93,9 +94,11 @@ export default {
   },
   methods: {
     linkRputerPath(path) {
+      statisticService.clickBanner2();
       this.$store.commit("WINDOW_OPEN", path);
     },
     planLinkVisible(link) {
+      statisticService.clickBanner1();
       if (
         this.$store.state.userInfo.id &&
         !this.$store.state.userInfo.vip_expired

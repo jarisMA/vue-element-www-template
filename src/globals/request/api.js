@@ -8,5 +8,5 @@ export default {
   smsRegisterCode: `${PREFIX_API}/api/web/sms/register-code`,
   smsVerify: `${PREFIX_API}/api/web/sms/verify`,
   bindingPhone: `${PREFIX_API}/api/web/users/bind-phone`,
-  statisticLog: `${PREFIX_API}/api/statistic/log`
+  statisticLog: `${PREFIX_API}/api/web/statistic/log`
 };
