@@ -4,14 +4,26 @@
       <div class="banner-section">
         <div class="left">
           <img src="~@/assets/images/banner-1_title.svg" class="title" />
-          <button class="apply" @click="linkRputer(2)"></button>
+          <button
+            class="apply"
+            @click="
+              planLinkVisible(
+                'https://seller.shejijia.com/decoration/user/login'
+              )
+            "
+          ></button>
         </div>
         <img src="~@/assets/images/banner-1_image.svg" class="right" />
       </div>
     </div>
     <div class="banner-2-container">
       <div class="banner-2-section">
-        <button class="look" @click="linkRputer(3)"></button>
+        <button
+          class="look"
+          @click="
+            linkRputerPath('https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA')
+          "
+        ></button>
       </div>
     </div>
     <!-- 最新博文 -->
@@ -80,8 +92,17 @@ export default {
     };
   },
   methods: {
-    linkRputer(index) {
-      this.$store.commit("LINK_ROUTER", index);
+    linkRputerPath(path) {
+      this.$store.commit("WINDOW_OPEN", path);
+    },
+    planLinkVisible(link) {
+      if (
+        this.$store.state.userInfo.id &&
+        !this.$store.state.userInfo.vip_expired
+      ) {
+        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
+      }
+      this.$store.commit("WINDOW_OPEN", link);
     },
     prev() {
       this.$refs.swiper.$swiper.slidePrev();

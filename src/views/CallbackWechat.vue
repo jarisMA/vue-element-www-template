@@ -15,11 +15,9 @@ export default {
         this.$router.push({ path: "/" });
         this.$store.commit("SET_WC_USER", res.userInfo);
         if (res.userInfo && !res.userInfo.phone_number) {
-          this.$store.commit("DIALOG_SHOW", true);
           this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
         } else {
           this.$store.commit("SET_TOKEN", res.token);
-          this.$store.commit("DIALOG_SHOW", false);
           this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
         }
       });

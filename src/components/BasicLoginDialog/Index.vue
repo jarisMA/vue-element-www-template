@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-      :visible.sync="dialogShow"
+      :visible="loginDialogVisible != 0"
       :width="
         loginDialogVisible == 4 ||
         loginDialogVisible == 5 ||
@@ -66,14 +66,6 @@ export default {
   computed: {
     loginDialogVisible() {
       return this.$store.state.loginDialogVisible;
-    },
-    dialogShow: {
-      get: function() {
-        return this.$store.state.dialogShow;
-      },
-      set: function() {
-        this.$store.commit("END_DIALOG_SHOW");
-      }
     }
   },
   methods: {

@@ -2,23 +2,28 @@
   <header class="page-header">
     <div class="header-content">
       <div class="header-hd">
-        <span class="header-logo_img" @click="linkRputer(1)">
+        <span class="header-logo_img" @click="linkRputerPath('Home')">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </span>
         <nav class="header-nav">
           <span class="header-nav-item Home" v-if="false">
             家灵感
           </span>
-          <span class="header-nav-item My" @click="linkRputer(6)"
+          <span class="header-nav-item My" @click="loginDialogVisible(6)"
             >斗西学社</span
           >
-          <span class="header-nav-item Notes" @click="linkRputer(5)"
+          <span class="header-nav-item Notes" @click="loginDialogVisible(5)"
             >愿望笔记</span
           >
         </nav>
       </div>
       <div class="header-ft">
-        <p class="PLAN-link" @click="linkRputer(7)">
+        <p
+          class="PLAN-link"
+          @click="
+            planLinkVisible('https://seller.shejijia.com/decoration/user/login')
+          "
+        >
           PLAN
         </p>
         <div class="user-handle-container" @click="wxLogin">
@@ -40,7 +45,7 @@
                   {{ userInfo.vip_expired ? "vip会员" : "普通会员" }}
                 </p>
                 <p class="user-vip_time" v-if="userInfo.vip_expired">
-                  <span @click="linkRputer(1)">会员到期时间: </span
+                  <span @click="linkRputerPath('Home')">会员到期时间: </span
                   >{{ userInfo.vip_expired }}
                 </p>
               </div>
@@ -70,7 +75,6 @@ export default {
     };
   },
   created() {
-    window.console.debug(123);
     this.getUserData();
   },
   watch: {
@@ -80,8 +84,23 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    linkRputer(index) {
-      this.$store.commit("LINK_ROUTER", index);
+    planLinkVisible(link) {
+      if (
+        this.$store.state.userInfo.id &&
+        !this.$store.state.userInfo.vip_expired
+      ) {
+        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
+      }
+      this.$store.commit("WINDOW_OPEN", link);
+    },
+    loginDialogVisible(index) {
+      if (!this.$store.state.userInfo.id) {
+        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+      }
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", index);
+    },
+    linkRputerPath(path) {
+      this.$store.commit("ROUTER_PUSH", path);
     },
     getUserData() {
       const token = cookies.get("web_token");
@@ -102,7 +121,6 @@ export default {
     wxLogin() {
       if (!this.userInfo.avatar_url) {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
-        this.$store.commit("DIALOG_SHOW", true);
       }
     },
     handleLogout() {
