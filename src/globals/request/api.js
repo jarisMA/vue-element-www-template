@@ -7,5 +7,6 @@ export default {
   wechatAuth: `${PREFIX_API}/api/web/wechat/auth`,
   smsRegisterCode: `${PREFIX_API}/api/web/sms/register-code`,
   smsVerify: `${PREFIX_API}/api/web/sms/verify`,
-  bindingPhone: `${PREFIX_API}/api/web/users/bind-phone`
+  bindingPhone: `${PREFIX_API}/api/web/users/bind-phone`,
+  statisticLog: `${PREFIX_API}/api/statistic/log`
 };
