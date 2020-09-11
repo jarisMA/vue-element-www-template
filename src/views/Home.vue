@@ -172,29 +172,26 @@ export default {
     }
   }
   .banner-2-container {
-    background: url("./../assets/images/banner_2-bg.svg") no-repeat center;
+    background: url("./../assets/images/banner-2.svg") no-repeat center;
     height: 600px;
     max-width: 1920px;
-    min-width: 1351.89px;
     background-size: 1920px;
     position: relative;
     margin: 0 auto;
     margin-bottom: 80px;
     text-align: center;
-    padding-top: 59px;
     .banner-2-section {
-      background: url("./../assets/images/banner_2.svg") no-repeat center;
-      width: 1351.89px;
-      height: 542.831px;
-      background-size: 1351.89px;
+      width: 1200px;
+      height: 500px;
       margin: 0 auto;
       position: relative;
       .look {
         position: absolute;
-        top: 330px;
-        left: 535px;
+        top: 380px;
+        left: 460px;
         width: 300px;
         height: 84px;
+        // transform: translateX(-50%);
         background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
         border: none;
         outline: none;
