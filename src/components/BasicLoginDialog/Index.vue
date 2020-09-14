@@ -1,24 +1,13 @@
 <template>
   <div>
     <el-dialog
-      :visible="loginDialogVisible != 0"
+      :visible="loginDialogVisibles()"
       :width="
-        loginDialogVisible == 4 ||
-        loginDialogVisible == 5 ||
-        loginDialogVisible == 6 ||
-        loginDialogVisible == 8
-          ? '672px'
-          : '416px'
+        loginDialogVisible == 4 || loginDialogVisible == 8 ? '672px' : '416px'
       "
       center
       :before-close="handleClose"
-      :close-on-click-modal="
-        loginDialogVisible == 4 ||
-          loginDialogVisible == 5 ||
-          loginDialogVisible == 6 ||
-          loginDialogVisible == 7 ||
-          loginDialogVisible == 8
-      "
+      :close-on-click-modal="loginDialogVisible == 4 || loginDialogVisible == 8"
       :close-on-press-escape="false"
     >
       <StepWechat v-if="loginDialogVisible === 1" />
@@ -27,9 +16,6 @@
       <registeredSuccessfully
         v-if="loginDialogVisible === 4"
       ></registeredSuccessfully>
-      <wishLink v-if="loginDialogVisible === 5"></wishLink>
-      <collegeLink v-if="loginDialogVisible === 6"></collegeLink>
-      <interiorWx v-if="loginDialogVisible == 7"></interiorWx>
       <registeredSuccessfullyTitle
         v-if="loginDialogVisible == 8"
       ></registeredSuccessfullyTitle>
@@ -42,10 +28,7 @@ import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
 import registeredSuccessfully from "./registeredSuccessfully.vue";
-import wishLink from "./wishLink.vue";
-import collegeLink from "./collegeLink.vue";
 import userService from "./../../globals/service/user.js";
-import interiorWx from "./interiorWx.vue";
 import registeredSuccessfullyTitle from "./registeredSuccessfullyTitle.vue";
 export default {
   components: {
@@ -53,9 +36,6 @@ export default {
     StepPhone,
     StepObjective,
     registeredSuccessfully,
-    wishLink,
-    collegeLink,
-    interiorWx,
     registeredSuccessfullyTitle
   },
   prop: {},
@@ -69,19 +49,22 @@ export default {
     }
   },
   methods: {
+    loginDialogVisibles() {
+      return [1, 2, 3, 4, 8].some(
+        item => item == this.$store.state.loginDialogVisible
+      );
+    },
     handleClose() {
       this.$store.commit("END_DIALOG_SHOW");
     },
     handleSumbit(identity, objective, other) {
       const {
-        phone,
         name,
         sex,
         avatar_url,
-        unionid,
-        code,
-        codeKey
-      } = this.$store.state.userInfo;
+        unionid
+      } = this.$store.state.temporaryUserInfo;
+      const { phone, code, codeKey } = this.$store.state.userInfo;
       const data = {
         identity: identity,
         remark: objective || other,
@@ -93,7 +76,9 @@ export default {
         verification_key: codeKey,
         verification_code: code
       };
-      userService.create(data).then(() => {
+      userService.create(data).then(res => {
+        this.$store.commit("SET_TOKEN", res.token);
+        this.$store.commit("SET_WC_USER", res.userInfo);
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 8);
       });
     }

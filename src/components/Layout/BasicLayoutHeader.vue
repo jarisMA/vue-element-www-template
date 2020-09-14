@@ -29,9 +29,9 @@
         <div class="user-handle-container" @click="wxLogin">
           <el-avatar
             class="el-avatar-border"
-            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
+            :src="userInfo.id ? userInfo.avatar_url : userLogo"
           ></el-avatar>
-          <div class="user-handle_show" v-if="userInfo.avatar_url">
+          <div class="user-handle_show" v-if="userInfo.id">
             <div class="show-container landing">
               <div class="login-content">
                 <el-avatar

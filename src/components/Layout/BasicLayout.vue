@@ -4,18 +4,21 @@
     <router-view class="page-basic-body" />
     <BasicLayoutFooter />
     <BasicLoginDialog />
+    <temporaryIndex />
   </div>
 </template>
 <script type="text/javascript">
 import BasicLayoutHeader from "./BasicLayoutHeader.vue";
 import BasicLayoutFooter from "./BasicLayoutFooter.vue";
 import BasicLoginDialog from "./../BasicLoginDialog/Index.vue";
+import temporaryIndex from "./../BasicLoginDialog/temporaryIndex";
 
 export default {
   components: {
     BasicLayoutHeader,
     BasicLayoutFooter,
-    BasicLoginDialog
+    BasicLoginDialog,
+    temporaryIndex
   }
 };
 </script>

@@ -7,6 +7,13 @@ export default new Vuex.Store({
   state: {
     token: null,
     loginDialogVisible: 0,
+    temporaryUserInfo: {
+      id: null,
+      name: null,
+      sex: null,
+      avatar_url: null,
+      unionid: null
+    },
     userInfo: {
       id: null,
       phone: null,
@@ -51,6 +58,14 @@ export default new Vuex.Store({
       state.userInfo.code = data.code;
       state.userInfo.codeKey = data.codeKey;
     },
+    SET_TEMPORARY_USER(state, userInfo) {
+      console.log(123);
+      state.temporaryUserInfo.id = userInfo.id;
+      state.temporaryUserInfo.name = userInfo.nickname;
+      state.temporaryUserInfo.avatar_url = userInfo.avatar_url;
+      state.temporaryUserInfo.sex = userInfo.gender;
+      state.temporaryUserInfo.unionid = userInfo.unionid;
+    },
     SET_WC_USER(state, userInfo) {
       state.userInfo.id = userInfo.id;
       state.userInfo.name = userInfo.nickname;
@@ -77,6 +92,13 @@ export default new Vuex.Store({
         unionid: null,
         code: null,
         codeKey: null
+      };
+      state.temporaryUserInfo = {
+        id: null,
+        name: null,
+        sex: null,
+        avatar_url: null,
+        unionid: null
       };
     },
     END_DIALOG_SHOW(state) {
