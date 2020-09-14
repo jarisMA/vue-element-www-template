@@ -59,7 +59,6 @@ export default new Vuex.Store({
       state.userInfo.codeKey = data.codeKey;
     },
     SET_TEMPORARY_USER(state, userInfo) {
-      console.log(123);
       state.temporaryUserInfo.id = userInfo.id;
       state.temporaryUserInfo.name = userInfo.nickname;
       state.temporaryUserInfo.avatar_url = userInfo.avatar_url;

@@ -124,7 +124,6 @@ export default {
       }
       this.$refs.phoneRefs.validate(valid => {
         if (valid) {
-          console.log(this.$store.state.temporaryUserInfo);
           const {
             unionid,
             avatar_url,
