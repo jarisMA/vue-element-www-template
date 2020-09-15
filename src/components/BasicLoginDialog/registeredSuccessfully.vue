@@ -10,7 +10,6 @@
     <div class="content">
       <div class="desc-content" v-if="vipTime()">
         <p>1年</p>
-        <img src="~@/assets/images/jewel_logo.svg" alt="" class="desc-logo" />
         <p>会员权益已发放到您的账户</p>
       </div>
       <div class="title-content">
@@ -43,55 +42,41 @@ export default {
 </script>
 <style lang="less" scoped>
 .registeredSuccessfully_container {
+  background: url("./../../assets/images/bg_1.svg") no-repeat;
+  font-size: 0;
   .header {
     text-align: right;
+    width: 672px;
+    height: 358px;
     .header-cancel {
       width: 30px;
       height: 30px;
-      margin: 25px 25px 0 0;
+      margin: 21px 24px 0 0;
       &:hover {
         cursor: pointer;
       }
     }
   }
   .content {
-    margin-top: 60px;
     text-align: center;
-    padding-bottom: 119px;
     .desc-content {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 23px;
+      font-size: 26px;
       color: #14af64;
-      position: relative;
-      .desc-logo {
-        width: 26px;
-        height: 26px;
-      }
-      position: relative;
-      padding-bottom: 20px;
-      &:after {
-        content: "";
-        display: inline-block;
-        position: absolute;
-        bottom: 0;
-        width: 330px;
-        height: 1px;
-        background-color: #14af64;
-        left: 50%;
-        transform: translateX(-50%);
-      }
+      line-height: 26px;
+      font-weight: bold;
+      margin: 21px 0 0;
     }
     .title-content {
       display: inline-block;
       text-align: center;
-      font-size: 22px;
-      font-weight: 400;
-      line-height: 37px;
+      font-size: 18px;
+      line-height: 28px;
       color: #777777;
-      padding: 34px;
-      padding-bottom: 0;
+      margin-top: 19px;
+      padding-bottom: 23px;
     }
   }
 }

@@ -6,6 +6,7 @@
         <a class="beian" target="_blank" href="https://beian.miit.gov.cn/"
           >沪ICP备2020026846号</a
         >
+        <p class="public">沪公网安备 31010102006648号</p>
       </div>
       <div class="right">
         <p class="title">联系邮箱：kf@home-plan.cn</p>
@@ -70,6 +71,12 @@ export default {
             display: inline-block;
           }
         }
+      }
+    }
+    .left {
+      display: flex;
+      a {
+        margin: 0 10px;
       }
     }
   }
