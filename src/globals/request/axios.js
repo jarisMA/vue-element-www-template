@@ -2,6 +2,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 import DataStore from "@/globals/storage/index";
 import cookies from "js-cookie";
+
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
 axiosInstance.interceptors.request.use(
@@ -46,6 +47,7 @@ const successRes = res => {
       return res.data;
   }
 };
+
 const errorRes = error => {
   handleErrorRequest(error);
   return Promise.reject(error);

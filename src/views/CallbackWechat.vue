@@ -5,23 +5,25 @@
 import authService from "./../globals/service/auth.js";
 export default {
   created() {
-    const { code, state } = this.$route.query;
-    if (
-      this.$store.state.userInfo.avatar_url == null &&
-      state === "born2code" &&
-      code
-    ) {
+    const { code, referer } = this.$route.query;
+    if (code) {
       authService.wechatAuth(code).then(res => {
-        this.$router.push({ path: "/" });
-        if (res.userInfo && !res.userInfo.phone_number) {
-          this.$store.commit("SET_TEMPORARY_USER", res.userInfo);
-          this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
+        if (referer) {
+          window.location.href = referer;
         } else {
-          this.$store.commit("SET_WC_USER", res.userInfo);
-          this.$store.commit("SET_TOKEN", res.token);
-          this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
+          this.setUserEvent(res);
         }
       });
+    }
+  },
+  methods: {
+    setUserEvent(res) {
+      const hasActive = res.userInfo && res.userInfo.phone_number;
+      const userCommit = hasActive ? "SET_WC_USER" : "SET_TEMPORARY_USER";
+      const dialCommitVal = hasActive ? 0 : 2;
+      this.$router.push({ path: "/" });
+      this.$store.commit(userCommit, res.userInfo);
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", dialCommitVal);
     }
   }
 };
