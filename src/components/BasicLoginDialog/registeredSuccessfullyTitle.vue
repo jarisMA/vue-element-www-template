@@ -17,7 +17,7 @@
 export default {
   methods: {
     show() {
-      this.$store.commit("DEL_DIALOG_SHOW");
+      this.$store.commit("END_DIALOG_SHOW");
     }
   }
 };
