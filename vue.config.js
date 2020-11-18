@@ -8,8 +8,16 @@ module.exports = {
   devServer: {
     open: true,
     host: "www.home-plan.tv",
-    port: 80
+    port: 80,
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000",
+        changeOrigin: true,
+        secure: false
+      }
+    }
   },
+
   chainWebpack: config => {
     // set svg-sprite-loader
     config.module

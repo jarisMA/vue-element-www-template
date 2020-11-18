@@ -8,6 +8,7 @@ import "@/styles/reset.less";
 import "@/styles/common.less";
 import "@/styles/theme/index.css";
 import animate from "animate.css";
+
 Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(ElementUI);

@@ -1,8 +1,7 @@
 import BasicLayout from "@/components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
-import Note from "@/views/Note.vue";
-import Blog from "@/views/Blog.vue";
+import AddPlan from "@/views/AddPlan.vue";
 import Protocol from "@/views/Protocol.vue";
 import Policy from "@/views/Policy.vue";
 
@@ -24,14 +23,9 @@ const routes = [
         component: My
       },
       {
-        path: "/note",
-        name: "Note",
-        component: Note
-      },
-      {
-        path: "/blog",
-        name: "Blog",
-        component: Blog
+        path: "/add-plan",
+        name: "AddPlan",
+        component: AddPlan
       }
     ]
   },
