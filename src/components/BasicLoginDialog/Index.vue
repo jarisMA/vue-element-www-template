@@ -58,27 +58,11 @@ export default {
       this.$store.commit("END_DIALOG_SHOW");
     },
     handleSumbit(identity, objective, other) {
-      const {
-        name,
-        sex,
-        avatar_url,
-        unionid
-      } = this.$store.state.temporaryUserInfo;
-      const { phone, code, codeKey } = this.$store.state.userInfo;
       const data = {
         identity: identity,
-        remark: objective || other,
-        unionid,
-        nickname: name,
-        avatar_url,
-        gender: sex,
-        phone_number: phone,
-        verification_key: codeKey,
-        verification_code: code
+        remark: objective || other
       };
-      userService.create(data).then(res => {
-        this.$store.commit("SET_TOKEN", res.token);
-        this.$store.commit("SET_WC_USER", res.userInfo);
+      userService.updateUserInfo(data).then(() => {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 8);
       });
     }

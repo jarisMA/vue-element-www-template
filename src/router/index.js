@@ -3,40 +3,41 @@ import VueRouter from "vue-router";
 import routes from "./routes.js";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import DataStore from "@/globals/storage/index";
 import userService from "@/globals/service/user.js";
 import Store from "@/store/index";
+import cookies from "js-cookie";
+
 Vue.use(VueRouter);
 
-const router = new VueRouter({
+const appRouter = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
   routes
 });
 
-router.firstInit = false;
-router.beforeEach(async (to, from, next) => {
+appRouter.firstInit = false;
+appRouter.beforeEach(async (to, from, next) => {
   NProgress.start();
   if (to.meta.title) document.title = to.meta.title;
-  const TOKEN = DataStore.getToken();
-  if (TOKEN && !router.firstInit) {
-    router.firstInit = true;
+  const TOKEN = cookies.get("web_token");
+  if (TOKEN && !appRouter.firstInit) {
     try {
-      const { userInfo } = await userService.userInfo();
-      // 防止线上和本地的 jwt 解密的 Key 一样导致获取用户异常
-      if (!userInfo) {
-        DataStore.removeToken();
-        window.location.reload();
+      const userInfo = await userService.getUserInfo();
+      Store.commit("USERINFO", userInfo);
+      if (!userInfo.phone) {
+        Store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
       }
-      Store.commit("USERINFO", userInfo || {});
-    } catch {
+      appRouter.firstInit = true;
+    } catch (e) {
       next();
     }
   }
   next();
 });
+
 // eslint-disable-next-line
-router.afterEach((to, from) => {
+appRouter.afterEach((to, from) => {
   NProgress.done();
 });
-export default router;
+
+export default appRouter;

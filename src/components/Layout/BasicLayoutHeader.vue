@@ -64,10 +64,6 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
-import DataStore from "@/globals/storage/index";
-import cookies from "js-cookie";
-import userService from "@/globals/service/user.js";
-import statisticService from "@/globals/service/statistic.js";
 
 export default {
   data() {
@@ -76,22 +72,12 @@ export default {
       userLogo: require("@/assets/images/user_logo.svg")
     };
   },
-  created() {
-    this.getUserData();
-  },
-  watch: {
-    $route: "getUserData"
-  },
+  created() {},
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
     planLinkVisible(link) {
-      if (this.$store.state.userInfo.id) {
-        statisticService.clickPlanAuth();
-      } else if (!this.$store.state.userInfo.id) {
-        statisticService.clickPlanGust();
-      }
       if (
         this.$store.state.userInfo.id &&
         !this.$store.state.userInfo.vip_expired
@@ -101,11 +87,6 @@ export default {
       this.$store.commit("WINDOW_OPEN", link);
     },
     loginDialogVisible(index) {
-      if (index == 6) {
-        statisticService.clickCourse();
-      } else if (index == 5) {
-        statisticService.clickNote();
-      }
       if (!this.$store.state.userInfo.id) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
@@ -114,32 +95,16 @@ export default {
     linkRputerPath(path) {
       this.$store.commit("ROUTER_PUSH", path);
     },
-    getUserData() {
-      const token = cookies.get("web_token");
-      if (token) {
-        userService
-          .getUserInfo()
-          .then(res => {
-            this.$store.commit("SET_WC_USER", res);
-          })
-          .catch(() => {
-            this.handleLogout();
-          });
-      }
-    },
     handleGoMy() {
       this.$router.push({ name: "My" });
     },
     wxLogin() {
       if (!this.userInfo.avatar_url) {
-        statisticService.clickUserLogin();
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
     },
     handleLogout() {
-      cookies.remove("web_token", { path: "/", domain: ".home-plan.cn" });
-      DataStore.removeToken();
-      window.location.reload();
+      this.$store.commit("LOGOUT");
     }
   }
 };

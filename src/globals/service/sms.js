@@ -2,40 +2,15 @@ import request from "@/globals/request/axios.js";
 import API from "@/globals/request/api.js";
 
 const smsService = {
-  smsRegisterCode: ({ phone_number }) => {
-    return request.post(API.smsRegisterCode, { phone_number });
+  smsRegisterCode: ({ phone }) => {
+    return request.post(API.smsRegisterCode, { phone });
   },
-  smsVerify: ({ verification_key, verification_code, phone_number }) => {
-    return request.post(API.smsVerify, {
-      verification_key,
-      verification_code,
-      phone_number
+  smsBindPhone: ({ key, code, phone }) => {
+    return request.post(API.bindPhone, {
+      key,
+      code,
+      phone
     });
-  },
-  bindingPhone: ({
-    verification_key,
-    verification_code,
-    phone_number,
-    unionid,
-    nickname,
-    avatar_url,
-    gender
-  }) => {
-    return request.post(
-      API.bindingPhone,
-      {
-        verification_key,
-        verification_code,
-        phone_number,
-        unionid,
-        nickname,
-        avatar_url,
-        gender
-      },
-      {
-        withCredentials: true
-      }
-    );
   }
 };
 

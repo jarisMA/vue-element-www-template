@@ -5,7 +5,7 @@
         src="~@/assets/images/close_logo.svg"
         alt=""
         class="header-cancel"
-        @click="show"
+        @click="handleClose"
       />
     </div>
     <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
@@ -14,27 +14,27 @@
       <el-form
         label-position="left"
         label-width="80px"
-        :model="pohoneLogin"
+        :model="formData"
         :rules="phoneRef"
         ref="phoneRefs"
       >
         <el-form-item prop="phone">
           <el-input
             placeholder="请输入手机号"
-            v-model="pohoneLogin.phone"
+            v-model="formData.phone"
             @input="getInput"
           ></el-input>
         </el-form-item>
         <el-form-item prop="code">
           <el-input
             placeholder="请输入4位短信验证码"
-            v-model="pohoneLogin.code"
+            v-model="formData.code"
             @input="GetcodeInput"
           ></el-input>
           <button
             type="button"
             @click="getCode"
-            :class="['code-get', pohoneLogin.Sent ? ' Sent' : '']"
+            :class="['code-get', formData.Sent ? ' Sent' : '']"
           >
             <span v-if="codeTime == 60">发送验证码</span>
             <span v-if="codeTime !== 60">{{ codeTime }}秒<br />可再次获取</span>
@@ -44,10 +44,7 @@
       <div class="consent-button_section">
         <div
           @click="phoenConsent"
-          :class="[
-            'consent-button',
-            pohoneLogin.consent ? ' consent_active' : ''
-          ]"
+          :class="['consent-button', formData.consent ? ' consent_active' : '']"
         ></div>
         <div class="consent-title">
           同意
@@ -64,7 +61,7 @@
         type="button"
         :class="[
           'login-button',
-          loginButton && pohoneLogin.consent ? 'login-active' : ''
+          loginButton && formData.consent ? 'login-active' : ''
         ]"
         @click="verify"
       >
@@ -83,7 +80,7 @@ export default {
       loginButton: false,
       codeKey: null,
       Sent: true,
-      pohoneLogin: {
+      formData: {
         phone: null,
         code: null,
         Sent: false,
@@ -106,11 +103,11 @@ export default {
     };
   },
   methods: {
-    show() {
-      this.$store.commit("DEL_DIALOG_SHOW");
+    handleClose() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
     },
     verify() {
-      if (!this.pohoneLogin.consent) {
+      if (!this.formData.consent) {
         return this.$message({
           message: "请先同意《服务协议》和《隐私政策》",
           type: "warning"
@@ -124,32 +121,15 @@ export default {
       }
       this.$refs.phoneRefs.validate(valid => {
         if (valid) {
-          const {
-            unionid,
-            avatar_url,
-            sex,
-            name
-          } = this.$store.state.temporaryUserInfo;
           smsService
-            .bindingPhone({
-              verification_key: this.codeKey,
-              verification_code: this.pohoneLogin.code,
-              phone_number: this.pohoneLogin.phone,
-              unionid,
-              nickname: name,
-              avatar_url,
-              gender: sex
+            .smsBindPhone({
+              key: this.codeKey,
+              code: this.formData.code,
+              phone: this.formData.phone
             })
-            .then(res => {
-              this.$store.commit("SET_PHONE_CODE_KEY", {
-                codeKey: this.codeKey,
-                code: this.pohoneLogin.code,
-                phone: this.pohoneLogin.phone
-              });
-              if (res.token && res.userInfo.id) {
-                this.$store.commit("SET_WC_USER", res.userInfo);
-                return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 4);
-              }
+            .then(() => {
+              this.$message.success("手机绑定成功！");
+              this.$store.commit("UPDATA_PHONE", this.formData.phone);
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
             });
         }
@@ -157,13 +137,13 @@ export default {
     },
     GetcodeInput(value) {
       let reg = /^\d{4}$/;
-      if (reg.test(value) && this.pohoneLogin.phone) {
+      if (reg.test(value) && this.formData.phone) {
         this.loginButton = true;
       } else {
         this.loginButton = false;
       }
-      if (!/^1[3456789]\d{9}$/.test(this.pohoneLogin.phone)) {
-        this.pohoneLogin.code = null;
+      if (!/^1[3456789]\d{9}$/.test(this.formData.phone)) {
+        this.formData.code = null;
         this.loginButton = false;
         return this.$message({
           message: "请填入正确的手机号码",
@@ -172,34 +152,32 @@ export default {
       }
     },
     getCode() {
-      if (this.pohoneLogin.Sent) {
-        smsService
-          .smsRegisterCode({ phone_number: this.pohoneLogin.phone })
-          .then(res => {
-            this.codeKey = res.key;
-          });
-        this.pohoneLogin.Sent = false;
+      if (this.formData.Sent) {
+        this.formData.Sent = false;
+        smsService.smsRegisterCode({ phone: this.formData.phone }).then(res => {
+          this.codeKey = res.key;
+        });
         this.codeTime = 60;
-        var myVar = setInterval(() => {
+        this.interval = setInterval(() => {
           this.codeTime -= 1;
+          if (this.codeTime === 0) {
+            clearInterval(this.interval);
+            this.codeTime = 60;
+            this.Sent = true;
+            this.formData.Sent = true;
+          }
         }, 1000);
-        setTimeout(() => {
-          this.Sent = true;
-          this.pohoneLogin.Sent = true;
-          clearInterval(myVar);
-          this.codeTime = 60;
-        }, 60000);
       }
     },
     getInput(value) {
       let reg = /^1[3456789]\d{9}$/;
       if (reg.test(value) && this.Sent) {
         this.Sent = false;
-        this.pohoneLogin.Sent = true;
+        this.formData.Sent = true;
       }
     },
     phoenConsent() {
-      this.pohoneLogin.consent = !this.pohoneLogin.consent;
+      this.formData.consent = !this.formData.consent;
     }
   }
 };

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Message } from "element-ui";
-import DataStore from "@/globals/storage/index";
 import cookies from "js-cookie";
+import Store from "@/store/index.js";
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
@@ -24,8 +24,7 @@ const handleErrorRequest = error => {
     const { data } = response;
     const message = data.msg || "服务器发送错误，请稍后再试";
     if (status === 401) {
-      Message.error("登录状态过期，请重新登录");
-      DataStore.clear();
+      Store.commit("LOGOUT");
     } else if (status === 403) {
       Message.error("没有权限，联系管理员");
     } else {

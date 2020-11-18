@@ -7,7 +7,7 @@ function resolve(dir) {
 module.exports = {
   devServer: {
     open: true,
-    host: "www.home-plan.cn",
+    host: "www.home-plan.tv",
     port: 80
   },
   chainWebpack: config => {
