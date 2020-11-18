@@ -37,7 +37,7 @@ export default {
           //self_redirect:true,
           // redirect_uri: "http://www.home-plan.cn/social/callback/wechat",
           redirect_uri:
-            "https://www.home-plan.cn/api/web/oauth/wechat/callback?redirect_uri=" +
+            "https://api.home-plan.cn/api/web/oauth/wechat/callback?redirect_uri=" +
             window.location.href,
           state: "born2code",
           // href: "https://passport.jiker.vip/css/qrcode.css"
