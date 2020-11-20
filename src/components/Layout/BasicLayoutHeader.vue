@@ -38,9 +38,10 @@
                   :size="60"
                   class="login-user-image"
                   :src="userInfo.avatar_url"
+                  @click.native="goMy"
                 ></el-avatar>
                 {{ userInfo.vip_expired }}
-                <p style="" class="login-title">{{ userInfo.name }}</p>
+                <p class="login-title">{{ userInfo.name }}</p>
                 <p class="user-logo">
                   {{ userInfo.vip_expired ? "vip会员" : "普通会员" }}
                 </p>
@@ -77,6 +78,11 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    goMy() {
+      this.$router.push({
+        name: "My"
+      });
+    },
     planLinkVisible(link) {
       if (
         this.$store.state.userInfo.id &&

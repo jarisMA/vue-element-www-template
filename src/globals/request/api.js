@@ -14,5 +14,6 @@ export default {
   kujialeFloorplan: "/api/web/kujiale/floorplan/standard",
   kujialeDesignCreate: "/api/web/kujiale/design/creation",
   kujialeIframe: dest => `/api/web/kujiale/${dest}/iframe`,
-  kujialeDesignList: "/api/web/kujiale/design/list"
+  kujialeDesignList: "/api/web/kujiale/design/list",
+  kujialeDeleteDesign: "/api/web/kujiale/design/deletion"
 };

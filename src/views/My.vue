@@ -22,14 +22,14 @@
         </el-menu>
       </el-col>
       <el-col :span="21">
-        <ul class="plan-list">
-          <plan-list
-            :plans="plans"
-            :size="planCount"
-            :total="planTotalCount"
-            @itemClick="editPlan"
-          />
-        </ul>
+        <plan-list
+          canDelete
+          :plans="plans"
+          :size="planCount"
+          :total="planTotalCount"
+          @itemClick="editPlan"
+          @delete="delelePlan"
+        />
       </el-col>
     </el-row>
   </div>
@@ -88,6 +88,16 @@ export default {
           designId: data.designId
         }
       });
+    },
+    delelePlan(index, plan) {
+      kujialeService
+        .deleteDesign({
+          plan_id: plan.planId
+        })
+        .then(() => {
+          this.$message.success("删除成功");
+          this.plans.splice(index, 1);
+        });
     }
   }
 };

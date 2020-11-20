@@ -1,6 +1,7 @@
 <template>
-  <div class="plan-card">
+  <div class="plan-card" @click="itemClick">
     <div class="plan-card-top">
+      <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i>
       <img :src="detail.planPic" :alt="detail.commName" />
     </div>
     <div class="plan-card-bottom">
@@ -22,6 +23,19 @@ export default {
     detail: {
       type: Object,
       required: true
+    },
+    canDelete: {
+      type: Boolean,
+      default: false
+    }
+  },
+  methods: {
+    itemClick() {
+      this.$emit("itemClick");
+    },
+    deleteItem(e) {
+      e.stopPropagation();
+      this.$emit("delete");
     }
   }
 };
@@ -38,10 +52,26 @@ export default {
   border: 1px solid gray;
   box-shadow: 2px 2px gray;
   cursor: pointer;
+  &:hover {
+    .plan-card-top {
+      .el-icon-delete {
+        display: inline;
+      }
+    }
+  }
   .plan-card-top {
+    position: relative;
     width: 100%;
     height: 200px;
     text-align: center;
+    .el-icon-delete {
+      position: absolute;
+      display: none;
+      top: 5px;
+      right: 5px;
+      color: red;
+      cursor: pointer;
+    }
     img {
       max-width: 100%;
       max-height: 100%;
@@ -55,6 +85,11 @@ export default {
     line-height: 20px;
     border-top: 1px solid gray;
     .house-type {
+      width: 100%;
+      height: 20px;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       font-weight: bold;
     }
     .house-address {

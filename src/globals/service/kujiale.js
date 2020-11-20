@@ -16,6 +16,9 @@ const KujialeService = {
   },
   designList: params => {
     return request.get(API.kujialeDesignList, params);
+  },
+  deleteDesign: params => {
+    return request.post(API.kujialeDeleteDesign, params);
   }
 };
 

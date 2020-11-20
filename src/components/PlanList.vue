@@ -1,8 +1,13 @@
 <template>
   <div class="plan-list-container">
     <ul class="plan-list">
-      <li class="plan-item" v-for="item of plans" :key="item.planId">
-        <plan-card :detail="item" @click.native="itemClick(item)" />
+      <li class="plan-item" v-for="(item, index) of plans" :key="item.planId">
+        <plan-card
+          :detail="item"
+          :canDelete="canDelete"
+          @itemClick="itemClick(item)"
+          @delete="deleteItem(index, item)"
+        />
       </li>
     </ul>
     <pagination :pageSize="size" :total="total" @change-page="pageChange" />
@@ -31,6 +36,10 @@ export default {
     total: {
       type: Number,
       default: 0
+    },
+    canDelete: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -40,6 +49,9 @@ export default {
     pageChange(page) {
       console.log(page);
       this.$emit("pageChange", page);
+    },
+    deleteItem(index, item) {
+      this.$emit("delete", index, item);
     }
   }
 };
