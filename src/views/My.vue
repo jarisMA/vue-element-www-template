@@ -1,5 +1,5 @@
 <template>
-  <div class="my-container container-1200">
+  <div class="my-container container-1200" v-loading="loading">
     <div class="add-btn-wrapper">
       <el-button class="add-btn" type="success" @click="addPlan"
         >新建方案</el-button
@@ -11,9 +11,9 @@
           <el-avatar
             :size="60"
             class="login-user-image"
-            :src="userLogo"
+            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
           ></el-avatar>
-          <span>jaris</span>
+          <span>{{ userInfo.nickname }}</span>
         </div>
         <el-menu default-active="plan">
           <el-menu-item index="plan">我的方案</el-menu-item>
@@ -23,9 +23,12 @@
       </el-col>
       <el-col :span="21">
         <ul class="plan-list">
-          <li class="plan-item" v-for="item of 10" :key="item">
-            <div class="plan-card">方案{{ item }}</div>
-          </li>
+          <plan-list
+            :plans="plans"
+            :size="planCount"
+            :total="planTotalCount"
+            @itemClick="editPlan"
+          />
         </ul>
       </el-col>
     </el-row>
@@ -34,18 +37,56 @@
 
 <script>
 import userLogo from "@/assets/images/user_logo.svg";
+import { mapState } from "vuex";
+import PlanList from "@/components/PlanList";
+import kujialeService from "@/globals/service/kujiale";
 
 export default {
   name: "My",
+  components: {
+    PlanList
+  },
   data() {
     return {
-      userLogo
+      userLogo,
+      loading: true,
+      plans: [],
+      planCount: 8,
+      planTotalCount: 0
     };
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  created() {
+    this.getPlan();
+  },
   methods: {
+    getPlan(start = 1) {
+      kujialeService
+        .designList({
+          page: start,
+          page_size: this.planCount
+        })
+        .then(res => {
+          this.planTotalCount = res.totalCount;
+          this.plans = res.result;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     addPlan() {
       this.$router.push({
         name: "AddPlan"
+      });
+    },
+    editPlan(data) {
+      this.$router.push({
+        name: "EditPlan",
+        params: {
+          designId: data.designId
+        }
       });
     }
   }

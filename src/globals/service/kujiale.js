@@ -2,13 +2,20 @@ import request from "@/globals/request/axios.js";
 import API from "@/globals/request/api.js";
 
 const KujialeService = {
+  getCommunity: params => {
+    return request.get(API.kujialeCommunity, params);
+  },
   getFloorPlan: params => {
-    return request.post(API.gothrough, {
-      api: "/v2/floorplan/standard",
-      method: "GET",
-      message: "搜索酷家乐标准户型图",
-      params
-    });
+    return request.get(API.kujialeFloorplan, params);
+  },
+  createDesign: params => {
+    return request.post(API.kujialeDesignCreate, params);
+  },
+  iframe: (dest, params) => {
+    return request.get(API.kujialeIframe(dest), params);
+  },
+  designList: params => {
+    return request.get(API.kujialeDesignList, params);
   }
 };
 

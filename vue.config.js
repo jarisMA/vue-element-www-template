@@ -11,7 +11,8 @@ module.exports = {
     port: 80,
     proxy: {
       "/api": {
-        target: "http://127.0.0.1:8000",
+        // target: "http://127.0.0.1:8000",
+        target: "https://api.home-plan.cn",
         changeOrigin: true,
         secure: false
       }
