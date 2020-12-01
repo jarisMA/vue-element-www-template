@@ -2,7 +2,7 @@
   <header class="page-header">
     <div class="header-content">
       <div class="header-hd">
-        <span class="header-logo_img" @click="linkRputerPath('Home')">
+        <span class="header-logo_img" @click="goHome()">
           <img class="header-logo" src="~@/assets/images/logo_1.svg" />
         </span>
         <nav class="header-nav">
@@ -46,7 +46,7 @@
                   {{ userInfo.vip_expired ? "vip会员" : "普通会员" }}
                 </p>
                 <p class="user-vip_time" v-if="userInfo.vip_expired">
-                  <span @click="linkRputerPath('Home')">会员到期时间: </span
+                  <span @click="goHome()">会员到期时间: </span
                   >{{ userInfo.vip_expired }}
                 </p>
               </div>
@@ -65,6 +65,7 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
+import { goHome, goRoute } from "@/utils/routes";
 
 export default {
   data() {
@@ -78,28 +79,26 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    goHome,
     goMy() {
       this.$router.push({
         name: "My"
       });
     },
     planLinkVisible(link) {
-      if (
-        this.$store.state.userInfo.id &&
-        !this.$store.state.userInfo.vip_expired
-      ) {
-        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
-      }
-      this.$store.commit("WINDOW_OPEN", link);
+      // if (
+      //   this.$store.state.userInfo.id &&
+      //   !this.$store.state.userInfo.vip_expired
+      // ) {
+      //   return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
+      // }
+      goRoute(link, "_blank");
     },
     loginDialogVisible(index) {
       if (!this.$store.state.userInfo.id) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
       this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", index);
-    },
-    linkRputerPath(path) {
-      this.$store.commit("ROUTER_PUSH", path);
     },
     handleGoMy() {
       this.$router.push({ name: "My" });
@@ -141,6 +140,7 @@ export default {
     .header-logo_img {
       width: 164px;
       margin-right: 40px;
+      cursor: pointer;
       .header-logo {
         width: 164px;
         height: 46px;

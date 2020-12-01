@@ -4,9 +4,9 @@ import router from "./router";
 import store from "./store";
 import IconSvg from "./plugins/icons";
 import ElementUI from "element-ui";
-import "@/styles/reset.less";
-import "@/styles/common.less";
-import "@/styles/theme/index.css";
+import "@/assets/styles/reset.less";
+import "@/assets/styles/common.less";
+import "@/assets/styles/theme/index.css";
 import animate from "animate.css";
 
 Vue.use(animate);

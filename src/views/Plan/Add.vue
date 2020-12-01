@@ -1,15 +1,11 @@
 <template>
   <div class="add-plan-container container-1200">
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" @tab-click="tabClick">
       <el-tab-pane label="搜户型" name="first">
         <search-floor-plan />
       </el-tab-pane>
-      <el-tab-pane label="自己画" name="second">
+      <el-tab-pane label="自己画" name="second" disabled>
         自己画
-        <!-- <div class="iframe-container">
-          <iframe :src="paintingUrl"
-                  frameborder="0"></iframe>
-        </div> -->
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -17,7 +13,6 @@
 
 <script>
 import SearchFloorPlan from "./widgets/SearchFloorPlan";
-import kujialeService from "@/global/service/kujiale";
 
 export default {
   name: "AddPlan",
@@ -26,19 +21,8 @@ export default {
   },
   data() {
     return {
-      activeName: "first",
-      paintingUrl: null
+      activeName: "first"
     };
-  },
-  created() {
-    this.painting();
-  },
-  methods: {
-    painting() {
-      kujialeService.iframe(4).then(res => {
-        this.paintingUrl = res.url;
-      });
-    }
   }
 };
 </script>
@@ -69,6 +53,14 @@ export default {
     }
     .el-tabs__nav-wrap::after {
       width: 0 !important;
+    }
+  }
+  .iframe-container {
+    width: 100%;
+    height: calc(100vh - 120px - 114px);
+    iframe {
+      width: 100%;
+      height: 100%;
     }
   }
 }

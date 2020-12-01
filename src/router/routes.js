@@ -4,7 +4,6 @@ import BasicLayout from "@/components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
 import Protocol from "@/views/Protocol.vue";
-import Policy from "@/views/Policy.vue";
 
 const routes = [
   {
@@ -30,11 +29,6 @@ const routes = [
     path: "/protocol",
     name: "Protocol",
     component: Protocol
-  },
-  {
-    path: "/policy",
-    name: "Policy",
-    component: Policy
   }
 ];
 

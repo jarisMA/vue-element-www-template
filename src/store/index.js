@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import router from "../router";
 import cookies from "js-cookie";
 // import moment from "@/utils/moment.js";
 Vue.use(Vuex);
@@ -29,21 +28,6 @@ export default new Vuex.Store({
     },
     UPDATA_PHONE(state, phone) {
       state.userInfo.phone = phone;
-    },
-
-    ROUTER_PUSH(state, name) {
-      if (state.userInfo.id) {
-        router.push({ name });
-      } else {
-        state.loginDialogVisible = 1;
-      }
-    },
-    WINDOW_OPEN(state, path) {
-      if (state.userInfo.id) {
-        window.open(path, "_blank");
-      } else {
-        state.loginDialogVisible = 1;
-      }
     },
     END_DIALOG_SHOW(state) {
       state.loginDialogVisible = 0;

@@ -21,7 +21,10 @@
         <button
           class="look"
           @click="
-            linkRputerPath('https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA')
+            goRoute(
+              'https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA',
+              '_blank'
+            )
           "
         ></button>
       </div>
@@ -30,6 +33,8 @@
 </template>
 
 <script>
+import { goRoute } from "@/utils/routes";
+
 export default {
   name: "Home",
   data() {
@@ -38,9 +43,7 @@ export default {
     };
   },
   methods: {
-    linkRputerPath(path) {
-      this.$store.commit("WINDOW_OPEN", path);
-    },
+    goRoute,
     planLinkVisible(link) {
       if (
         this.$store.state.userInfo.id &&
@@ -48,7 +51,7 @@ export default {
       ) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
       }
-      this.$store.commit("WINDOW_OPEN", link);
+      goRoute(link, "_blank");
     }
   }
 };
