@@ -28,7 +28,7 @@ import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
 import registeredSuccessfully from "./registeredSuccessfully.vue";
-import userService from "./../../globals/service/user.js";
+import userService from "./../../global/service/user.js";
 import registeredSuccessfullyTitle from "./registeredSuccessfullyTitle.vue";
 export default {
   components: {

@@ -2,10 +2,11 @@
   <div class="search-floor-plan-container" v-loading="loading">
     <div class="input-wrapper">
       <el-autocomplete
-        placeholder="请输入内容"
+        placeholder="请输入楼盘名/小区"
         :fetch-suggestions="querySearch"
         v-model="address"
         class="input-with-select"
+        @select="search()"
       >
         <el-cascader
           slot="prepend"
@@ -72,7 +73,7 @@
 
 <script>
 import cityData from "@/utils/city.json";
-import kujialeService from "@/globals/service/kujiale";
+import kujialeService from "@/global/service/kujiale";
 import PlanList from "@/components/PlanList";
 export default {
   name: "SearchFloorPlan",
@@ -118,7 +119,6 @@ export default {
   },
   methods: {
     search(start = 1) {
-      console.log(start);
       if (this.city && this.address) {
         this.planLoading = true;
         kujialeService

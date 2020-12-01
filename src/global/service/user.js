@@ -1,5 +1,5 @@
-import request from "@/globals/request/axios.js";
-import API from "@/globals/request/api.js";
+import request from "@/global/request/axios.js";
+import API from "@/global/request/api.js";
 
 const userService = {
   getUserInfo: function() {

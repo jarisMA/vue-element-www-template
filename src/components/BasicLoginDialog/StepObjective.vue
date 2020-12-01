@@ -81,7 +81,7 @@
 </template>
 
 <script type="text/javascript">
-import userObjective from "@/datas/user_objective.js";
+import userObjective from "@/utils/user_objective.js";
 
 export default {
   data() {

@@ -4,13 +4,20 @@
       <el-tab-pane label="搜户型" name="first">
         <search-floor-plan />
       </el-tab-pane>
-      <el-tab-pane label="自己画" name="second" disabled>自己画</el-tab-pane>
+      <el-tab-pane label="自己画" name="second">
+        自己画
+        <!-- <div class="iframe-container">
+          <iframe :src="paintingUrl"
+                  frameborder="0"></iframe>
+        </div> -->
+      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import SearchFloorPlan from "./widgets/SearchFloorPlan";
+import kujialeService from "@/global/service/kujiale";
 
 export default {
   name: "AddPlan",
@@ -19,8 +26,19 @@ export default {
   },
   data() {
     return {
-      activeName: "first"
+      activeName: "first",
+      paintingUrl: null
     };
+  },
+  created() {
+    this.painting();
+  },
+  methods: {
+    painting() {
+      kujialeService.iframe(4).then(res => {
+        this.paintingUrl = res.url;
+      });
+    }
   }
 };
 </script>

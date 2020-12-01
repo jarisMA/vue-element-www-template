@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import kujialeService from "@/globals/service/kujiale";
+import kujialeService from "@/global/service/kujiale";
 export default {
   name: "EditPlan",
   data() {

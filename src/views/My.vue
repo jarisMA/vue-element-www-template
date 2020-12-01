@@ -39,7 +39,7 @@
 import userLogo from "@/assets/images/user_logo.svg";
 import { mapState } from "vuex";
 import PlanList from "@/components/PlanList";
-import kujialeService from "@/globals/service/kujiale";
+import kujialeService from "@/global/service/kujiale";
 
 export default {
   name: "My",
