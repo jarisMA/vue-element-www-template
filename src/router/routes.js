@@ -1,6 +1,6 @@
 import routesPlan from "./routesPlan";
 
-import BasicLayout from "@/components/Layout/BasicLayout.vue";
+import BasicLayout from "components/Layout/BasicLayout.vue";
 import Home from "@/views/Home.vue";
 import My from "@/views/My.vue";
 import Protocol from "@/views/Protocol.vue";

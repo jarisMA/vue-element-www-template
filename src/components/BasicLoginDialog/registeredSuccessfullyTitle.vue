@@ -1,14 +1,10 @@
 <template>
   <div class="registeredSuccessfullyTitle-container">
     <div class="header">
-      <img
-        src="~@/assets/images/close_logo.svg"
-        class="return-logo"
-        @click="show"
-      />
+      <img src="~images/close_logo.svg" class="return-logo" @click="show" />
     </div>
     <div class="content">
-      <img src="~@/assets/images/succeed_logo.svg" class="content-logo" />
+      <img src="~images/succeed_logo.svg" class="content-logo" />
       <p class="content-title">注册成功</p>
     </div>
   </div>
@@ -23,6 +19,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .registeredSuccessfullyTitle-container {
   padding-top: 25px;
   padding-bottom: 129px;
@@ -48,7 +46,7 @@ export default {
     }
     .content-title {
       font-size: 43px;
-      color: #14af64;
+      color: @primaryColor;
       line-height: 43px;
     }
   }

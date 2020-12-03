@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import cookies from "js-cookie";
-// import moment from "@/utils/moment.js";
+// import moment from "utils/moment.js";
 Vue.use(Vuex);
 export default new Vuex.Store({
   state: {

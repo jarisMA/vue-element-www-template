@@ -3,7 +3,7 @@
     <div class="header-content">
       <div class="header-hd">
         <span class="header-logo_img" @click="goHome()">
-          <img class="header-logo" src="~@/assets/images/logo_1.svg" />
+          <img class="header-logo" src="~images/logo_1.svg" />
         </span>
         <nav class="header-nav">
           <span class="header-nav-item Home" v-if="false">
@@ -65,13 +65,13 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
-import { goHome, goRoute } from "@/utils/routes";
+import { goHome, goRoute } from "utils/routes";
 
 export default {
   data() {
     return {
       visible: true,
-      userLogo: require("@/assets/images/user_logo.svg")
+      userLogo: require("images/user_logo.svg")
     };
   },
   created() {},
@@ -115,7 +115,9 @@ export default {
 };
 </script>
 
-<style type="text/css" lang="less" scoped>
+<style lang="less" scoped>
+@import "~styles/variable.less";
+
 .page-header {
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
@@ -297,7 +299,7 @@ export default {
       display: flex;
       align-items: center;
       .el-avatar-border {
-        border: 2px solid #14af64;
+        border: 2px solid @primaryColor;
         background-color: transparent;
         :hover {
           cursor: pointer;
@@ -374,7 +376,7 @@ export default {
             text-align: center;
           }
           .login-user-image {
-            border: 2px solid #14af64;
+            border: 2px solid @primaryColor;
             background-color: transparent;
             &:hover {
               cursor: pointer;

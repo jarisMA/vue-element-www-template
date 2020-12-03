@@ -1,54 +1,48 @@
 <template>
   <div class="my-container " v-loading="loading">
     <div class="container-1200">
-      <el-row :gutter="24">
-        <el-col :span="5">
-          <div class="login-user-wrapper">
-            <el-avatar
-              :size="80"
-              class="login-user-image"
-              :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
-            ></el-avatar>
-            <span class="nickname">{{ userInfo.nickname }}</span>
-          </div>
-          <el-menu default-active="plan">
-            <el-menu-item index="plan">我的方案</el-menu-item>
-            <el-menu-item index="homework" disabled>我的作业</el-menu-item>
-            <el-menu-item index="course" disabled>我的课程</el-menu-item>
-          </el-menu>
-        </el-col>
-        <el-col :span="19">
-          <!-- <el-scrollbar class="scrollbar-section"> -->
-          <div class="add-btn-wrapper">
-            <el-button class="add-btn" type="success" @click="addPlan">
-              <img
-                src="@/assets/images/common/add.svg"
-                width="12"
-                height="12"
-              />
-              新建方案
-            </el-button>
-          </div>
-          <plan-list
-            canDelete
-            :plans="plans"
-            :size="planCount"
-            :total="planTotalCount"
-            theme="my"
-            @itemClick="editPlan"
-            @delete="delelePlan"
-          />
-          <!-- </el-scrollbar> -->
-        </el-col>
-      </el-row>
+      <div class="left-container">
+        <div class="login-user-wrapper">
+          <el-avatar
+            :size="80"
+            class="login-user-image"
+            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
+          ></el-avatar>
+          <span class="nickname">{{ userInfo.nickname }}</span>
+        </div>
+        <el-menu default-active="plan">
+          <el-menu-item index="plan">我的方案</el-menu-item>
+          <el-menu-item index="homework" disabled>我的作业</el-menu-item>
+          <el-menu-item index="course" disabled>我的课程</el-menu-item>
+        </el-menu>
+      </div>
+      <div class="right-container">
+        <!-- <el-scrollbar class="scrollbar-section"> -->
+        <div class="add-btn-wrapper">
+          <el-button class="add-btn" type="primary" @click="addPlan">
+            <img src="~images/common/add.svg" width="12" height="12" />
+            新建方案
+          </el-button>
+        </div>
+        <plan-list
+          canDelete
+          :plans="plans"
+          :size="planCount"
+          :total="planTotalCount"
+          theme="my"
+          @itemClick="editPlan"
+          @delete="delelePlan"
+        />
+        <!-- </el-scrollbar> -->
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import userLogo from "@/assets/images/user_logo.svg";
+import userLogo from "images/user_logo.svg";
 import { mapState } from "vuex";
-import PlanList from "@/components/PlanList";
+import PlanList from "components/PlanList";
 import kujialeService from "@/global/service/kujiale";
 
 export default {
@@ -125,30 +119,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../assets/styles/variable.less";
+@import "~styles/variable.less";
 
 @leftWidth: 224px;
 .my-container {
   background: #fafafa;
-  .add-btn-wrapper {
+  .container-1200 {
     display: flex;
-    justify-content: flex-end;
-    margin: 20px;
-    .add-btn {
-      width: 118px;
-      height: 32px;
-      line-height: 32px;
-      padding: 0;
-      font-size: 14px;
-      font-weight: 500;
-      color: #ffffff;
-      background: @primaryColor;
-      border-radius: unset;
-      img {
-        vertical-align: unset;
-        margin-right: 2px;
-      }
-    }
+  }
+  .left-container {
+    width: @leftWidth;
+    margin-right: 20px;
   }
   .login-user-wrapper {
     display: flex;
@@ -200,6 +181,27 @@ export default {
         height: 100%;
         content: "";
         background: @primaryColor;
+      }
+    }
+  }
+  .right-container {
+    flex: 1;
+  }
+  .add-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px;
+    .add-btn {
+      width: 118px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 500;
+      border-radius: unset;
+      img {
+        vertical-align: unset;
+        margin-right: 2px;
       }
     }
   }

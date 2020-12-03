@@ -3,7 +3,7 @@
     <div class="banner-container">
       <div class="banner-section">
         <div class="left">
-          <img src="~@/assets/images/banner-1_title.svg" class="title" />
+          <img src="~images/banner-1_title.svg" class="title" />
           <button
             class="apply"
             @click="
@@ -13,7 +13,7 @@
             "
           ></button>
         </div>
-        <img src="~@/assets/images/banner-1_image.svg" class="right" />
+        <img src="~images/banner-1_image.svg" class="right" />
       </div>
     </div>
     <div class="banner-2-container">
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { goRoute } from "@/utils/routes";
+import { goRoute } from "utils/routes";
 
 export default {
   name: "Home",

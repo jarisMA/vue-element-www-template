@@ -5,12 +5,12 @@
       <h3 class="message-modal-header">
         <img
           class="close-icon"
-          src="@/assets/images/common/delete.svg"
+          src="～images/common/delete.svg"
           @click="cancel"
         />
       </h3>
       <div class="message-modal-body">
-        <img src="@/assets/images/common/deleteConfirm.svg" />
+        <img src="～images/common/deleteConfirm.svg" />
         <p>确认删除方案</p>
       </div>
       <div class="message-modal-footer">
@@ -101,6 +101,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .message-box {
   position: fixed;
   top: 0;
@@ -150,7 +152,7 @@ export default {
         line-height: 36px;
         font-size: 24px;
         font-weight: bold;
-        color: #14af64;
+        color: @primaryColor;
       }
     }
     .message-modal-footer {
@@ -173,7 +175,7 @@ export default {
         }
         &.btn-primary {
           border: unset;
-          background: #14af64;
+          background: @primaryColor;
           font-size: 16px;
           font-weight: 500;
           color: #ffffff;

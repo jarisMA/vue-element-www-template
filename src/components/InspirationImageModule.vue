@@ -1,6 +1,6 @@
 <template>
   <div class="inspiration-item">
-    <img src="~@/assets/images/dwelling.png" alt="" class="item-img" />
+    <img src="~images/dwelling.png" alt="" class="item-img" />
     <div class="item-text">
       <p class="text">小型住宅设计，带分隔夹层 | 妙屋集</p>
     </div>
@@ -23,6 +23,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
 .inspiration-item {
   width: 380px;
   height: 413px;
@@ -30,9 +31,9 @@ export default {
   border: 2px solid #000;
   &:hover {
     cursor: pointer;
-    border-color: #14af64;
+    border-color: @primaryColor;
     .item-text {
-      border-color: #14af64;
+      border-color: @primaryColor;
     }
   }
   .item-img {

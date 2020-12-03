@@ -76,9 +76,9 @@
 </template>
 
 <script>
-import cityData from "@/utils/city.json";
+import cityData from "utils/city.json";
 import kujialeService from "@/global/service/kujiale";
-import PlanList from "@/components/PlanList";
+import PlanList from "components/PlanList";
 export default {
   name: "SearchFloorPlan",
   components: {
@@ -208,7 +208,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "../../../assets/styles/variable.less";
+@import "~styles/variable.less";
 
 .search-floor-plan-container {
   margin-top: 15px;

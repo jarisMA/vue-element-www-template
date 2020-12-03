@@ -1,11 +1,7 @@
 <template>
   <div class="rwishLink_container">
     <div class="header">
-      <img
-        src="~@/assets/images/close_logo.svg"
-        class="header-cancel"
-        @click="show"
-      />
+      <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
       <div class="desc-content">
@@ -27,6 +23,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .rwishLink_container {
   padding-bottom: 138px;
   .header {
@@ -55,7 +53,7 @@ export default {
       text-align: center;
       font-size: 28px;
       line-height: 48px;
-      color: #14af64;
+      color: @primaryColor;
       padding: 16px auto 17px;
       width: 289.69px;
       border: 1px solid #707070;

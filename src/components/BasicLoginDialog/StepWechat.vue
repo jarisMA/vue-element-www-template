@@ -2,21 +2,16 @@
   <div class="wx-login_container">
     <div class="header">
       <img
-        src="~@/assets/images/close_logo.svg"
+        src="~images/close_logo.svg"
         alt=""
         class="header-cancel"
         @click="handleClose"
       />
     </div>
-    <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
+    <img src="~images/logo_2.svg" alt="" class="logo" />
     <p class="title">请用微信扫码登录 / 注册</p>
     <div class="qrcode-container" id="qrcode"></div>
-    <img
-      v-if="false"
-      src="~@/assets/images/wx-QR_code.svg"
-      alt=""
-      class="image"
-    />
+    <img v-if="false" src="~images/wx-QR_code.svg" alt="" class="image" />
     <p v-if="false" class="desc">扫码后关注暖刻公众号，完成登录</p>
   </div>
 </template>

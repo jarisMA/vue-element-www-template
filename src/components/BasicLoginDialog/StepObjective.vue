@@ -3,7 +3,7 @@
     <div class="step-objective_container" v-show="!studyObjectiveDisplay">
       <div class="identity-selector_container">
         <div class="header">
-          <img src="~@/assets/images/logo_3.svg" alt="" class="header-logo" />
+          <img src="~images/logo_3.svg" alt="" class="header-logo" />
         </div>
         <p class="title">请问您的身份是</p>
         <div class="content">
@@ -25,7 +25,7 @@
       <div class="header">
         <img
           @click="handleBack"
-          src="~@/assets/images/return_logo.png"
+          src="~images/return_logo.png"
           alt=""
           class="header-logo"
         />
@@ -81,7 +81,7 @@
 </template>
 
 <script type="text/javascript">
-import userObjective from "@/utils/user_objective.js";
+import userObjective from "utils/user_objective.js";
 
 export default {
   data() {
@@ -137,6 +137,8 @@ export default {
 };
 </script>
 <style type="text/css" lang="less">
+@import "~styles/variable.less";
+
 .step-objective_container {
   text-align: center;
   width: 416px;
@@ -170,7 +172,7 @@ export default {
           width: 330px !important;
           height: 54px !important;
           font-size: 20px;
-          color: #14af64;
+          color: @primaryColor;
           transition: all 0s;
           &:hover {
             filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
@@ -189,7 +191,7 @@ export default {
           width: 330px !important;
           height: 54px !important;
           background-size: 348px !important;
-          color: #14af64;
+          color: @primaryColor;
           z-index: 999;
         }
         &:active {
@@ -212,7 +214,7 @@ export default {
           width: 330px !important;
           height: 54px !important;
           font-size: 20px;
-          color: #14af64;
+          color: @primaryColor;
           transition: all 0s;
           &:hover {
             filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
@@ -231,7 +233,7 @@ export default {
           width: 330px !important;
           height: 54px !important;
           background-size: 348px !important;
-          color: #14af64;
+          color: @primaryColor;
           z-index: 999;
         }
         &:active {
@@ -294,17 +296,15 @@ export default {
         }
       }
       .content-item-active {
-        border: 1px solid #14af64;
+        border: 1px solid @primaryColor;
         .diy {
-          background: url("~@/assets/images/profession_2-2.svg") no-repeat
-            center;
+          background: url("~images/profession_2-2.svg") no-repeat center;
         }
         .study {
-          background: url("~@/assets/images/profession_4-2.svg") no-repeat
-            center;
+          background: url("~images/profession_4-2.svg") no-repeat center;
         }
         .item-title {
-          color: #14af64;
+          color: @primaryColor;
         }
       }
     }
@@ -324,7 +324,7 @@ export default {
   .decoration-company-button {
     width: 206px;
     height: 46px;
-    background: url("./../../assets/images/buttom_4-1-bg.svg") no-repeat center;
+    background: url("~images/buttom_4-1-bg.svg") no-repeat center;
     color: #fff;
     font-size: 20px;
     font-weight: 500;
@@ -339,9 +339,9 @@ export default {
     }
   }
   .decoration-company-button-active {
-    background: #14af64;
+    background: @primaryColor;
     cursor: pointer;
-    background: url("./../../assets/images/buttom_4-2-bg.svg") no-repeat center;
+    background: url("~images/buttom_4-2-bg.svg") no-repeat center;
   }
 }
 </style>

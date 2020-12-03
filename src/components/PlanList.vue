@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import Pagination from "@/components/Pagination";
-import PlanCard from "@/components/PlanCard";
+import Pagination from "components/Pagination";
+import PlanCard from "components/PlanCard";
 
 export default {
   name: "PlanList",
@@ -66,7 +66,7 @@ export default {
 
 <style lang="less" scoped>
 @margin: 24px;
-@myMargin: 15px;
+@myMargin: 20px;
 @count: 4;
 .plan-list {
   display: flex;

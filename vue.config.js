@@ -36,5 +36,11 @@ module.exports = {
         symbolId: "icon-[name]"
       })
       .end();
+    config.resolve.alias
+      .set("assets", resolve("src/assets"))
+      .set("images", resolve("src/assets/images"))
+      .set("styles", resolve("src/assets/styles"))
+      .set("components", resolve("src/components"))
+      .set("utils", resolve("src/utils"));
   }
 };

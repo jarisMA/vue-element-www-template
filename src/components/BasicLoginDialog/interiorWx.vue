@@ -2,15 +2,11 @@
   <div class="interiorWx-container">
     <div class="header-container">
       <p class="loho-title">PLAN</p>
-      <img
-        src="~@/assets/images/close_logo.svg"
-        class="return-logo"
-        @click="show"
-      />
+      <img src="~images/close_logo.svg" class="return-logo" @click="show" />
     </div>
     <div class="content">
       <p class="content-title">铁粉内测阶段</p>
-      <img src="~@/assets/images/wx-logo_2.svg" class="content-wx_logo" />
+      <img src="~images/wx-logo_2.svg" class="content-wx_logo" />
       <div class="content-desc">
         <p>想优先体验可微信扫码</p>
         <p>添加工作人员邀请开通</p>
@@ -28,6 +24,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .interiorWx-container {
   text-align: center;
   .header-container {
@@ -39,7 +37,7 @@ export default {
       font-size: 16px;
       font-weight: bold;
       line-height: 16px;
-      color: #14af64;
+      color: @primaryColor;
       margin-left: 30px;
     }
     .return-logo {
@@ -58,7 +56,7 @@ export default {
       font-size: 34px;
       font-weight: bold;
       line-height: 34px;
-      color: #14af64;
+      color: @primaryColor;
       margin-bottom: 15px;
     }
     .content-wx_logo {

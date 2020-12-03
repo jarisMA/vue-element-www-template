@@ -7,14 +7,14 @@
     <div :class="['plan-card-bottom', theme]">
       <h4 v-if="theme === 'my'" class="plan-name">{{ detail.name }}</h4>
       <span class="house-type"
-        >{{ detail.srcArea }}㎡ | {{ detail.specName }}</span
+        >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
       >
       <div class="house-desc">
         <label class="house-address"
           ><i class="el-icon-location-outline"></i> {{ filterCity }}
           {{ detail.commName }}</label
         >
-        <span v-if="theme === 'my'">{{ date }}</span>
+        <span v-if="theme === 'my'" class="plan-date">{{ date }}</span>
       </div>
     </div>
   </div>
@@ -127,36 +127,39 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 12px 0;
+    padding: 11px 0 24px;
     border-top: 1px solid #e6e6e6;
     .plan-name,
     .house-type {
       margin-bottom: 10px;
       width: 100%;
-      height: 21px;
-      line-height: 21px;
+      height: 14px;
+      line-height: 14px;
       font-weight: 500;
       font-size: 14px;
       color: #333;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      font-weight: bold;
     }
     .house-desc {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      height: 18px;
+      height: 12px;
       line-height: 12px;
       font-size: 12px;
       font-weight: 400;
       color: #ababab;
       .house-address {
+        flex: 1;
         height: 18px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
+      }
+      .plan-date {
+        width: 37px;
       }
     }
     &.my {

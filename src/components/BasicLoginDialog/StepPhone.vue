@@ -2,13 +2,13 @@
   <div class="login_container">
     <div class="header">
       <img
-        src="~@/assets/images/close_logo.svg"
+        src="~images/close_logo.svg"
         alt=""
         class="header-cancel"
         @click="handleClose"
       />
     </div>
-    <img src="~@/assets/images/logo_2.svg" alt="" class="logo" />
+    <img src="~images/logo_2.svg" alt="" class="logo" />
     <div class="content">
       <p class="title">绑定手机</p>
       <el-form
@@ -183,6 +183,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .login_container {
   text-align: center;
   .header {
@@ -232,7 +234,7 @@ export default {
       }
     }
     .Sent {
-      background: #14af64;
+      background: @primaryColor;
       &:hover {
         cursor: pointer;
       }
@@ -264,7 +266,7 @@ export default {
         color: #878787;
         a {
           text-decoration: none;
-          color: #14af64;
+          color: @primaryColor;
           &:hover {
             cursor: pointer;
           }

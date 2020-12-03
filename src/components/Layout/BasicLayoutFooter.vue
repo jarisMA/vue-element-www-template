@@ -11,11 +11,8 @@
       <div class="right">
         <p class="title">联系邮箱：kf@home-plan.cn</p>
         <div class="img-hover">
-          <img src="~@/assets/images/wx-logo.svg" alt="" class="image" />
-          <img
-            src="~@/assets/images/direction_logo-3.svg"
-            class="look-wx_imag"
-          />
+          <img src="~images/wx-logo.svg" alt="" class="image" />
+          <img src="~images/direction_logo-3.svg" class="look-wx_imag" />
         </div>
       </div>
     </div>
@@ -29,6 +26,8 @@ export default {
 };
 </script>
 <style type="text/css" lang="less" scoped>
+@import "~styles/variable.less";
+
 .page-footer {
   height: 60px;
   line-height: 40px;
@@ -36,7 +35,7 @@ export default {
   color: #fff;
   font-weight: bold;
   text-align: center;
-  background-color: #14af64;
+  background-color: @primaryColor;
   .container-1200 {
     height: 100%;
     display: flex;

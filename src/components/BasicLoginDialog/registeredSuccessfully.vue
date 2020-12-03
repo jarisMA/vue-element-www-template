@@ -1,11 +1,7 @@
 <template>
   <div class="registeredSuccessfully_container">
     <div class="header">
-      <img
-        src="~@/assets/images/close_logo.svg"
-        class="header-cancel"
-        @click="show"
-      />
+      <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
       <div class="desc-content" v-if="vipTime()">
@@ -41,6 +37,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .registeredSuccessfully_container {
   background: url("./../../assets/images/bg_1.svg") no-repeat;
   font-size: 0;
@@ -64,7 +62,7 @@ export default {
       justify-content: center;
       align-items: center;
       font-size: 26px;
-      color: #14af64;
+      color: @primaryColor;
       line-height: 26px;
       font-weight: bold;
       margin: 21px 0 0;

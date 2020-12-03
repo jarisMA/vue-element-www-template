@@ -1,11 +1,7 @@
 <template>
   <div class="collegeLink-container">
     <div class="header">
-      <img
-        src="~@/assets/images/close_logo.svg"
-        class="header-cancel"
-        @click="show"
-      />
+      <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
       <div class="desc-content">
@@ -27,6 +23,8 @@ export default {
 };
 </script>
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .collegeLink-container {
   padding-bottom: 148px;
   font-size: 0;
@@ -53,7 +51,7 @@ export default {
       display: inline-block;
       text-align: center;
       font-size: 28px;
-      color: #14af64;
+      color: @primaryColor;
       font-weight: bold;
       line-height: 28px;
     }
