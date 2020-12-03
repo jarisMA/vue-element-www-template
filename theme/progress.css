@@ -285,17 +285,17 @@
     padding-right: 0;
     margin-right: 0; }
   .el-progress.is-success .el-progress-bar__inner {
-    background-color: #67C23A; }
+    background-color: #2DA641FF; }
   .el-progress.is-success .el-progress__text {
-    color: #67C23A; }
+    color: #2DA641FF; }
   .el-progress.is-warning .el-progress-bar__inner {
-    background-color: #E6A23C; }
+    background-color: #FAAD14FF; }
   .el-progress.is-warning .el-progress__text {
-    color: #E6A23C; }
+    color: #FAAD14FF; }
   .el-progress.is-exception .el-progress-bar__inner {
-    background-color: #F56C6C; }
+    background-color: #D40000FF; }
   .el-progress.is-exception .el-progress__text {
-    color: #F56C6C; }
+    color: #D40000FF; }
 
 .el-progress-bar {
   padding-right: 50px;

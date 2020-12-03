@@ -555,9 +555,9 @@
     .el-textarea.is-disabled .el-textarea__inner::placeholder {
       color: #C0C4CC; }
   .el-textarea.is-exceed .el-textarea__inner {
-    border-color: #F56C6C; }
+    border-color: #D40000FF; }
   .el-textarea.is-exceed .el-input__count {
-    color: #F56C6C; }
+    color: #D40000FF; }
 
 .el-input {
   position: relative;
@@ -689,9 +689,9 @@
   .el-input.is-disabled .el-input__icon {
     cursor: not-allowed; }
   .el-input.is-exceed .el-input__inner {
-    border-color: #F56C6C; }
+    border-color: #D40000FF; }
   .el-input.is-exceed .el-input__suffix .el-input__count {
-    color: #F56C6C; }
+    color: #D40000FF; }
   .el-input--suffix .el-input__inner {
     padding-right: 30px; }
   .el-input--prefix .el-input__inner {
@@ -1398,38 +1398,38 @@
         color: #FFFFFF;
         background-color: #909399; }
   .el-tag.el-tag--success {
-    background-color: #f0f9eb;
-    border-color: #e1f3d8;
-    color: #67c23a; }
+    background-color: #eaf6ec;
+    border-color: #d5edd9;
+    color: #2da641; }
     .el-tag.el-tag--success.is-hit {
-      border-color: #67C23A; }
+      border-color: #2DA641FF; }
     .el-tag.el-tag--success .el-tag__close {
-      color: #67c23a; }
+      color: #2da641; }
       .el-tag.el-tag--success .el-tag__close:hover {
         color: #FFFFFF;
-        background-color: #67c23a; }
+        background-color: #2da641; }
   .el-tag.el-tag--warning {
-    background-color: #fdf6ec;
-    border-color: #faecd8;
-    color: #e6a23c; }
+    background-color: #fff7e8;
+    border-color: #feefd0;
+    color: #faad14; }
     .el-tag.el-tag--warning.is-hit {
-      border-color: #E6A23C; }
+      border-color: #FAAD14FF; }
     .el-tag.el-tag--warning .el-tag__close {
-      color: #e6a23c; }
+      color: #faad14; }
       .el-tag.el-tag--warning .el-tag__close:hover {
         color: #FFFFFF;
-        background-color: #e6a23c; }
+        background-color: #faad14; }
   .el-tag.el-tag--danger {
-    background-color: #fef0f0;
-    border-color: #fde2e2;
-    color: #f56c6c; }
+    background-color: #fbe6e6;
+    border-color: #f6cccc;
+    color: #d40000; }
     .el-tag.el-tag--danger.is-hit {
-      border-color: #F56C6C; }
+      border-color: #D40000FF; }
     .el-tag.el-tag--danger .el-tag__close {
-      color: #f56c6c; }
+      color: #d40000; }
       .el-tag.el-tag--danger .el-tag__close:hover {
         color: #FFFFFF;
-        background-color: #f56c6c; }
+        background-color: #d40000; }
   .el-tag .el-icon-close {
     border-radius: 50%;
     text-align: center;
@@ -1467,38 +1467,38 @@
           color: #FFFFFF;
           background-color: #a6a9ad; }
     .el-tag--dark.el-tag--success {
-      background-color: #67c23a;
-      border-color: #67c23a;
+      background-color: #2da641;
+      border-color: #2da641;
       color: white; }
       .el-tag--dark.el-tag--success.is-hit {
-        border-color: #67C23A; }
+        border-color: #2DA641FF; }
       .el-tag--dark.el-tag--success .el-tag__close {
         color: white; }
         .el-tag--dark.el-tag--success .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #85ce61; }
+          background-color: #57b867; }
     .el-tag--dark.el-tag--warning {
-      background-color: #e6a23c;
-      border-color: #e6a23c;
+      background-color: #faad14;
+      border-color: #faad14;
       color: white; }
       .el-tag--dark.el-tag--warning.is-hit {
-        border-color: #E6A23C; }
+        border-color: #FAAD14FF; }
       .el-tag--dark.el-tag--warning .el-tag__close {
         color: white; }
         .el-tag--dark.el-tag--warning .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #ebb563; }
+          background-color: #fbbd43; }
     .el-tag--dark.el-tag--danger {
-      background-color: #f56c6c;
-      border-color: #f56c6c;
+      background-color: #d40000;
+      border-color: #d40000;
       color: white; }
       .el-tag--dark.el-tag--danger.is-hit {
-        border-color: #F56C6C; }
+        border-color: #D40000FF; }
       .el-tag--dark.el-tag--danger .el-tag__close {
         color: white; }
         .el-tag--dark.el-tag--danger .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #f78989; }
+          background-color: #dd3333; }
   .el-tag--plain {
     background-color: white;
     border-color: #a1dfc1;
@@ -1523,37 +1523,37 @@
           background-color: #909399; }
     .el-tag--plain.el-tag--success {
       background-color: white;
-      border-color: #c2e7b0;
-      color: #67c23a; }
+      border-color: #abdbb3;
+      color: #2da641; }
       .el-tag--plain.el-tag--success.is-hit {
-        border-color: #67C23A; }
+        border-color: #2DA641FF; }
       .el-tag--plain.el-tag--success .el-tag__close {
-        color: #67c23a; }
+        color: #2da641; }
         .el-tag--plain.el-tag--success .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #67c23a; }
+          background-color: #2da641; }
     .el-tag--plain.el-tag--warning {
       background-color: white;
-      border-color: #f5dab1;
-      color: #e6a23c; }
+      border-color: #fddea1;
+      color: #faad14; }
       .el-tag--plain.el-tag--warning.is-hit {
-        border-color: #E6A23C; }
+        border-color: #FAAD14FF; }
       .el-tag--plain.el-tag--warning .el-tag__close {
-        color: #e6a23c; }
+        color: #faad14; }
         .el-tag--plain.el-tag--warning .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #e6a23c; }
+          background-color: #faad14; }
     .el-tag--plain.el-tag--danger {
       background-color: white;
-      border-color: #fbc4c4;
-      color: #f56c6c; }
+      border-color: #ee9999;
+      color: #d40000; }
       .el-tag--plain.el-tag--danger.is-hit {
-        border-color: #F56C6C; }
+        border-color: #D40000FF; }
       .el-tag--plain.el-tag--danger .el-tag__close {
-        color: #f56c6c; }
+        color: #d40000; }
         .el-tag--plain.el-tag--danger .el-tag__close:hover {
           color: #FFFFFF;
-          background-color: #f56c6c; }
+          background-color: #d40000; }
   .el-tag--medium {
     height: 28px;
     line-height: 26px; }

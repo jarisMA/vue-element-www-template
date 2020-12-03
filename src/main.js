@@ -9,10 +9,13 @@ import "styles/common.less";
 import "../theme/index.css";
 import animate from "animate.css";
 import MessageBox from "components/MessageBox/index";
+import Notification from "components/Notification/index";
+
 Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(ElementUI);
 Vue.use(MessageBox);
+Vue.use(Notification);
 Vue.config.productionTip = false;
 new Vue({
   router,

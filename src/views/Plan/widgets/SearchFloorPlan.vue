@@ -189,7 +189,10 @@ export default {
               name: value
             })
             .then(res => {
-              this.$message.success("方案创建成功");
+              this.$notice({
+                type: "success",
+                title: "方案创建成功"
+              });
               this.$router.push({
                 name: "EditPlan",
                 params: {
@@ -227,7 +230,14 @@ export default {
       border-radius: unset;
       border-color: @primaryColor;
       .el-button {
+        width: 102px;
         border-radius: unset;
+        background: @primaryColor;
+        .el-icon-search {
+          font-size: 16px;
+          font-weight: 700;
+          color: #fff;
+        }
       }
     }
   }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>2icon</title>
+    <defs>
+        <path d="M7,0.333333333 C10.6818983,0.333333333 13.6666667,3.31810167 13.6666667,7 C13.6666667,10.6818983 10.6818983,13.6666667 7,13.6666667 C3.31810167,13.6666667 0.333333333,10.6818983 0.333333333,7 C0.333333333,3.31810167 3.31810167,0.333333333 7,0.333333333 Z M9.33328402,3.73333333 L6.99933333,6.06633333 L4.66637927,3.73333333 L3.72357023,4.67614237 L6.05633333,7.00933333 L3.72357023,9.34304713 L4.66637927,10.2858562 L6.99933333,7.95233333 L9.33328402,10.2858562 L10.2760931,9.34304713 L7.94233333,7.00933333 L10.2760931,4.67614237 L9.33328402,3.73333333 Z" id="path-1"></path>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="弹框-全局提示" transform="translate(-60.000000, -143.000000)">
+            <g id="错误" transform="translate(44.000000, 127.000000)">
+                <g id="2icon" transform="translate(16.000000, 16.000000)">
+                    <g id="close-circle" transform="translate(1.000000, 1.000000)">
+                        <mask id="mask-2" fill="white">
+                            <use xlink:href="#path-1"></use>
+                        </mask>
+                        <g id="01_PC/01_Basic/22_close-circle"></g>
+                        <g id="02_PC/01_填充/01_常规/02_R4-Error" mask="url(#mask-2)" fill="#D40000">
+                            <g transform="translate(-1.000000, -1.000000)" id="矩形">
+                                <rect x="0" y="0" width="16" height="16"></rect>
+                            </g>
+                        </g>
+                    </g>
+                    <rect id="01_PC/01_Basic/22_close-circle" fill="#000000" opacity="0" x="0" y="0" width="16" height="16"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

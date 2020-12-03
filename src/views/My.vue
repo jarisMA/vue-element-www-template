@@ -106,7 +106,10 @@ export default {
               plan_id: plan.planId
             })
             .then(() => {
-              this.$message.success("删除成功");
+              this.$notice({
+                type: "success",
+                title: "删除成功"
+              });
               this.plans.splice(index, 1);
             });
         })

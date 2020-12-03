@@ -5,12 +5,12 @@
       <h3 class="message-modal-header">
         <img
           class="close-icon"
-          src="～images/common/delete.svg"
+          src="@/assets/images/close_logo.svg"
           @click="cancel"
         />
       </h3>
       <div class="message-modal-body">
-        <img src="～images/common/deleteConfirm.svg" />
+        <img src="@/assets/images/common/deleteConfirm.svg" />
         <p>确认删除方案</p>
       </div>
       <div class="message-modal-footer">
@@ -31,6 +31,7 @@
 
 <script>
 export default {
+  name: "MessageBox",
   props: {
     title: {
       type: String,

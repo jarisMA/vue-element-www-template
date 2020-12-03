@@ -287,11 +287,11 @@
     .el-timeline-item__node--primary {
       background-color: #14af64; }
     .el-timeline-item__node--success {
-      background-color: #67C23A; }
+      background-color: #2DA641FF; }
     .el-timeline-item__node--warning {
-      background-color: #E6A23C; }
+      background-color: #FAAD14FF; }
     .el-timeline-item__node--danger {
-      background-color: #F56C6C; }
+      background-color: #D40000FF; }
     .el-timeline-item__node--info {
       background-color: #909399; }
   .el-timeline-item__dot {
