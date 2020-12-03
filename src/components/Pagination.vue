@@ -102,6 +102,11 @@ export default {
       cursor: pointer;
       user-select: none;
     }
+    .el-icon-more,
+    .el-icon.more {
+      height: 40px;
+      line-height: 40px;
+    }
     .el-pagination__jump {
       line-height: 40px;
     }

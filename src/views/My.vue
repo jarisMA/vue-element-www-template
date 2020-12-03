@@ -1,37 +1,47 @@
 <template>
-  <div class="my-container container-1200" v-loading="loading">
-    <div class="add-btn-wrapper">
-      <el-button class="add-btn" type="success" @click="addPlan"
-        >新建方案</el-button
-      >
+  <div class="my-container " v-loading="loading">
+    <div class="container-1200">
+      <el-row :gutter="24">
+        <el-col :span="5">
+          <div class="login-user-wrapper">
+            <el-avatar
+              :size="80"
+              class="login-user-image"
+              :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
+            ></el-avatar>
+            <span class="nickname">{{ userInfo.nickname }}</span>
+          </div>
+          <el-menu default-active="plan">
+            <el-menu-item index="plan">我的方案</el-menu-item>
+            <el-menu-item index="homework" disabled>我的作业</el-menu-item>
+            <el-menu-item index="course" disabled>我的课程</el-menu-item>
+          </el-menu>
+        </el-col>
+        <el-col :span="19">
+          <!-- <el-scrollbar class="scrollbar-section"> -->
+          <div class="add-btn-wrapper">
+            <el-button class="add-btn" type="success" @click="addPlan">
+              <img
+                src="@/assets/images/common/add.svg"
+                width="12"
+                height="12"
+              />
+              新建方案
+            </el-button>
+          </div>
+          <plan-list
+            canDelete
+            :plans="plans"
+            :size="planCount"
+            :total="planTotalCount"
+            theme="my"
+            @itemClick="editPlan"
+            @delete="delelePlan"
+          />
+          <!-- </el-scrollbar> -->
+        </el-col>
+      </el-row>
     </div>
-    <el-row :gutter="24">
-      <el-col :span="3">
-        <div class="login-user-wrapper">
-          <el-avatar
-            :size="60"
-            class="login-user-image"
-            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
-          ></el-avatar>
-          <span>{{ userInfo.nickname }}</span>
-        </div>
-        <el-menu default-active="plan">
-          <el-menu-item index="plan">我的方案</el-menu-item>
-          <el-menu-item index="homework" disabled>我的作业</el-menu-item>
-          <el-menu-item index="course" disabled>我的课程</el-menu-item>
-        </el-menu>
-      </el-col>
-      <el-col :span="21">
-        <plan-list
-          canDelete
-          :plans="plans"
-          :size="planCount"
-          :total="planTotalCount"
-          @itemClick="editPlan"
-          @delete="delelePlan"
-        />
-      </el-col>
-    </el-row>
   </div>
 </template>
 
@@ -90,13 +100,24 @@ export default {
       });
     },
     delelePlan(index, plan) {
-      kujialeService
-        .deleteDesign({
-          plan_id: plan.planId
+      this.$msgBox
+        .showMsgBox({
+          title: "添加分类",
+          content: "请填写分类名称",
+          isShowInput: true
         })
-        .then(() => {
-          this.$message.success("删除成功");
-          this.plans.splice(index, 1);
+        .then(async () => {
+          kujialeService
+            .deleteDesign({
+              plan_id: plan.planId
+            })
+            .then(() => {
+              this.$message.success("删除成功");
+              this.plans.splice(index, 1);
+            });
+        })
+        .catch(() => {
+          // ...
         });
     }
   }
@@ -104,15 +125,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "../assets/styles/variable.less";
+
+@leftWidth: 224px;
 .my-container {
-  padding: 20px 0;
+  background: #fafafa;
   .add-btn-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin-bottom: 15px;
+    margin: 20px;
     .add-btn {
-      margin-right: 10px;
-      box-shadow: 2px 2px gray;
+      width: 118px;
+      height: 32px;
+      line-height: 32px;
+      padding: 0;
+      font-size: 14px;
+      font-weight: 500;
+      color: #ffffff;
+      background: @primaryColor;
+      border-radius: unset;
+      img {
+        vertical-align: unset;
+        margin-right: 2px;
+      }
     }
   }
   .login-user-wrapper {
@@ -120,26 +155,56 @@ export default {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
+    width: @leftWidth;
+    height: @leftWidth;
+    background: #fff;
+    .nickname {
+      display: inline-block;
+      line-height: 30px;
+      font-size: 20px;
+      font-weight: 500;
+      color: #333333;
+    }
     .login-user-image {
-      margin-bottom: 10px;
-      border: 2px solid #14af64;
+      margin-bottom: 20px;
+      border: 2px solid @primaryColor;
       background-color: transparent;
       :hover {
         cursor: pointer;
       }
     }
   }
+  .el-menu {
+    width: @leftWidth;
+    border: unset;
+  }
   .el-menu-item {
-    margin-bottom: 2px;
-    height: 36px;
-    line-height: 36px;
-    text-align: center;
-    border: 1px solid gray;
-    box-shadow: 2px 2px gray;
-    &.is-active {
-      background: #ebf8ee;
+    position: relative;
+    height: 50px;
+    line-height: 50px;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333333;
+    background: #fff;
+    &:not(:last-child) {
+      border-bottom: 1px solid #e6e6e6ff;
     }
+    &.is-active {
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        content: "";
+        background: @primaryColor;
+      }
+    }
+  }
+  .scrollbar-section {
+    height: calc(100vh - 120px);
   }
   .plan-list {
     display: flex;

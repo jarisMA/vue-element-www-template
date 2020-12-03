@@ -1,6 +1,6 @@
 <template>
-  <div class="add-plan-container container-1200">
-    <el-tabs v-model="activeName" @tab-click="tabClick">
+  <div class="add-plan-container">
+    <el-tabs v-model="activeName">
       <el-tab-pane label="搜户型" name="first">
         <search-floor-plan />
       </el-tab-pane>
@@ -29,27 +29,20 @@ export default {
 
 <style lang="less" scoped>
 .add-plan-container {
-  padding: 20px 0;
+  width: 100%;
+  background: #fff;
+  padding: 25px 0 0;
   /deep/ .el-tabs {
     .el-tabs__nav-scroll {
       display: flex;
       justify-content: center;
     }
     .el-tabs__active-bar {
-      display: none;
+      // display: none;
     }
     .el-tabs__item {
       position: relative;
       padding: 0 20px !important;
-      &::after {
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        content: "";
-        height: 2px;
-        background: gray;
-      }
     }
     .el-tabs__nav-wrap::after {
       width: 0 !important;

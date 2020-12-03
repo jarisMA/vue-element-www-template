@@ -4,14 +4,18 @@
       <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i>
       <img :src="detail.planPic" :alt="detail.commName" />
     </div>
-    <div class="plan-card-bottom">
+    <div :class="['plan-card-bottom', theme]">
+      <h4 v-if="theme === 'my'" class="plan-name">{{ detail.name }}</h4>
       <span class="house-type"
-        >{{ detail.srcArea }}㎡ {{ detail.specName }}</span
+        >{{ detail.srcArea }}㎡ | {{ detail.specName }}</span
       >
-      <label class="house-address"
-        ><i class="el-icon-location-outline"></i> {{ detail.city }}
-        {{ detail.commName }}</label
-      >
+      <div class="house-desc">
+        <label class="house-address"
+          ><i class="el-icon-location-outline"></i> {{ filterCity }}
+          {{ detail.commName }}</label
+        >
+        <span v-if="theme === 'my'">{{ date }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +31,26 @@ export default {
     canDelete: {
       type: Boolean,
       default: false
+    },
+    theme: {
+      type: String,
+      default: ""
+    }
+  },
+  data() {
+    return {
+      filterCity: "",
+      date: ""
+    };
+  },
+  created() {
+    const { city, created } = this.detail;
+    this.filterCity = city;
+    if (this.theme === "my") {
+      let arr = city.split(" ");
+      this.filterCity = arr.length > 1 ? arr[1] : arr[0];
+      this.date =
+        new Date(created).getMonth() + 1 + "-" + new Date(created).getDay();
     }
   },
   methods: {
@@ -42,18 +66,29 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@padding: 12px;
 .plan-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 10px;
-  width: calc(100% - 20px);
-  border: 1px solid gray;
-  box-shadow: 2px 2px gray;
+  padding: 0 @padding;
+  width: 100%;
+  background: #fff;
+  border-radius: 4px;
   cursor: pointer;
   &:hover {
     .plan-card-top {
+      // &::after {
+      //   position: absolute;
+      //   top: 0;
+      //   left: -@padding;
+      //   width: calc(100% + @padding * 2);
+      //   height: 100%;
+      //   content: "";
+      //   z-index: 1;
+      //   background: #0000004d;
+      // }
       .el-icon-delete {
         display: inline;
       }
@@ -61,43 +96,78 @@ export default {
   }
   .plan-card-top {
     position: relative;
+    padding: @padding 0;
     width: 100%;
-    height: 200px;
+    height: 0;
+    padding-top: calc(100% + @padding * 2);
     text-align: center;
     .el-icon-delete {
       position: absolute;
       display: none;
-      top: 5px;
-      right: 5px;
+      // top: 50%;
+      // left: 50%;
+      // transform: translate(-50%, -50%);
+      top: @padding;
+      right: 0;
       color: red;
       cursor: pointer;
+      font-size: 12px;
+      z-index: 2;
     }
     img {
-      max-width: 100%;
-      max-height: 100%;
+      position: absolute;
+      top: @padding;
+      left: 0;
+      width: 100%;
+      object-fit: cover;
+      background: #f7f7f7;
     }
   }
   .plan-card-bottom {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 20px;
-    line-height: 20px;
-    border-top: 1px solid gray;
+    padding: 12px 0;
+    border-top: 1px solid #e6e6e6;
+    .plan-name,
     .house-type {
+      margin-bottom: 10px;
       width: 100%;
-      height: 20px;
+      height: 21px;
+      line-height: 21px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #333;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       font-weight: bold;
     }
-    .house-address {
+    .house-desc {
+      display: flex;
+      justify-content: space-between;
       width: 100%;
-      height: 20px;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+      height: 18px;
+      line-height: 12px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #ababab;
+      .house-address {
+        height: 18px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    &.my {
+      .house-type {
+        margin-bottom: 8px;
+        height: 12px;
+        line-height: 12px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #ababab;
+      }
     }
   }
 }

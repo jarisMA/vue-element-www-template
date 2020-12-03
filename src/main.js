@@ -8,10 +8,11 @@ import "@/assets/styles/reset.less";
 import "@/assets/styles/common.less";
 import "@/assets/styles/theme/index.css";
 import animate from "animate.css";
-
+import MessageBox from "@/components/MessageBox/index";
 Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(ElementUI);
+Vue.use(MessageBox);
 Vue.config.productionTip = false;
 new Vue({
   router,

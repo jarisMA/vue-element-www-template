@@ -3,6 +3,7 @@
     <div class="input-wrapper">
       <el-autocomplete
         placeholder="请输入楼盘名/小区"
+        prefix-icon="el-icon-location-outline"
         :fetch-suggestions="querySearch"
         v-model="address"
         class="input-with-select"
@@ -19,54 +20,57 @@
         <el-button
           slot="append"
           icon="el-icon-search"
+          type="primary"
           @click="search()"
         ></el-button>
       </el-autocomplete>
     </div>
     <div class="plan-wrapper" v-loading="planLoading">
-      <div v-if="!firstLoading">
-        <div class="result-tips">
-          <p class="result">
-            为您找到符合的户型：
-            <span class="number">{{ planTotalCount }}</span> 张
-          </p>
+      <div class="container-1200">
+        <div v-if="!firstLoading">
+          <div class="result-tips">
+            <p class="result">
+              为您找到符合的户型：
+              <span class="number">{{ planTotalCount }}</span> 张
+            </p>
+          </div>
+          <ul class="filters">
+            <li class="area-filter filter">
+              <span class="text">面积</span>
+              <ul class="filter-list">
+                <li
+                  :class="['filter-item', key === areaIndex ? 'active' : '']"
+                  v-for="(item, key) of areaFilters"
+                  :key="key"
+                  @click="clickAreaFilter(key)"
+                >
+                  {{ item.name }}
+                </li>
+              </ul>
+            </li>
+            <li class="spec-filter filter">
+              <span class="text">房型</span>
+              <ul class="filter-list">
+                <li
+                  :class="['filter-item', key === specIndex ? 'active' : '']"
+                  v-for="(item, key) of specFilters"
+                  :key="key"
+                  @click="clickSpecFilter(key)"
+                >
+                  {{ item.name }}
+                </li>
+              </ul>
+            </li>
+          </ul>
         </div>
-        <ul class="filters">
-          <li class="area-filter filter">
-            <span class="text">面积:</span>
-            <ul class="filter-list">
-              <li
-                :class="['filter-item', key === areaIndex ? 'active' : '']"
-                v-for="(item, key) of areaFilters"
-                :key="key"
-                @click="clickAreaFilter(key)"
-              >
-                {{ item.name }}
-              </li>
-            </ul>
-          </li>
-          <li class="spec-filter filter">
-            <span class="text">房型:</span>
-            <ul class="filter-list">
-              <li
-                :class="['filter-item', key === specIndex ? 'active' : '']"
-                v-for="(item, key) of specFilters"
-                :key="key"
-                @click="clickSpecFilter(key)"
-              >
-                {{ item.name }}
-              </li>
-            </ul>
-          </li>
-        </ul>
+        <plan-list
+          :plans="plans"
+          :size="planCount"
+          :total="planTotalCount"
+          @itemClick="createDesign"
+          @pageChange="search"
+        />
       </div>
-      <plan-list
-        :plans="plans"
-        :size="planCount"
-        :total="planTotalCount"
-        @itemClick="createDesign"
-        @pageChange="search"
-      />
     </div>
   </div>
 </template>
@@ -93,7 +97,7 @@ export default {
       },
       address: "",
       plans: [],
-      planCount: 8,
+      planCount: 16,
       planTotalCount: 0,
       areaFilters: [
         { area_min: null, area_max: null, name: "不限" },
@@ -155,6 +159,7 @@ export default {
           .then(data => {
             cb(data.result.map(item => ({ value: item.name })));
           });
+      !queryString && cb([]);
     },
     clickAreaFilter(key) {
       this.areaIndex = key;
@@ -165,33 +170,50 @@ export default {
       this.search();
     },
     createDesign(data) {
-      this.loading = true;
-      kujialeService
-        .createDesign({
-          plan_id: data.planId,
-          name: data.name + "_副本"
+      this.$prompt("请输入方案名称", "创建方案", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        inputValidator: value => {
+          if (!value) {
+            return false;
+          }
+          return true;
+        },
+        inputErrorMessage: "方案名称不能为空"
+      })
+        .then(({ value }) => {
+          this.loading = true;
+          kujialeService
+            .createDesign({
+              plan_id: data.planId,
+              name: value
+            })
+            .then(res => {
+              this.$message.success("方案创建成功");
+              this.$router.push({
+                name: "EditPlan",
+                params: {
+                  designId: res
+                }
+              });
+            })
+            .finally(() => {
+              this.loading = false;
+            });
         })
-        .then(res => {
-          this.$message.success("成功创建设计");
-          this.$router.push({
-            name: "EditPlan",
-            params: {
-              designId: res
-            }
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+        .catch(() => {});
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "../../../assets/styles/variable.less";
+
 .search-floor-plan-container {
+  margin-top: 15px;
   /deep/ .input-wrapper {
-    margin: 10px auto;
+    margin: 10px auto 40px;
     width: 500px;
     .el-autocomplete {
       width: 100%;
@@ -201,21 +223,38 @@ export default {
       width: 105px;
       border: unset;
     }
+    .el-input-group__append {
+      border-radius: unset;
+      border-color: @primaryColor;
+      .el-button {
+        border-radius: unset;
+      }
+    }
+  }
+  .plan-wrapper {
+    width: 100%;
+    min-height: calc(100vh - 120px - 175px);
+    background: #fafafa;
   }
   .result-tips {
-    margin-bottom: 10px;
-    padding-bottom: 10px;
-    font-size: 18px;
-    color: #666;
-    font-weight: 700;
-    border-bottom: 2px solid #e6e6e6;
+    padding-top: 40px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    line-height: 24px;
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+    border-bottom: 1px solid #e6e6e6;
     span.number {
-      color: #ea631a;
+      color: @primaryColor;
     }
   }
   .filters {
+    padding-bottom: 47px;
+    line-height: 14px;
     font-size: 14px;
-    color: #666;
+    font-weight: 500;
+    color: #333;
     .filter {
       display: flex;
       padding: 5px 0 0;
@@ -224,11 +263,18 @@ export default {
         .filter-item {
           padding: 0 10px;
           list-style: none;
+          font-weight: 400;
           cursor: pointer;
           &.active {
-            color: #35b558;
+            color: @primaryColor;
+          }
+          &:first-child {
+            padding-left: 48px;
           }
         }
+      }
+      &:not(:last-child) {
+        margin-bottom: 12px;
       }
     }
   }

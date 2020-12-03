@@ -1,41 +1,45 @@
 <!DOCTYPE html>
 <html lang="zh">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <title>斗西家计划 - 可以自己设计装修的学习平台</title>
-    <meta name="keywords" content="学习装修、家装设计、室内设计师培训、装修知识、家装环节、家装步骤、家装设计师"/>
-    <meta name="description" content="斗西家计划作为国内顶尖设计师创立的专为解决普通人装修困难的学习平台，让每一个装修的小白，都可以自学装修出自己最理想的家。"/>
-    <script>    
-    (function(win, export_obj) {
-        win['TeaAnalyticsObject'] = export_obj;
-        if (!win[export_obj]) {
-            function _collect() {
-                _collect.q.push(arguments);
-            }
-            _collect.q = _collect.q || [];
-            win[export_obj] = _collect;            
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+  <title>斗西家计划 - 可以自己设计装修的学习平台</title>
+  <meta name="keywords" content="学习装修、家装设计、室内设计师培训、装修知识、家装环节、家装步骤、家装设计师" />
+  <meta name="description" content="斗西家计划作为国内顶尖设计师创立的专为解决普通人装修困难的学习平台，让每一个装修的小白，都可以自学装修出自己最理想的家。" />
+  <script>
+    (function (win, export_obj) {
+      win['TeaAnalyticsObject'] = export_obj;
+      if (!win[export_obj]) {
+        function _collect() {
+          _collect.q.push(arguments);
         }
-        win[export_obj].l = +new Date();
+        _collect.q = _collect.q || [];
+        win[export_obj] = _collect;
+      }
+      win[export_obj].l = +new Date();
     })(window, 'collectEvent');
-    </script>
-    <script async src="https://sf1-scmcdn-tos.pstatp.com/goofy/log-sdk/collect/collect-autotrack-rangers.js"></script>
-    <script>
-        window.collectEvent('init', { 
-          app_id:200044,
-          channel: 'cn', 
-          autotrack: true
-        });
-        window.collectEvent('start')
-    </script>
-  </head>
-  <body>
-    <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
-    <div id="app"></div>
-    <!-- built files will be auto injected -->
-    <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
-  </body>
+  </script>
+  <script async src="https://sf1-scmcdn-tos.pstatp.com/goofy/log-sdk/collect/collect-autotrack-rangers.js"></script>
+  <script>
+    window.collectEvent('init', {
+      app_id: 200044,
+      channel: 'cn',
+      autotrack: true
+    });
+    window.collectEvent('start')
+  </script>
+</head>
+
+<body>
+  <noscript>
+    <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled.
+      Please enable it to continue.</strong>
+  </noscript>
+  <div id="app"></div>
+  <!-- built files will be auto injected -->
+  <script src="https://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js"></script>
+</body>
+
 </html>
