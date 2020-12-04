@@ -66,6 +66,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable.less";
 @padding: 12px;
 .plan-card {
   display: flex;
@@ -109,9 +110,9 @@ export default {
       // transform: translate(-50%, -50%);
       top: @padding;
       right: 0;
-      color: red;
+      color: @dangerColor;
       cursor: pointer;
-      font-size: 12px;
+      font-size: 16px;
       z-index: 2;
     }
     img {

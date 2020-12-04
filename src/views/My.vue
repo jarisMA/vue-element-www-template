@@ -55,7 +55,7 @@ export default {
       userLogo,
       loading: true,
       plans: [],
-      planCount: 8,
+      planCount: 16,
       planTotalCount: 0
     };
   },
@@ -193,7 +193,7 @@ export default {
   .add-btn-wrapper {
     display: flex;
     justify-content: flex-end;
-    margin: 20px;
+    margin: 20px 0;
     .add-btn {
       width: 118px;
       height: 32px;

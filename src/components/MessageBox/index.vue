@@ -103,7 +103,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~styles/variable.less";
-
+@width: 400px;
+@height: 270px;
 .message-box {
   position: fixed;
   top: 0;
@@ -126,19 +127,20 @@ export default {
     position: relative;
     display: flex;
     flex-direction: column;
-    width: 672px;
-    height: 500px;
+    width: @width;
+    height: @height;
     background: #ffffff;
     z-index: 1;
     .message-modal-header {
       position: relative;
-      // padding: 30px;
-      // height: 90px;
-      line-height: 30px;
+      width: 100%;
+      height: 18%;
       .close-icon {
         position: absolute;
-        top: 30px;
-        right: 30px;
+        top: 10px;
+        right: 10px;
+        width: auto;
+        height: 50%;
         cursor: pointer;
       }
     }
@@ -148,12 +150,16 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
+      margin-top: -14%;
+      height: 55%;
+      img {
+        height: 80%;
+      }
       p {
-        margin-top: 20px;
-        line-height: 36px;
-        font-size: 24px;
-        font-weight: bold;
-        color: @primaryColor;
+        line-height: 18px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
       }
     }
     .message-modal-footer {
@@ -161,28 +167,26 @@ export default {
       justify-content: center;
       align-items: center;
       width: 100%;
-      height: 140px;
+      height: 27%;
       background: #ededed;
       button {
-        width: 206px;
-        height: 50px;
+        width: 30%;
+        height: 50%;
         background: #ffffff;
+        font-size: 14px;
+        font-weight: 400;
         cursor: pointer;
         &.btn-default {
           border: 1px solid #b0b0b0;
-          font-size: 16px;
-          font-weight: 500;
           color: #787878;
         }
         &.btn-primary {
           border: unset;
           background: @primaryColor;
-          font-size: 16px;
-          font-weight: 500;
           color: #ffffff;
         }
         &:not(:last-child) {
-          margin-right: 86px;
+          margin-right: 12%;
         }
       }
     }

@@ -6,6 +6,12 @@ export const goHome = () => {
   });
 };
 
+export const goMy = () => {
+  return goRoute({
+    name: "My"
+  });
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

@@ -38,7 +38,7 @@
                   :size="60"
                   class="login-user-image"
                   :src="userInfo.avatar_url"
-                  @click.native="goMy"
+                  @click.native="goMy()"
                 ></el-avatar>
                 {{ userInfo.vip_expired }}
                 <p class="login-title">{{ userInfo.name }}</p>
@@ -65,7 +65,7 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
-import { goHome, goRoute } from "utils/routes";
+import { goHome, goRoute, goMy } from "utils/routes";
 
 export default {
   data() {
@@ -80,11 +80,7 @@ export default {
   },
   methods: {
     goHome,
-    goMy() {
-      this.$router.push({
-        name: "My"
-      });
-    },
+    goMy,
     planLinkVisible(link) {
       // if (
       //   this.$store.state.userInfo.id &&
@@ -99,9 +95,6 @@ export default {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
       this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", index);
-    },
-    handleGoMy() {
-      this.$router.push({ name: "My" });
     },
     wxLogin() {
       if (!this.userInfo.avatar_url) {
