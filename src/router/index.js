@@ -32,6 +32,11 @@ appRouter.beforeEach(async (to, from, next) => {
       next();
     }
   }
+  if (!Store.state.userInfo && to.meta.auth) {
+    next({
+      name: "Home"
+    });
+  }
   next();
 });
 

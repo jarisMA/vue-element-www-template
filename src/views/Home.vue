@@ -34,6 +34,7 @@
 
 <script>
 import { goRoute } from "utils/routes";
+import { mapState } from "vuex";
 
 export default {
   name: "Home",
@@ -42,13 +43,15 @@ export default {
       loading: false
     };
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
   methods: {
     goRoute,
     planLinkVisible(link) {
-      if (
-        this.$store.state.userInfo.id &&
-        !this.$store.state.userInfo.vip_expired
-      ) {
+      if (!this.userInfo) {
+        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+      } else if (!this.userInfo.vip_expired) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
       }
       goRoute(link, "_blank");

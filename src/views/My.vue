@@ -6,9 +6,11 @@
           <el-avatar
             :size="80"
             class="login-user-image"
-            :src="userInfo.avatar_url ? userInfo.avatar_url : userLogo"
+            :src="
+              userInfo && userInfo.avatar_url ? userInfo.avatar_url : userLogo
+            "
           ></el-avatar>
-          <span class="nickname">{{ userInfo.nickname }}</span>
+          <span class="nickname">{{ userInfo && userInfo.nickname }}</span>
         </div>
         <el-menu default-active="plan">
           <el-menu-item index="plan">我的方案</el-menu-item>

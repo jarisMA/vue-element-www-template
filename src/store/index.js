@@ -6,18 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loginDialogVisible: 0,
-    userInfo: {
-      id: null,
-      phone: null,
-      name: null,
-      realname: null,
-      sex: null,
-      birthday: null,
-      introduction: null,
-      avatar_url: null,
-      unionid: null,
-      vip_expired: null
-    }
+    userInfo: null
   },
   mutations: {
     USERINFO(state, userInfo) {

@@ -5,12 +5,18 @@ const routes = [
   {
     path: "/plan/add",
     name: "AddPlan",
-    component: AddPlan
+    component: AddPlan,
+    meta: {
+      auth: true
+    }
   },
   {
     path: "/plan/edit/:designId",
     name: "EditPlan",
-    component: EditPlan
+    component: EditPlan,
+    meta: {
+      auth: true
+    }
   }
 ];
 

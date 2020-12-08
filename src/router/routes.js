@@ -20,7 +20,10 @@ const routes = [
       {
         path: "/my",
         name: "My",
-        component: My
+        component: My,
+        meta: {
+          auth: true
+        }
       },
       ...routesPlan
     ]

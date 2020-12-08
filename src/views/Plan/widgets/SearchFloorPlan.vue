@@ -67,11 +67,52 @@
           :plans="plans"
           :size="planCount"
           :total="planTotalCount"
-          @itemClick="createDesign"
+          @itemClick="isCreateDesign"
           @pageChange="search"
         />
       </div>
     </div>
+    <el-dialog
+      width="700px"
+      :visible.sync="addVisible"
+      @before-close="beforeCloseDialog"
+    >
+      <div class="dialog-body">
+        <div class="dialog-left">
+          <img :src="creatingDesign.planPic" :alt="creatingDesign.commName" />
+        </div>
+        <div class="dialog-right">
+          <h3 class="dialog-title">新建方案</h3>
+          <p class="dialog-input">
+            <label class="dialog-label">方案名称：</label>
+            <el-input
+              placeholder="请输入方案名称"
+              v-model="planName"
+            ></el-input>
+          </p>
+          <p class="dialog-desc">
+            <label class="dialog-label">详细信息：</label>
+            <span
+              >{{ creatingDesign.srcArea }}㎡ |
+              {{ creatingDesign.specName }}</span
+            >
+            <span
+              ><i class="el-icon-location-outline"></i>
+              {{ creatingDesign.city }} {{ creatingDesign.commName }}
+            </span>
+          </p>
+          <div class="dialog-right-footer">
+            <el-button @click="addVisible = false">取消</el-button>
+            <el-button
+              type="primary"
+              @click="createDesign"
+              :loading="btnLoading"
+              >创建</el-button
+            >
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -87,6 +128,7 @@ export default {
   data() {
     return {
       loading: false,
+      addVisible: false,
       cityData: cityData,
       selectedCity: [1, 36],
       city: 36,
@@ -118,7 +160,15 @@ export default {
       ],
       specIndex: 0,
       planLoading: false,
-      firstLoading: true
+      firstLoading: true,
+      creatingDesign: {
+        specName: "",
+        planPic: "",
+        srcArea: "",
+        commName: ""
+      },
+      planName: "",
+      btnLoading: false
     };
   },
   methods: {
@@ -169,42 +219,46 @@ export default {
       this.specIndex = key;
       this.search();
     },
-    createDesign(data) {
-      this.$prompt("请输入方案名称", "创建方案", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        inputValidator: value => {
-          if (!value) {
-            return false;
-          }
-          return true;
-        },
-        inputErrorMessage: "方案名称不能为空"
-      })
-        .then(({ value }) => {
-          this.loading = true;
-          kujialeService
-            .createDesign({
-              plan_id: data.planId,
-              name: value
-            })
-            .then(res => {
-              this.$notice({
-                type: "success",
-                title: "方案创建成功"
-              });
-              this.$router.push({
-                name: "EditPlan",
-                params: {
-                  designId: res
-                }
-              });
-            })
-            .finally(() => {
-              this.loading = false;
-            });
+    beforeCloseDialog(done) {
+      if (this.btnLoading) {
+        return;
+      }
+      this.planName = "";
+      this.creatingDesign = null;
+      done();
+    },
+    isCreateDesign(data) {
+      this.creatingDesign = data;
+      this.addVisible = true;
+    },
+    createDesign() {
+      const value = this.planName;
+      if (!value) {
+        return;
+      }
+      const data = this.creatingDesign;
+      this.btnLoading = true;
+      kujialeService
+        .createDesign({
+          plan_id: data.planId,
+          name: value
         })
-        .catch(() => {});
+        .then(res => {
+          this.addVisible = false;
+          this.$notice({
+            type: "success",
+            title: "方案创建成功"
+          });
+          this.$router.push({
+            name: "EditPlan",
+            params: {
+              designId: res
+            }
+          });
+        })
+        .finally(() => {
+          this.btnLoading = false;
+        });
     }
   }
 };
@@ -293,6 +347,99 @@ export default {
     flex-wrap: wrap;
     .plan-item {
       width: 25%;
+    }
+  }
+  /deep/ .el-dialog {
+    .el-dialog__header {
+      padding: 0;
+    }
+    .el-dialog__body {
+      padding: 40px 30px;
+    }
+    .dialog-body {
+      display: flex;
+      width: 100%;
+      height: 320px;
+      .dialog-left,
+      .dialog-right {
+        padding: 10px 0;
+      }
+      .dialog-left {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 30px;
+        width: 300px;
+        height: 100%;
+        img {
+          width: 100%;
+          max-height: 300px;
+          object-fit: cover;
+        }
+      }
+      .dialog-right {
+        flex: 1;
+        width: 310px;
+        line-height: 1;
+        padding-left: 30px;
+        border-left: 1px solid #e6e6e6ff;
+        .dialog-title {
+          font-size: 16px;
+          font-weight: bold;
+          color: @primaryColor;
+        }
+        .dialog-input,
+        .dialog-desc {
+          display: flex;
+          flex-direction: column;
+          margin-top: 40px;
+        }
+        .dialog-label {
+          margin-bottom: 10px;
+          line-height: 14px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #787878;
+        }
+        .dialog-input {
+          .el-input__inner {
+            height: 32px;
+            line-height: 32px;
+            border-radius: unset;
+            border-color: #e6e6e6ff;
+            &::placeholder {
+              color: #e6e6e6;
+            }
+          }
+        }
+        .dialog-desc {
+          .dialog-label {
+            margin-bottom: 12px;
+          }
+          span {
+            display: inline-block;
+            line-height: 12px;
+            font-size: 12px;
+            font-weight: 400;
+            color: #ababab;
+            &:not(:last-child) {
+              margin-bottom: 10px;
+            }
+          }
+        }
+        .dialog-right-footer {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 46px;
+          .el-button {
+            padding: 9px 22px;
+            border-radius: unset;
+            &:not(:last-child) {
+              margin-right: 20px;
+            }
+          }
+        }
+      }
     }
   }
 }

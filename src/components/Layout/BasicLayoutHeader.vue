@@ -18,20 +18,15 @@
         </nav>
       </div>
       <div class="header-ft">
-        <p
-          class="PLAN-link"
-          @click="
-            planLinkVisible('https://seller.shejijia.com/decoration/user/login')
-          "
-        >
+        <p v-if="userInfo" class="PLAN-link" @click="goMy()">
           PLAN
         </p>
         <div class="user-handle-container" @click="wxLogin">
           <el-avatar
             class="el-avatar-border"
-            :src="userInfo.id ? userInfo.avatar_url : userLogo"
+            :src="userInfo ? userInfo.avatar_url : userLogo"
           ></el-avatar>
-          <div class="user-handle_show" v-if="userInfo.id">
+          <div class="user-handle_show" v-if="userInfo">
             <div class="show-container landing">
               <div class="login-content">
                 <el-avatar
@@ -65,7 +60,7 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
-import { goHome, goRoute, goMy } from "utils/routes";
+import { goHome, goMy } from "utils/routes";
 
 export default {
   data() {
@@ -81,23 +76,14 @@ export default {
   methods: {
     goHome,
     goMy,
-    planLinkVisible(link) {
-      // if (
-      //   this.$store.state.userInfo.id &&
-      //   !this.$store.state.userInfo.vip_expired
-      // ) {
-      //   return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
-      // }
-      goRoute(link, "_blank");
-    },
     loginDialogVisible(index) {
-      if (!this.$store.state.userInfo.id) {
+      if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
       this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", index);
     },
     wxLogin() {
-      if (!this.userInfo.avatar_url) {
+      if (!this.userInfo) {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
     },
