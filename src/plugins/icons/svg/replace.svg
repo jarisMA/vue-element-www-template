@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>替换icon</title>
+    <g id="主" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-编辑资料" transform="translate(-748.000000, -177.000000)">
+            <g id="替换icon" transform="translate(748.000000, 177.000000)">
+                <rect id="矩形备份-4" fill="#D8D8D8" opacity="0" x="0" y="0" width="24" height="24"></rect>
+                <g id="编组-2" transform="translate(4.000000, 4.000000)" fill="#14AF64">
+                    <path d="M16,8 C16,12.418278 12.418278,16 8,16 C4.2724501,16 1.14033727,13.4506308 0.252127147,10.0003581 L2.34165389,10.0006859 C3.16552033,12.3307123 5.38781865,14 8,14 C11.3137085,14 14,11.3137085 14,8 L16,8 L16,8 Z M8,0 C11.7279108,0 14.8602692,2.54986283 15.7481308,6.00064404 L13.6587023,6.00032181 C12.8351204,3.66976896 10.6125579,2 8,2 C4.6862915,2 2,4.6862915 2,8 L0,8 C0,3.581722 3.581722,0 8,0 Z" id="形状结合"></path>
+                    <polygon id="三角形备份-2" points="13 2 15 6 11 6"></polygon>
+                    <polygon id="三角形备份-3" transform="translate(3.000000, 12.000000) scale(1, -1) translate(-3.000000, -12.000000) " points="3 10 5 14 1 14"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

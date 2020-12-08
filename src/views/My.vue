@@ -129,7 +129,6 @@ export default {
 
 @leftWidth: 224px;
 .my-container {
-  background: #fafafa;
   .container-1200 {
     display: flex;
   }

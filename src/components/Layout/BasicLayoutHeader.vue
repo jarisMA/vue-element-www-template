@@ -33,7 +33,7 @@
                   :size="60"
                   class="login-user-image"
                   :src="userInfo.avatar_url"
-                  @click.native="goMy()"
+                  @click.native="goProfile()"
                 ></el-avatar>
                 {{ userInfo.vip_expired }}
                 <p class="login-title">{{ userInfo.name }}</p>
@@ -60,7 +60,7 @@
 </template>
 <script type="text/javascript">
 import { mapState } from "vuex";
-import { goHome, goMy } from "utils/routes";
+import { goHome, goMy, goProfile } from "utils/routes";
 
 export default {
   data() {
@@ -76,6 +76,7 @@ export default {
   methods: {
     goHome,
     goMy,
+    goProfile,
     loginDialogVisible(index) {
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);

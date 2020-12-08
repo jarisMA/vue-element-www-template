@@ -12,6 +12,12 @@ export const goMy = () => {
   });
 };
 
+export const goProfile = () => {
+  return goRoute({
+    name: "Profile"
+  });
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

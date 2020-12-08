@@ -1,9 +1,10 @@
 import routesPlan from "./routesPlan";
 
-import BasicLayout from "components/Layout/BasicLayout.vue";
-import Home from "@/views/Home.vue";
-import My from "@/views/My.vue";
-import Protocol from "@/views/Protocol.vue";
+import BasicLayout from "components/Layout/BasicLayout";
+import Home from "@/views/Home";
+import My from "@/views/My";
+import Protocol from "@/views/Protocol";
+import Profile from "@/views/Profile";
 
 const routes = [
   {
@@ -21,6 +22,14 @@ const routes = [
         path: "/my",
         name: "My",
         component: My,
+        meta: {
+          auth: true
+        }
+      },
+      {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
         meta: {
           auth: true
         }
