@@ -104,6 +104,7 @@ export default {
     text-align: center;
     .el-icon-delete {
       position: absolute;
+      padding: 4px;
       display: none;
       // top: 50%;
       // left: 50%;
@@ -114,6 +115,7 @@ export default {
       cursor: pointer;
       font-size: 16px;
       z-index: 2;
+      background: #e6e6e6b3;
     }
     img {
       position: absolute;

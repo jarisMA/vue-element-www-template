@@ -28,6 +28,7 @@
         </div>
         <plan-list
           canDelete
+          :showNoTips="!loading"
           :plans="plans"
           :size="planCount"
           :total="planTotalCount"

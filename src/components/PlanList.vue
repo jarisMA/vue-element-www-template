@@ -1,27 +1,36 @@
 <template>
   <div class="plan-list-container">
-    <ul class="plan-list">
-      <li
-        :class="['plan-item', theme]"
-        v-for="(item, index) of plans"
-        :key="item.planId"
-      >
-        <plan-card
-          :detail="item"
-          :canDelete="canDelete"
-          :theme="theme"
-          @itemClick="itemClick(item)"
-          @delete="deleteItem(index, item)"
-        />
-      </li>
-    </ul>
-    <pagination :pageSize="size" :total="total" @change-page="pageChange" />
+    <template v-if="plans.length > 0">
+      <ul class="plan-list">
+        <li
+          :class="['plan-item', theme]"
+          v-for="(item, index) of plans"
+          :key="item.planId"
+        >
+          <plan-card
+            :detail="item"
+            :canDelete="canDelete"
+            :theme="theme"
+            @itemClick="itemClick(item)"
+            @delete="deleteItem(index, item)"
+          />
+        </li>
+      </ul>
+      <pagination :pageSize="size" :total="total" @change-page="pageChange" />
+    </template>
+    <template v-else-if="showNoTips">
+      <div class="empty-wrapper">
+        <img :src="noPic" :alt="noText" />
+        <span>{{ noText }}</span>
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import Pagination from "components/Pagination";
 import PlanCard from "components/PlanCard";
+import defaultNoPic from "images/noPlan.png";
 
 export default {
   name: "PlanList",
@@ -48,6 +57,18 @@ export default {
     },
     theme: {
       type: String
+    },
+    showNoTips: {
+      type: Boolean,
+      default: false
+    },
+    noPic: {
+      type: String,
+      default: defaultNoPic
+    },
+    noText: {
+      type: String,
+      default: "暂无任何方案"
     }
   },
   methods: {
@@ -90,6 +111,24 @@ export default {
         padding-right: 0;
       }
     }
+  }
+}
+.empty-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 100px;
+  img {
+    width: 350px;
+  }
+  span {
+    display: inline-block;
+    margin-top: 24px;
+    line-height: 1;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ababab;
   }
 }
 </style>

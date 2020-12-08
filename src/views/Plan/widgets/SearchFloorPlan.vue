@@ -27,7 +27,7 @@
     </div>
     <div class="plan-wrapper" v-loading="planLoading">
       <div class="container-1200">
-        <div v-if="!firstLoading">
+        <div v-if="!firstLoading && plans.length > 0">
           <div class="result-tips">
             <p class="result">
               为您找到符合的户型：
@@ -67,6 +67,9 @@
           :plans="plans"
           :size="planCount"
           :total="planTotalCount"
+          :showNoTips="plans.length === 0 && !firstLoading"
+          :noPic="noResultPic"
+          noText="无符合条件的方案"
           @itemClick="isCreateDesign"
           @pageChange="search"
         />
@@ -120,6 +123,8 @@
 import cityData from "utils/city.json";
 import kujialeService from "@/global/service/kujiale";
 import PlanList from "components/PlanList";
+import noResultPic from "images/noResult.png";
+
 export default {
   name: "SearchFloorPlan",
   components: {
@@ -127,6 +132,7 @@ export default {
   },
   data() {
     return {
+      noResultPic,
       loading: false,
       addVisible: false,
       cityData: cityData,
