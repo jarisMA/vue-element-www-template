@@ -4,7 +4,7 @@
       <div class="form-wrapper">
         <div class="avatar-wrapper">
           <el-avatar :size="80" :src="userInfo.avatar_url"></el-avatar>
-          <div class="upload-avatar-wrapper">
+          <!-- <div class="upload-avatar-wrapper">
             <el-upload ref="upload" class="upload" action="" accept="image/*">
               <div class="upload-avatar">
                 <icon-svg
@@ -17,7 +17,7 @@
                 只能上传JPG/PNG/JPEG格式文件，且不超过2MB
               </label>
             </el-upload>
-          </div>
+          </div> -->
         </div>
 
         <el-form ref="form" class="form" :model="form" :rules="formRules">
