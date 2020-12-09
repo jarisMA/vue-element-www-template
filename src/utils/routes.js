@@ -18,6 +18,12 @@ export const goProfile = () => {
   });
 };
 
+export const goAddPlan = () => {
+  return goRoute({
+    name: "AddPlan"
+  });
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

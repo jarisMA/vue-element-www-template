@@ -4,14 +4,7 @@
       <div class="banner-section">
         <div class="left">
           <img src="~images/banner-1_title.svg" class="title" />
-          <button
-            class="apply"
-            @click="
-              planLinkVisible(
-                'https://seller.shejijia.com/decoration/user/login'
-              )
-            "
-          ></button>
+          <button class="apply" @click="createPlan"></button>
         </div>
         <img src="~images/banner-1_image.svg" class="right" />
       </div>
@@ -33,7 +26,7 @@
 </template>
 
 <script>
-import { goRoute } from "utils/routes";
+import { goRoute, goAddPlan } from "utils/routes";
 import { mapState } from "vuex";
 
 export default {
@@ -48,13 +41,12 @@ export default {
   },
   methods: {
     goRoute,
-    planLinkVisible(link) {
+    createPlan() {
+      console.log("enter");
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
-      } else if (!this.userInfo.vip_expired) {
-        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 7);
       }
-      goRoute(link, "_blank");
+      return goAddPlan();
     }
   }
 };
