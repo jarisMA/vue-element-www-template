@@ -1,5 +1,5 @@
-// const PREFIX_API = process.env.VUE_APP_HOST;
-const PREFIX_API = "";
+const PREFIX_API = process.env.VUE_APP_HOST;
+// const PREFIX_API = "";
 
 export default {
   users: `${PREFIX_API}/api/web/users`,
