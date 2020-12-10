@@ -6,7 +6,7 @@
       @click.native="handleTabClick"
     >
       <el-tab-pane label="搜户型" name="first">
-        <search-floor-plan :alreadyCreatedCount.sync="planTotalCount" />
+        <search-floor-plan />
       </el-tab-pane>
       <el-tab-pane label="自己画" name="second" disabled> </el-tab-pane>
     </el-tabs>
@@ -26,35 +26,28 @@ export default {
   },
   data() {
     return {
-      activeName: "first",
-      planTotalCount: 1
+      activeName: "first"
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
-  created() {
-    this.getData();
-  },
   methods: {
-    getData() {
-      kujialeService
-        .designList({
-          page: 0,
-          page_size: 5
-        })
-        .then(res => {
-          this.planTotalCount = res.totalCount;
-        });
-    },
     handleTabClick(e) {
       if (e.target.id === "tab-second") {
-        this.planTotalCount > 0 && this.userInfo.kujiale_type !== 1
-          ? this.$notice({
-              type: "warning",
-              title: "oops～方案创建数量已达上限"
-            })
-          : goDrawPlan();
+        kujialeService
+          .designList({
+            page: 0,
+            page_size: 5
+          })
+          .then(res => {
+            res.totalCount > 0 && this.userInfo.kujiale_type !== 1
+              ? this.$notice({
+                  type: "warning",
+                  title: "oops～方案创建数量已达上限"
+                })
+              : goDrawPlan();
+          });
       }
     }
   }

@@ -75,47 +75,15 @@
         />
       </div>
     </div>
-    <el-dialog
-      width="700px"
+    <edit-plan-name-dialog
+      title="新建方案"
+      confirmText="新建"
       :visible.sync="addVisible"
-      @before-close="beforeCloseDialog"
-    >
-      <div class="dialog-body">
-        <div class="dialog-left">
-          <img :src="creatingDesign.planPic" :alt="creatingDesign.commName" />
-        </div>
-        <div class="dialog-right">
-          <h3 class="dialog-title">新建方案</h3>
-          <p class="dialog-input">
-            <label class="dialog-label">方案名称：</label>
-            <el-input
-              placeholder="请输入方案名称"
-              v-model="planName"
-            ></el-input>
-          </p>
-          <p class="dialog-desc">
-            <label class="dialog-label">详细信息：</label>
-            <span
-              >{{ creatingDesign.srcArea }}㎡ |
-              {{ creatingDesign.specName }}</span
-            >
-            <span
-              ><i class="el-icon-location-outline"></i>
-              {{ creatingDesign.city }} {{ creatingDesign.commName }}
-            </span>
-          </p>
-          <div class="dialog-right-footer">
-            <el-button @click="addVisible = false">取消</el-button>
-            <el-button
-              type="primary"
-              @click="createDesign"
-              :loading="btnLoading"
-              >创建</el-button
-            >
-          </div>
-        </div>
-      </div>
-    </el-dialog>
+      :plan="creatingDesign"
+      :btnLoading="btnLoading"
+      @beforeClose="beforeCloseDialog"
+      @confirm="createDesign"
+    />
   </div>
 </template>
 
@@ -123,20 +91,17 @@
 import cityData from "utils/city.json";
 import kujialeService from "@/global/service/kujiale";
 import PlanList from "components/PlanList";
+import EditPlanNameDialog from "components/EditPlanNameDialog";
+
 import { goEditPlan } from "utils/routes";
 import noResultPic from "images/noResult.png";
 import { mapState } from "vuex";
 
 export default {
   name: "SearchFloorPlan",
-  props: {
-    alreadyCreatedCount: {
-      type: Number,
-      requried: true
-    }
-  },
   components: {
-    PlanList
+    PlanList,
+    EditPlanNameDialog
   },
   data() {
     return {
@@ -182,7 +147,6 @@ export default {
         commName: "",
         city: ""
       },
-      planName: "",
       btnLoading: false
     };
   },
@@ -237,26 +201,30 @@ export default {
       this.specIndex = key;
       this.search();
     },
-    beforeCloseDialog(done) {
+    beforeCloseDialog() {
       if (this.btnLoading) {
         return;
       }
-      this.planName = "";
-      this.creatingDesign = null;
-      done();
+      this.addVisible = false;
     },
     isCreateDesign(data) {
-      if (this.alreadyCreatedCount > 0 && this.userInfo.kujiale_type !== 1) {
-        return this.$notice({
-          type: "warning",
-          title: "oops～方案创建数量已达上限"
+      kujialeService
+        .designList({
+          page: 0,
+          page_size: 5
+        })
+        .then(res => {
+          if (res.totalCount > 0 && this.userInfo.kujiale_type !== 1) {
+            return this.$notice({
+              type: "warning",
+              title: "oops～方案创建数量已达上限"
+            });
+          }
+          this.creatingDesign = data;
+          this.addVisible = true;
         });
-      }
-      this.creatingDesign = data;
-      this.addVisible = true;
     },
-    createDesign() {
-      const value = this.planName;
+    createDesign(value) {
       if (!value) {
         return;
       }
@@ -273,10 +241,7 @@ export default {
             type: "success",
             title: "方案创建成功"
           });
-          this.$emit(
-            "update:alreadyCreatedCount",
-            this.alreadyCreatedCount + 1
-          );
+
           goEditPlan({
             designId: res
           });
@@ -372,99 +337,6 @@ export default {
     flex-wrap: wrap;
     .plan-item {
       width: 25%;
-    }
-  }
-  /deep/ .el-dialog {
-    .el-dialog__header {
-      padding: 0;
-    }
-    .el-dialog__body {
-      padding: 40px 30px;
-    }
-    .dialog-body {
-      display: flex;
-      width: 100%;
-      height: 320px;
-      .dialog-left,
-      .dialog-right {
-        padding: 10px 0;
-      }
-      .dialog-left {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-right: 30px;
-        width: 300px;
-        height: 100%;
-        img {
-          width: 100%;
-          max-height: 300px;
-          object-fit: cover;
-        }
-      }
-      .dialog-right {
-        flex: 1;
-        width: 310px;
-        line-height: 1;
-        padding-left: 30px;
-        border-left: 1px solid #e6e6e6ff;
-        .dialog-title {
-          font-size: 16px;
-          font-weight: bold;
-          color: @primaryColor;
-        }
-        .dialog-input,
-        .dialog-desc {
-          display: flex;
-          flex-direction: column;
-          margin-top: 40px;
-        }
-        .dialog-label {
-          margin-bottom: 10px;
-          line-height: 14px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #787878;
-        }
-        .dialog-input {
-          .el-input__inner {
-            height: 32px;
-            line-height: 32px;
-            border-radius: unset;
-            border-color: #e6e6e6ff;
-            &::placeholder {
-              color: #e6e6e6;
-            }
-          }
-        }
-        .dialog-desc {
-          .dialog-label {
-            margin-bottom: 12px;
-          }
-          span {
-            display: inline-block;
-            line-height: 12px;
-            font-size: 12px;
-            font-weight: 400;
-            color: #ababab;
-            &:not(:last-child) {
-              margin-bottom: 10px;
-            }
-          }
-        }
-        .dialog-right-footer {
-          display: flex;
-          justify-content: flex-end;
-          margin-top: 46px;
-          .el-button {
-            padding: 9px 22px;
-            border-radius: unset;
-            &:not(:last-child) {
-              margin-right: 20px;
-            }
-          }
-        }
-      }
     }
   }
 }
