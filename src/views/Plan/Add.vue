@@ -6,7 +6,7 @@
       @click.native="handleTabClick"
     >
       <el-tab-pane label="搜户型" name="first">
-        <search-floor-plan />
+        <search-floor-plan :alreadyCreatedCount.sync="planTotalCount" />
       </el-tab-pane>
       <el-tab-pane label="自己画" name="second" disabled> </el-tab-pane>
     </el-tabs>
@@ -16,6 +16,9 @@
 <script>
 import SearchFloorPlan from "./widgets/SearchFloorPlan";
 import { goDrawPlan } from "utils/routes";
+import kujialeService from "@/global/service/kujiale";
+import { mapState } from "vuex";
+
 export default {
   name: "AddPlan",
   components: {
@@ -23,13 +26,35 @@ export default {
   },
   data() {
     return {
-      activeName: "first"
+      activeName: "first",
+      planTotalCount: 1
     };
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  created() {
+    this.getData();
+  },
   methods: {
+    getData() {
+      kujialeService
+        .designList({
+          page: 0,
+          page_size: 5
+        })
+        .then(res => {
+          this.planTotalCount = res.totalCount;
+        });
+    },
     handleTabClick(e) {
       if (e.target.id === "tab-second") {
-        goDrawPlan();
+        this.planTotalCount > 0 && this.userInfo.kujiale_type !== 1
+          ? this.$notice({
+              type: "warning",
+              title: "oops～方案创建数量已达上限"
+            })
+          : goDrawPlan();
       }
     }
   }

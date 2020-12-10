@@ -125,9 +125,16 @@ import kujialeService from "@/global/service/kujiale";
 import PlanList from "components/PlanList";
 import { goEditPlan } from "utils/routes";
 import noResultPic from "images/noResult.png";
+import { mapState } from "vuex";
 
 export default {
   name: "SearchFloorPlan",
+  props: {
+    alreadyCreatedCount: {
+      type: Number,
+      requried: true
+    }
+  },
   components: {
     PlanList
   },
@@ -178,6 +185,9 @@ export default {
       planName: "",
       btnLoading: false
     };
+  },
+  computed: {
+    ...mapState(["userInfo"])
   },
   methods: {
     search(start = 1) {
@@ -236,6 +246,12 @@ export default {
       done();
     },
     isCreateDesign(data) {
+      if (this.alreadyCreatedCount > 0 && this.userInfo.kujiale_type !== 1) {
+        return this.$notice({
+          type: "warning",
+          title: "oops～方案创建数量已达上限"
+        });
+      }
       this.creatingDesign = data;
       this.addVisible = true;
     },
@@ -257,6 +273,10 @@ export default {
             type: "success",
             title: "方案创建成功"
           });
+          this.$emit(
+            "update:alreadyCreatedCount",
+            this.alreadyCreatedCount + 1
+          );
           goEditPlan({
             designId: res
           });

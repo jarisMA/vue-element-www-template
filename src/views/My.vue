@@ -89,6 +89,7 @@ import userLogo from "images/user_logo.svg";
 import { mapState } from "vuex";
 import PlanList from "components/PlanList";
 import kujialeService from "@/global/service/kujiale";
+import { goAddPlan } from "utils/routes";
 
 export default {
   name: "My",
@@ -136,9 +137,14 @@ export default {
         });
     },
     addPlan() {
-      this.$router.push({
-        name: "AddPlan"
-      });
+      if (this.plans.length > 0 && this.userInfo.kujiale_type !== 1) {
+        this.$notice({
+          type: "warning",
+          title: "oops～方案创建数量已达上限"
+        });
+      } else {
+        goAddPlan();
+      }
     },
     editPlan(data) {
       this.$router.push({
