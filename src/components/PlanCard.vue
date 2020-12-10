@@ -5,9 +5,12 @@
       <img :src="detail.planPic" :alt="detail.commName" />
     </div>
     <div :class="['plan-card-bottom', theme]">
-      <h4 v-if="theme === 'my'" class="plan-name" @click="nameClick">
-        {{ detail.name }}
-      </h4>
+      <div v-if="theme === 'my'" class="plan-name-wrapper">
+        <h4 class="plan-name">
+          {{ detail.name }}
+        </h4>
+        <i class="el-icon-edit" @click="editClick"></i>
+      </div>
       <span class="house-type"
         >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
       >
@@ -59,11 +62,9 @@ export default {
     itemClick() {
       this.$emit("itemClick");
     },
-    nameClick(e) {
-      if (this.theme === "my") {
-        this.$emit("nameClick");
-        e.stopPropagation();
-      }
+    editClick(e) {
+      this.$emit("editClick");
+      e.stopPropagation();
     },
     deleteItem(e) {
       e.stopPropagation();
@@ -100,6 +101,9 @@ export default {
       // }
       .el-icon-delete {
         display: inline;
+        &:hover {
+          transform: scale(1.5);
+        }
       }
     }
   }
@@ -140,6 +144,23 @@ export default {
     width: 100%;
     padding: 11px 0 24px;
     border-top: 1px solid #e6e6e6;
+    .plan-name-wrapper {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .plan-name {
+        flex: 1;
+        margin-bottom: 0;
+      }
+      .el-icon-edit {
+        color: @primaryColor;
+        font-weight: 700;
+        cursor: pointer;
+        &:hover {
+          transform: scale(1.5);
+        }
+      }
+    }
     .plan-name,
     .house-type {
       margin-bottom: 10px;
@@ -171,6 +192,7 @@ export default {
       }
       .plan-date {
         width: 37px;
+        text-align: right;
       }
     }
     &.my {

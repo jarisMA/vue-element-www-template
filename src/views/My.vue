@@ -34,7 +34,7 @@
           :total="planTotalCount"
           theme="my"
           @itemClick="editPlan"
-          @nameClick="isCreateDesign"
+          @editClick="isCreateDesign"
           @delete="delelePlan"
         />
         <!-- </el-scrollbar> -->
@@ -89,7 +89,7 @@ import userLogo from "images/user_logo.svg";
 import { mapState } from "vuex";
 import PlanList from "components/PlanList";
 import kujialeService from "@/global/service/kujiale";
-import { goAddPlan } from "utils/routes";
+import { goAddPlan, goEditPlan } from "utils/routes";
 
 export default {
   name: "My",
@@ -147,11 +147,8 @@ export default {
       }
     },
     editPlan(data) {
-      this.$router.push({
-        name: "EditPlan",
-        params: {
-          designId: data.designId
-        }
+      goEditPlan({
+        designId: data.designId
       });
     },
     delelePlan(index, plan) {

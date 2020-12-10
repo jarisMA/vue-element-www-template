@@ -12,7 +12,7 @@
             :canDelete="canDelete"
             :theme="theme"
             @itemClick="itemClick(item)"
-            @nameClick="nameClick(index, item)"
+            @editClick="editClick(index, item)"
             @delete="deleteItem(index, item)"
           />
         </li>
@@ -76,8 +76,8 @@ export default {
     itemClick(item) {
       this.$emit("itemClick", item);
     },
-    nameClick(index, item) {
-      this.$emit("nameClick", index, item);
+    editClick(index, item) {
+      this.$emit("editClick", index, item);
     },
     pageChange(page) {
       this.$emit("pageChange", page);
