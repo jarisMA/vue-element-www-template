@@ -1,19 +1,21 @@
 <template>
   <div class="add-plan-container">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="搜户型" name="first">
+    <el-tabs
+      v-model="activeName"
+      @tab-click="handleTabClick"
+      @click.native="handleTabClick"
+    >
+      <el-tab-pane label="搜户型" name="first" ref="firstTab">
         <search-floor-plan />
       </el-tab-pane>
-      <el-tab-pane label="自己画" name="second" disabled>
-        自己画
-      </el-tab-pane>
+      <el-tab-pane label="自己画" name="second" disabled> </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
 import SearchFloorPlan from "./widgets/SearchFloorPlan";
-
+import { goDrawPlan } from "utils/routes";
 export default {
   name: "AddPlan",
   components: {
@@ -23,6 +25,15 @@ export default {
     return {
       activeName: "first"
     };
+  },
+  methods: {
+    handleTabClick(e) {
+      console.log(e);
+      if (e.target.id === "tab-second") {
+        goDrawPlan();
+        this.$refs.firstTab.click();
+      }
+    }
   }
 };
 </script>
@@ -30,7 +41,7 @@ export default {
 <style lang="less" scoped>
 .add-plan-container {
   width: 100%;
-  background: #fff;
+  background: #fff !important;
   padding: 25px 0 0;
   /deep/ .el-tabs {
     .el-tabs__nav-scroll {
@@ -46,6 +57,10 @@ export default {
     }
     .el-tabs__nav-wrap::after {
       width: 0 !important;
+    }
+    .el-tabs__item.is-disabled {
+      color: #303133;
+      cursor: pointer;
     }
   }
   .iframe-container {

@@ -24,6 +24,24 @@ export const goAddPlan = () => {
   });
 };
 
+export const goEditPlan = (params, type = '_"blank') => {
+  return goRoute(
+    {
+      name: "EditPlan",
+      params
+    },
+    type
+  );
+};
+export const goDrawPlan = (type = '_"blank') => {
+  return goRoute(
+    {
+      name: "DrawPlan"
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

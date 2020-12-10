@@ -58,17 +58,17 @@ const errorRes = error => {
 axiosInstance.interceptors.response.use(successRes, errorRes);
 
 export default {
-  post (url = "", data = {}, config = {}) {
+  post(url = "", data = {}, config = {}) {
     return axiosInstance.post(url, data, config);
   },
-  put (url = "", data = {}, config = {}) {
+  put(url = "", data = {}, config = {}) {
     return axiosInstance.put(url, data, config);
   },
-  get (url = "", params = {}, config = {}) {
+  get(url = "", params = {}, config = {}) {
     const OPTIONS = Object.assign({ params }, config);
     return axiosInstance.get(url, OPTIONS);
   },
-  delete (url = "", params = {}, config = {}) {
+  delete(url = "", params = {}, config = {}) {
     const OPTIONS = Object.assign({ params }, config);
     return axiosInstance.delete(url, OPTIONS);
   }

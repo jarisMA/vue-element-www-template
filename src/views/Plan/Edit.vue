@@ -19,11 +19,19 @@ export default {
   },
   methods: {
     getData() {
-      kujialeService
-        .iframe(1, {
-          designid: this.$route.params.designId
-        })
-        .then(res => {
+      let promiseArr = [];
+      const routeName = this.$route.name;
+      if (routeName === "EditPlan") {
+        promiseArr.push(
+          kujialeService.iframe(1, {
+            designid: this.$route.params.designId
+          })
+        );
+      } else {
+        promiseArr.push(kujialeService.iframe(4));
+      }
+      Promise.all(promiseArr)
+        .then(([res]) => {
           this.url = res.url;
         })
         .finally(() => {
@@ -35,7 +43,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.edit-plan-container,
 .iframe {
-  height: calc(100vh - 120px);
+  width: 100vw;
+  height: 100vh;
 }
 </style>

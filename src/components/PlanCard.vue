@@ -5,7 +5,9 @@
       <img :src="detail.planPic" :alt="detail.commName" />
     </div>
     <div :class="['plan-card-bottom', theme]">
-      <h4 v-if="theme === 'my'" class="plan-name">{{ detail.name }}</h4>
+      <h4 v-if="theme === 'my'" class="plan-name" @click="nameClick">
+        {{ detail.name }}
+      </h4>
       <span class="house-type"
         >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
       >
@@ -56,6 +58,12 @@ export default {
   methods: {
     itemClick() {
       this.$emit("itemClick");
+    },
+    nameClick(e) {
+      if (this.theme === "my") {
+        this.$emit("nameClick");
+        e.stopPropagation();
+      }
     },
     deleteItem(e) {
       e.stopPropagation();

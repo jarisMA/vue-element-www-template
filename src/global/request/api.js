@@ -12,5 +12,7 @@ export default {
   kujialeDesignCreate: "/api/web/kujiale/design/creation",
   kujialeIframe: dest => `/api/web/kujiale/${dest}/iframe`,
   kujialeDesignList: "/api/web/kujiale/design/list",
-  kujialeDeleteDesign: "/api/web/kujiale/design/deletion"
+  kujialeDeleteDesign: "/api/web/kujiale/design/deletion",
+  kujialeUpdateDesignName: designId =>
+    `/api/web/kujiale/design/${designId}/basic`
 };

@@ -123,6 +123,7 @@
 import cityData from "utils/city.json";
 import kujialeService from "@/global/service/kujiale";
 import PlanList from "components/PlanList";
+import { goEditPlan } from "utils/routes";
 import noResultPic from "images/noResult.png";
 
 export default {
@@ -136,8 +137,8 @@ export default {
       loading: false,
       addVisible: false,
       cityData: cityData,
-      selectedCity: [1, 36],
-      city: 36,
+      selectedCity: [9, 39],
+      city: 39,
       cityProps: {
         label: "name",
         children: "cities",
@@ -171,7 +172,8 @@ export default {
         specName: "",
         planPic: "",
         srcArea: "",
-        commName: ""
+        commName: "",
+        city: ""
       },
       planName: "",
       btnLoading: false
@@ -255,11 +257,8 @@ export default {
             type: "success",
             title: "方案创建成功"
           });
-          this.$router.push({
-            name: "EditPlan",
-            params: {
-              designId: res
-            }
+          goEditPlan({
+            designId: res
           });
         })
         .finally(() => {

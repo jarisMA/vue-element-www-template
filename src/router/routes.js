@@ -5,6 +5,7 @@ import Home from "@/views/Home";
 import My from "@/views/My";
 import Protocol from "@/views/Protocol";
 import Profile from "@/views/Profile";
+import EditPlan from "@/views/Plan/Edit";
 
 const routes = [
   {
@@ -41,6 +42,22 @@ const routes = [
     path: "/protocol",
     name: "Protocol",
     component: Protocol
+  },
+  {
+    path: "/plan/edit/:designId",
+    name: "EditPlan",
+    component: EditPlan,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: "/plan/draw",
+    name: "DrawPlan",
+    component: EditPlan,
+    meta: {
+      auth: true
+    }
   }
 ];
 
