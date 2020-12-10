@@ -4,6 +4,7 @@
     :visible.sync="visible"
     :close-on-click-modal="false"
     :close-on-press-escape="false"
+    :show-close="false"
     @before-close="beforeCloseClick"
   >
     <div class="dialog-body">
@@ -11,25 +12,37 @@
         <the-loading-image :width="300" :height="300" :url="plan.planPic" />
       </div>
       <div class="dialog-right">
-        <h3 class="dialog-title">{{ title }}</h3>
-        <p class="dialog-input">
-          <label class="dialog-label">方案名称：</label>
-          <el-input placeholder="请输入方案名称" v-model="planName"></el-input>
-        </p>
-        <p class="dialog-desc">
-          <label class="dialog-label">详细信息：</label>
-          <span>{{ plan.srcArea }}㎡ | {{ plan.specName }}</span>
-          <span
-            ><i class="el-icon-location-outline"></i> {{ plan.city }}
-            {{ plan.commName }}
-          </span>
-        </p>
-        <div class="dialog-right-footer">
-          <el-button @click="cancelClick">取消</el-button>
-          <el-button type="primary" @click="confirmClick" :loading="btnLoading">
-            {{ confirmText }}
-          </el-button>
-        </div>
+        <i class="el-icon-close" @click="cancelClick" />
+        <el-form ref="form" :model="form" :rules="formRules" show-message>
+          <h3 class="dialog-title">{{ title }}</h3>
+          <p class="dialog-input">
+            <label class="dialog-label">方案名称：</label>
+            <el-form-item prop="name">
+              <el-input
+                placeholder="请输入方案名称"
+                v-model="form.name"
+              ></el-input>
+            </el-form-item>
+          </p>
+          <p class="dialog-desc">
+            <label class="dialog-label">详细信息：</label>
+            <span>{{ plan.srcArea }}㎡ | {{ plan.specName }}</span>
+            <span
+              ><i class="el-icon-location-outline"></i> {{ plan.city }}
+              {{ plan.commName }}
+            </span>
+          </p>
+          <div class="dialog-right-footer">
+            <el-button @click="cancelClick">取消</el-button>
+            <el-button
+              type="primary"
+              @click="confirmClick"
+              :loading="btnLoading"
+            >
+              {{ confirmText }}
+            </el-button>
+          </div>
+        </el-form>
       </div>
     </div>
   </el-dialog>
@@ -60,24 +73,49 @@ export default {
     btnLoading: {
       type: Boolean,
       default: false
+    },
+    type: {
+      type: String,
+      default: "edit"
     }
   },
   components: {
     TheLoadingImage
   },
+  watch: {
+    plan(val) {
+      this.form.name = this.type === "edit" ? val.name || "" : "";
+    }
+  },
   data() {
     return {
-      planName: ""
+      form: {
+        name: this.type === "edit" ? this.plan.name || "" : ""
+      },
+      formRules: {
+        name: [
+          {
+            required: true,
+            message: "方案名称不能为空"
+          }
+        ]
+      }
     };
   },
   methods: {
     confirmClick() {
-      this.$emit("confirm", this.planName);
+      this.$refs.form.validate(res => {
+        if (res) {
+          this.$emit("confirm", this.form.name);
+        }
+      });
     },
     cancelClick() {
+      this.$refs.form.resetFields();
       this.$emit("update:visible", false);
     },
     beforeCloseClick() {
+      this.$refs.form.resetFields();
       this.$emit("beforeClose");
     }
   }
@@ -111,11 +149,20 @@ export default {
       height: 100%;
     }
     .dialog-right {
+      position: relative;
       flex: 1;
       width: 310px;
       line-height: 1;
       padding-left: 30px;
       border-left: 1px solid #e6e6e6ff;
+      .el-icon-close {
+        position: absolute;
+        top: -20px;
+        right: -10px;
+        font-size: 20px;
+        color: #333333ff;
+        cursor: pointer;
+      }
       .dialog-title {
         font-size: 16px;
         font-weight: bold;
@@ -126,6 +173,9 @@ export default {
         display: flex;
         flex-direction: column;
         margin-top: 40px;
+      }
+      .dialog-desc {
+        margin-top: 20px;
       }
       .dialog-label {
         margin-bottom: 10px;

@@ -78,6 +78,7 @@
     <edit-plan-name-dialog
       title="新建方案"
       confirmText="新建"
+      type="add"
       :visible.sync="addVisible"
       :plan="creatingDesign"
       :btnLoading="btnLoading"

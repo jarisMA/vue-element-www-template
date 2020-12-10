@@ -1,5 +1,6 @@
 <template>
-  <div class="edit-plan-container" v-loading="loading || iframeLoading">
+  <div class="edit-plan-container">
+    <i class="el-icon-loading" />
     <iframe
       ref="iframe"
       class="iframe"
@@ -16,8 +17,6 @@ export default {
   name: "EditPlan",
   data() {
     return {
-      loading: true,
-      iframeLoading: true,
       url: ""
     };
   },
@@ -37,28 +36,35 @@ export default {
       } else {
         promiseArr.push(kujialeService.iframe(4));
       }
-      Promise.all(promiseArr)
-        .then(([res]) => {
-          this.url = res.url;
-          this.$refs.iframe.onload = () => {
-            this.iframeLoading = false;
-          };
-        })
-        .catch(() => {
-          this.iframeLoading = false;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      Promise.all(promiseArr).then(([res]) => {
+        this.url = res.url;
+      });
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable.less";
+
 .edit-plan-container,
 .iframe {
   width: 100vw;
   height: 100vh;
+}
+.edit-plan-container {
+  position: relative;
+  .el-icon-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 100px;
+    color: @primaryColor;
+    transform: translate(-50%, -50%);
+  }
+}
+.iframe {
+  position: relative;
+  z-index: 1;
 }
 </style>
