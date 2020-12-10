@@ -28,7 +28,6 @@ export default {
   },
   methods: {
     handleTabClick(e) {
-      console.log(e);
       if (e.target.id === "tab-second") {
         goDrawPlan();
       }
