@@ -22,8 +22,8 @@
         <!-- <el-scrollbar class="scrollbar-section"> -->
         <div class="add-btn-wrapper">
           <el-button class="add-btn" type="primary" @click="addPlan">
-            <img src="~images/common/add.svg" width="12" height="12" />
-            新建方案
+            <icon-svg svg-class="add-icon" svg-name="add" />
+            <span>新建方案</span>
           </el-button>
         </div>
         <plan-list
@@ -258,9 +258,9 @@ export default {
       font-size: 14px;
       font-weight: 500;
       border-radius: unset;
-      img {
-        vertical-align: unset;
-        margin-right: 2px;
+      .add-icon {
+        font-size: 12px;
+        margin: 0 4px 1px 0;
       }
     }
   }
