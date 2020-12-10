@@ -56,7 +56,7 @@
               </el-select>
             </el-form-item>
           </div>
-          <el-form-item label="标注" prop="remark">
+          <el-form-item label="学习目的" prop="remark">
             <el-input v-model="form.remark" placeholder="请输入内容"></el-input>
           </el-form-item>
           <el-form-item label="个人介绍" prop="introduction">
