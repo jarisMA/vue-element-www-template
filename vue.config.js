@@ -15,6 +15,14 @@ module.exports = {
         target: "https://api.home-plan.cn",
         changeOrigin: true,
         secure: false
+      },
+      "/upload": {
+        target: "http://homeplan-api.test",
+        pathRewrite: {
+          "^/upload": "/api"
+        },
+        changeOrigin: true,
+        secure: false
       }
     }
   },

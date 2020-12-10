@@ -14,5 +14,6 @@ export default {
   kujialeDesignList: "/api/web/kujiale/design/list",
   kujialeDeleteDesign: "/api/web/kujiale/design/deletion",
   kujialeUpdateDesignName: designId =>
-    `/api/web/kujiale/design/${designId}/basic`
+    `/api/web/kujiale/design/${designId}/basic`,
+  ossToken: "/api/alioss/token"
 };

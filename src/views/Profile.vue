@@ -4,8 +4,14 @@
       <div class="form-wrapper">
         <div class="avatar-wrapper">
           <el-avatar :size="80" :src="userInfo.avatar_url"></el-avatar>
-          <!-- <div class="upload-avatar-wrapper">
-            <el-upload ref="upload" class="upload" action="" accept="image/*">
+          <div class="upload-avatar-wrapper">
+            <el-upload
+              ref="upload"
+              class="upload"
+              action=""
+              accept="image/*"
+              :before-upload="uploadAvatar"
+            >
               <div class="upload-avatar">
                 <icon-svg
                   svg-class="replace-icon"
@@ -17,7 +23,7 @@
                 只能上传JPG/PNG/JPEG格式文件，且不超过2MB
               </label>
             </el-upload>
-          </div> -->
+          </div>
         </div>
 
         <el-form ref="form" class="form" :model="form" :rules="formRules">
@@ -84,6 +90,7 @@
 import { mapMutations, mapState } from "vuex";
 import { GENDER, IDENTITY } from "utils/const";
 import userService from "@/global/service/user";
+import ossService from "@/global/service/oss";
 
 export default {
   name: "Profile",
@@ -131,6 +138,12 @@ export default {
   },
   methods: {
     ...mapMutations(["USERINFO"]),
+    uploadAvatar(file) {
+      ossService.put({ file }).then(res => {
+        console.log(res);
+      });
+      return false;
+    },
     save() {
       this.$refs["form"].validate(res => {
         if (res) {
