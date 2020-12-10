@@ -5,7 +5,7 @@
       @tab-click="handleTabClick"
       @click.native="handleTabClick"
     >
-      <el-tab-pane label="搜户型" name="first" ref="firstTab">
+      <el-tab-pane label="搜户型" name="first">
         <search-floor-plan />
       </el-tab-pane>
       <el-tab-pane label="自己画" name="second" disabled> </el-tab-pane>
@@ -31,7 +31,6 @@ export default {
       console.log(e);
       if (e.target.id === "tab-second") {
         goDrawPlan();
-        this.$refs.firstTab.click();
       }
     }
   }
