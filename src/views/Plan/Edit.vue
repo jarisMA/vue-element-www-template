@@ -1,6 +1,12 @@
 <template>
-  <div class="edit-plan-container" v-loading="loading">
-    <iframe class="iframe" :src="url" width="100%" frameborder="0"></iframe>
+  <div class="edit-plan-container" v-loading="loading || iframeLoading">
+    <iframe
+      ref="iframe"
+      class="iframe"
+      :src="url"
+      width="100%"
+      frameborder="0"
+    ></iframe>
   </div>
 </template>
 
@@ -11,6 +17,7 @@ export default {
   data() {
     return {
       loading: true,
+      iframeLoading: true,
       url: ""
     };
   },
@@ -33,6 +40,12 @@ export default {
       Promise.all(promiseArr)
         .then(([res]) => {
           this.url = res.url;
+          this.$refs.iframe.onload = () => {
+            this.iframeLoading = false;
+          };
+        })
+        .catch(() => {
+          this.iframeLoading = false;
         })
         .finally(() => {
           this.loading = false;

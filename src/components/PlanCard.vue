@@ -2,7 +2,12 @@
   <div class="plan-card" @click="itemClick">
     <div class="plan-card-top">
       <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i>
-      <img :src="detail.planPic" :alt="detail.commName" />
+      <the-loading-image
+        class="image-wrapper"
+        :width="theme === 'my' ? 200 : 258"
+        :height="theme === 'my' ? 214 : 270"
+        :url="detail.planPic"
+      />
     </div>
     <div :class="['plan-card-bottom', theme]">
       <div v-if="theme === 'my'" class="plan-name-wrapper">
@@ -26,6 +31,8 @@
 </template>
 
 <script>
+import TheLoadingImage from "components/TheLoadingImage";
+
 export default {
   name: "PlanCard",
   props: {
@@ -41,6 +48,9 @@ export default {
       type: String,
       default: ""
     }
+  },
+  components: {
+    TheLoadingImage
   },
   data() {
     return {
@@ -89,21 +99,8 @@ export default {
   cursor: pointer;
   &:hover {
     .plan-card-top {
-      // &::after {
-      //   position: absolute;
-      //   top: 0;
-      //   left: -@padding;
-      //   width: calc(100% + @padding * 2);
-      //   height: 100%;
-      //   content: "";
-      //   z-index: 1;
-      //   background: #0000004d;
-      // }
       .el-icon-delete {
         display: inline;
-        &:hover {
-          transform: scale(1.5);
-        }
       }
     }
   }
@@ -118,9 +115,6 @@ export default {
       position: absolute;
       padding: 4px;
       display: none;
-      // top: 50%;
-      // left: 50%;
-      // transform: translate(-50%, -50%);
       top: @padding;
       right: 0;
       color: @dangerColor;
@@ -129,13 +123,11 @@ export default {
       z-index: 2;
       background: #e6e6e6b3;
     }
-    img {
+    .image-wrapper {
       position: absolute;
       top: @padding;
       left: 0;
       width: 100%;
-      object-fit: cover;
-      background: #f7f7f7;
     }
   }
   .plan-card-bottom {

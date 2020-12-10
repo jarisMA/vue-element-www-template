@@ -8,7 +8,7 @@
   >
     <div class="dialog-body">
       <div class="dialog-left">
-        <img :src="plan.planPic" :alt="plan.commName" />
+        <the-loading-image :width="300" :height="300" :url="plan.planPic" />
       </div>
       <div class="dialog-right">
         <h3 class="dialog-title">{{ title }}</h3>
@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import TheLoadingImage from "components/TheLoadingImage";
+
 export default {
   name: "EditPlanNameDialog",
   props: {
@@ -59,6 +61,9 @@ export default {
       type: Boolean,
       default: false
     }
+  },
+  components: {
+    TheLoadingImage
   },
   data() {
     return {
@@ -104,11 +109,6 @@ export default {
       margin-right: 30px;
       width: 300px;
       height: 100%;
-      img {
-        width: 100%;
-        max-height: 300px;
-        object-fit: cover;
-      }
     }
     .dialog-right {
       flex: 1;
