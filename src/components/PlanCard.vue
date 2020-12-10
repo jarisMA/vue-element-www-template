@@ -6,7 +6,7 @@
         class="image-wrapper"
         :width="theme === 'my' ? 200 : 258"
         :height="theme === 'my' ? 214 : 270"
-        :url="detail.planPic"
+        :url="detail.planPic || defaultCoverImg"
       />
     </div>
     <div :class="['plan-card-bottom', theme]">
@@ -32,6 +32,7 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
+import defaultCoverImg from "images/planCover.png";
 
 export default {
   name: "PlanCard",
@@ -54,6 +55,7 @@ export default {
   },
   data() {
     return {
+      defaultCoverImg,
       filterCity: "",
       date: ""
     };
