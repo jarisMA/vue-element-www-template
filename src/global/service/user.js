@@ -2,7 +2,10 @@ import request from "@/global/request/axios.js";
 import API from "@/global/request/api.js";
 
 const userService = {
-  getUserInfo: function() {
+  devLogin() {
+    return request.get(API.devLogin);
+  },
+  getUserInfo() {
     return request.get(
       API.userInfo,
       {},
@@ -11,7 +14,7 @@ const userService = {
       }
     );
   },
-  updateUserInfo: function(params) {
+  updateUserInfo(params) {
     return request.put(API.userInfo, params);
   }
 };

@@ -1,4 +1,5 @@
 export default {
+  devLogin: "/api/web/users/dev-login",
   users: "/api/web/users",
   logout: "/api/web/logout",
   userInfo: "/api/web/users/user-info",
@@ -15,5 +16,6 @@ export default {
   kujialeDeleteDesign: "/api/web/kujiale/design/deletion",
   kujialeUpdateDesignName: designId =>
     `/api/web/kujiale/design/${designId}/basic`,
-  ossToken: "/api/alioss/token"
+  ossToken: "/api/file/alioss-token",
+  ossStore: "/api/file/alioss-store"
 };

@@ -19,7 +19,11 @@ appRouter.firstInit = false;
 appRouter.beforeEach(async (to, from, next) => {
   NProgress.start();
   if (to.meta.title) document.title = to.meta.title;
-  const TOKEN = cookies.get("web_token");
+  let TOKEN = cookies.get("web_token");
+  if (!TOKEN && process.env.NODE_ENV === "development") {
+    await userService.devLogin();
+    TOKEN = cookies.get("web_token");
+  }
   if (TOKEN && !appRouter.firstInit) {
     try {
       const userInfo = await userService.getUserInfo();

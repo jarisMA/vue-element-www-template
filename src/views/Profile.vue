@@ -149,7 +149,11 @@ export default {
     uploadAvatar(file) {
       this.uploadingAvatar = true;
       ossService
-        .put({ file })
+        .put({
+          file,
+          space: "avatar",
+          folder: "avatar"
+        })
         .then(res => {
           this.form.avatar_url = res.url;
           this.uploadingAvatar = false;
