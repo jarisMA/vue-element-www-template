@@ -311,7 +311,7 @@ export default {
           if (!key) {
             this.$notice({
               type: "warning",
-              title: "请先发送手机验证码"
+              title: "请先发送验证码"
             });
             return;
           }

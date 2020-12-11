@@ -65,7 +65,7 @@ export default {
   top: 16px;
   left: 50%;
   padding: 16px 24px;
-  z-index: 1001;
+  z-index: 2008;
   transform: translateX(-50%);
   background: #fff;
   box-shadow: 0px 2px 12px 0px #cccccc;
