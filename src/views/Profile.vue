@@ -3,7 +3,7 @@
     <div class="container-1200">
       <div class="form-wrapper">
         <div class="avatar-wrapper">
-          <el-avatar :size="80" :src="userInfo.avatar_url"></el-avatar>
+          <el-avatar :size="80" :src="form.avatar_url"></el-avatar>
           <div class="upload-avatar-wrapper">
             <el-upload
               ref="upload"
@@ -105,7 +105,8 @@ export default {
         gender: "",
         identity: "",
         remark: "",
-        introduction: ""
+        introduction: "",
+        avatar_url: ""
       },
       formRules: {
         nickname: [{ required: true, message: "昵称不能为空" }],
@@ -122,14 +123,16 @@ export default {
       gender,
       identity,
       remark,
-      introduction
+      introduction,
+      avatar_url
     } = this.userInfo;
     this.form = {
       nickname,
       gender,
       identity: identity + "",
       remark,
-      introduction
+      introduction,
+      avatar_url
     };
     this.phone = phone;
   },
@@ -140,7 +143,7 @@ export default {
     ...mapMutations(["USERINFO"]),
     uploadAvatar(file) {
       ossService.put({ file }).then(res => {
-        console.log(res);
+        this.form.avatar_url = res.url;
       });
       return false;
     },
