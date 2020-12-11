@@ -1,19 +1,19 @@
 <template>
   <div class="notification-container" v-show="showNotification">
-    <img
+    <icon-svg
       class="notification-icon"
       v-if="type === 'success'"
-      src="~images/common/success.svg"
+      svg-name="success"
     />
-    <img
+    <icon-svg
       class="notification-icon"
       v-if="type === 'danger'"
-      src="~images/common/danger.svg"
+      svg-name="danger"
     />
-    <img
+    <icon-svg
       class="notification-icon"
       v-if="type === 'warning'"
-      src="~images/common/warning.svg"
+      svg-name="warning"
     />
     <span :class="['notification-content', type]">{{ title }}</span>
   </div>

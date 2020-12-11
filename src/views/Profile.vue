@@ -3,7 +3,11 @@
     <div class="container-1200">
       <div class="form-wrapper">
         <div class="avatar-wrapper">
-          <el-avatar :size="80" :src="form.avatar_url"></el-avatar>
+          <el-avatar
+            :size="80"
+            :src="form.avatar_url"
+            v-loading="uploadingAvatar"
+          ></el-avatar>
           <div class="upload-avatar-wrapper">
             <el-upload
               ref="upload"
@@ -99,6 +103,7 @@ export default {
       GENDER,
       IDENTITY,
       btnLoading: false,
+      uploadingAvatar: false,
       phone: "",
       form: {
         nickname: "",
@@ -142,14 +147,32 @@ export default {
   methods: {
     ...mapMutations(["USERINFO"]),
     uploadAvatar(file) {
-      ossService.put({ file }).then(res => {
-        this.form.avatar_url = res.url;
-      });
+      this.uploadingAvatar = true;
+      ossService
+        .put({ file })
+        .then(res => {
+          this.form.avatar_url = res.url;
+          this.uploadingAvatar = false;
+        })
+        .catch(flag => {
+          flag &&
+            this.$notice({
+              type: "danger",
+              title: "上传头像失败"
+            });
+          this.uploadingAvatar = false;
+        });
       return false;
     },
     save() {
       this.$refs["form"].validate(res => {
         if (res) {
+          if (this.uploadingAvatar) {
+            return this.$notice({
+              type: "warning",
+              title: "等待头像上传成功..."
+            });
+          }
           this.btnLoading = true;
           userService
             .updateUserInfo(this.form)
