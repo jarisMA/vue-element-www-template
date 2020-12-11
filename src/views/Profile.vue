@@ -308,6 +308,13 @@ export default {
       this.$refs.phoneForm.validate(res => {
         if (res) {
           const { phone, code, key } = this.phoneForm;
+          if (!key) {
+            this.$notice({
+              type: "warning",
+              title: "请先发送手机验证码"
+            });
+            return;
+          }
           this.phoneRequesting = true;
           smsService
             .smsBindPhone({
