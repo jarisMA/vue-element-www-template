@@ -55,7 +55,9 @@ export default {
             ev.origin === "https://www.kujiale.com" ||
             ev.origin === "https://yun.kujiale.com"
           ) {
-            const data = JSON.parse(ev.data);
+            const data =
+              (ev.data && typeof ev.data !== "object" && JSON.parse(ev.data)) ||
+              null;
             // if (data && data.action === "kjl_loaded") { // 监听是否加载完成
             // }
             if (data && data.action === "kjl_completed") {

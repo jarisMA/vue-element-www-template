@@ -39,7 +39,15 @@
           </el-form-item>
           <div class="inline-item">
             <el-form-item label="手机号">
-              <el-input v-model="phone" disabled></el-input>
+              <el-input v-model="userInfo.phone" disabled></el-input>
+            </el-form-item>
+            <el-form-item class="phone-change-button">
+              <el-button
+                type="primary"
+                size="small"
+                @click="phoneVisible = true"
+                >更改手机号</el-button
+              >
             </el-form-item>
           </div>
           <div class="inline-item">
@@ -87,6 +95,53 @@
         </el-form>
       </div>
     </div>
+    <el-dialog
+      class="phoneDialog"
+      width="400px"
+      title="更改手机号"
+      :visible.sync="phoneVisible"
+      :before-close="beforeClosePhoneDialog"
+    >
+      <el-form
+        size="small"
+        :model="phoneForm"
+        :rules="phoneFormRules"
+        ref="phoneForm"
+        label-width="80px"
+        class="phoneForm"
+      >
+        <el-form-item label="手机号">
+          <el-input type="text" v-model="userInfo.phone" disabled></el-input>
+        </el-form-item>
+        <el-form-item label="新手机号" prop="phone">
+          <el-input
+            type="text"
+            v-model="phoneForm.phone"
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="验证码" prop="code">
+          <el-input type="text" v-model="phoneForm.code" autocomplete="off">
+            <el-button slot="append" @click="sendVerifyCode">
+              {{
+                sendRequesting && sendPhoneCountDown > 0
+                  ? `${sendPhoneCountDown}s`
+                  : "发送验证码"
+              }}
+            </el-button>
+          </el-input>
+        </el-form-item>
+        <el-form-item class="phoneConfirmBtn">
+          <el-button
+            type="primary"
+            size="medium"
+            :loading="phoneRequesting"
+            @click="submitPhoneForm"
+            >确认</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -95,16 +150,48 @@ import { mapMutations, mapState } from "vuex";
 import { GENDER, IDENTITY } from "utils/const";
 import userService from "@/global/service/user";
 import ossService from "@/global/service/oss";
+import smsService from "@/global/service/sms.js";
 
 export default {
   name: "Profile",
   data() {
+    const validateRePhone = (rule, value, callback) => {
+      if (value === this.userInfo.phone) {
+        callback(new Error("新手机号不能与之前的手机号相同"));
+      }
+      callback();
+    };
     return {
       GENDER,
       IDENTITY,
       btnLoading: false,
       uploadingAvatar: false,
-      phone: "",
+      phoneVisible: false,
+      phoneForm: {
+        phone: "",
+        code: "",
+        key: ""
+      },
+      phoneFormRules: {
+        phone: [
+          { required: true, message: "请输入手机号码", trigger: "blur" },
+          {
+            pattern: /^1[3456789]\d{9}$/,
+            message: "目前只支持中国大陆的手机号码",
+            trigger: "blur"
+          },
+          {
+            validator: validateRePhone
+          }
+        ],
+        code: [
+          { required: true, message: "请输入验证码", trigger: "blur" },
+          { pattern: /^\d{4}$/, message: "请输入正确验证码", trigger: "blur" }
+        ]
+      },
+      sendRequesting: false,
+      sendPhoneCountDown: 0,
+      phoneRequesting: false,
       form: {
         nickname: "",
         gender: "",
@@ -124,7 +211,6 @@ export default {
   created() {
     const {
       nickname,
-      phone,
       gender,
       identity,
       remark,
@@ -139,7 +225,6 @@ export default {
       introduction,
       avatar_url
     };
-    this.phone = phone;
   },
   computed: {
     ...mapState(["userInfo"])
@@ -191,6 +276,62 @@ export default {
             });
         }
       });
+    },
+    sendVerifyCode() {
+      this.$refs.phoneForm.validateField("phone", err => {
+        if (!err) {
+          const { phone } = this.phoneForm;
+          this.sendRequesting = true;
+          smsService
+            .smsRegisterCode({ phone })
+            .then(res => {
+              this.countDown(60);
+              this.phoneForm.key = res.key;
+            })
+            .catch(() => {
+              this.sendRequesting = false;
+            });
+        }
+      });
+    },
+    countDown(time = 60) {
+      this.sendPhoneCountDown = time;
+      const timer = setInterval(() => {
+        --this.sendPhoneCountDown;
+        if (this.sendPhoneCountDown <= 0) {
+          this.sendRequesting = false;
+          clearInterval(timer);
+        }
+      }, 1000);
+    },
+    submitPhoneForm() {
+      this.$refs.phoneForm.validate(res => {
+        if (res) {
+          const { phone, code, key } = this.phoneForm;
+          this.phoneRequesting = true;
+          smsService
+            .smsBindPhone({
+              key,
+              code,
+              phone
+            })
+            .then(() => {
+              this.$notice({
+                title: "手机号更改成功！"
+              });
+              this.$store.commit("UPDATA_PHONE", phone);
+              this.phoneVisible = false;
+              this.$refs.phoneForm.resetFields();
+            })
+            .finally(() => {
+              this.phoneRequesting = false;
+            });
+        }
+      });
+    },
+    beforeClosePhoneDialog(done) {
+      this.$refs.phoneForm.resetFields();
+      done();
     }
   }
 };
@@ -244,6 +385,10 @@ export default {
       font-size: 14px;
       font-weight: 500;
       color: #333333;
+    }
+    .phone-change-button {
+      display: flex;
+      align-items: flex-end;
     }
     .el-input.is-disabled {
       .el-input__inner {
@@ -301,6 +446,32 @@ export default {
         padding: 0;
         line-height: 32px;
         border-radius: unset;
+      }
+    }
+  }
+  /deep/ .phoneDialog {
+    .el-dialog__header {
+      text-align: center;
+      span {
+        color: @primaryColor;
+      }
+    }
+    .el-dialog__body {
+      padding: 30px;
+    }
+    .phoneConfirmBtn {
+      margin: 0;
+      text-align: right;
+      .el-form-item__content {
+        margin-left: 0 !important;
+      }
+      .el-button {
+        width: 80px;
+      }
+    }
+    .el-input-group__append {
+      .el-button {
+        width: 98px;
       }
     }
   }

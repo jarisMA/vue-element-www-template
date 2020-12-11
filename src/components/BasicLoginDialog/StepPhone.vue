@@ -71,7 +71,7 @@
   </div>
 </template>
 <script>
-import smsService from "./../../global/service/sms.js";
+import smsService from "@/global/service/sms.js";
 
 export default {
   data() {

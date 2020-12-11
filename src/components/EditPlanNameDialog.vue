@@ -9,7 +9,11 @@
   >
     <div class="dialog-body">
       <div class="dialog-left">
-        <the-loading-image :width="300" :height="300" :url="plan.planPic" />
+        <the-loading-image
+          :width="300"
+          :height="300"
+          :url="plan.planPic || defaultCoverImg"
+        />
       </div>
       <div class="dialog-right">
         <i class="el-icon-close" @click="cancelClick" />
@@ -50,6 +54,7 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
+import defaultCoverImg from "images/planCover.png";
 
 export default {
   name: "EditPlanNameDialog",
@@ -89,6 +94,7 @@ export default {
   },
   data() {
     return {
+      defaultCoverImg,
       form: {
         name: this.type === "edit" ? this.plan.name || "" : ""
       },
