@@ -5,7 +5,6 @@ import Store from "@/store/index.js";
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
-axiosInstance.defaults.baseURL = process.env.VUE_APP_HOST;
 
 axiosInstance.interceptors.request.use(
   config => {

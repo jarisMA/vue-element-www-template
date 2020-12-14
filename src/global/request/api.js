@@ -1,21 +1,23 @@
+const PREFIX = `${process.env.VUE_APP_HOST}`;
+
 export default {
-  devLogin: "/api/web/users/dev-login",
-  users: "/api/web/users",
-  logout: "/api/web/logout",
-  userInfo: "/api/web/users/user-info",
-  wechatAuth: "/api/web/wechat/auth",
-  smsRegisterCode: "/api/web/sms/register-code",
-  bindPhone: "/api/web/sms/bind-phone",
-  statisticLog: "/api/web/statistic/log",
-  gothrough: "/api/web/kujiale/gothrough",
-  kujialeCommunity: "/api/web/kujiale/community",
-  kujialeFloorplan: "/api/web/kujiale/floorplan/standard",
-  kujialeDesignCreate: "/api/web/kujiale/design/creation",
-  kujialeIframe: dest => `/api/web/kujiale/${dest}/iframe`,
-  kujialeDesignList: "/api/web/kujiale/design/list",
-  kujialeDeleteDesign: "/api/web/kujiale/design/deletion",
+  devLogin: `${PREFIX}/api/web/users/dev-login`,
+  users: `${PREFIX}/api/web/users`,
+  logout: `${PREFIX}/api/web/logout`,
+  userInfo: `${PREFIX}/api/web/users/user-info`,
+  wechatAuth: `${PREFIX}/api/web/wechat/auth`,
+  smsRegisterCode: `${PREFIX}/api/web/sms/register-code`,
+  bindPhone: `${PREFIX}/api/web/sms/bind-phone`,
+  statisticLog: `${PREFIX}/api/web/statistic/log`,
+  gothrough: `${PREFIX}/api/web/kujiale/gothrough`,
+  kujialeCommunity: `${PREFIX}/api/web/kujiale/community`,
+  kujialeFloorplan: `${PREFIX}/api/web/kujiale/floorplan/standard`,
+  kujialeDesignCreate: `${PREFIX}/api/web/kujiale/design/creation`,
+  kujialeIframe: dest => `${PREFIX}/api/web/kujiale/${dest}/iframe`,
+  kujialeDesignList: `${PREFIX}/api/web/kujiale/design/list`,
+  kujialeDeleteDesign: `${PREFIX}/api/web/kujiale/design/deletion`,
   kujialeUpdateDesignName: designId =>
-    `/api/web/kujiale/design/${designId}/basic`,
-  ossToken: "/api/file/alioss-token",
-  ossStore: "/api/file/alioss-store"
+    `${PREFIX}/api/web/kujiale/design/${designId}/basic`,
+  ossToken: `${PREFIX}/api/file/alioss-token`,
+  ossStore: `${PREFIX}/api/file/alioss-store`
 };

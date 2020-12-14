@@ -8,7 +8,6 @@
       :src="url"
       :width="width"
       :height="height"
-      :style="{ backgroundColor: bgColor }"
       @error="error"
     />
   </div>
@@ -28,10 +27,6 @@ export default {
     url: {
       type: String,
       default: ""
-    },
-    bgColor: {
-      type: String,
-      default: "#fff"
     }
   },
   data() {
