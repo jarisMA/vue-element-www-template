@@ -233,24 +233,26 @@ export default {
     ...mapMutations(["USERINFO"]),
     uploadAvatar(file) {
       this.uploadingAvatar = true;
-      ossService
-        .put({
+      ossService.upload(
+        {
           file,
           space: "avatar",
           folder: "avatar"
-        })
-        .then(res => {
+        },
+        res => {
           this.form.avatar_url = res.url;
+        },
+        () => {
+          this.$notice({
+            type: "danger",
+            title: "上传头像失败"
+          });
+        },
+        () => {
+          this.$refs.upload.clearFiles();
           this.uploadingAvatar = false;
-        })
-        .catch(flag => {
-          flag &&
-            this.$notice({
-              type: "danger",
-              title: "上传头像失败"
-            });
-          this.uploadingAvatar = false;
-        });
+        }
+      );
       return false;
     },
     save() {
