@@ -17,7 +17,12 @@
           />
         </li>
       </ul>
-      <pagination :pageSize="size" :total="total" @change-page="pageChange" />
+      <pagination
+        :pageSize="size"
+        :current-page="page"
+        :total="total"
+        @change-page="pageChange"
+      />
     </template>
     <template v-else-if="showNoTips">
       <div class="empty-wrapper">
@@ -47,6 +52,10 @@ export default {
     size: {
       type: Number,
       default: 12
+    },
+    page: {
+      type: Number,
+      default: 1
     },
     total: {
       type: Number,

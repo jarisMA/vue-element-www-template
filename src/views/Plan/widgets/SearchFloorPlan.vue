@@ -66,6 +66,7 @@
         <plan-list
           :plans="plans"
           :size="planCount"
+          :page="planPage"
           :total="planTotalCount"
           :showNoTips="plans.length === 0 && !firstLoading"
           :noPic="noResultPic"
@@ -120,6 +121,7 @@ export default {
       address: "",
       plans: [],
       planCount: 16,
+      planPage: 1,
       planTotalCount: 0,
       areaFilters: [
         { area_min: null, area_max: null, name: "不限" },
@@ -172,6 +174,7 @@ export default {
             this.plans = res.result;
             this.planTotalCount = res.totalCount;
             this.firstLoading = false;
+            this.planPage = start;
           })
           .finally(() => {
             this.planLoading = false;

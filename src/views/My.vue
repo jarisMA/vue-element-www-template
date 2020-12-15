@@ -31,11 +31,13 @@
           :showNoTips="!loading"
           :plans="plans"
           :size="planCount"
+          :page="planPage"
           :total="planTotalCount"
           theme="my"
           @itemClick="editPlan"
           @editClick="isEditPlanInfo"
           @delete="delelePlan"
+          @pageChange="getPlan"
         />
         <!-- </el-scrollbar> -->
       </div>
@@ -70,6 +72,7 @@ export default {
       loading: true,
       plans: [],
       planCount: 16,
+      planPage: 1,
       planTotalCount: 0,
       addVisible: false,
       plan: {
@@ -90,6 +93,7 @@ export default {
   },
   methods: {
     getPlan(start = 1) {
+      this.loading = true;
       kujialeService
         .designList({
           page: start,
@@ -98,6 +102,7 @@ export default {
         .then(res => {
           this.planTotalCount = res.totalCount;
           this.plans = res.result;
+          this.planPage = start;
         })
         .finally(() => {
           this.loading = false;
