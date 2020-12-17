@@ -2,8 +2,8 @@
   <div class="term-list-container">
     <template v-if="terms.length > 0">
       <ul class="term-list">
-        <li :class="['term-item']" v-for="item of terms" :key="item.termId">
-          <term-card :detail="item.camp_term" />
+        <li :class="['term-item']" v-for="item of terms" :key="item.id">
+          <term-card :detail="item" />
         </li>
       </ul>
       <pagination

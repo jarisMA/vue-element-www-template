@@ -18,3 +18,10 @@ export const IDENTITY = {
   2: "设计师",
   3: "装修机构"
 };
+
+// 班级状态
+export const TERM_STATUS = {
+  0: "未开课",
+  1: "进行中",
+  2: "已结课"
+};

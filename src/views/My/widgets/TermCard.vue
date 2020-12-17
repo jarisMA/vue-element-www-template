@@ -14,11 +14,11 @@
         <label
           :class="{
             'term-status': true,
-            started: status === 1,
-            ended: status === 2,
-            unstart: status === 0
+            started: detail.status === 1,
+            ended: detail.status === 2,
+            unstart: detail.status === 0
           }"
-          >{{ TERM_STATUS[status] }}</label
+          >{{ TERM_STATUS[detail.status] }}</label
         >
       </div>
       <div class="term-time-wrapper">
@@ -37,11 +37,8 @@
 import TheLoadingImage from "components/TheLoadingImage";
 import defaultCoverImg from "images/planCover.png";
 import { formatDate } from "utils/moment";
-const TERM_STATUS = {
-  0: "未开课",
-  1: "已开课",
-  2: "已结课"
-};
+import { TERM_STATUS } from "utils/const";
+
 export default {
   name: "PlanCard",
   props: {
@@ -56,24 +53,8 @@ export default {
   data() {
     return {
       TERM_STATUS,
-      defaultCoverImg,
-      status: null
+      defaultCoverImg
     };
-  },
-  created() {
-    const { start_at, end_at } = this.detail;
-    this.status =
-      start_at && end_at
-        ? new Date().valueOf() > new Date(end_at).valueOf()
-          ? 2
-          : new Date().valueOf() > new Date(start_at).valueOf()
-          ? 1
-          : 0
-        : start_at
-        ? new Date().valueOf() > new Date(start_at).valueOf()
-          ? 1
-          : 0
-        : 0;
   },
   methods: {
     formatDate,
@@ -144,15 +125,15 @@ export default {
         color: #666666;
         background: #d8d8d8;
         border-radius: 10px;
-        .unstart {
+        &.unstart {
           color: #6e6e6e;
           background: #ffedcfff;
         }
-        .started {
+        &.started {
           color: #6e6e6e;
           background: #64ff5aff;
         }
-        .ended {
+        &.ended {
           color: #666666;
           background: #d8d8d8ff;
         }
