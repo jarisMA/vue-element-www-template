@@ -20,5 +20,6 @@ export default {
     `${PREFIX}/api/web/kujiale/design/${designId}/basic`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
-  campTerms: `${PREFIX}/api/web/camp/terms`
+  campTerms: `${PREFIX}/api/web/camp/terms`,
+  campTerm: id => `${PREFIX}/api/web/camp/term/${id}`
 };

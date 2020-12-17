@@ -3,7 +3,7 @@
     <template v-if="terms.length > 0">
       <ul class="term-list">
         <li :class="['term-item']" v-for="item of terms" :key="item.id">
-          <term-card :detail="item" />
+          <term-card :detail="item" @itemClick="goTerm(item.id)" />
         </li>
       </ul>
       <pagination
@@ -73,6 +73,14 @@ export default {
         .finally(() => {
           this.$emit("update:loading", false);
         });
+    },
+    goTerm(id) {
+      this.$router.push({
+        name: "Term",
+        params: {
+          id
+        }
+      });
     }
   }
 };

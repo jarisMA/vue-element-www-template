@@ -1,4 +1,5 @@
 import routesPlan from "./routesPlan";
+import routesTerm from "./routesTerm";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -34,7 +35,8 @@ const routes = [
           auth: true
         }
       },
-      ...routesPlan
+      ...routesPlan,
+      ...routesTerm
     ]
   },
   {
