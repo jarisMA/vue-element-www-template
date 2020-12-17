@@ -19,5 +19,6 @@ export default {
   kujialeUpdateDesignName: designId =>
     `${PREFIX}/api/web/kujiale/design/${designId}/basic`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
-  ossStore: `${PREFIX}/api/file/alioss-store`
+  ossStore: `${PREFIX}/api/file/alioss-store`,
+  campTerms: `${PREFIX}/api/web/camp/terms`
 };

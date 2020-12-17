@@ -3,7 +3,7 @@ import VueRouter from "vue-router";
 import routes from "./routes.js";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import userService from "@/global/service/user.js";
+import userService from "service/user.js";
 import Store from "@/store/index";
 import cookies from "js-cookie";
 

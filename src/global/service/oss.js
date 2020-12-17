@@ -1,5 +1,5 @@
-import axios from "@/global/request/axios";
-import API from "@/global/request/api";
+import axios from "request/axios";
+import API from "request/api";
 import OSS from "ali-oss";
 
 const ossService = {

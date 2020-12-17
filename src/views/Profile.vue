@@ -148,9 +148,9 @@
 <script>
 import { mapMutations, mapState } from "vuex";
 import { GENDER, IDENTITY } from "utils/const";
-import userService from "@/global/service/user";
-import ossService from "@/global/service/oss";
-import smsService from "@/global/service/sms.js";
+import userService from "service/user";
+import ossService from "service/oss";
+import smsService from "service/sms.js";
 
 export default {
   name: "Profile",

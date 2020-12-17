@@ -16,7 +16,7 @@
 <script>
 import SearchFloorPlan from "./widgets/SearchFloorPlan";
 import { goDrawPlan } from "utils/routes";
-import kujialeService from "@/global/service/kujiale";
+import kujialeService from "service/kujiale";
 import { mapState } from "vuex";
 
 export default {

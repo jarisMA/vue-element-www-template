@@ -49,6 +49,9 @@ module.exports = {
       .set("images", resolve("src/assets/images"))
       .set("styles", resolve("src/assets/styles"))
       .set("components", resolve("src/components"))
-      .set("utils", resolve("src/utils"));
+      .set("plugins", resolve("src/plugins"))
+      .set("utils", resolve("src/utils"))
+      .set("request", resolve("src/global/request"))
+      .set("service", resolve("src/global/service"));
   }
 };

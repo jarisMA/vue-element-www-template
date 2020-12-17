@@ -2,7 +2,7 @@ import routesPlan from "./routesPlan";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
-import My from "@/views/My";
+import My from "@/views/My/Index";
 import Protocol from "@/views/Protocol";
 import Profile from "@/views/Profile";
 
@@ -41,6 +41,10 @@ const routes = [
     path: "/protocol",
     name: "Protocol",
     component: Protocol
+  },
+  {
+    path: "/*",
+    redirect: { name: "Home" }
   }
 ];
 

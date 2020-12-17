@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import kujialeService from "@/global/service/kujiale";
+import kujialeService from "service/kujiale";
 import { goMy } from "utils/routes";
 export default {
   name: "EditPlan",

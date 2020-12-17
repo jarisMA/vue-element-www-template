@@ -25,7 +25,7 @@
  ** @event   success         [Object]    上传成功-触发    @arguments file => 文件 id => 七牛返回的数据
  ** @event   fail            [Object]    上传失败-触发     @arguments err => 失败
  */
-import qiniuService from "@/global/service/qiniu";
+import qiniuService from "service/qiniu";
 
 export default {
   components: {},

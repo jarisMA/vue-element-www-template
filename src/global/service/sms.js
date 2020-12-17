@@ -1,5 +1,5 @@
-import request from "@/global/request/axios.js";
-import API from "@/global/request/api.js";
+import request from "request/axios.js";
+import API from "request/api.js";
 
 const smsService = {
   smsRegisterCode: ({ phone }) => {

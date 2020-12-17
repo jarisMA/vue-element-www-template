@@ -91,7 +91,7 @@
 
 <script>
 import cityData from "utils/city.json";
-import kujialeService from "@/global/service/kujiale";
+import kujialeService from "service/kujiale";
 import PlanList from "components/PlanList";
 import EditPlanNameDialog from "components/EditPlanNameDialog";
 
