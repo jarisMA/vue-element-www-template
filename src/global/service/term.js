@@ -7,6 +7,9 @@ const termRequest = {
   },
   campTerm(id) {
     return request.get(API.campTerm(id));
+  },
+  campHomework(campId, termId, homeworkId, params = {}) {
+    return request.post(API.campHomework(campId, termId, homeworkId), params);
   }
 };
 

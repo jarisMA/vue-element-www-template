@@ -1,25 +1,28 @@
 <template>
-  <div class="plan-card" @click="itemClick">
+  <div
+    :class="['plan-card', activeIndex === detail.planId ? 'active' : '']"
+    @click="itemClick"
+  >
     <div class="plan-card-top">
       <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i>
       <the-loading-image
         class="image-wrapper"
-        :width="theme === 'my' ? 200 : 258"
-        :height="theme === 'my' ? 214 : 270"
+        :width="theme === 'my' ? 200 : theme === 'homework' ? 150 : 258"
+        :height="theme === 'my' ? 214 : theme === 'homework' ? 150 : 270"
         :url="detail.planPic || defaultCoverImg"
       />
     </div>
     <div :class="['plan-card-bottom', theme]">
-      <div v-if="theme === 'my'" class="plan-name-wrapper">
+      <div v-if="theme === 'my' || 'homework'" class="plan-name-wrapper">
         <h4 class="plan-name">
           {{ detail.name }}
         </h4>
-        <i class="el-icon-edit" @click="editClick"></i>
+        <i class="el-icon-edit" @click="editClick" v-if="theme === 'my'"></i>
       </div>
       <span class="house-type"
         >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
       >
-      <div class="house-desc">
+      <div class="house-desc" v-if="theme !== 'homework'">
         <label class="house-address"
           ><i class="el-icon-location-outline"></i> {{ filterCity }}
           {{ detail.commName }}</label
@@ -48,6 +51,10 @@ export default {
     theme: {
       type: String,
       default: ""
+    },
+    activeIndex: {
+      type: [String, Number],
+      default: null
     }
   },
   components: {
@@ -87,7 +94,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~styles/variable.less";
+@import "~styles/variable";
 @padding: 12px;
 .plan-card {
   display: flex;
@@ -97,9 +104,12 @@ export default {
   padding: 0 @padding;
   width: 100%;
   background: #fff;
-  border-radius: 4px;
   cursor: pointer;
+  &.active {
+    border: 1px solid @primaryColor;
+  }
   &:hover {
+    box-shadow: 0px 0px 12px 0px #cccccc;
     .plan-card-top {
       .el-icon-delete {
         display: inline;
@@ -138,6 +148,9 @@ export default {
     width: 100%;
     padding: 11px 0 24px;
     border-top: 1px solid #e6e6e6;
+    &.homework {
+      padding: 10px 0;
+    }
     .plan-name-wrapper {
       display: flex;
       align-items: center;
@@ -189,7 +202,8 @@ export default {
         text-align: right;
       }
     }
-    &.my {
+    &.my,
+    &.homework {
       .house-type {
         margin-bottom: 8px;
         height: 12px;

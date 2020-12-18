@@ -11,6 +11,7 @@
             :detail="item"
             :canDelete="canDelete"
             :theme="theme"
+            :activeIndex="activeIndex"
             @itemClick="itemClick(item)"
             @editClick="editClick(index, item)"
             @delete="deleteItem(index, item)"
@@ -18,9 +19,11 @@
         </li>
       </ul>
       <pagination
+        :class="['pagination-wrapper', theme]"
         :pageSize="size"
         :current-page="page"
         :total="total"
+        :layout="paginationLayout.layout || ''"
         @change-page="pageChange"
       />
     </template>
@@ -79,6 +82,16 @@ export default {
     noText: {
       type: String,
       default: "暂无任何方案"
+    },
+    activeIndex: {
+      type: [String, Number],
+      default: null
+    },
+    paginationLayout: {
+      type: Object,
+      default: () => {
+        return { layout: "jumper" };
+      }
     }
   },
   methods: {
@@ -113,7 +126,8 @@ export default {
       width: calc(100% / @count - @margin * (@count - 1) / @count);
       padding-right: 0;
     }
-    &.my {
+    &.my,
+    &.homework {
       width: calc(
         100% / @count - @myMargin * (@count - 1) / @count + @myMargin
       );
@@ -142,6 +156,24 @@ export default {
     font-size: 16px;
     font-weight: 500;
     color: #ababab;
+  }
+}
+.pagination-wrapper {
+  /deep/ &.homework {
+    .el-pagination {
+      margin: 0;
+      padding: 0;
+      .btn-prev {
+        margin-left: 0;
+      }
+      .btn-prev,
+      .btn-next,
+      .el-pager .number {
+        min-width: 20px;
+        height: 20px !important;
+        line-height: 20px;
+      }
+    }
   }
 }
 </style>

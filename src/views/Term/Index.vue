@@ -45,13 +45,100 @@
           </p>
           <ul class="homework-list">
             <li v-for="homework of homeworks" :key="homework.id">
-              <homework :homework="homework" />
+              <homework
+                :homework="homework"
+                @submitClick="showHomeworkDialog(homework)"
+              />
             </li>
           </ul>
         </el-tab-pane>
         <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
     </div>
+    <el-dialog
+      class="submitHomeworkDialog"
+      width="800px"
+      :visible.sync="visible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <el-steps class="step-wrapper" align-center :active="activeStep">
+        <el-step title="选择方案"></el-step>
+        <el-step title="小结"></el-step>
+      </el-steps>
+      <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
+        <plan-list
+          :showNoTips="!planLoading"
+          :plans="plans"
+          :activeIndex="activePlan && activePlan.planId"
+          :size="dialogPagination.size"
+          :page="dialogPagination.page"
+          :total="dialogPagination.total"
+          :paginationLayout="paginationLayout"
+          theme="homework"
+          @itemClick="selectPlan"
+          @pageChange="getPlans"
+        />
+      </div>
+      <div class="step-2" v-if="activeStep === 2">
+        <div class="select-plan-wrapper">
+          <label class="label-title">方案</label>
+          <div class="select-plan-card">
+            <div class="card-left">
+              <the-loading-image
+                :url="activePlan.planPic"
+                :width="200"
+                :height="200"
+              />
+            </div>
+            <div class="card-right">
+              <h4 class="card-name">
+                {{ activePlan.name }}
+              </h4>
+              <div class="card-right-bottom">
+                <div class="card-desc">
+                  <label>详细信息：</label>
+                  <span class="card-type">
+                    {{ parseInt(activePlan.srcArea) }}㎡ |
+                    {{ activePlan.specName }}
+                  </span>
+                  <span class="card-address">
+                    <i class="el-icon-location-outline"></i>
+                    {{ activePlan.filterCity }} {{ activePlan.commName }}
+                  </span>
+                </div>
+                <el-button class="button" type="primary" @click="stepBack">
+                  重新选择
+                </el-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="homework-content">
+          <label class="label-title">小结</label>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            maxlength="100"
+            show-word-limit
+            v-model="activePlanContent"
+            :rows="5"
+          ></el-input>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button class="button" @click="closeHomeworkDialog">取消</el-button>
+        <el-button
+          class="button"
+          type="primary"
+          :disabled="!activePlan"
+          @click="submit"
+        >
+          {{ activeStep === 2 ? "提交" : "下一步" }}
+        </el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -59,14 +146,19 @@
 import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
+import PlanList from "components/PlanList";
+
+import kujialeService from "service/kujiale";
 
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
+
 export default {
   name: "Term",
   components: {
     TheLoadingImage,
-    Homework
+    Homework,
+    PlanList
   },
   data() {
     return {
@@ -74,15 +166,32 @@ export default {
       loading: true,
       detail: null,
       activeName: "homework",
-      homeworks: []
+      homeworks: [],
+      visible: false,
+      activeStep: 1,
+      dialogPagination: {
+        size: 8,
+        page: 1,
+        total: 0
+      },
+      paginationLayout: {
+        small: true
+      },
+      plans: [],
+      planLoading: true,
+      activeHomework: null,
+      activePlan: null,
+      activePlanContent: ""
     };
   },
   created() {
     this.getData();
+    this.getPlans();
   },
   methods: {
     formatDate,
     getData() {
+      this.loading = true;
       termService
         .campTerm(this.$route.params.id)
         .then(res => {
@@ -92,14 +201,218 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    getPlans(start = 1) {
+      this.planLoading = true;
+      kujialeService
+        .designList({
+          page: start,
+          page_size: this.dialogPagination.size
+        })
+        .then(res => {
+          this.dialogPagination.total = res.totalCount;
+          this.plans = res.result;
+          this.dialogPagination.page = start;
+        })
+        .finally(() => {
+          this.planLoading = false;
+        });
+    },
+    showHomeworkDialog(homework) {
+      this.activeHomework = homework;
+      this.visible = true;
+    },
+    selectPlan(item) {
+      this.activePlan = item;
+      let arr = item.city.split(" ");
+      this.activePlan.filterCity = arr.length > 1 ? arr[1] : arr[0];
+    },
+    stepBack() {
+      this.activeStep = 1;
+      this.activePlan = null;
+    },
+    submit() {
+      if (this.activeStep === 1) {
+        this.activeStep = 2;
+      } else if (this.activeStep === 2) {
+        this.$confirm(
+          `提交后无法重新提交，是否确认提交作业「 ${this.activeHomework.name} 」？`
+        ).then(() => {
+          const {
+            planId,
+            name,
+            planPic,
+            srcArea,
+            specName,
+            city,
+            commName
+          } = this.activePlan;
+          const params = {
+            study_design_id: planId,
+            study_design_name: name,
+            study_design_pic: planPic,
+            study_design_src_area: srcArea,
+            study_design_spec_name: specName,
+            study_design_city: city,
+            study_design_comm_name: commName,
+            q_content: this.activePlanContent
+          };
+          const { camp_id, term_id, id } = this.activeHomework;
+          termService.campHomework(camp_id, term_id, id, params).then(() => {
+            this.$notice({
+              title: "作业提交成功"
+            });
+            this.closeHomeworkDialog();
+            this.getData();
+          });
+        });
+      }
+    },
+    closeHomeworkDialog() {
+      this.visible = false;
+      this.activeStep = 1;
+      this.activeHomework = null;
+      this.activePlan = null;
+      this.activePlanContent = null;
+      if (this.dialogPagination.page !== 1) {
+        this.getPlans();
+      }
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 .term-container {
   min-height: calc(100vh - 130px);
+  /deep/ .submitHomeworkDialog {
+    .el-dialog {
+      background: #f7f7f7ff;
+      .el-dialog__header {
+        padding: 0;
+      }
+      .el-dialog__body {
+        padding: 20px 30px;
+        height: 650px;
+      }
+      .el-dialog__footer {
+        padding: 0 30px 20px;
+      }
+      .step-wrapper {
+        margin: auto;
+        width: 167px;
+        .el-step__head {
+          &.is-finish {
+            .el-step__icon.is-text {
+              background: @primaryColor;
+            }
+          }
+          .el-step__icon.is-text {
+            width: 30px;
+            height: 30px;
+            color: #fff;
+            background: #d9d9d9ff;
+            border: none;
+            .el-step__icon-inner {
+              font-size: 14px;
+              font-weight: bold;
+            }
+          }
+        }
+        .el-step__title {
+          margin-top: 10px;
+          line-height: 1;
+          font-size: 12px;
+          font-weight: 400;
+          color: #ababab;
+        }
+      }
+      .my-plan-wrapper {
+        margin-top: 18px;
+      }
+      .step-2 {
+        padding-top: 44px;
+        .label-title {
+          display: inline-block;
+          margin-bottom: 10px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #333333;
+        }
+        .select-plan-card {
+          display: flex;
+          width: 100%;
+          height: 224px;
+          padding: 10px 20px 14px 11px;
+          background: #fff;
+          .card-left {
+            width: 200px;
+            height: 200px;
+            margin-right: 19px;
+          }
+          .card-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 10px 0;
+            .card-name {
+              font-size: 18px;
+              font-weight: bold;
+              color: #333333;
+            }
+            .card-right-bottom {
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+            }
+            .card-desc {
+              display: flex;
+              flex-direction: column;
+              line-height: 1;
+              label {
+                margin-bottom: 12px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #787878;
+              }
+              span {
+                display: inline-block;
+                font-size: 12px;
+                font-weight: 400;
+                color: #ababab;
+                &:not(:last-child) {
+                  margin-bottom: 10px;
+                }
+              }
+            }
+          }
+        }
+        .homework-content {
+          margin-top: 50px;
+          .el-textarea__inner {
+            border-color: #ccccccff;
+            border-radius: unset;
+          }
+        }
+      }
+      .button {
+        width: 74px;
+        height: 32px;
+        padding: 0;
+        line-height: 32px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #787878;
+        border-radius: unset;
+        &.el-button--primary {
+          color: #fff;
+        }
+      }
+    }
+  }
 }
 .term-info-wrapper {
   width: 100%;
@@ -199,6 +512,11 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #ababab;
+  }
+  .homework-list {
+    li:not(:last-child) {
+      margin-bottom: 20px;
+    }
   }
 }
 </style>

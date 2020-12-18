@@ -21,5 +21,7 @@ export default {
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
   campTerms: `${PREFIX}/api/web/camp/terms`,
-  campTerm: id => `${PREFIX}/api/web/camp/term/${id}`
+  campTerm: id => `${PREFIX}/api/web/camp/term/${id}`,
+  campHomework: (campId, termId, homeworkId) =>
+    `${PREFIX}/api/web/camp/${campId}/term/${termId}/homework/${homeworkId}`
 };

@@ -70,7 +70,7 @@ export default {
         case "next":
           return "sizes, prev, pager, next";
         default:
-          return "prev, pager, next, jumper";
+          return "prev, pager, next";
       }
     }
   }
