@@ -1,28 +1,26 @@
 <template>
-  <div class="my-container"
-       v-loading="loading">
+  <div class="my-container" v-loading="loading">
     <div class="container-1200">
       <div class="left-container">
         <div class="login-user-wrapper">
-          <el-avatar :size="80"
-                     class="login-user-image"
-                     :src="
+          <el-avatar
+            :size="80"
+            class="login-user-image"
+            :src="
               userInfo && userInfo.avatar_url ? userInfo.avatar_url : userLogo
-            "></el-avatar>
+            "
+          ></el-avatar>
           <span class="nickname">{{ userInfo && userInfo.nickname }}</span>
         </div>
-        <el-menu default-active="plan"
-                 @select="handleSelectMenu">
+        <el-menu default-active="plan" @select="handleSelectMenu">
           <el-menu-item index="plan">我的方案</el-menu-item>
           <el-menu-item index="term">我的班级</el-menu-item>
         </el-menu>
       </div>
       <div class="right-container">
         <!-- <el-scrollbar class="scrollbar-section"> -->
-        <my-plan v-if="currentMenu === 'plan'"
-                 :loading.sync="loading" />
-        <my-term v-if="currentMenu === 'term'"
-                 :loading.sync="loading" />
+        <my-plan v-if="currentMenu === 'plan'" :loading.sync="loading" />
+        <my-term v-if="currentMenu === 'term'" :loading.sync="loading" />
         <!-- </el-scrollbar> -->
       </div>
     </div>
@@ -41,7 +39,7 @@ export default {
     MyPlan,
     MyTerm
   },
-  data () {
+  data() {
     return {
       userLogo,
       loading: true,
@@ -52,7 +50,7 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    handleSelectMenu (menu) {
+    handleSelectMenu(menu) {
       this.currentMenu = menu;
     }
   }

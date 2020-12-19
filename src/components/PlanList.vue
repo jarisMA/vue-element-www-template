@@ -28,10 +28,7 @@
       />
     </template>
     <template v-else-if="showNoTips">
-      <div class="empty-wrapper">
-        <img :src="noPic" :alt="noText" />
-        <span>{{ noText }}</span>
-      </div>
+      <the-empty :noPic="noPic" :noText="noText" />
     </template>
   </div>
 </template>
@@ -39,13 +36,14 @@
 <script>
 import Pagination from "components/Pagination";
 import PlanCard from "components/PlanCard";
-import defaultNoPic from "images/noPlan.png";
+import TheEmpty from "components/TheEmpty";
 
 export default {
   name: "PlanList",
   components: {
     Pagination,
-    PlanCard
+    PlanCard,
+    TheEmpty
   },
   props: {
     plans: {
@@ -77,7 +75,7 @@ export default {
     },
     noPic: {
       type: String,
-      default: defaultNoPic
+      default: null
     },
     noText: {
       type: String,
@@ -138,24 +136,6 @@ export default {
         padding-right: 0;
       }
     }
-  }
-}
-.empty-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 100px;
-  img {
-    width: 350px;
-  }
-  span {
-    display: inline-block;
-    margin-top: 24px;
-    line-height: 1;
-    font-size: 16px;
-    font-weight: 500;
-    color: #ababab;
   }
 }
 .pagination-wrapper {

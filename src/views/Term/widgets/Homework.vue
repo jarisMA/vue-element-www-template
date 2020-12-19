@@ -1,49 +1,72 @@
 <template>
   <div class="homework-card">
+    <img
+      class="score-icon"
+      v-if="homework.user_homework && homework.user_homework.teacher_id && fold"
+      :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
+    />
+    <div
+      class="expired-tips"
+      v-if="!homework.user_homework && isExpired && fold"
+    >
+      <img src="~images/expired.png" />
+      <label>错过提交时间,下次早点来!</label>
+    </div>
     <div class="homework-info">
       <div class="homework-name-wrapper">
         <h4 class="homework-name">
           {{ homework.name }}
         </h4>
-        <label :class="{
+        <label
+          :class="{
             'homework-status': true,
-            unsubmit: !homework.user_homework,
+            unsubmit: !homework.user_homework && !isExpired,
+            expired: !homework.user_homework && isExpired,
             uncorrected:
               homework.user_homework && homework.user_homework.status === 0,
             corrected:
               homework.user_homework && homework.user_homework.status !== 0
-          }">
+          }"
+        >
           {{
             homework.user_homework
               ? HOMEWORK_STATUS[homework.user_homework.status]
+              : isExpired
+              ? "已过期"
               : "待提交"
           }}
         </label>
       </div>
       <div class="homework-time-wrapper">
-        <span class="homework-end">提交截止日期：{{ formatDate(homework.end_at) }}
+        <span class="homework-end"
+          >提交截止日期：{{ formatDate(homework.end_at) }}
         </span>
       </div>
     </div>
-    <div class="fold-wrapper"
-         v-show="fold">
+    <div class="fold-wrapper" v-show="fold">
       <div class="homework-desc-wrapper">
         <div class="homework-desc">
           <label class="homework-label">
             提交要求：
           </label>
-          <div class="homework-desc-content"
-               v-html="homework.description"></div>
+          <div
+            class="homework-desc-content"
+            v-html="homework.description"
+          ></div>
         </div>
-        <el-button class="homework-submit-btn"
-                   type="primary"
-                   :disabled="!!homework.user_homework"
-                   @click="handleSubmitClick">
+        <el-button
+          class="homework-submit-btn"
+          type="primary"
+          :disabled="!!homework.user_homework || isExpired"
+          @click="handleSubmitClick"
+        >
           上传作业
         </el-button>
       </div>
-      <div class="homework-desc-wrapper homework-submit-wrapper"
-           v-if="homework.user_homework">
+      <div
+        class="homework-desc-wrapper homework-submit-wrapper"
+        v-if="homework.user_homework"
+      >
         <div class="homework-desc">
           <label class="homework-label">
             小结：
@@ -54,9 +77,11 @@
         </div>
         <div class="homework-plan-card">
           <div class="card-left">
-            <the-loading-image :url="homework.user_homework.study_design_pic"
-                               :width="200"
-                               :height="200" />
+            <the-loading-image
+              :url="homework.user_homework.study_design_pic"
+              :width="200"
+              :height="200"
+            />
           </div>
           <div class="card-right">
             <h4 class="card-name">
@@ -77,33 +102,33 @@
           </div>
         </div>
       </div>
-      <div class="homework-reply-wrapper"
-           v-if="homework.user_homework.teacher_id">
-        <the-avatar :size="46"
-                    :url="homework.user_homework.teacher.avatar_url" />
+      <div
+        class="homework-reply-wrapper"
+        v-if="homework.user_homework && homework.user_homework.teacher_id"
+      >
+        <the-avatar
+          :size="46"
+          :url="homework.user_homework.teacher.avatar_url"
+        />
         <div class="reply-desc">
           <label class="reply-name">
             {{ homework.user_homework.teacher.nickname }}
           </label>
           <div class="reply-content-wrapper">
             <label>作业批复：</label>
-            <p>{{ homework.user_homework.a_content }}</p>
+            <p v-html="homework.user_homework.a_content"></p>
           </div>
         </div>
       </div>
     </div>
     <label class="fold-label">
-      <span v-if="!fold"
-            @click="fold = true">
+      <span v-if="!fold" @click="fold = true">
         展开
-        <icon-svg svg-class="unfold-icon"
-                  svg-name="fold" />
+        <icon-svg svg-class="unfold-icon" svg-name="fold" />
       </span>
-      <span v-else
-            @click="fold = false">
+      <span v-else @click="fold = false">
         收起
-        <icon-svg svg-class="fold-icon"
-                  svg-name="fold" />
+        <icon-svg svg-class="fold-icon" svg-name="fold" />
       </span>
     </label>
   </div>
@@ -111,9 +136,11 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
-import TheAvatar from 'components/TheAvatar';
+import TheAvatar from "components/TheAvatar";
 
 import { formatDate } from "utils/moment";
+import { USER_HOMEWORK_SCORE } from "utils/const";
+
 const HOMEWORK_STATUS = {
   0: "待批改",
   1: "已批改",
@@ -131,16 +158,27 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       HOMEWORK_STATUS,
-      fold: false
+      USER_HOMEWORK_SCORE,
+      fold: false,
+      isExpired: true
     };
+  },
+  created() {
+    this.judgeExpired();
   },
   methods: {
     formatDate,
-    handleSubmitClick () {
-      this.$emit("submitClick");
+    judgeExpired() {
+      this.isExpired = new Date(this.homework.end_at) <= new Date();
+    },
+    handleSubmitClick() {
+      this.judgeExpired();
+      if (!this.isExpired) {
+        this.$emit("submitClick");
+      }
     }
   }
 };
@@ -152,6 +190,7 @@ export default {
 @leftMarginRight: 20px;
 @unsubmit: #96eeff;
 @uncorrected: #ffb163ff;
+@expired: #a0a0a0ff;
 .homework-card {
   position: relative;
   width: 100%;
@@ -190,6 +229,10 @@ export default {
           background: @unsubmit;
           border-radius: 50%;
         }
+      }
+      &.expired {
+        color: @expired;
+        border-color: @expired;
       }
       &.uncorrected {
         color: @uncorrected;
@@ -368,8 +411,26 @@ export default {
   }
 }
 .score-icon {
-  // position: absolute;
-  // top: 10px;
-  // right: 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+.expired-tips {
+  position: absolute;
+  top: 50px;
+  right: 147px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 114px;
+    height: 80px;
+  }
+  label {
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #ababab;
+  }
 }
 </style>

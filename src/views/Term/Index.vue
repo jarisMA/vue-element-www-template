@@ -51,6 +51,10 @@
               />
             </li>
           </ul>
+          <the-empty
+            v-if="homeworks.length === 0 && !loading"
+            noText="暂无作业可发挥"
+          />
         </el-tab-pane>
         <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
@@ -147,6 +151,7 @@ import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
 import PlanList from "components/PlanList";
+import TheEmpty from "components/TheEmpty.vue";
 
 import kujialeService from "service/kujiale";
 
@@ -158,7 +163,8 @@ export default {
   components: {
     TheLoadingImage,
     Homework,
-    PlanList
+    PlanList,
+    TheEmpty
   },
   data() {
     return {

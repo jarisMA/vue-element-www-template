@@ -14,10 +14,7 @@
       />
     </template>
     <template v-else-if="showNoTips">
-      <div class="empty-wrapper">
-        <img :src="defaultNoPic" :alt="noText" />
-        <span>{{ noText }}</span>
-      </div>
+      <the-empty noText="暂未加入任何班级" />
     </template>
   </div>
 </template>
@@ -25,14 +22,15 @@
 <script>
 import termService from "service/term";
 import Pagination from "components/Pagination";
-import defaultNoPic from "images/noPlan.png";
+import TheEmpty from "components/TheEmpty";
 import TermCard from "./TermCard";
 
 export default {
   name: "MyTerm",
   components: {
     Pagination,
-    TermCard
+    TermCard,
+    TheEmpty
   },
   props: {
     loading: {
@@ -42,8 +40,6 @@ export default {
   },
   data() {
     return {
-      defaultNoPic,
-      noText: "暂未加入任何班级",
       terms: [],
       pagination: {
         size: 16,
@@ -103,24 +99,6 @@ export default {
       width: calc(100% / @count - @margin * (@count - 1) / @count);
       padding-right: 0;
     }
-  }
-}
-.empty-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 100px;
-  img {
-    width: 350px;
-  }
-  span {
-    display: inline-block;
-    margin-top: 24px;
-    line-height: 1;
-    font-size: 16px;
-    font-weight: 500;
-    color: #ababab;
   }
 }
 </style>
