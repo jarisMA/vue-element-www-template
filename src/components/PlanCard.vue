@@ -74,7 +74,7 @@ export default {
       let arr = city.split(" ");
       this.filterCity = arr.length > 1 ? arr[1] : arr[0];
       this.date =
-        new Date(created).getMonth() + 1 + "-" + new Date(created).getDay();
+        new Date(created).getMonth() + 1 + "-" + new Date(created).getDate();
     }
   },
   methods: {
