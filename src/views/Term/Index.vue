@@ -86,6 +86,9 @@
         />
       </div>
       <div class="step-2" v-if="activeStep === 2">
+        <h3 class="select-homework-title">
+          {{ activeHomework.name }}
+        </h3>
         <div class="select-plan-wrapper">
           <label class="label-title">方案</label>
           <div class="select-plan-card">
@@ -350,6 +353,24 @@ export default {
           font-size: 14px;
           font-weight: 500;
           color: #333333;
+        }
+        .select-homework-title {
+          position: relative;
+          margin-bottom: 20px;
+          padding-left: 14px;
+          line-height: 20px;
+          font-size: 20px;
+          font-weight: bold;
+          color: #333333;
+          &::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            content: "";
+            background: @primaryColor;
+          }
         }
         .select-plan-card {
           display: flex;
