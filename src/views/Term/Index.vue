@@ -458,8 +458,8 @@ export default {
             background: #ffedcfff;
           }
           &.started {
-            color: #6e6e6e;
-            background: #64ff5aff;
+            color: #fff;
+            background: #18c20eff;
           }
           &.ended {
             color: #666666;

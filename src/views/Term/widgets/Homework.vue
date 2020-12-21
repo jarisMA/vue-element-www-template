@@ -188,7 +188,7 @@ export default {
 @import "~styles/variable";
 @leftWidth: 692px;
 @leftMarginRight: 20px;
-@unsubmit: #96eeff;
+@unsubmit: #61c3d0ff;
 @uncorrected: #ffb163ff;
 @expired: #a0a0a0ff;
 .homework-card {

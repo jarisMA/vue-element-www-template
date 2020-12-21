@@ -126,15 +126,15 @@ export default {
         background: #d8d8d8;
         border-radius: 10px;
         &.unstart {
-          color: #6e6e6e;
+          color: #eab968ff;
           background: #ffedcfff;
         }
         &.started {
-          color: #6e6e6e;
-          background: #64ff5aff;
+          color: #ffffffff;
+          background: #18c20eff;
         }
         &.ended {
-          color: #666666;
+          color: #999999ff;
           background: #d8d8d8ff;
         }
       }
