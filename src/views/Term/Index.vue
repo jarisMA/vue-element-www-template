@@ -242,7 +242,12 @@ export default {
         this.activeStep = 2;
       } else if (this.activeStep === 2) {
         this.$confirm(
-          `提交后无法重新提交，是否确认提交作业「 ${this.activeHomework.name} 」？`
+          `请确认已按要求完成作业，提交后请耐心等待老师批复。`,
+          "",
+          {
+            confirmButtonText: "确定提交",
+            cancelButtonText: "再调整一下"
+          }
         ).then(() => {
           const {
             planId,
