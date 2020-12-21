@@ -1,10 +1,10 @@
-import SImg from "images/A+.png";
+import SImg from "images/S.png";
 import A1Img from "images/A+.png";
-import A2Img from "images/A+.png";
-import B1Img from "images/A+.png";
-import B2Img from "images/A+.png";
-import C2Img from "images/A+.png";
-import D2Img from "images/A+.png";
+import A2Img from "images/A.png";
+import B1Img from "images/B+.png";
+import B2Img from "images/B.png";
+import C2Img from "images/C.png";
+import D2Img from "images/D.png";
 
 export const GENDER = [
   {

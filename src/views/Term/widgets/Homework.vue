@@ -414,6 +414,8 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
+  width: 114px;
+  height: 80px;
 }
 .expired-tips {
   position: absolute;
