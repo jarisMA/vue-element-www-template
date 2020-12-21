@@ -1,29 +1,34 @@
 <template>
-  <div class="term-container"
-       v-loading="loading">
-    <div class="term-info-wrapper"
-         v-if="detail">
+  <div class="term-container" v-loading="loading">
+    <div class="term-info-wrapper" v-if="detail">
       <div class="container-1200">
         <div class="term-cover">
-          <the-loading-image :url="detail.cover_file_url"
-                             :width="350"
-                             :height="196" />
+          <the-loading-image
+            :url="detail.cover_file_url"
+            :width="350"
+            :height="196"
+          />
         </div>
         <div class="term-info">
           <div class="term-name-wrapper">
             <h4 class="term-name">{{ detail.name }}</h4>
-            <label :class="{
+            <label
+              :class="{
                 'term-status': true,
                 started: detail.status === 1,
                 ended: detail.status === 2,
                 unstart: detail.status === 0
-              }">{{ TERM_STATUS[detail.status] }}</label>
+              }"
+              >{{ TERM_STATUS[detail.status] }}</label
+            >
           </div>
           <div class="term-time-wrapper">
-            <span class="term-start">{{ formatDate(detail.start_at) }} 开课
+            <span class="term-start"
+              >{{ formatDate(detail.start_at) }} 开课
             </span>
             |
-            <span class="term-end">{{ formatDate(detail.end_at) }} 前有效
+            <span class="term-end"
+              >{{ formatDate(detail.end_at) }} 前有效
             </span>
           </div>
           <p class="term-desc">
@@ -34,60 +39,62 @@
     </div>
     <div class="term-content container-1200">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="作业"
-                     name="homework">
+        <el-tab-pane label="作业" name="homework">
           <p class="homework-tips">
             *请先在「我的方案」中创建方案并完成作业要求，再进行作业提交。
           </p>
           <ul class="homework-list">
-            <li v-for="homework of homeworks"
-                :key="homework.id">
-              <homework :homework="homework"
-                        @submitClick="showHomeworkDialog(homework)" />
+            <li v-for="homework of homeworks" :key="homework.id">
+              <homework
+                :homework="homework"
+                @submitClick="showHomeworkDialog(homework)"
+              />
             </li>
           </ul>
-          <the-empty v-if="homeworks.length === 0 && !loading"
-                     noText="暂无作业可发挥" />
+          <the-empty
+            v-if="homeworks.length === 0 && !loading"
+            noText="暂无作业可发挥"
+          />
         </el-tab-pane>
-        <el-tab-pane label="讨论区"
-                     name="discussion"
-                     disabled> </el-tab-pane>
+        <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
     </div>
-    <el-dialog class="submitHomeworkDialog"
-               width="800px"
-               :visible.sync="visible"
-               :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               :show-close="false">
-      <el-steps class="step-wrapper"
-                align-center
-                :active="activeStep">
+    <el-dialog
+      class="submitHomeworkDialog"
+      width="800px"
+      :visible.sync="visible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <el-steps class="step-wrapper" align-center :active="activeStep">
         <el-step title="选择方案"></el-step>
         <el-step title="小结"></el-step>
       </el-steps>
-      <div class="step-1 my-plan-wrapper"
-           v-show="activeStep === 1">
-        <plan-list :showNoTips="!planLoading"
-                   :plans="plans"
-                   :activeIndex="activePlan && activePlan.planId"
-                   :size="dialogPagination.size"
-                   :page="dialogPagination.page"
-                   :total="dialogPagination.total"
-                   :paginationLayout="paginationLayout"
-                   theme="homework"
-                   @itemClick="selectPlan"
-                   @pageChange="getPlans" />
+      <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
+        <plan-list
+          :showNoTips="!planLoading"
+          :plans="plans"
+          :activeIndex="activePlan && activePlan.planId"
+          :size="dialogPagination.size"
+          :page="dialogPagination.page"
+          :total="dialogPagination.total"
+          :paginationLayout="paginationLayout"
+          theme="homework"
+          @itemClick="selectPlan"
+          @pageChange="getPlans"
+        />
       </div>
-      <div class="step-2"
-           v-if="activeStep === 2">
+      <div class="step-2" v-if="activeStep === 2">
         <div class="select-plan-wrapper">
           <label class="label-title">方案</label>
           <div class="select-plan-card">
             <div class="card-left">
-              <the-loading-image :url="activePlan.planPic"
-                                 :width="200"
-                                 :height="200" />
+              <the-loading-image
+                :url="activePlan.planPic"
+                :width="200"
+                :height="200"
+              />
             </div>
             <div class="card-right">
               <h4 class="card-name">
@@ -105,9 +112,7 @@
                     {{ activePlan.filterCity }} {{ activePlan.commName }}
                   </span>
                 </div>
-                <el-button class="button"
-                           type="primary"
-                           @click="stepBack">
+                <el-button class="button" type="primary" @click="stepBack">
                   重新选择
                 </el-button>
               </div>
@@ -116,22 +121,24 @@
         </div>
         <div class="homework-content">
           <label class="label-title">小结</label>
-          <el-input type="textarea"
-                    placeholder="请输入内容"
-                    maxlength="100"
-                    show-word-limit
-                    v-model="activePlanContent"
-                    :rows="5"></el-input>
+          <el-input
+            type="textarea"
+            placeholder="请输入内容"
+            maxlength="100"
+            show-word-limit
+            v-model="activePlanContent"
+            :rows="5"
+          ></el-input>
         </div>
       </div>
-      <span slot="footer"
-            class="dialog-footer">
-        <el-button class="button"
-                   @click="closeHomeworkDialog">取消</el-button>
-        <el-button class="button"
-                   type="primary"
-                   :disabled="!activePlan"
-                   @click="submit">
+      <span slot="footer" class="dialog-footer">
+        <el-button class="button" @click="closeHomeworkDialog">取消</el-button>
+        <el-button
+          class="button"
+          type="primary"
+          :disabled="!activePlan"
+          @click="submit"
+        >
           {{ activeStep === 2 ? "提交" : "下一步" }}
         </el-button>
       </span>
@@ -159,7 +166,7 @@ export default {
     PlanList,
     TheEmpty
   },
-  data () {
+  data() {
     return {
       TERM_STATUS,
       loading: true,
@@ -183,13 +190,13 @@ export default {
       activePlanContent: ""
     };
   },
-  created () {
+  created() {
     this.getData();
     this.getPlans();
   },
   methods: {
     formatDate,
-    getData () {
+    getData() {
       this.loading = true;
       termService
         .campTerm(this.$route.params.id)
@@ -201,7 +208,7 @@ export default {
           this.loading = false;
         });
     },
-    getPlans (start = 1) {
+    getPlans(start = 1) {
       this.planLoading = true;
       kujialeService
         .designList({
@@ -217,20 +224,20 @@ export default {
           this.planLoading = false;
         });
     },
-    showHomeworkDialog (homework) {
+    showHomeworkDialog(homework) {
       this.activeHomework = homework;
       this.visible = true;
     },
-    selectPlan (item) {
+    selectPlan(item) {
       this.activePlan = item;
       let arr = item.city.split(" ");
       this.activePlan.filterCity = arr.length > 1 ? arr[1] : arr[0];
     },
-    stepBack () {
+    stepBack() {
       this.activeStep = 1;
       this.activePlan = null;
     },
-    submit () {
+    submit() {
       if (this.activeStep === 1) {
         this.activeStep = 2;
       } else if (this.activeStep === 2) {
@@ -267,7 +274,7 @@ export default {
         });
       }
     },
-    closeHomeworkDialog () {
+    closeHomeworkDialog() {
       this.visible = false;
       this.activeStep = 1;
       this.activeHomework = null;
@@ -478,6 +485,7 @@ export default {
 }
 .term-content {
   margin-top: 108px;
+  margin-bottom: 30px;
   /deep/ .el-tabs {
     .el-tabs__header {
       margin-bottom: 20px;
