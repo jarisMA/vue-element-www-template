@@ -127,7 +127,7 @@
           <el-input
             type="textarea"
             placeholder="请输入内容"
-            maxlength="100"
+            maxlength="500"
             show-word-limit
             v-model="activePlanContent"
             :rows="5"
