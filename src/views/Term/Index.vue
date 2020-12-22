@@ -441,6 +441,10 @@ export default {
         border-radius: unset;
         &.el-button--primary {
           color: #fff;
+          &:focus {
+            background: @primaryColor;
+            border-color: @primaryColor;
+          }
         }
       }
     }
