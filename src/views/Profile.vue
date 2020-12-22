@@ -352,7 +352,7 @@ export default {
   .form-wrapper {
     margin: 12px 0;
     padding: 80px 282px 0;
-    height: calc(100vh - 120px - 24px);
+    // height: calc(100vh - 120px - 24px);
     background: #fff;
   }
   .avatar-wrapper {
