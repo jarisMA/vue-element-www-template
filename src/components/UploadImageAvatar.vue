@@ -87,9 +87,10 @@ export default {
       const suffix = fileName.split(".").pop();
       const imageRegex = /(png|jpg|jpeg)/;
       if (file.size > size || !imageRegex.test(suffix)) {
-        this.$message.error(
-          `请上传不大于 ${this.uploadLimit}MB 且格式为png、jpg、jpeg的图片`
-        );
+        this.$notice({
+          type: "danger",
+          title: `请上传不大于 ${this.uploadLimit}MB 且格式为png、jpg、jpeg的图片`
+        });
         return false;
       }
       return true;

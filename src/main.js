@@ -3,7 +3,7 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 import IconSvg from "./plugins/icons";
-import ElementUI from "element-ui";
+import "./element";
 import "styles/reset.less";
 import "styles/common.less";
 import "../theme/index.css";
@@ -13,7 +13,6 @@ import Notification from "components/Notification/index";
 
 Vue.use(animate);
 Vue.use(IconSvg);
-Vue.use(ElementUI);
 Vue.use(MessageBox);
 Vue.use(Notification);
 Vue.config.productionTip = false;

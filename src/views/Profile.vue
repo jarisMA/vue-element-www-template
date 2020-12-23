@@ -220,7 +220,7 @@ export default {
     this.form = {
       nickname,
       gender,
-      identity: identity + "",
+      identity: identity ? identity + "" : "",
       remark,
       introduction,
       avatar_url

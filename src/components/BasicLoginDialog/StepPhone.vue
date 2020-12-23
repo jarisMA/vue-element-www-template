@@ -108,14 +108,14 @@ export default {
     },
     verify() {
       if (!this.formData.consent) {
-        return this.$message({
-          message: "请先同意《服务协议》和《隐私政策》",
+        return this.$notice({
+          title: "请先同意《服务协议》和《隐私政策》",
           type: "warning"
         });
       }
       if (!this.codeKey) {
-        return this.$message({
-          message: "请先获取验证短信",
+        return this.$notice({
+          title: "请先获取验证短信",
           type: "warning"
         });
       }
@@ -128,7 +128,9 @@ export default {
               phone: this.formData.phone
             })
             .then(() => {
-              this.$message.success("手机绑定成功！");
+              this.$notice({
+                title: "手机绑定成功！"
+              });
               this.$store.commit("UPDATA_PHONE", this.formData.phone);
               this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
             });
@@ -145,8 +147,8 @@ export default {
       if (!/^1[3456789]\d{9}$/.test(this.formData.phone)) {
         this.formData.code = null;
         this.loginButton = false;
-        return this.$message({
-          message: "请填入正确的手机号码",
+        return this.$notice({
+          title: "请填入正确的手机号码",
           type: "warning"
         });
       }
