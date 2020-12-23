@@ -1,25 +1,21 @@
 <template>
-  <div class="term-card" @click="itemClick">
+  <div class="term-card"
+       @click="itemClick">
     <div class="term-card-top">
-      <the-loading-image
-        class="image-wrapper"
-        :width="284"
-        :height="212"
-        :url="detail.cover_file_url || defaultCoverImg"
-      />
+      <the-loading-image class="image-wrapper"
+                         :width="284"
+                         :height="212"
+                         :url="detail.cover_file_url || defaultCoverImg" />
     </div>
     <div :class="['term-card-bottom']">
       <div class="term-name-wrapper">
         <h4 class="term-name">{{ detail.name }}</h4>
-        <label
-          :class="{
+        <label :class="{
             'term-status': true,
             started: detail.status === 1,
             ended: detail.status === 2,
             unstart: detail.status === 0
-          }"
-          >{{ TERM_STATUS[detail.status] }}</label
-        >
+          }">{{ TERM_STATUS[detail.status] }}</label>
       </div>
       <div class="term-time-wrapper">
         <span class="term-start">{{ formatDate(detail.start_at) }} 开课 </span>
@@ -50,7 +46,7 @@ export default {
   components: {
     TheLoadingImage
   },
-  data() {
+  data () {
     return {
       TERM_STATUS,
       defaultCoverImg
@@ -58,7 +54,7 @@ export default {
   },
   methods: {
     formatDate,
-    itemClick() {
+    itemClick () {
       this.$emit("itemClick");
     }
   }
@@ -116,6 +112,9 @@ export default {
         font-size: 14px;
         font-weight: bold;
         color: #333333;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
       }
       .term-status {
         padding: 0 7px;
