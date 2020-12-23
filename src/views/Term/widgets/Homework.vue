@@ -2,7 +2,9 @@
   <div class="homework-card">
     <img
       class="score-icon"
-      v-if="homework.user_homework && homework.user_homework.teacher_id && fold"
+      v-if="
+        homework.user_homework && homework.user_homework.status === 2 && fold
+      "
       :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
     />
     <div
@@ -23,9 +25,11 @@
             unsubmit: !homework.user_homework && !isExpired,
             expired: !homework.user_homework && isExpired,
             uncorrected:
-              homework.user_homework && homework.user_homework.status === 0,
+              homework.user_homework &&
+              (homework.user_homework.status === 0 ||
+                homework.user_homework.status === 1),
             corrected:
-              homework.user_homework && homework.user_homework.status !== 0
+              homework.user_homework && homework.user_homework.status === 2
           }"
         >
           {{
@@ -104,7 +108,7 @@
       </div>
       <div
         class="homework-reply-wrapper"
-        v-if="homework.user_homework && homework.user_homework.teacher_id"
+        v-if="homework.user_homework && homework.user_homework.status === 2"
       >
         <the-avatar
           :size="46"
@@ -143,8 +147,9 @@ import { USER_HOMEWORK_SCORE } from "utils/const";
 
 const HOMEWORK_STATUS = {
   0: "待批改",
-  1: "已批改",
-  2: "已驳回"
+  1: "待批改", // 保存草稿
+  2: "已批改",
+  3: "已驳回"
 };
 export default {
   name: "TermHomework",
