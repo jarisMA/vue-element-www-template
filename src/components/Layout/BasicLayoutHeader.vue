@@ -12,9 +12,7 @@
           <span class="header-nav-item My" @click="loginDialogVisible(6)"
             >斗西学社</span
           >
-          <span class="header-nav-item Notes" @click="loginDialogVisible(5)"
-            >愿望笔记</span
-          >
+          <!-- <span class="header-nav-item Notes" @click="loginDialogVisible(5)">愿望笔记</span> -->
         </nav>
       </div>
       <div class="header-ft">
