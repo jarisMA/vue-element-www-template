@@ -42,7 +42,6 @@ export default {
   methods: {
     goRoute,
     createPlan() {
-      console.log("enter");
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }

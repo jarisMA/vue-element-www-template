@@ -10,6 +10,9 @@ const termRequest = {
   },
   campHomework(campId, termId, homeworkId, params = {}) {
     return request.post(API.campHomework(campId, termId, homeworkId), params);
+  },
+  updateCampHomework(id, params = {}) {
+    return request.put(API.campHomeworkUpdate(id), params);
   }
 };
 

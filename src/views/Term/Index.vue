@@ -140,6 +140,7 @@
           class="button"
           type="primary"
           :disabled="!activePlan"
+          :loading="submitLoading"
           @click="submit"
         >
           {{ activeStep === 2 ? "提交" : "下一步" }}
@@ -190,7 +191,8 @@ export default {
       planLoading: true,
       activeHomework: null,
       activePlan: null,
-      activePlanContent: ""
+      activePlanContent: "",
+      submitLoading: false
     };
   },
   created() {
@@ -271,14 +273,35 @@ export default {
             study_design_comm_name: commName,
             q_content: this.activePlanContent
           };
-          const { camp_id, term_id, id } = this.activeHomework;
-          termService.campHomework(camp_id, term_id, id, params).then(res => {
-            this.$notice({
-              title: res.msg
-            });
-            this.closeHomeworkDialog();
-            this.getData();
-          });
+          const { camp_id, term_id, id, user_homework } = this.activeHomework;
+          this.submitLoading = true;
+          if (user_homework) {
+            termService
+              .updateCampHomework(user_homework.id, params)
+              .then(() => {
+                this.$notice({
+                  title: "作业更新成功"
+                });
+                this.closeHomeworkDialog();
+                this.getData();
+              })
+              .finally(() => {
+                this.submitLoading = false;
+              });
+          } else {
+            termService
+              .campHomework(camp_id, term_id, id, params)
+              .then(() => {
+                this.$notice({
+                  title: "作业提交成功"
+                });
+                this.closeHomeworkDialog();
+                this.getData();
+              })
+              .finally(() => {
+                this.submitLoading = false;
+              });
+          }
         });
       }
     },

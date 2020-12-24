@@ -23,5 +23,6 @@ export default {
   campTerms: `${PREFIX}/api/web/camp/terms`,
   campTerm: id => `${PREFIX}/api/web/camp/term/${id}`,
   campHomework: (campId, termId, homeworkId) =>
-    `${PREFIX}/api/web/camp/${campId}/term/${termId}/homework/${homeworkId}`
+    `${PREFIX}/api/web/camp/${campId}/term/${termId}/homework/${homeworkId}`,
+  campHomeworkUpdate: id => `${PREFIX}/api/web/camp/homework/${id}`
 };
