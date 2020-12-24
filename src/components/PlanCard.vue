@@ -13,7 +13,10 @@
       />
     </div>
     <div :class="['plan-card-bottom', theme]">
-      <div v-if="theme === 'my' || 'homework'" class="plan-name-wrapper">
+      <div
+        v-if="theme === 'my' || theme === 'homework'"
+        class="plan-name-wrapper"
+      >
         <h4 class="plan-name">
           {{ detail.name }}
         </h4>
