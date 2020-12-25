@@ -89,49 +89,74 @@
         <h3 class="select-homework-title">
           {{ activeHomework.name }}
         </h3>
-        <div class="select-plan-wrapper">
-          <label class="label-title">方案</label>
-          <div class="select-plan-card">
-            <div class="card-left">
-              <the-loading-image
-                :url="activePlan.planPic"
-                :width="200"
-                :height="200"
-              />
-            </div>
-            <div class="card-right">
-              <h4 class="card-name">
-                {{ activePlan.name }}
-              </h4>
-              <div class="card-right-bottom">
-                <div class="card-desc">
-                  <label>详细信息：</label>
-                  <span class="card-type">
-                    {{ parseInt(activePlan.srcArea) }}㎡ |
-                    {{ activePlan.specName }}
-                  </span>
-                  <span class="card-address">
-                    <i class="el-icon-location-outline"></i>
-                    {{ activePlan.filterCity }} {{ activePlan.commName }}
-                  </span>
+        <div class="step-2-content">
+          <div class="select-plan-wrapper">
+            <label class="label-title">方案</label>
+            <div class="select-plan-card">
+              <div class="card-top">
+                <the-loading-image
+                  :url="activePlan.planPic"
+                  :width="260"
+                  :height="260"
+                />
+              </div>
+              <div class="card-bottom">
+                <h4 class="card-name">
+                  {{ activePlan.name }}
+                </h4>
+                <div class="card-bottom-right">
+                  <div class="card-desc">
+                    <span class="card-type">
+                      {{ parseInt(activePlan.srcArea) }}㎡ |
+                      {{ activePlan.specName }}
+                    </span>
+                    <span class="card-address">
+                      <i class="el-icon-location-outline"></i>
+                      {{ activePlan.filterCity }} {{ activePlan.commName }}
+                    </span>
+                  </div>
+                  <el-button class="button" type="primary" @click="stepBack">
+                    重新选择
+                  </el-button>
                 </div>
-                <el-button class="button" type="primary" @click="stepBack">
-                  重新选择
-                </el-button>
               </div>
             </div>
           </div>
-        </div>
-        <div class="homework-content">
-          <label class="label-title">小结</label>
-          <el-input
-            type="textarea"
-            placeholder="请输入内容"
-            maxlength="500"
-            show-word-limit
-            v-model="activePlanContent"
-            :rows="5"
-          ></el-input>
+          <div class="homework-input-wrapper">
+            <div class="homework-content">
+              <label class="label-title">小结</label>
+              <el-input
+                type="textarea"
+                placeholder="请输入内容"
+                maxlength="500"
+                show-word-limit
+                v-model="activePlanContent"
+                :rows="10"
+              ></el-input>
+            </div>
+            <div class="homework-image">
+              <label class="label-title">效果图</label>
+              <div class="homework-image-wrapper">
+                <ul>
+                  <li
+                    class="image-wrapper"
+                    v-for="(item, key) of activePlanPic"
+                    :key="item"
+                  >
+                    <img :src="item" />
+                    <icon-svg
+                      svg-class="delete-icon"
+                      svg-name="delete"
+                      @click="deleteActivePlanPic(key)"
+                    />
+                  </li>
+                  <li v-if="activePlanPic.length < 3">
+                    <upload-image @added="addActivePlanPic" />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -155,8 +180,8 @@ import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
 import PlanList from "components/PlanList";
-import TheEmpty from "components/TheEmpty.vue";
-
+import TheEmpty from "components/TheEmpty";
+import UploadImage from "components/UploadImage";
 import kujialeService from "service/kujiale";
 
 import { TERM_STATUS } from "utils/const";
@@ -168,7 +193,8 @@ export default {
     TheLoadingImage,
     Homework,
     PlanList,
-    TheEmpty
+    TheEmpty,
+    UploadImage
   },
   data() {
     return {
@@ -192,6 +218,7 @@ export default {
       activeHomework: null,
       activePlan: null,
       activePlanContent: "",
+      activePlanPic: [],
       submitLoading: false
     };
   },
@@ -242,6 +269,12 @@ export default {
       this.activeStep = 1;
       this.activePlan = null;
     },
+    addActivePlanPic(url) {
+      this.activePlanPic.push(url);
+    },
+    deleteActivePlanPic(key) {
+      this.activePlanPic.splice(key, 1);
+    },
     submit() {
       if (this.activeStep === 1) {
         this.activeStep = 2;
@@ -271,7 +304,10 @@ export default {
             study_design_spec_name: specName,
             study_design_city: city,
             study_design_comm_name: commName,
-            q_content: this.activePlanContent
+            q_content: JSON.stringify({
+              content: this.activePlanContent,
+              images: this.activePlanPic
+            })
           };
           const { camp_id, term_id, id, user_homework } = this.activeHomework;
           this.submitLoading = true;
@@ -375,7 +411,17 @@ export default {
           margin-bottom: 10px;
           font-size: 14px;
           font-weight: 500;
-          color: #333333;
+          color: #787878;
+        }
+        .step-2-content {
+          display: flex;
+        }
+        .select-plan-wrapper {
+          width: 280px;
+          margin-right: 24px;
+        }
+        .homework-input-wrapper {
+          flex: 1;
         }
         .select-homework-title {
           position: relative;
@@ -397,31 +443,35 @@ export default {
         }
         .select-plan-card {
           display: flex;
+          flex-direction: column;
           width: 100%;
-          height: 224px;
-          padding: 10px 20px 14px 11px;
+          padding: 10px;
           background: #fff;
-          .card-left {
-            width: 200px;
-            height: 200px;
-            margin-right: 19px;
+          .card-top {
+            width: 260px;
+            height: 260px;
+            padding-bottom: 10px;
           }
-          .card-right {
-            flex: 1;
+          .card-bottom {
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 10px 0;
+            padding: 10px 0 0;
+            height: 100px;
+            border-top: 1px solid #e6e6e6ff;
             .card-name {
-              font-size: 18px;
+              font-size: 14px;
               font-weight: bold;
               color: #333333;
             }
-            .card-right-bottom {
+            .card-bottom-right {
+              flex: 1;
               width: 100%;
               display: flex;
               justify-content: space-between;
-              align-items: flex-end;
+              align-items: flex-start;
+              .button {
+                align-self: flex-end;
+              }
             }
             .card-desc {
               display: flex;
@@ -435,21 +485,45 @@ export default {
               }
               span {
                 display: inline-block;
+                margin-top: 10px;
                 font-size: 12px;
                 font-weight: 400;
                 color: #ababab;
-                &:not(:last-child) {
-                  margin-bottom: 10px;
-                }
               }
             }
           }
         }
         .homework-content {
-          margin-top: 50px;
           .el-textarea__inner {
             border-color: #ccccccff;
             border-radius: unset;
+          }
+        }
+        .homework-image {
+          margin-top: 25px;
+          ul {
+            display: flex;
+          }
+          .image-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background: #d8d8d8;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+            &:not(:last-child) {
+              margin-right: 20px;
+            }
+            .delete-icon {
+              position: absolute;
+              top: 0;
+              right: 0;
+              font-size: 22px;
+              cursor: pointer;
+            }
           }
         }
       }

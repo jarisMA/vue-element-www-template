@@ -96,8 +96,13 @@
           <label class="homework-label">
             小结：
           </label>
-          <div class="homework-desc-content">
-            {{ homework.user_homework.q_content }}
+          <div class="homework-content-wrapper">
+            <div class="homework-desc-image" v-if="q_images.length > 0">
+              <the-preview-image :url="q_images[0]" :srcList="q_images" />
+            </div>
+            <div class="homework-desc-content">
+              {{ q_content }}
+            </div>
           </div>
         </div>
         <div class="homework-plan-card">
@@ -166,10 +171,10 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
+import ThePreviewImage from "components/ThePreviewImage";
 
 import { formatDate } from "utils/moment";
 import { USER_HOMEWORK_SCORE } from "utils/const";
-
 const HOMEWORK_STATUS = {
   0: "待批改",
   1: "待批改", // 保存草稿
@@ -180,7 +185,8 @@ export default {
   name: "TermHomework",
   components: {
     TheLoadingImage,
-    TheAvatar
+    TheAvatar,
+    ThePreviewImage
   },
   props: {
     homework: {
@@ -193,11 +199,21 @@ export default {
       HOMEWORK_STATUS,
       USER_HOMEWORK_SCORE,
       fold: false,
-      isExpired: true
+      isExpired: true,
+      q_content: null,
+      q_images: []
     };
+  },
+  watch: {
+    homework(val) {
+      this.parseContent(val.user_homework.q_content);
+    }
   },
   created() {
     this.judgeExpired();
+    this.parseContent(
+      this.homework.user_homework && this.homework.user_homework.q_content
+    );
   },
   methods: {
     formatDate,
@@ -208,6 +224,15 @@ export default {
       this.judgeExpired();
       if (!this.isExpired) {
         this.$emit("submitClick");
+      }
+    },
+    parseContent(val) {
+      try {
+        const content = JSON.parse(val);
+        this.q_content = content.content;
+        this.q_images = content.images;
+      } catch {
+        this.q_content = val;
       }
     }
   }
@@ -320,6 +345,17 @@ export default {
         font-size: 0px;
         line-height: 0px;
       }
+      .homework-content-wrapper {
+        display: flex;
+      }
+      .homework-desc-image {
+        position: relative;
+        width: 148px;
+        height: 148px;
+        margin-right: 10px;
+        background: #33333380;
+        cursor: pointer;
+      }
       .homework-desc-content {
         margin-top: 4px;
         line-height: 17px;
@@ -378,6 +414,8 @@ export default {
     }
   }
   .homework-label {
+    display: inline-block;
+    margin-bottom: 5px;
     line-height: 17px;
     font-size: 12px;
     font-weight: 400;
