@@ -50,14 +50,10 @@ export default {
     height: 20px;
     line-height: 20px;
     font-size: 12px;
-    .container-1200 {
-      width: calc(100vw - 88px);
-      min-width: 1200px;
-      // display: flex;
-      // justify-content: center;
-    }
   }
   .container-1200 {
+    width: calc(100vw - 88px);
+    min-width: 1200px;
     height: 100%;
     display: flex;
     justify-content: space-between;
