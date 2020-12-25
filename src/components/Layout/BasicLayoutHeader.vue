@@ -91,9 +91,27 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    goHome,
-    goMy,
-    goProfile,
+    goHome() {
+      if (this.theme === "primary") {
+        return;
+      } else {
+        goHome();
+      }
+    },
+    goMy() {
+      if (this.theme === "primary") {
+        goMy("_blank");
+      } else {
+        goMy();
+      }
+    },
+    goProfile() {
+      if (this.theme === "primary") {
+        goProfile("_blank");
+      } else {
+        goProfile();
+      }
+    },
     loginDialogVisible(index) {
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
@@ -123,9 +141,9 @@ export default {
     align-items: center;
     height: 60px;
     font-size: 0;
-    width: calc(100vw - 160px);
+    width: calc(100vw - 88px);
     min-width: 1200px;
-    max-width: 1920px;
+    // max-width: 1920px;
     margin: 0 auto;
     .header-hd,
     .header-bd,
@@ -354,6 +372,7 @@ export default {
   background-color: @primaryColor;
   .header-logo_img {
     margin-right: 8px;
+    cursor: auto;
   }
   .header-more {
     display: flex;

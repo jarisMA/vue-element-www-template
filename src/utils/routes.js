@@ -6,16 +6,22 @@ export const goHome = () => {
   });
 };
 
-export const goMy = () => {
-  return goRoute({
-    name: "My"
-  });
+export const goMy = (type = "_self") => {
+  return goRoute(
+    {
+      name: "My"
+    },
+    type
+  );
 };
 
-export const goProfile = () => {
-  return goRoute({
-    name: "Profile"
-  });
+export const goProfile = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Profile"
+    },
+    type
+  );
 };
 
 export const goAddPlan = () => {
