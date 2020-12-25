@@ -30,7 +30,7 @@ export const goAddPlan = () => {
   });
 };
 
-export const goEditPlan = (params, type = "_self") => {
+export const goEditPlan = (params, type = "_blank") => {
   return goRoute(
     {
       name: "EditPlan",
@@ -39,7 +39,7 @@ export const goEditPlan = (params, type = "_self") => {
     type
   );
 };
-export const goDrawPlan = (type = "_self") => {
+export const goDrawPlan = (type = "_blank") => {
   return goRoute(
     {
       name: "DrawPlan"

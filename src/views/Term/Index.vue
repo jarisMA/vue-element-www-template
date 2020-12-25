@@ -72,8 +72,16 @@
         <el-step title="小结"></el-step>
       </el-steps>
       <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
+        <div
+          class="add-plan-button"
+          v-if="plans.length > 0"
+          @click="goDrawPlan()"
+        >
+          <icon-svg svg-class="add-icon" svg-name="add" />
+          新建方案
+        </div>
         <plan-list
-          :showNoTips="!planLoading"
+          :showNoTips="false"
           :plans="plans"
           :activeIndex="activePlan && activePlan.planId"
           :size="dialogPagination.size"
@@ -84,6 +92,13 @@
           @itemClick="selectPlan"
           @pageChange="getPlans"
         />
+        <div class="more-wrapper" v-if="!planLoading && plans.length === 0">
+          <the-empty noText="还没有方案，你可以去新建一个" />
+          <div class="new-button" @click="goDrawPlan()">
+            <icon-svg svg-class="add-icon" svg-name="add" />
+            新建方案
+          </div>
+        </div>
       </div>
       <div class="step-2" v-if="activeStep === 2">
         <h3 class="select-homework-title">
@@ -160,16 +175,20 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button class="button" @click="closeHomeworkDialog">取消</el-button>
-        <el-button
-          class="button"
-          type="primary"
-          :disabled="!activePlan"
-          :loading="submitLoading"
-          @click="submit"
-        >
-          {{ activeStep === 2 ? "提交" : "下一步" }}
-        </el-button>
+        <template v-if="plans.length > 0">
+          <el-button class="button" @click="closeHomeworkDialog"
+            >取消</el-button
+          >
+          <el-button
+            class="button"
+            type="primary"
+            :disabled="!activePlan"
+            :loading="submitLoading"
+            @click="submit"
+          >
+            {{ activeStep === 2 ? "提交" : "下一步" }}
+          </el-button>
+        </template>
       </span>
     </el-dialog>
   </div>
@@ -186,6 +205,7 @@ import kujialeService from "service/kujiale";
 
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
+import { goDrawPlan } from "utils/routes";
 
 export default {
   name: "Term",
@@ -228,6 +248,7 @@ export default {
   },
   methods: {
     formatDate,
+    goDrawPlan,
     getData() {
       this.loading = true;
       termService
@@ -402,7 +423,55 @@ export default {
         }
       }
       .my-plan-wrapper {
-        margin-top: 18px;
+        margin-top: 25px;
+        .add-plan-button {
+          position: absolute;
+          top: 50px;
+          right: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100px;
+          height: 30px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 500;
+          background: @primaryColor;
+          cursor: pointer;
+          .add-icon {
+            margin-right: 4px;
+            font-size: 12px;
+          }
+        }
+        .more-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .empty-wrapper {
+            padding: 145px 0 20px;
+            img {
+              width: 170px;
+              height: 120px;
+            }
+          }
+          .new-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 204px;
+            height: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            background: @primaryColor;
+            cursor: pointer;
+            .add-icon {
+              margin-right: 4px;
+              font-size: 12px;
+            }
+          }
+        }
       }
       .step-2 {
         padding-top: 44px;

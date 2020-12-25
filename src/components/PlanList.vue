@@ -1,14 +1,14 @@
 <template>
   <div class="plan-list-container">
-    <template v-if="plans.length > 0">
+    <template v-if="plans.length > 0 || theme === 'my'">
       <ul class="plan-list">
         <li :class="['plan-item', theme]" v-if="theme === 'my'">
-          <div class="add-plan" @click="goDrawPlan('_blank')">
+          <div class="add-plan" @click="goDrawPlan()">
             <div class="add-plan-top">
               <img src="~images/add_green.png" />
               <label>新建方案</label>
             </div>
-            <div class="add-plan-button" @click="goDrawPlan('_blank')">
+            <div class="add-plan-button">
               <img src="~images/plango.png" />
             </div>
           </div>
