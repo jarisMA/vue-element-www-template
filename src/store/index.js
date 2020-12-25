@@ -6,7 +6,8 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loginDialogVisible: 0,
-    userInfo: null
+    userInfo: null,
+    headerTheme: "default"
   },
   mutations: {
     USERINFO(state, userInfo) {
@@ -27,6 +28,9 @@ export default new Vuex.Store({
         domain: process.env.VUE_APP_DOMAIN
       });
       window.location.reload();
+    },
+    updateHeaderTheme(state, theme) {
+      state.headerTheme = theme;
     }
   },
   actions: {},

@@ -18,6 +18,11 @@ const appRouter = new VueRouter({
 appRouter.firstInit = false;
 appRouter.beforeEach(async (to, from, next) => {
   NProgress.start();
+  if (["EditPlan", "DrawPlan"].indexOf(to.name) > -1) {
+    Store.commit("updateHeaderTheme", "primary");
+  } else {
+    Store.commit("updateHeaderTheme", "default");
+  }
   if (to.meta.title) document.title = to.meta.title;
   const TOKEN = cookies.get("web_token");
   if (TOKEN && !appRouter.firstInit) {

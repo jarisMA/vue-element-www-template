@@ -1,6 +1,6 @@
 <template>
   <div class="page-basic-layout">
-    <BasicLayoutHeader />
+    <BasicLayoutHeader :theme="headerTheme" />
     <router-view class="page-basic-body" />
     <BasicLayoutFooter />
     <BasicLoginDialog />
@@ -12,13 +12,18 @@ import BasicLayoutHeader from "./BasicLayoutHeader.vue";
 import BasicLayoutFooter from "./BasicLayoutFooter.vue";
 import BasicLoginDialog from "./../BasicLoginDialog/Index.vue";
 import temporaryIndex from "./../BasicLoginDialog/temporaryIndex";
+import { mapState } from "vuex";
 
 export default {
+  name: "BasicLayout",
   components: {
     BasicLayoutHeader,
     BasicLayoutFooter,
     BasicLoginDialog,
     temporaryIndex
+  },
+  computed: {
+    ...mapState(["headerTheme"])
   }
 };
 </script>

@@ -1,18 +1,29 @@
 <template>
-  <header class="page-header">
-    <div class="header-content">
+  <header :class="['page-header', theme]">
+    <div :class="['header-content', theme]">
       <div class="header-hd">
         <span class="header-logo_img" @click="goHome()">
-          <img class="header-logo" src="~images/logo_1.svg" />
+          <img
+            v-if="theme === 'primary'"
+            class="header-logo"
+            src="~images/logo_white.png"
+          />
+          <img v-else class="header-logo" src="~images/logo_1.svg" />
         </span>
-        <nav class="header-nav">
-          <span class="header-nav-item Home" v-if="false">
-            家灵感
-          </span>
+        <span
+          :class="['header-more', visible ? 'active' : '']"
+          v-if="theme === 'primary'"
+          @click="visible = !visible"
+        >
+          <icon-svg svg-class="more-icon" svg-name="more" />
+        </span>
+        <nav class="header-nav" v-show="theme !== 'primary' || visible">
           <span class="header-nav-item My" @click="loginDialogVisible(6)"
             >斗西学社</span
           >
-          <!-- <span class="header-nav-item Notes" @click="loginDialogVisible(5)">愿望笔记</span> -->
+          <span class="header-nav-item Notes" @click="loginDialogVisible(5)"
+            >斗西宝典</span
+          >
         </nav>
       </div>
       <div class="header-ft">
@@ -25,29 +36,27 @@
           >
             登录 / 注册
           </el-button>
-          <el-avatar
+          <the-avatar
             v-else
             class="el-avatar-border"
-            :src="userInfo.avatar_url"
-          ></el-avatar>
+            :size="48"
+            :url="userInfo.avatar_url"
+          ></the-avatar>
           <div class="user-handle_show" v-if="userInfo">
             <div class="show-container landing">
               <div class="login-content">
                 <p class="login-title">{{ userInfo.nickname }}</p>
               </div>
               <ul class="login-operation">
-                <li @click="goMy()">
-                  <icon-svg svg-name="my" svg-class="operation-icon" />
-                  <span>我的</span>
+                <li @click="goMy()" class="workbench">
+                  <span>工作台</span>
                 </li>
-                <li @click="goProfile()">
-                  <icon-svg svg-name="setting" svg-class="operation-icon" />
-                  <span>设置</span>
+                <li @click="goProfile()" class="setting">
+                  <span>我的资料</span>
                 </li>
               </ul>
               <div class="logout" @click="handleLogout">
-                <icon-svg svg-name="logout" svg-class="operation-icon" />
-                <span>退出</span>
+                <span>退出登录</span>
               </div>
             </div>
           </div>
@@ -59,15 +68,25 @@
 <script type="text/javascript">
 import { mapState } from "vuex";
 import { goHome, goMy, goProfile } from "utils/routes";
+import TheAvatar from "../TheAvatar.vue";
 
 export default {
+  name: "BasicLayoutHeader",
+  components: {
+    TheAvatar
+  },
+  props: {
+    theme: {
+      type: String,
+      default: "default"
+    }
+  },
   data() {
     return {
-      visible: true,
+      visible: false,
       userLogo: require("images/user_logo.svg")
     };
   },
-  created() {},
   computed: {
     ...mapState(["userInfo"])
   },
@@ -104,7 +123,7 @@ export default {
     align-items: center;
     height: 60px;
     font-size: 0;
-    width: 1200px;
+    width: calc(100vw - 160px);
     min-width: 1200px;
     max-width: 1920px;
     margin: 0 auto;
@@ -117,7 +136,7 @@ export default {
     }
     .header-logo_img {
       width: 164px;
-      margin-right: 40px;
+      margin-right: 58px;
       cursor: pointer;
       .header-logo {
         width: 164px;
@@ -127,118 +146,42 @@ export default {
     }
     .header-nav {
       display: flex;
+      height: 100%;
       .header-nav-item {
-        font-size: 16px;
-        line-height: 40px;
-        color: #000000;
-        margin-right: 80px;
-        text-decoration: none;
-        font-weight: 600;
         display: flex;
         align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 170px;
+        line-height: 24px;
+        font-size: 16px;
+        color: #333333;
+        font-weight: 500;
         cursor: pointer;
-        &.router-link-exact-active {
-          color: #35b558;
-        }
         &:hover {
-          color: #35b558;
-        }
-      }
-      .Home {
-        &:before {
-          content: "";
-          display: inline-block;
-          width: 24px;
-          height: 24px;
-          background: url("./../../assets/images/link_logo-1.svg") no-repeat
-            center;
-          vertical-align: middle;
-          margin-right: 6px;
-        }
-        &.router-link-exact-active {
-          transition: all 0.1s;
-          &:before {
-            margin-right: 6px;
-            background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
-              center;
-            vertical-align: middle;
-          }
-        }
-        &:hover {
-          transition: all 0.1s;
-          &:before {
-            margin-right: 6px;
-            background: url("./../../assets/images/link_logo-1_1.svg") no-repeat
-              center;
-            vertical-align: middle;
-          }
+          color: @primaryColor;
         }
       }
       .My {
         &:before {
           content: "";
           display: inline-block;
-          width: 24px;
+          width: 34px;
           height: 24px;
-          background: url("./../../assets/images/link_logo-2.svg") no-repeat
-            center;
+          background: url("~images/link_logo-2.svg") no-repeat center;
           vertical-align: middle;
-          margin-right: 6px;
-        }
-        &:after {
-          content: "";
-          display: inline-block;
-          width: 18px;
-          height: 18px;
-          background: url("./../../assets/images/link_logo-2_star.svg")
-            no-repeat center;
-          position: relative;
-          bottom: 12px;
-        }
-        &.router-link-exact-active {
-          transition: all 0.1s;
-          &:before {
-            background: url("./../../assets/images/link_logo-2_1.svg") no-repeat
-              center;
-            vertical-align: middle;
-          }
-        }
-        &:hover {
-          transition: all 0.1s;
-          &:before {
-            background: url("./../../assets/images/link_logo-2_1.svg") no-repeat
-              center;
-            background-size: contain;
-            vertical-align: middle;
-          }
+          margin-right: 2px;
         }
       }
       .Notes {
         &:before {
           content: "";
           display: inline-block;
-          width: 24px;
+          width: 30px;
           height: 24px;
-          background: url("./../../assets/images/link_logo-3.svg") no-repeat
-            center;
+          background: url("~images/link_logo-3.svg") no-repeat center;
           vertical-align: middle;
-          margin-right: 6px;
-        }
-        &.router-link-exact-active {
-          transition: all 0.1s;
-          &:before {
-            background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
-              center;
-            vertical-align: middle;
-          }
-        }
-        &:hover {
-          transition: all 0.1s;
-          &:before {
-            background: url("./../../assets/images/link_logo-3_1.svg") no-repeat
-              center;
-            vertical-align: middle;
-          }
+          margin-right: 4px;
         }
       }
     }
@@ -284,8 +227,7 @@ export default {
         .show-container {
           position: relative;
           background-color: #fff;
-          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-          // padding: 10px 10px 0;
+          box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.06);
           &:after {
             position: absolute;
             top: -9px;
@@ -298,45 +240,104 @@ export default {
             filter: drop-shadow(0px -3px 4px rgba(0, 0, 0, 0.12));
           }
           .login-content {
-            padding: 32px 24px 24px;
+            padding: 24px 20px;
             text-align: left;
             border-bottom: 1px solid #e6e6e6ff;
             .login-title {
               line-height: 14px;
               font-size: 14px;
               font-weight: 500;
+              text-align: center;
               color: #333333;
             }
           }
           .login-operation {
             line-height: 1;
             font-size: 12px;
-            font-weight: 400;
+            font-weight: 500;
             color: #333333;
             border-bottom: 1px solid #e6e6e6ff;
             li {
               display: flex;
               align-items: center;
-              padding: 12px 24px;
+              padding: 9px 20px;
               cursor: pointer;
-            }
-            .operation-icon {
-              margin-right: 14px;
-              font-size: 16px;
+              &.workbench {
+                span {
+                  position: relative;
+                  &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    background: url("~images/workbench.svg") no-repeat center;
+                    vertical-align: middle;
+                    margin-right: 12px;
+                  }
+                }
+              }
+              &.setting {
+                span {
+                  position: relative;
+                  &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    background: url("~images/setting.svg") no-repeat center;
+                    vertical-align: middle;
+                    margin-right: 12px;
+                  }
+                }
+              }
+              &:hover {
+                color: #fff;
+                background: @primaryColor;
+                &.workbench {
+                  span {
+                    &::before {
+                      background-image: url("~images/workbench_hover.svg");
+                    }
+                  }
+                }
+                &.setting {
+                  span {
+                    &::before {
+                      background-image: url("~images/setting_hover.svg");
+                    }
+                  }
+                }
+              }
             }
           }
           .logout {
             display: flex;
             align-items: center;
-            padding: 12px 24px;
+            padding: 9px 20px;
             line-height: 1;
             font-size: 12px;
-            font-weight: 400;
+            font-weight: 500;
             color: #333333;
             cursor: pointer;
-            .operation-icon {
-              margin-right: 14px;
-              font-size: 16px;
+            span {
+              position: relative;
+              &::before {
+                content: "";
+                display: inline-block;
+                width: 24px;
+                height: 24px;
+                background: url("~images/logout.svg") no-repeat center;
+                vertical-align: middle;
+                margin-right: 12px;
+              }
+            }
+            &:hover {
+              color: @primaryColor;
+              span {
+                &::before {
+                  background-image: url("~images/logout_hover.svg");
+                }
+              }
             }
           }
         }
@@ -344,6 +345,55 @@ export default {
       &:hover {
         .user-handle_show {
           display: inline-block;
+        }
+      }
+    }
+  }
+}
+.page-header.primary {
+  background-color: @primaryColor;
+  .header-logo_img {
+    margin-right: 8px;
+  }
+  .header-more {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 60px;
+    cursor: pointer;
+    &.active {
+      background: #38ca83;
+    }
+    .more-icon {
+      font-size: 30px;
+    }
+  }
+  .header-nav {
+    .header-nav-item {
+      color: #fff;
+      &:hover {
+        background-color: #38ca83;
+        color: #fff;
+        &.My {
+          &::before {
+            background-image: url("~images/link_logo-2_white.svg");
+          }
+        }
+        &.Notes {
+          &::before {
+            background-image: url("~images/link_logo-3_white.svg");
+          }
+        }
+      }
+      &.My {
+        &::before {
+          background-image: url("~images/link_logo-2_white.svg");
+        }
+      }
+      &.Notes {
+        &::before {
+          background-image: url("~images/link_logo-3_white.svg");
         }
       }
     }
