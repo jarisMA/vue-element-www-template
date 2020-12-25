@@ -2,7 +2,7 @@
   <div class="page-basic-layout">
     <BasicLayoutHeader :theme="headerTheme" />
     <router-view class="page-basic-body" />
-    <BasicLayoutFooter />
+    <BasicLayoutFooter :theme="headerTheme" />
     <BasicLoginDialog />
     <temporaryIndex />
   </div>

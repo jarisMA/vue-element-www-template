@@ -1,14 +1,17 @@
 <template>
-  <footer class="page-footer">
+  <footer :class="['page-footer', theme]">
     <div class="container-1200">
       <div class="left">
         Copyright © 2020 home-plan.cn All Rights Reserved
-        <a class="beian" target="_blank" href="https://beian.miit.gov.cn/"
-          >沪ICP备2020026846号</a
-        >
-        <p class="public">沪公网安备 31010102006648号</p>
+        <template v-if="theme !== 'primary'">
+          <a class="beian" target="_blank" href="https://beian.miit.gov.cn/"
+            >沪ICP备2020026846号</a
+          >
+          <p class="public">沪公网安备 31010102006648号</p>
+        </template>
       </div>
-      <div class="right">
+
+      <div class="right" v-if="theme !== 'primary'">
         <p class="title">联系邮箱：kf@home-plan.cn</p>
         <div class="img-hover">
           <img src="~images/wx-logo.svg" alt="" class="image" />
@@ -20,6 +23,13 @@
 </template>
 <script type="text/javascript">
 export default {
+  name: "BasicLayoutFooter",
+  props: {
+    theme: {
+      type: String,
+      default: "default"
+    }
+  },
   data() {
     return {};
   }
@@ -36,6 +46,17 @@ export default {
   font-weight: bold;
   text-align: center;
   background-color: @primaryColor;
+  &.primary {
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    .container-1200 {
+      width: calc(100vw - 160px);
+      min-width: 1200px;
+      display: flex;
+      justify-content: center;
+    }
+  }
   .container-1200 {
     height: 100%;
     display: flex;
