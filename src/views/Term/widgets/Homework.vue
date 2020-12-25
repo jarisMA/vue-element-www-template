@@ -11,8 +11,20 @@
       class="expired-tips"
       v-if="!homework.user_homework && isExpired && fold"
     >
-      <img src="~images/expired.png" />
       <label>错过提交时间,下次早点来!</label>
+      <img src="~images/expired.png" />
+    </div>
+    <div
+      class="reject-tips"
+      v-if="
+        homework.user_homework && homework.user_homework.status === 3 && fold
+      "
+    >
+      <div class="tips-wrapper">
+        <img class="warning-icon" src="~images/danger-warning.png" />
+        <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
+      </div>
+      <img src="~images/reject.png" />
     </div>
     <div class="homework-info">
       <div class="homework-name-wrapper">
@@ -29,7 +41,9 @@
               (homework.user_homework.status === 0 ||
                 homework.user_homework.status === 1),
             corrected:
-              homework.user_homework && homework.user_homework.status === 2
+              homework.user_homework && homework.user_homework.status === 2,
+            rejected:
+              homework.user_homework && homework.user_homework.status === 3
           }"
         >
           {{
@@ -67,7 +81,11 @@
           "
           @click="handleSubmitClick"
         >
-          上传作业
+          {{
+            homework.user_homework && homework.user_homework.status === 3
+              ? "重选作业"
+              : "上传作业"
+          }}
         </el-button>
       </div>
       <div
@@ -156,7 +174,7 @@ const HOMEWORK_STATUS = {
   0: "待批改",
   1: "待批改", // 保存草稿
   2: "已批改",
-  3: "待提交" // 已驳回
+  3: "被驳回" // 已驳回
 };
 export default {
   name: "TermHomework",
@@ -203,6 +221,7 @@ export default {
 @unsubmit: #61c3d0ff;
 @uncorrected: #ffb163ff;
 @expired: #a0a0a0ff;
+@rejected: #d40000ff;
 .homework-card {
   position: relative;
   width: 100%;
@@ -232,7 +251,8 @@ export default {
       font-weight: 400;
       color: @unsubmit;
       border: 1px solid @unsubmit;
-      &.unsubmit {
+      &.unsubmit,
+      &.rejected {
         color: @unsubmit;
         border-color: @unsubmit;
         &::after {
@@ -257,6 +277,13 @@ export default {
       &.corrected {
         color: @primaryColor;
         border-color: @primaryColor;
+      }
+      &.rejected {
+        color: @rejected;
+        border-color: @rejected;
+        &::after {
+          background: @rejected;
+        }
       }
     }
   }
@@ -413,6 +440,14 @@ export default {
   color: #ffffff;
   background: #14af64;
   border-radius: unset;
+  &.is-disabled,
+  &.is-disabled:hover,
+  &.is-disabled:focus,
+  &.is-disabled:active {
+    background: #d0d0d0;
+    border-color: #d0d0d0;
+    color: #fff;
+  }
 }
 .fold-label {
   position: absolute;
@@ -449,6 +484,56 @@ export default {
     font-size: 12px;
     font-weight: 400;
     color: #ababab;
+  }
+}
+.reject-tips {
+  position: absolute;
+  top: 11px;
+  right: 10px;
+  display: flex;
+  align-items: flex-start;
+  .tips-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    display: inline-block;
+    margin: 7px 1px 0 0;
+    padding: 0 5px;
+    // width: 272px;
+    height: 23px;
+    line-height: 23px;
+    font-size: 12px;
+    font-weight: 400;
+    color: @rejected;
+    border: 1px solid @rejected;
+    border-right: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    &::after {
+      position: absolute;
+      top: 2.5px;
+      right: -7.5px;
+      display: inline-block;
+      border-bottom: 1px solid;
+      border-left: 1px solid;
+      width: 14.5px;
+      height: 14.5px;
+      border-color: @rejected;
+      transform: rotate(-135deg);
+      content: "";
+    }
+    .warning-icon {
+      width: 18px;
+      height: 18px;
+      vertical-align: -4px;
+    }
+    .tips {
+      flex: 1;
+    }
+  }
+  img {
+    width: 114px;
+    height: 80px;
   }
 }
 </style>
