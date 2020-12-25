@@ -4,11 +4,14 @@
       <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
-      <div class="desc-content">
+      <!-- <div class="desc-content">
         <p>一个帮助你梳理需求的小工具</p>
       </div>
       <div class="title-content">
         <p>将于9月25日上线</p>
+      </div> -->
+      <div class="desc-content">
+        <p>新版斗西宝典即将上线，敬请期待。</p>
       </div>
     </div>
   </div>
