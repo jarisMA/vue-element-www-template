@@ -2,6 +2,17 @@
   <div class="plan-list-container">
     <template v-if="plans.length > 0">
       <ul class="plan-list">
+        <li :class="['plan-item', theme]" v-if="theme === 'my'">
+          <div class="add-plan" @click="goDrawPlan('_blank')">
+            <div class="add-plan-top">
+              <img src="~images/add_green.png" />
+              <label>新建方案</label>
+            </div>
+            <div class="add-plan-button" @click="goDrawPlan('_blank')">
+              <img src="~images/plango.png" />
+            </div>
+          </div>
+        </li>
         <li
           :class="['plan-item', theme]"
           v-for="(item, index) of plans"
@@ -37,6 +48,7 @@
 import Pagination from "components/Pagination";
 import PlanCard from "components/PlanCard";
 import TheEmpty from "components/TheEmpty";
+import { goDrawPlan } from "utils/routes";
 
 export default {
   name: "PlanList",
@@ -93,6 +105,7 @@ export default {
     }
   },
   methods: {
+    goDrawPlan,
     itemClick(item) {
       this.$emit("itemClick", item);
     },
@@ -110,12 +123,52 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 @margin: 24px;
 @myMargin: 20px;
 @count: 4;
 .plan-list {
   display: flex;
   flex-wrap: wrap;
+  .add-plan {
+    display: flex;
+    flex-direction: column;
+    height: 328px;
+    padding: 10px;
+    background: #fff;
+    cursor: pointer;
+    .add-plan-top {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      color: @primaryColor;
+      background: #f9f9f9ff;
+      img {
+        width: 72px;
+        margin-bottom: 14px;
+      }
+      label {
+        font-size: 16px;
+        font-weight: 500;
+        color: #14af64;
+      }
+    }
+    .add-plan-button {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: @primaryColor;
+      img {
+        height: 26px;
+      }
+    }
+  }
   .plan-item {
     width: calc(100% / @count - @margin * (@count - 1) / @count + @margin);
     padding-right: @margin;

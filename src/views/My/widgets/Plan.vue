@@ -1,14 +1,14 @@
 <template>
   <div class="my-plan-container">
-    <div class="add-btn-wrapper">
+    <!-- <div class="add-btn-wrapper">
       <el-button class="add-btn" type="primary" @click="addPlan">
         <icon-svg svg-class="add-icon" svg-name="add" />
         <span>新建方案</span>
       </el-button>
-    </div>
+    </div> -->
     <plan-list
       canDelete
-      :showNoTips="!loading"
+      :showNoTips="false"
       :plans="plans"
       :size="planCount"
       :page="planPage"
@@ -33,7 +33,7 @@
 import PlanList from "components/PlanList";
 import EditPlanNameDialog from "components/EditPlanNameDialog";
 import kujialeService from "service/kujiale";
-import { goAddPlan, goEditPlan } from "utils/routes";
+import { goAddPlan, goEditPlan, goDrawPlan } from "utils/routes";
 import { mapState } from "vuex";
 
 export default {
@@ -72,6 +72,7 @@ export default {
     this.getPlan();
   },
   methods: {
+    goDrawPlan,
     getPlan(start = 1) {
       this.$emit("update:loading", true);
       kujialeService
@@ -165,7 +166,9 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable.less";
-
+.my-plan-container {
+  padding: 20px 0;
+}
 .add-btn-wrapper {
   display: flex;
   justify-content: flex-end;
