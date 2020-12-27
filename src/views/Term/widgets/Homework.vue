@@ -183,9 +183,9 @@ const HOMEWORK_STATUS = {
 };
 
 const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
-  0: "作业已经提交",
-  1: "作业已经提交",
-  2: "作业已经批改",
+  0: "作业已提交",
+  1: "作业已提交",
+  2: "作业已批改",
   3: "重新提交" // 已驳回
 };
 
