@@ -82,8 +82,8 @@
           @click="handleSubmitClick"
         >
           {{
-            homework.user_homework && homework.user_homework.status === 3
-              ? "重选作业"
+            homework.user_homework
+              ? HOMEWORK_STATUS_UPLOAD_DISPLAY[homework.user_homework.status]
               : "上传作业"
           }}
         </el-button>
@@ -181,6 +181,14 @@ const HOMEWORK_STATUS = {
   2: "已批改",
   3: "被驳回" // 已驳回
 };
+
+const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
+  0: "作业已经提交",
+  1: "作业已经提交",
+  2: "作业已经批改",
+  3: "重新提交" // 已驳回
+};
+
 export default {
   name: "TermHomework",
   components: {
@@ -197,6 +205,7 @@ export default {
   data() {
     return {
       HOMEWORK_STATUS,
+      HOMEWORK_STATUS_UPLOAD_DISPLAY,
       USER_HOMEWORK_SCORE,
       fold: false,
       isExpired: true,
@@ -330,7 +339,7 @@ export default {
       position: relative;
       width: @leftWidth;
       margin-right: @leftMarginRight;
-      padding: 10px;
+      padding: 10px 24px;
       background: #f5f5f5;
       &::after {
         position: absolute;
@@ -358,9 +367,6 @@ export default {
       }
       .homework-desc-content {
         margin-top: 4px;
-        line-height: 17px;
-        font-weight: 400;
-        color: #ababab;
       }
     }
   }
@@ -382,7 +388,7 @@ export default {
       .reply-content-wrapper {
         margin-top: 6px;
         position: relative;
-        padding: 10px;
+        padding: 10px 24px;
         background: #f5f5f5;
         &::after {
           position: absolute;
@@ -402,13 +408,6 @@ export default {
           font-size: 12px;
           font-weight: 400;
           color: #747474;
-        }
-        p {
-          margin-top: 4px;
-          line-height: 17px;
-          font-size: 12px;
-          font-weight: 400;
-          color: #ababab;
         }
       }
     }
