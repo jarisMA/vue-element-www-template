@@ -1,5 +1,8 @@
 <template>
-  <div class="homework-card">
+  <div
+    :class="['homework-card', !fold ? 'pointer' : '']"
+    @click="!fold && (fold = true)"
+  >
     <img
       class="score-icon"
       v-if="
@@ -180,10 +183,10 @@
       </div>
     </div>
     <label class="fold-label">
-      <span v-if="!fold" @click="fold = true">
+      <span v-if="!fold" @click.stop="fold = true">
         <icon-svg svg-class="unfold-icon" svg-name="unfold" />
       </span>
-      <span v-else @click="fold = false">
+      <span v-else @click.stop="fold = false">
         <icon-svg svg-class="fold-icon" svg-name="fold" />
       </span>
     </label>
@@ -622,6 +625,9 @@ export default {
     width: 114px;
     height: 80px;
   }
+}
+.pointer {
+  cursor: pointer;
 }
 </style>
 

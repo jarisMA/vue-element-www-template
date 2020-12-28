@@ -5,7 +5,11 @@
   >
     <div class="whole-wrapper" ref="whole">
       <slot> </slot>
-      <div class="fold-operate" v-if="showFoldBtn" @click="visible = !visible">
+      <div
+        class="fold-operate"
+        v-if="showFoldBtn"
+        @click.stop="visible = !visible"
+      >
         {{ !visible ? "展开" : "收起" }}
         <icon-svg v-if="!visible" svg-class="down-icon" svg-name="down" />
         <icon-svg v-else svg-class="up-icon" svg-name="down" />
@@ -79,5 +83,8 @@ export default {
   line-height: 26px;
   text-align: center;
   cursor: pointer;
+}
+.up-icon {
+  transform: rotate(180deg);
 }
 </style>
