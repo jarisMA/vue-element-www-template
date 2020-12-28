@@ -63,14 +63,27 @@ export default {
         commName: "",
         city: ""
       },
-      btnLoading: false
+      btnLoading: false,
+      pardon: false
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+  beforeRoute(to, from, next) {
+    if (["EditPlan", "DrawPlan"].indexOf(from.name) > -1) {
+      this.pardon = true;
+    }
+    next();
+  },
   created() {
     this.getPlan();
+    if (this.pardon) {
+      const timer = setTimeout(() => {
+        this.getPlan();
+        clearTimeout(timer);
+      }, 1000);
+    }
   },
   methods: {
     goDrawPlan,

@@ -11,6 +11,24 @@
             "
           ></el-avatar>
           <span class="nickname">{{ userInfo && userInfo.nickname }}</span>
+          <el-tooltip
+            v-if="userInfo && userInfo.kujiale_type === 1"
+            popper-class="vip-popper"
+            effect="light"
+            content="您已是尊柜会员啦！"
+            placement="bottom"
+          >
+            <img class="user-icon" src="~images/vip.png" />
+          </el-tooltip>
+          <el-tooltip
+            v-else
+            popper-class="vip-popper"
+            effect="light"
+            content="您仍旧是一棵浮木……"
+            placement="bottom"
+          >
+            <img class="user-icon" src="~images/user.png" />
+          </el-tooltip>
         </div>
         <el-menu default-active="plan" @select="handleSelectMenu">
           <el-menu-item index="plan">我的方案</el-menu-item>
@@ -90,6 +108,13 @@ export default {
       border: 2px solid @primaryColor;
       background-color: transparent;
       cursor: auto;
+    }
+
+    .user-icon {
+      margin-top: 10px;
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
     }
   }
   .el-menu {

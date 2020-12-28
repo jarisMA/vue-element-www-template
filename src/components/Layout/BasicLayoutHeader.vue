@@ -57,7 +57,15 @@
           <div class="user-handle_show" v-if="userInfo">
             <div class="show-container landing">
               <div class="login-content">
-                <p class="login-title">{{ userInfo.nickname }}</p>
+                <p class="login-title">
+                  {{ userInfo.nickname }}
+                  <img
+                    v-if="userInfo && userInfo.kujiale_type === 1"
+                    class="user-icon"
+                    src="~images/vip.png"
+                  />
+                  <img class="user-icon" src="~images/user.png" />
+                </p>
               </div>
               <ul class="login-operation">
                 <li @click="goMy()" class="workbench">
@@ -154,6 +162,12 @@ export default {
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
   z-index: 2;
+  .user-icon {
+    margin-left: 10px;
+    width: 18px;
+    height: 18px;
+    vertical-align: -2px;
+  }
   .header-content {
     display: flex;
     justify-content: space-between;

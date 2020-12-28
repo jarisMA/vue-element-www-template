@@ -32,6 +32,7 @@ import userService from "service/user";
 import termService from "service/term";
 import registeredSuccessfullyTitle from "./registeredSuccessfullyTitle.vue";
 import douxiGif from "images/douxi3.gif";
+import vipImg from "images/vip.png";
 
 export default {
   components: {
@@ -69,11 +70,10 @@ export default {
         termService.checkTerm().then(res => {
           if (res.status === 1) {
             this.$msgBox.showMsgBox({
-              width: 400,
-              height: 270,
+              width: 500,
+              height: 450,
               img: douxiGif,
-              content:
-                "<p style='color:#14AF64FF;'>附赠您「斗西家计划」一年会员 ， 期待看到你的新家，设计吧少年！</p>",
+              content: `<p style='color:#14AF64FF;'>欢迎来到「斗西家计划」，</p><p style='color:#14AF64FF;'>一年期<img width='18' height='18' style='margin-right:-7px;' src=${vipImg} />「尊柜」会员已发放到当前账户，</p><p style='color:#14AF64FF;'>期待看到你的新家，设计吧少年！</p>`,
               confirmBtnText: "确定",
               showCancelBtn: false
             });

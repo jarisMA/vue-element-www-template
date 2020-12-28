@@ -183,7 +183,7 @@ export default {
         height: 70%;
       }
       p {
-        line-height: 24px;
+        line-height: 28px;
         font-size: 20px;
         font-weight: 500;
         color: #333;
@@ -196,6 +196,7 @@ export default {
       align-items: center;
       width: 100%;
       height: 27%;
+      max-height: 80px;
       background: #ededed;
       button {
         width: 30%;

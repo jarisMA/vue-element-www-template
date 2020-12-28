@@ -23,13 +23,10 @@
             >
           </div>
           <div class="term-time-wrapper">
-            <span class="term-start"
-              >{{ formatDate(detail.start_at) }} 开课
-            </span>
-            |
-            <span class="term-end"
-              >{{ formatDate(detail.end_at) }} 前有效
-            </span>
+            课程有效期：
+            <span class="term-start">{{ formatDate(detail.start_at) }} </span>
+            至
+            <span class="term-end">{{ formatDate(detail.end_at) }} </span>
           </div>
           <p class="term-desc">
             {{ detail.description }}
@@ -315,7 +312,7 @@ export default {
         this.$msgBox
           .showMsgBox({
             width: 400,
-            height: 270,
+            height: 320,
             img: submit_hw_img,
             content:
               "<p style='color:#14AF64FF;'>作业一定要按照要求认真完成,</p><p style='color:#14AF64FF;'>乱做或敷衍会被老师无情驳回噢~</p></p>",
@@ -743,8 +740,8 @@ export default {
   }
   .homework-tips {
     margin-bottom: 5px;
-    line-height: 17px;
-    font-size: 12px;
+    line-height: 20px;
+    font-size: 14px;
     font-weight: 400;
     color: #ababab;
   }

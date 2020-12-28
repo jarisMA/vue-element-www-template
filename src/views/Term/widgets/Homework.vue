@@ -357,7 +357,7 @@ export default {
   }
   .homework-time-wrapper {
     line-height: 1;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     .homework-start {
       color: @primaryColor;
@@ -469,7 +469,7 @@ export default {
     display: inline-block;
     margin-bottom: 10px;
     line-height: 17px;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     color: #333333;
   }

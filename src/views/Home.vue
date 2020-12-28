@@ -32,12 +32,12 @@ export default {
     enterClass() {
       if (this.userInfo) {
         termService.checkTerm().then(res => {
-          if (res.status === 1) {
+          if (res.status === 0) {
             goTerm(process.env.VUE_APP_TERM_ID);
           } else {
             this.$msgBox.showMsgBox({
               width: 400,
-              height: 270,
+              height: 200,
               img: douxiGif,
               content:
                 "<p style='color:#14AF64FF;'>抱歉，你好像并没有报名噢…</p>",
