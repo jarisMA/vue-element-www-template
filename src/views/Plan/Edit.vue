@@ -86,7 +86,7 @@ export default {
 .edit-plan-container,
 .iframe-wrapper {
   width: 100vw;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 40px);
 }
 .edit-plan-container {
   position: relative;

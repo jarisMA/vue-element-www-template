@@ -422,6 +422,7 @@ export default {
     .reply-content-wrapper {
       margin-top: 12px;
       position: relative;
+      min-height: 156px;
       background: #f5f5f5;
       &::after {
         position: absolute;

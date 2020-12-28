@@ -1,22 +1,34 @@
 <template>
-  <header :class="['page-header', theme]">
+  <header
+    :class="[
+      'page-header',
+      theme,
+      theme === 'primary' && visible ? 'primary_active' : ''
+    ]"
+  >
     <div :class="['header-content', theme]">
       <div class="header-hd">
         <span class="header-logo_img" @click="goHome()">
           <img
-            v-if="theme === 'primary'"
+            v-if="theme === 'primary' && !visible"
             class="header-logo"
-            src="~images/logo_white.png"
+            src="~images/logo2.png"
+            @click="visible = !visible"
+          />
+          <img
+            v-else-if="theme === 'primary' && visible"
+            class="header-logo"
+            src="~images/logo3.png"
+            @click="visible = !visible"
           />
           <img v-else class="header-logo" src="~images/logo_1.svg" />
         </span>
-        <span
-          :class="['header-more', visible ? 'active' : '']"
-          v-if="theme === 'primary'"
-          @click="visible = !visible"
-        >
-          <icon-svg svg-class="more-icon" svg-name="more" />
-        </span>
+        <!-- <span :class="['header-more', visible ? 'active' : '']"
+              v-if="theme === 'primary'"
+              @click="visible = !visible">
+          <icon-svg svg-class="more-icon"
+                    svg-name="more" />
+        </span> -->
         <nav class="header-nav" v-show="theme !== 'primary' || visible">
           <span class="header-nav-item My" @click="loginDialogVisible(6)"
             >斗西学社</span
@@ -26,7 +38,7 @@
           >
         </nav>
       </div>
-      <div class="header-ft">
+      <div class="header-ft" v-if="theme !== 'primary' || visible">
         <div class="user-handle-container">
           <el-button
             class="login-button"
@@ -132,6 +144,7 @@ export default {
 @import "~styles/variable.less";
 
 .page-header {
+  height: 60px;
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
   z-index: 2;
@@ -139,7 +152,7 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 60px;
+    height: 100%;
     font-size: 0;
     width: calc(100vw - 88px);
     min-width: 1200px;
@@ -369,10 +382,27 @@ export default {
   }
 }
 .page-header.primary {
+  height: 20px;
   background-color: @primaryColor;
+  overflow: hidden;
+  transition: all 1s;
+  &.primary_active {
+    height: 52px;
+    .header-logo_img .header-logo {
+      height: 52px;
+    }
+  }
   .header-logo_img {
+    height: 100%;
+    width: 44px;
     margin-right: 8px;
-    cursor: auto;
+    .header-logo {
+      width: 44px;
+      height: 20px;
+    }
+    &:hover {
+      background: #38ca83;
+    }
   }
   .header-more {
     display: flex;
