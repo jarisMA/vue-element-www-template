@@ -47,6 +47,7 @@ export default {
       width: 30px;
       height: 30px;
       margin: 25px 25px 0 0;
+      cursor: pointer;
     }
   }
   .content {

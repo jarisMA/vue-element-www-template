@@ -4,14 +4,10 @@
       <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
-      <!-- <div class="desc-content">
-        <p>一个帮助你梳理需求的小工具</p>
-      </div>
-      <div class="title-content">
-        <p>将于9月25日上线</p>
-      </div> -->
-      <div class="desc-content">
-        <p>新版斗西宝典即将上线，敬请期待。</p>
+      <img src="~images/treasure_book.png" />
+      <div>
+        <p>新版斗西宝典即将上线，</p>
+        <p>敬请期待。</p>
       </div>
     </div>
   </div>
@@ -29,40 +25,40 @@ export default {
 @import "~styles/variable.less";
 
 .rwishLink_container {
-  padding-bottom: 138px;
+  width: 672px;
+  height: 500px;
+  background: url("~images/grid.png") repeat;
+  background-color: #e6d6e5;
+  border: 12px solid #af72a2;
   .header {
     text-align: right;
     .header-cancel {
       width: 30px;
       height: 30px;
-      margin: 25px 25px 0 0;
+      margin: 15px 15px 0 0;
       &:hover {
         cursor: pointer;
       }
     }
   }
   .content {
-    margin: 92px auto 0;
-    text-align: center;
-    .desc-content {
-      align-items: center;
-      font-size: 20px;
-      line-height: 20px;
-      color: #777777;
-      padding-bottom: 12px;
-    }
-    .title-content {
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    img {
       display: inline-block;
-      text-align: center;
-      font-size: 28px;
-      line-height: 48px;
-      color: @primaryColor;
-      padding: 16px auto 17px;
-      width: 289.69px;
-      border: 1px solid #707070;
-      border-left: none;
-      border-right: none;
+      margin-bottom: 20px;
+      width: 230px;
+      height: 192px;
+    }
+    p {
+      font-size: 36px;
       font-weight: bold;
+      color: #af72a2;
+      line-height: 50px;
+      text-align: center;
     }
   }
 }
