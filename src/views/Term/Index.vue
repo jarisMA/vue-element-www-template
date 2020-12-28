@@ -68,13 +68,13 @@
       :show-close="false"
     >
       <el-steps class="step-wrapper" align-center :active="activeStep">
-        <el-step title="选择方案"></el-step>
+        <el-step title="选择设计方案"></el-step>
         <el-step title="小结"></el-step>
       </el-steps>
       <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
         <div
           class="add-plan-button"
-          v-if="plans.length > 0"
+          v-if="plans.length > 0 && false"
           @click="goDrawPlan()"
         >
           <icon-svg svg-class="add-icon" svg-name="add" />
@@ -106,7 +106,7 @@
         </h3>
         <div class="step-2-content">
           <div class="select-plan-wrapper">
-            <label class="label-title">方案</label>
+            <label class="label-title">已选方案</label>
             <div class="select-plan-card">
               <div class="card-top">
                 <the-loading-image
@@ -139,7 +139,7 @@
           </div>
           <div class="homework-input-wrapper">
             <div class="homework-content">
-              <label class="label-title">小结</label>
+              <label class="label-title">设计阐述与说明</label>
               <el-input
                 type="textarea"
                 placeholder="请简练的阐述问题与需求。
@@ -157,7 +157,7 @@
               ></el-input>
             </div>
             <div class="homework-image">
-              <label class="label-title">效果图</label>
+              <label class="label-title">配图</label>
               <div class="homework-image-wrapper">
                 <ul>
                   <li

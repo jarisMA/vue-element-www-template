@@ -204,6 +204,14 @@ const HOMEWORK_STATUS = {
   2: "已批复",
   3: "被驳回" // 已驳回
 };
+
+const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
+  0: "作业已提交",
+  1: "作业已提交",
+  2: "作业已批改",
+  3: "重新提交" // 已驳回
+};
+
 export default {
   name: "TermHomework",
   components: {
@@ -221,6 +229,7 @@ export default {
   data() {
     return {
       HOMEWORK_STATUS,
+      HOMEWORK_STATUS_UPLOAD_DISPLAY,
       USER_HOMEWORK_SCORE,
       fold: false,
       isExpired: true,
