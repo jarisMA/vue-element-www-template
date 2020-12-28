@@ -1,31 +1,32 @@
 <template>
-  <div class="message-box" v-show="isShowMessageBox">
-    <div class="message-mask" @click="cancel"></div>
-    <div
-      class="message-modal"
-      :style="{ width: width + 'px', height: height + 'px' }"
-    >
+  <div :class="['message-box',theme]"
+       v-show="isShowMessageBox">
+    <div class="message-mask"
+         @click="cancel"></div>
+    <div class="message-modal"
+         :style="{ width: width + 'px', height: height + 'px' }">
       <h3 class="message-modal-header">
-        <img class="close-icon" src="~images/close_logo.svg" @click="cancel" />
+        <img v-if="showCloseBtn"
+             class="close-icon"
+             src="~images/close_logo.svg"
+             @click="cancel" />
       </h3>
       <div :class="['message-modal-body', bodyClass]">
         <img :src="img" />
         <p v-html="content"></p>
       </div>
       <div class="message-modal-footer">
-        <button class="btn-default" @click="cancel" v-if="showCancelBtn">
+        <button class="btn-default"
+                @click="cancel"
+                v-if="showCancelBtn">
           {{ cancelBtnText }}
         </button>
-        <button
-          class="btn-primary btn-confirm"
-          @click="confirm"
-          v-if="showConfirmBtn"
-        >
-          <icon-svg
-            v-if="confirmBtnIcon"
-            svg-class="confirm-icon"
-            :svg-name="confirmBtnIcon"
-          />{{ confirmBtnText }}
+        <button class="btn-primary btn-confirm"
+                @click="confirm"
+                v-if="showConfirmBtn">
+          <icon-svg v-if="confirmBtnIcon"
+                    svg-class="confirm-icon"
+                    :svg-name="confirmBtnIcon" />{{ confirmBtnText }}
         </button>
       </div>
     </div>
@@ -44,11 +45,11 @@ export default {
     },
     width: {
       type: Number,
-      default: 400
+      default: 672
     },
     height: {
       type: Number,
-      default: 270
+      default: 500
     },
     img: {
       type: String,
@@ -57,6 +58,10 @@ export default {
     content: {
       type: String,
       default: "这是弹框内容"
+    },
+    showCloseBtn: {
+      type: Boolean,
+      default: true
     },
     showCancelBtn: {
       type: Boolean,
@@ -81,9 +86,13 @@ export default {
     bodyClass: {
       type: String,
       default: ""
+    },
+    theme: {
+      type: String,
+      default: ""
     }
   },
-  data() {
+  data () {
     return {
       isShowMessageBox: false,
       resolve: "",
@@ -93,7 +102,7 @@ export default {
   },
   methods: {
     // 弹出messageBox,并创建promise对象
-    showMsgBox() {
+    showMsgBox () {
       this.isShowMessageBox = true;
       this.promise = new Promise((resolve, reject) => {
         this.resolve = resolve;
@@ -103,23 +112,23 @@ export default {
       return this.promise;
     },
     // 确定,将promise断定为resolve状态
-    confirm() {
+    confirm () {
       this.isShowMessageBox = false;
       this.resolve("confirm");
       this.remove();
     },
     // 取消,将promise断定为reject状态
-    cancel() {
+    cancel () {
       this.isShowMessageBox = false;
       this.reject("cancel");
       this.remove();
     },
-    remove() {
+    remove () {
       setTimeout(() => {
         this.destroy();
       }, 300);
     },
-    destroy() {
+    destroy () {
       this.$destroy();
       document.body.removeChild(this.$el);
     }
@@ -128,8 +137,8 @@ export default {
 </script>
 <style lang="less" scoped>
 @import "~styles/variable.less";
-@width: 400px;
-@height: 270px;
+@width: 672px;
+@height: 500px;
 .message-box {
   position: fixed;
   top: 0;
@@ -180,13 +189,13 @@ export default {
       padding: 0 7%;
       height: 55%;
       img {
-        height: 70%;
+        height: 50%;
       }
       p {
-        line-height: 28px;
-        font-size: 20px;
-        font-weight: 500;
-        color: #333;
+        line-height: 50px;
+        font-size: 30px;
+        font-weight: 400;
+        color: #14af64;
         text-align: center;
       }
     }
@@ -196,7 +205,6 @@ export default {
       align-items: center;
       width: 100%;
       height: 27%;
-      max-height: 80px;
       background: #ededed;
       button {
         width: 30%;
@@ -222,6 +230,43 @@ export default {
           margin-right: 12%;
         }
       }
+    }
+  }
+}
+.img_ml_65 {
+  .message-modal-body {
+    img {
+      margin-left: 65px;
+    }
+  }
+}
+.img_h_80pc {
+  .message-modal-body {
+    img {
+      height: 70% !important;
+    }
+  }
+}
+.img_h_225 {
+  .message-modal-body {
+    img {
+      height: 225px !important;
+    }
+  }
+}
+.img_w_170 {
+  .message-modal-body {
+    img {
+      margin-top: 50px;
+      height: 170px !important;
+    }
+  }
+}
+.img_w_220 {
+  .message-modal-body {
+    img {
+      margin-top: 30px;
+      height: 220px !important;
     }
   }
 }

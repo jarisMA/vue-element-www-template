@@ -1,13 +1,17 @@
 <template>
-  <div class="home-page" v-loading="loading">
+  <div class="home-page"
+       v-loading="loading">
     <div class="img-wrapper">
       <div class="main-img-wrapper">
-        <img class="main-img" src="~images/home.png" />
-        <img class="douxi-gif" src="~images/douxi.gif" />
+        <img class="main-img"
+             src="~images/home.png" />
+        <img class="douxi-gif"
+             src="~images/douxi.gif" />
       </div>
     </div>
     <div class="enter-btn">
-      <img src="~images/enter.png" @click="enterClass" />
+      <img src="~images/enter.png"
+           @click="enterClass" />
     </div>
   </div>
 </template>
@@ -20,7 +24,7 @@ import douxiGif from "images/douxi2.gif";
 
 export default {
   name: "Home",
-  data() {
+  data () {
     return {
       loading: false
     };
@@ -29,18 +33,17 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    enterClass() {
+    enterClass () {
       if (this.userInfo) {
         termService.checkTerm().then(res => {
           if (res.status === 1) {
             goTerm(process.env.VUE_APP_TERM_ID);
           } else {
             this.$msgBox.showMsgBox({
-              width: 400,
-              height: 200,
               img: douxiGif,
+              theme: 'img_w_220',
               content:
-                "<p style='color:#14AF64FF;'>抱歉，你好像并没有报名噢…</p>",
+                "<p style='color:#14AF64FF;font-size: 36px;font-weight:500px;'>抱歉，你好像并没有报名噢…</p>",
               confirmBtnText: "",
               confirmBtnIcon: "correct",
               showCancelBtn: false
