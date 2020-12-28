@@ -5,8 +5,8 @@
         <div class="term-cover">
           <the-loading-image
             :url="detail.cover_file_url"
-            :width="350"
-            :height="196"
+            :width="284"
+            :height="212"
           />
         </div>
         <div class="term-info">
@@ -654,8 +654,8 @@ export default {
     display: flex;
     .term-cover {
       margin-right: 20px;
-      width: 350px;
-      height: 196px;
+      width: 284px;
+      height: 212px;
     }
     .term-info {
       flex: 1;
