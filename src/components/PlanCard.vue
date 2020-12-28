@@ -110,7 +110,7 @@ export default {
   cursor: pointer;
   &.active {
     position: relative;
-    border: 1px solid @primaryColor;
+    border: 2px solid @primaryColor;
     &::after {
       position: absolute;
       top: -10px;
