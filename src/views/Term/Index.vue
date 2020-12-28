@@ -69,7 +69,7 @@
     >
       <el-steps class="step-wrapper" align-center :active="activeStep">
         <el-step title="选择设计方案"></el-step>
-        <el-step title="小结"></el-step>
+        <el-step title="设计阐述与说明"></el-step>
       </el-steps>
       <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
         <div
@@ -424,7 +424,7 @@ export default {
       }
       .step-wrapper {
         margin: auto;
-        width: 167px;
+        width: 200px;
         .el-step__head {
           &.is-finish {
             .el-step__icon.is-text {

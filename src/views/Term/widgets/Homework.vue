@@ -65,7 +65,7 @@
           }}
         </span>
         <span class="homework-end"
-          >提交截止日期：{{ formatDate(homework.end_at) }}（剩余{{
+          >最迟截止日期：{{ formatDate(homework.end_at) }}（剩余{{
             formNowFormatDay(homework.end_at)
           }}）
         </span>
