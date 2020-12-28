@@ -32,7 +32,7 @@ export default {
     enterClass() {
       if (this.userInfo) {
         termService.checkTerm().then(res => {
-          if (res.status === 0) {
+          if (res.status === 1) {
             goTerm(process.env.VUE_APP_TERM_ID);
           } else {
             this.$msgBox.showMsgBox({

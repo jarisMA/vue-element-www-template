@@ -64,7 +64,7 @@
                     class="user-icon"
                     src="~images/vip.png"
                   />
-                  <img class="user-icon" src="~images/user.png" />
+                  <img v-else class="user-icon" src="~images/user.png" />
                 </p>
               </div>
               <ul class="login-operation">
