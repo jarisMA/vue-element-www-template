@@ -21,9 +21,11 @@
           @click="confirm"
           v-if="showConfirmBtn"
         >
-          <icon-svg svg-class="confirm-icon" :svg-name="confirmBtnIcon" />{{
-            confirmBtnText
-          }}
+          <icon-svg
+            v-if="confirmBtnIcon"
+            svg-class="confirm-icon"
+            :svg-name="confirmBtnIcon"
+          />{{ confirmBtnText }}
         </button>
       </div>
     </div>
@@ -147,6 +149,7 @@ export default {
     background: #00000066;
   }
   .message-modal {
+    margin-bottom: @height;
     position: relative;
     display: flex;
     flex-direction: column;

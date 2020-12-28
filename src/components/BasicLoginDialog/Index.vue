@@ -28,8 +28,11 @@ import StepWechat from "./StepWechat.vue";
 import StepPhone from "./StepPhone.vue";
 import StepObjective from "./StepObjective.vue";
 import registeredSuccessfully from "./registeredSuccessfully.vue";
-import userService from "./../../global/service/user.js";
+import userService from "service/user";
+import termService from "service/term";
 import registeredSuccessfullyTitle from "./registeredSuccessfullyTitle.vue";
+import douxiGif from "images/douxi3.gif";
+
 export default {
   components: {
     StepWechat,
@@ -63,7 +66,22 @@ export default {
         remark: objective || other
       };
       userService.updateUserInfo(data).then(() => {
-        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 8);
+        termService.checkTerm().then(res => {
+          if (res.status === 1) {
+            this.$msgBox.showMsgBox({
+              width: 400,
+              height: 270,
+              img: douxiGif,
+              content:
+                "<p style='color:#14AF64FF;'>附赠您「斗西家计划」一年会员 ， 期待看到你的新家，设计吧少年！</p>",
+              confirmBtnText: "确定",
+              showCancelBtn: false
+            });
+            this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
+          } else {
+            this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 8);
+          }
+        });
       });
     }
   }
