@@ -393,6 +393,7 @@ export default {
       this.activeHomework = null;
       this.activePlan = null;
       this.activePlanContent = null;
+      this.activePlanPic = [];
       if (this.dialogPagination.page !== 1) {
         this.getPlans();
       }
