@@ -5,7 +5,7 @@
         <div class="header">
           <img src="~images/logo_3.svg" alt="" class="header-logo" />
         </div>
-        <p class="title">请问您的身份是</p>
+        <p class="title">请问您的身份是?</p>
         <div class="content">
           <el-radio-group v-model="studyObjectiveDisplay">
             <div class="content-item">
@@ -55,14 +55,20 @@
                   ')'
               }"
             ></div>
-            <p class="item-title">{{ item.name }}</p>
+            <p
+              class="item-title"
+              v-for="(p, key) of item.name.split(' ')"
+              :key="key"
+            >
+              {{ p }}
+            </p>
           </div>
         </div>
         <input
           v-model="otherObjective"
           @input="handleInput"
           class="decoration-company-input"
-          placeholder="其他状况请写这里"
+          placeholder="其他情况请写在这里..."
         />
       </div>
       <button
@@ -74,7 +80,7 @@
             : ''
         ]"
       >
-        确认
+        完成
       </button>
     </div>
   </div>
@@ -138,7 +144,12 @@ export default {
 </script>
 <style type="text/css" lang="less">
 @import "~styles/variable.less";
-
+.title {
+  font-size: 26px;
+  color: #000000;
+  font-weight: 500;
+  margin: 74px auto 62px;
+}
 .step-objective_container {
   text-align: center;
   width: 416px;
@@ -150,97 +161,35 @@ export default {
       margin: 30px 30px 0;
     }
   }
-  .title {
-    font-size: 26px;
-    color: #000000;
-    margin: 74px auto 62px;
-  }
   .content {
     width: 326px;
     text-align: center;
     margin: 0 auto;
     padding-bottom: 74px;
     /deep/ .el-radio-group {
-      width: 330px;
+      width: 326px;
       .content-item {
-        width: 330px;
-        height: 54px;
-        margin-bottom: 40px;
-        .el-radio-button,
-        .el-radio-button__orig-radio,
+        width: 100%;
+        height: 56px;
+        margin-bottom: 30px;
+        .el-radio-button {
+          width: 100%;
+        }
         .el-radio-button__inner {
-          width: 330px !important;
-          height: 54px !important;
-          font-size: 20px;
+          width: 100%;
+          height: 56px;
+          padding: 0;
+          line-height: 56px;
+          font-size: 18px;
+          font-weight: 500;
           color: @primaryColor;
-          transition: all 0s;
+          background: #ececec;
+          border: 1px solid #cecece;
+          border-radius: unset;
           &:hover {
-            filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
+            color: #fff;
+            background: @primaryColor;
           }
-        }
-      }
-      /deep/.el-radio-button__inner {
-        outline: none;
-        background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
-          center;
-        background-size: 330px !important;
-        transition: all 0s;
-        &:hover {
-          background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
-            center;
-          width: 330px !important;
-          height: 54px !important;
-          background-size: 348px !important;
-          color: @primaryColor;
-          z-index: 999;
-        }
-        &:active {
-          background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
-            center;
-          background-size: 348px !important;
-          color: #fff;
-        }
-      }
-    }
-    .el-radio-group {
-      width: 330px;
-      .content-item {
-        width: 330px;
-        height: 54px;
-        margin-bottom: 40px;
-        .el-radio-button,
-        .el-radio-button__orig-radio,
-        .el-radio-button__inner {
-          width: 330px !important;
-          height: 54px !important;
-          font-size: 20px;
-          color: @primaryColor;
-          transition: all 0s;
-          &:hover {
-            filter: drop-shadow(0px 3px 4px rgba(0, 0, 0, 0.3));
-          }
-        }
-      }
-      .el-radio-button__inner {
-        outline: none;
-        background: url("./../../assets/images/buttom_3-2-bg.svg") no-repeat
-          center;
-        background-size: 330px !important;
-        transition: all 0s;
-        &:hover {
-          background: url("./../../assets/images/buttom_3-1-bg.svg") no-repeat
-            center;
-          width: 330px !important;
-          height: 54px !important;
-          background-size: 348px !important;
-          color: @primaryColor;
-          z-index: 999;
-        }
-        &:active {
-          background: url("./../../assets/images/buttom_3-3-bg.svg") no-repeat
-            center;
-          background-size: 348px !important;
-          color: #fff;
         }
       }
     }
@@ -277,14 +226,13 @@ export default {
         border: 1px solid rgba(125, 125, 125, 0.6);
         margin: 0 5.5px;
         text-align: center;
-        padding-top: 19px;
-        &:hover {
-          cursor: pointer;
-        }
+        padding-top: 10px;
+        cursor: pointer;
         .item-title {
           font-size: 14px;
+          font-weight: 400;
+          line-height: 20px;
           color: #999999;
-          margin-top: 10px;
         }
         .item-image {
           width: 108px;
@@ -323,25 +271,21 @@ export default {
   }
   .decoration-company-button {
     width: 206px;
-    height: 46px;
-    background: url("~images/buttom_4-1-bg.svg") no-repeat center;
+    height: 50px;
+    margin-bottom: 50px;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     font-weight: 500;
     color: #ffffff;
     border: none;
     outline: none;
-    margin-bottom: 63px;
+    background: #ecececff;
     cursor: not-allowed;
-    padding: 0 4px 4px 0;
-    &:hover {
-      filter: drop-shadow(0px 0px 6px rgba(0, 0, 0, 0.3));
-    }
   }
   .decoration-company-button-active {
+    color: #fff;
     background: @primaryColor;
     cursor: pointer;
-    background: url("~images/buttom_4-2-bg.svg") no-repeat center;
   }
 }
 </style>

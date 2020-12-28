@@ -89,9 +89,7 @@ export default {
       margin-bottom: 20px;
       border: 2px solid @primaryColor;
       background-color: transparent;
-      :hover {
-        cursor: pointer;
-      }
+      cursor: auto;
     }
   }
   .el-menu {
