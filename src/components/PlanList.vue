@@ -3,7 +3,7 @@
     <template v-if="plans.length > 0 || theme === 'my'">
       <ul class="plan-list">
         <li :class="['plan-item', theme]" v-if="theme === 'my'">
-          <div class="add-plan" @click="goDrawPlan()">
+          <div class="add-plan" @click="addClick()">
             <div class="add-plan-top">
               <img src="~images/add_green.png" />
               <label>新建方案</label>
@@ -48,7 +48,6 @@
 import Pagination from "components/Pagination";
 import PlanCard from "components/PlanCard";
 import TheEmpty from "components/TheEmpty";
-import { goDrawPlan } from "utils/routes";
 
 export default {
   name: "PlanList",
@@ -105,7 +104,9 @@ export default {
     }
   },
   methods: {
-    goDrawPlan,
+    addClick() {
+      this.$emit("add");
+    },
     itemClick(item) {
       this.$emit("itemClick", item);
     },

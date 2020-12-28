@@ -18,6 +18,7 @@
       @editClick="isEditPlanInfo"
       @delete="delelePlan"
       @pageChange="getPlan"
+      @add="addPlan"
     />
     <edit-plan-name-dialog
       :visible.sync="addVisible"
@@ -33,7 +34,7 @@
 import PlanList from "components/PlanList";
 import EditPlanNameDialog from "components/EditPlanNameDialog";
 import kujialeService from "service/kujiale";
-import { goAddPlan, goEditPlan, goDrawPlan } from "utils/routes";
+import { goEditPlan, goDrawPlan } from "utils/routes";
 import { mapState } from "vuex";
 
 export default {
@@ -96,7 +97,7 @@ export default {
           title: "oops～方案创建数量已达上限"
         });
       } else {
-        goAddPlan();
+        goDrawPlan();
       }
     },
     editPlan(data) {
