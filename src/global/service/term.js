@@ -13,6 +13,9 @@ const termRequest = {
   },
   updateCampHomework(id, params = {}) {
     return request.put(API.campHomeworkUpdate(id), params);
+  },
+  checkTerm(id = process.env.VUE_APP_TERM_ID) {
+    return request.get(API.checkTerm(id));
   }
 };
 

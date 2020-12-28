@@ -24,6 +24,7 @@ import termService from "service/term";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
 import TermCard from "./TermCard";
+import { goTerm } from "utils/routes";
 
 export default {
   name: "MyTerm",
@@ -53,6 +54,7 @@ export default {
     this.getData();
   },
   methods: {
+    goTerm,
     getData(start = 1) {
       this.$emit("update:loading", true);
       termService
@@ -69,14 +71,6 @@ export default {
         .finally(() => {
           this.$emit("update:loading", false);
         });
-    },
-    goTerm(id) {
-      this.$router.push({
-        name: "Term",
-        params: {
-          id
-        }
-      });
     }
   }
 };

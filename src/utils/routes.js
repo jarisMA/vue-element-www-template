@@ -48,6 +48,18 @@ export const goDrawPlan = (type = "_blank") => {
   );
 };
 
+export const goTerm = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "Term",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

@@ -1,33 +1,21 @@
 <template>
   <div class="home-page" v-loading="loading">
-    <div class="banner-container">
-      <div class="banner-section">
-        <div class="left">
-          <img src="~images/banner-1_title.svg" class="title" />
-          <button class="apply" @click="createPlan"></button>
-        </div>
-        <img src="~images/banner-1_image.svg" class="right" />
+    <div class="img-wrapper">
+      <div class="main-img-wrapper">
+        <img class="main-img" src="~images/home.png" />
+        <img class="douxi-gif" src="~images/douxi.gif" />
       </div>
     </div>
-    <div class="banner-2-container">
-      <div class="banner-2-section">
-        <button
-          class="look"
-          @click="
-            goRoute(
-              'https://mp.weixin.qq.com/s/F6MAFZZIQnuB55gXRtJLuA',
-              '_blank'
-            )
-          "
-        ></button>
-      </div>
+    <div class="enter-btn">
+      <img src="~images/enter.png" @click="enterClass" />
     </div>
   </div>
 </template>
 
 <script>
-import { goRoute, goAddPlan } from "utils/routes";
+import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
+import termService from "service/term";
 
 export default {
   name: "Home",
@@ -40,12 +28,16 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    goRoute,
-    createPlan() {
-      if (!this.userInfo) {
-        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+    enterClass() {
+      if (this.userInfo) {
+        termService.checkTerm().then(res => {
+          if (res.status === 1) {
+            goTerm(process.env.VUE_APP_TERM_ID);
+          }
+        });
+      } else {
+        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
-      return goAddPlan();
     }
   }
 };
@@ -53,84 +45,70 @@ export default {
 
 <style type="text/css" lang="less" scoped>
 .home-page {
-  .banner-container {
-    background-color: #fcfcfc;
+  .img-wrapper {
+    position: relative;
     width: 100%;
-    height: 702px;
-    text-align: center;
-    .banner-section {
-      width: 1200px;
-      height: 100%;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .left {
-        height: 456px;
-        display: flex;
-        flex-direction: column;
-        .title {
-          width: 376px;
-          height: 181px;
-          margin-bottom: 136px;
-        }
-        .apply {
-          background: url("./../assets/images/buttom_1-bg.svg") no-repeat center;
-          width: 300px;
-          height: 78px;
-          outline: none;
-          border: none;
-          &:hover {
-            cursor: pointer;
-            background: url("./../assets/images/buttom_1-1-bg.svg") no-repeat
-              center;
-          }
-          &:active {
-            background: url("./../assets/images/buttom_1-2-bg.svg") no-repeat
-              center;
-          }
-        }
-      }
-      .right {
-        width: 616px;
-        height: 456px;
-      }
+    &::after {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      content: "";
+      width: 100%;
+      height: 233px;
+      background: #d8efe4ff;
+      border-bottom: 6px solid #000;
     }
   }
-  .banner-2-container {
-    background: url("./../assets/images/banner-2.svg") no-repeat center;
-    height: 600px;
-    max-width: 1920px;
-    background-size: 1920px;
+  .main-img-wrapper {
     position: relative;
-    margin: 0 auto;
-    margin-bottom: 80px;
-    text-align: center;
-    .banner-2-section {
-      width: 1200px;
-      height: 500px;
-      margin: 0 auto;
-      position: relative;
-      .look {
-        position: absolute;
-        top: 380px;
-        left: 460px;
-        width: 300px;
-        height: 84px;
-        // transform: translateX(-50%);
-        background: url("./../assets/images/buttom_2-1-bg.svg") no-repeat center;
-        border: none;
-        outline: none;
-        &:hover {
-          cursor: pointer;
-          background: url("./../assets/images/buttom_2-2-bg.svg") no-repeat
-            center;
-        }
-        &:active {
-          background: url("./../assets/images/buttom_2-3-bg.svg") no-repeat
-            center;
-        }
-      }
+    margin: 83px auto 61px;
+    width: 772px;
+    height: 594px;
+    background: #fafafa;
+    z-index: 1;
+    &::before {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      content: "";
+      width: 227px;
+      height: 233px;
+      background: #d8efe4ff;
+      border-bottom: 6px solid #000;
+      border-right: 6px solid #000;
+      border-bottom-right-radius: 6px;
+    }
+    &::after {
+      position: absolute;
+      right: -1px;
+      bottom: 0;
+      content: "";
+      width: 227px;
+      height: 233px;
+      background: #d8efe4ff;
+      border-bottom: 6px solid #000;
+      border-left: 6px solid #000;
+      border-bottom-left-radius: 6px;
+    }
+    .main-img {
+      width: 100%;
+      height: 100%;
+    }
+    .douxi-gif {
+      position: absolute;
+      bottom: 65px;
+      right: 229px;
+      height: 300px;
+    }
+  }
+  .enter-btn {
+    margin: auto;
+    width: 308px;
+    height: 98px;
+    img {
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
     }
   }
 }
