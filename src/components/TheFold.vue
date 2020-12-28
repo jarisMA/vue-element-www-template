@@ -33,19 +33,19 @@ export default {
   },
   data() {
     return {
-      visible: false,
+      visible: true,
       showFoldBtn: false
     };
   },
   watch: {
-    isFold(val) {
-      if (val) {
-        this.judge();
-      }
-    }
+    // isFold (val) {
+    //   if (val) {
+    //     this.judge();
+    //   }
+    // }
   },
   mounted() {
-    this.judge();
+    // this.judge();
   },
   methods: {
     judge() {

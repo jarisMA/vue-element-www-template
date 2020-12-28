@@ -1,12 +1,5 @@
 <template>
-  <div :class="['homework-card', !fold ? 'pointer' : '']">
-    <img
-      class="score-icon"
-      v-if="
-        homework.user_homework && homework.user_homework.status === 2 && fold
-      "
-      :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
-    />
+  <div :class="['homework-card']">
     <div
       class="expired-tips"
       v-if="!homework.user_homework && isExpired && fold"
@@ -14,19 +7,23 @@
       <label>错过提交时间,下次早点来!</label>
       <img src="~images/expired.png" />
     </div>
-    <div
-      class="reject-tips"
-      v-if="
-        homework.user_homework && homework.user_homework.status === 3 && fold
-      "
-    >
-      <div class="tips-wrapper">
-        <img class="warning-icon" src="~images/danger-warning.png" />
-        <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
-      </div>
-      <img src="~images/reject.png" />
-    </div>
+
     <div class="homework-info" @click="fold = !fold">
+      <img
+        class="score-icon"
+        v-if="homework.user_homework && homework.user_homework.status === 2"
+        :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
+      />
+      <div
+        class="reject-tips"
+        v-if="homework.user_homework && homework.user_homework.status === 3"
+      >
+        <div class="tips-wrapper">
+          <img class="warning-icon" src="~images/danger-warning.png" />
+          <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
+        </div>
+        <img src="~images/reject.png" />
+      </div>
       <div class="homework-name-wrapper">
         <h4 class="homework-name">
           {{ homework.name }}
@@ -543,7 +540,7 @@ export default {
 .fold-label {
   position: absolute;
   right: 21px;
-  bottom: 10px;
+  bottom: 5px;
   font-size: 12px;
   font-weight: 400;
   color: #ababab;
@@ -557,8 +554,8 @@ export default {
   position: absolute;
   top: 10px;
   right: 10px;
-  width: 114px;
-  height: 80px;
+  width: 71.25px;
+  height: 50px;
 }
 .expired-tips {
   position: absolute;
@@ -624,8 +621,8 @@ export default {
     }
   }
   img {
-    width: 114px;
-    height: 80px;
+    width: 71.25px;
+    height: 50px;
   }
 }
 .pointer {
