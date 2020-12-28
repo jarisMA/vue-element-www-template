@@ -21,7 +21,9 @@
           @click="confirm"
           v-if="showConfirmBtn"
         >
-          {{ confirmBtnText }}
+          <icon-svg svg-class="confirm-icon" :svg-name="confirmBtnIcon" />{{
+            confirmBtnText
+          }}
         </button>
       </div>
     </div>
@@ -65,6 +67,10 @@ export default {
     cancelBtnText: {
       type: String,
       default: "取消"
+    },
+    confirmBtnIcon: {
+      type: String,
+      default: ""
     },
     confirmBtnText: {
       type: String,
@@ -175,7 +181,7 @@ export default {
       }
       p {
         line-height: 24px;
-        font-size: 16px;
+        font-size: 20px;
         font-weight: 500;
         color: #333;
         text-align: center;
@@ -196,6 +202,9 @@ export default {
         font-size: 14px;
         font-weight: 400;
         cursor: pointer;
+        .confirm-icon {
+          font-size: 28px;
+        }
         &.btn-default {
           border: 1px solid #b0b0b0;
           color: #787878;

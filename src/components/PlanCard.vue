@@ -109,7 +109,18 @@ export default {
   background: #fff;
   cursor: pointer;
   &.active {
+    position: relative;
     border: 1px solid @primaryColor;
+    &::after {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 20px;
+      height: 20px;
+      content: "";
+      background: url("~images/active.svg");
+      background-size: cover;
+    }
   }
   &:hover {
     box-shadow: 0px 0px 12px 0px #cccccc;

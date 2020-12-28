@@ -12,7 +12,7 @@
       </div>
 
       <div class="right" v-if="theme !== 'primary'">
-        <p class="title">联系邮箱：kf@home-plan.cn</p>
+        <p class="email">联系邮箱：kf@home-plan.cn</p>
         <div class="img-hover">
           <img src="~images/wx-logo.svg" alt="" class="image" />
           <img src="~images/direction_logo-3.svg" class="look-wx_imag" />
@@ -36,7 +36,7 @@ export default {
 };
 </script>
 <style type="text/css" lang="less" scoped>
-@import "~styles/variable.less";
+@import "~styles/variable";
 
 .page-footer {
   height: 60px;

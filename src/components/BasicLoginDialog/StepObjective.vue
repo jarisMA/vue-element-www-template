@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="step-objective">
     <div class="step-objective_container" v-show="!studyObjectiveDisplay">
       <div class="identity-selector_container">
         <div class="header">
@@ -90,6 +90,7 @@
 import userObjective from "utils/user_objective.js";
 
 export default {
+  name: "StepObjective",
   data() {
     return {
       studyObjectiveDisplay: null,
@@ -144,11 +145,13 @@ export default {
 </script>
 <style type="text/css" lang="less">
 @import "~styles/variable.less";
-.title {
-  font-size: 26px;
-  color: #000000;
-  font-weight: 500;
-  margin: 74px auto 62px;
+.step-objective {
+  .title {
+    font-size: 26px;
+    color: #000000;
+    font-weight: 500;
+    margin: 74px auto 62px;
+  }
 }
 .step-objective_container {
   text-align: center;

@@ -1,5 +1,5 @@
 <template>
-  <div class="edit-plan-container">
+  <div :class="['edit-plan-container', headerUnfold ? 'unfold' : '']">
     <i class="el-icon-loading"></i>
     <div class="iframe-wrapper">
       <iframe
@@ -17,6 +17,7 @@
 <script>
 import kujialeService from "service/kujiale";
 import { goMy } from "utils/routes";
+import { mapMutations, mapState } from "vuex";
 export default {
   name: "EditPlan",
   data() {
@@ -27,7 +28,14 @@ export default {
   created() {
     this.getData();
   },
+  beforeDestroy() {
+    this.updateHeaderUnfold(false);
+  },
+  computed: {
+    ...mapState(["headerUnfold"])
+  },
   methods: {
+    ...mapMutations(["updateHeaderUnfold"]),
     getData() {
       let promiseArr = [];
       const routeName = this.$route.name;
@@ -83,10 +91,17 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable.less";
 
-.edit-plan-container,
-.iframe-wrapper {
+.edit-plan-container {
   width: 100vw;
   height: calc(100vh - 40px);
+  transition: all 1s;
+  &.unfold {
+    height: calc(100vh - 72px);
+  }
+}
+.iframe-wrapper {
+  width: 100%;
+  height: 100%;
 }
 .edit-plan-container {
   position: relative;

@@ -16,6 +16,7 @@
 import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
 import termService from "service/term";
+import douxiGif from "images/douxi2.gif";
 
 export default {
   name: "Home",
@@ -33,6 +34,17 @@ export default {
         termService.checkTerm().then(res => {
           if (res.status === 1) {
             goTerm(process.env.VUE_APP_TERM_ID);
+          } else {
+            this.$msgBox.showMsgBox({
+              width: 400,
+              height: 270,
+              img: douxiGif,
+              content:
+                "<p style='color:#14AF64FF;'>抱歉，你好像并没有报名噢…</p>",
+              confirmBtnText: "",
+              confirmBtnIcon: "correct",
+              showCancelBtn: false
+            });
           }
         });
       } else {

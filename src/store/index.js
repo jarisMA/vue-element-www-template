@@ -7,7 +7,8 @@ export default new Vuex.Store({
   state: {
     loginDialogVisible: 0,
     userInfo: null,
-    headerTheme: "default"
+    headerTheme: "default",
+    headerUnfold: false
   },
   mutations: {
     USERINFO(state, userInfo) {
@@ -31,6 +32,9 @@ export default new Vuex.Store({
     },
     updateHeaderTheme(state, theme) {
       state.headerTheme = theme;
+    },
+    updateHeaderUnfold(state, unfold) {
+      state.headerUnfold = unfold;
     }
   },
   actions: {},

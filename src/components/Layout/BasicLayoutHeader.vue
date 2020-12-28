@@ -78,7 +78,7 @@
   </header>
 </template>
 <script type="text/javascript">
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { goHome, goMy, goProfile } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 
@@ -99,10 +99,16 @@ export default {
       userLogo: require("images/user_logo.svg")
     };
   },
+  watch: {
+    visible(val) {
+      this.updateHeaderUnfold(val);
+    }
+  },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
+    ...mapMutations(["updateHeaderUnfold"]),
     goHome() {
       if (this.theme === "primary") {
         return;
