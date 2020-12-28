@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['homework-card', !fold ? 'pointer' : '']"
-    @click="!fold && (fold = true)"
-  >
+  <div :class="['homework-card', !fold ? 'pointer' : '']">
     <img
       class="score-icon"
       v-if="
@@ -29,7 +26,7 @@
       </div>
       <img src="~images/reject.png" />
     </div>
-    <div class="homework-info">
+    <div class="homework-info" @click="fold = !fold">
       <div class="homework-name-wrapper">
         <h4 class="homework-name">
           {{ homework.name }}
@@ -294,6 +291,9 @@ export default {
   // height: 82px;
   padding: 20px;
   background: #ffffff;
+  .homework-info {
+    cursor: pointer;
+  }
   .homework-name-wrapper {
     display: flex;
     align-items: center;
