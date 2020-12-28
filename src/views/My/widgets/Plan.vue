@@ -107,9 +107,7 @@ export default {
     delelePlan(index, plan) {
       this.$msgBox
         .showMsgBox({
-          title: "添加分类",
-          content: "请填写分类名称",
-          isShowInput: true
+          content: "确认删除方案"
         })
         .then(async () => {
           kujialeService

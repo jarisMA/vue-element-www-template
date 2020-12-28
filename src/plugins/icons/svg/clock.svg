@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="17px" height="17px" viewBox="0 0 17 17" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>3icon</title>
+    <defs>
+        <path d="M6.98666667,0 C10.3003752,0 12.9866667,2.6862915 12.9866667,6 C12.9866667,9.3137085 10.3003752,12 6.98666667,12 C3.67295817,12 0.986666667,9.3137085 0.986666667,6 C0.986666667,2.6862915 3.67295817,0 6.98666667,0 Z" id="path-1"></path>
+        <filter id="filter-3">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="进入班级备份-14-更新" transform="translate(-379.000000, -507.000000)">
+            <g id="3icon备份" transform="translate(380.000000, 507.000000)">
+                <g id="warning" transform="translate(1.000000, 2.000000)">
+                    <mask id="mask-2" fill="white">
+                        <use xlink:href="#path-1"></use>
+                    </mask>
+                    <g id="01_PC/01_Basic/26_warning"></g>
+                    <g id="🎨-color" mask="url(#mask-2)" fill="#14AF64">
+                        <g transform="translate(-1.000000, -2.000000)" id="矩形">
+                            <rect x="0" y="0" width="16" height="16"></rect>
+                        </g>
+                    </g>
+                </g>
+                <g filter="url(#filter-3)" id="编组-19">
+                    <g transform="translate(6.000000, 4.000000)">
+                        <circle id="椭圆形" fill="#D8D8D8" cx="2" cy="1" r="1"></circle>
+                        <rect id="矩形" fill="#D8D8D8" x="0" y="3" width="3" height="1"></rect>
+                        <rect id="矩形备份-14" fill="#D8D8D8" x="0" y="7" width="4" height="1"></rect>
+                        <rect id="矩形备份-13" fill="#D8D8D8" transform="translate(2.500000, 5.000000) rotate(90.000000) translate(-2.500000, -5.000000) " x="0.5" y="4.5" width="4" height="1"></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

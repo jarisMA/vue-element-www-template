@@ -142,7 +142,14 @@
               <label class="label-title">小结</label>
               <el-input
                 type="textarea"
-                placeholder="请输入内容"
+                placeholder="请简练的阐述问题与需求。
+分段会更清晰：
+1..  
+2...
+3....
+4......
+（控制在500字内）
+"
                 maxlength="500"
                 show-word-limit
                 v-model="activePlanContent"
@@ -206,6 +213,8 @@ import kujialeService from "service/kujiale";
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan } from "utils/routes";
+import submit_hw_img from "images/submit_hw.png";
+import success_img from "images/success.svg";
 
 export default {
   name: "Term",
@@ -300,66 +309,82 @@ export default {
       if (this.activeStep === 1) {
         this.activeStep = 2;
       } else if (this.activeStep === 2) {
-        this.$confirm(
-          `请确认已按要求完成作业，提交后请耐心等待老师批复。`,
-          "",
-          {
-            confirmButtonText: "确定提交",
-            cancelButtonText: "再调整一下"
-          }
-        ).then(() => {
-          const {
-            planId,
-            name,
-            planPic,
-            srcArea,
-            specName,
-            city,
-            commName
-          } = this.activePlan;
-          const params = {
-            study_design_id: planId,
-            study_design_name: name,
-            study_design_pic: planPic,
-            study_design_src_area: srcArea,
-            study_design_spec_name: specName,
-            study_design_city: city,
-            study_design_comm_name: commName,
-            q_content: JSON.stringify({
-              content: this.activePlanContent,
-              images: this.activePlanPic
-            })
-          };
-          const { camp_id, term_id, id, user_homework } = this.activeHomework;
-          this.submitLoading = true;
-          if (user_homework) {
-            termService
-              .updateCampHomework(user_homework.id, params)
-              .then(() => {
-                this.$notice({
-                  title: "作业更新成功"
-                });
-                this.closeHomeworkDialog();
-                this.getData();
+        this.$msgBox
+          .showMsgBox({
+            width: 400,
+            height: 270,
+            img: submit_hw_img,
+            content:
+              "<p style='color:#14AF64FF;'>作业一定要按照要求认真完成,</p><p style='color:#14AF64FF;'>乱做或敷衍会被老师无情驳回噢~</p></p>",
+            confirmBtnText: "确定提交",
+            cancelBtnText: "再调整一下",
+            bodyClass: "submit-homework-modal-body"
+          })
+          .then(() => {
+            const {
+              planId,
+              name,
+              planPic,
+              srcArea,
+              specName,
+              city,
+              commName
+            } = this.activePlan;
+            const params = {
+              study_design_id: planId,
+              study_design_name: name,
+              study_design_pic: planPic,
+              study_design_src_area: srcArea,
+              study_design_spec_name: specName,
+              study_design_city: city,
+              study_design_comm_name: commName,
+              q_content: JSON.stringify({
+                content: this.activePlanContent,
+                images: this.activePlanPic
               })
-              .finally(() => {
-                this.submitLoading = false;
-              });
-          } else {
-            termService
-              .campHomework(camp_id, term_id, id, params)
-              .then(() => {
-                this.$notice({
-                  title: "作业提交成功"
+            };
+            const { camp_id, term_id, id, user_homework } = this.activeHomework;
+            this.submitLoading = true;
+            if (user_homework) {
+              termService
+                .updateCampHomework(user_homework.id, params)
+                .then(() => {
+                  this.closeHomeworkDialog();
+                  this.getData();
+                  this.$msgBox.showMsgBox({
+                    width: 400,
+                    height: 270,
+                    img: success_img,
+                    content:
+                      "<p style='color:#14AF64FF;'>提交成功</p><p style='color:#ABABABFF;'>请耐心等待老师的批复吧~</p></p>",
+                    confirmBtnText: "确定",
+                    showCancelBtn: false
+                  });
+                })
+                .finally(() => {
+                  this.submitLoading = false;
                 });
-                this.closeHomeworkDialog();
-                this.getData();
-              })
-              .finally(() => {
-                this.submitLoading = false;
-              });
-          }
-        });
+            } else {
+              termService
+                .campHomework(camp_id, term_id, id, params)
+                .then(() => {
+                  this.closeHomeworkDialog();
+                  this.getData();
+                  this.$msgBox.showMsgBox({
+                    width: 400,
+                    height: 270,
+                    img: success_img,
+                    content:
+                      "<p style='color:#14AF64FF;'>提交成功</p><p style='color:#ABABABFF;'>请耐心等待老师的批复吧~</p></p>",
+                    confirmBtnText: "确定",
+                    showCancelBtn: false
+                  });
+                })
+                .finally(() => {
+                  this.submitLoading = false;
+                });
+            }
+          });
       }
     },
     closeHomeworkDialog() {
@@ -723,6 +748,11 @@ export default {
     li:not(:last-child) {
       margin-bottom: 20px;
     }
+  }
+}
+/deep/ .submit-homework-modal-body {
+  img {
+    width: 104px;
   }
 }
 </style>

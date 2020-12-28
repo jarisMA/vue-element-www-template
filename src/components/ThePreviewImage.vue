@@ -1,18 +1,16 @@
 <template>
   <div class="the-preview-image">
-    <div ref="wrapper">
-      <el-image
-        ref="image"
-        class="preview-image-wrapper"
-        :fit="fit"
-        :src="url"
-        :preview-src-list="srcList"
-      >
-      </el-image>
-    </div>
-    <span class="image-count" v-if="srcList.length > 1" @click="previewClick">
-      +{{ srcList.length }}
-    </span>
+    <el-image
+      ref="image"
+      class="preview-image-wrapper"
+      :style="{ width: width, height: height }"
+      v-for="(url, key) of srcList"
+      :key="key"
+      :fit="fit"
+      :src="url"
+      :preview-src-list="srcList"
+    >
+    </el-image>
   </div>
 </template>
 
@@ -20,10 +18,6 @@
 export default {
   name: "ThePreviewImage",
   props: {
-    url: {
-      type: String,
-      default: null
-    },
     srcList: {
       type: Array,
       default: () => []
@@ -31,11 +25,14 @@ export default {
     fit: {
       type: String,
       default: "cover"
-    }
-  },
-  methods: {
-    previewClick() {
-      this.$refs.image.$el.children[0].click();
+    },
+    width: {
+      type: String,
+      default: "100px"
+    },
+    height: {
+      type: String,
+      default: "100px"
     }
   }
 };
@@ -43,9 +40,14 @@ export default {
 
 <style lang="less" scoped>
 .the-preview-image {
+  display: flex;
   .preview-image-wrapper {
-    width: 100%;
-    height: 100%;
+    width: 100px;
+    height: 100px;
+    background: #d8d8d8ff;
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
   }
   .image-count {
     position: absolute;

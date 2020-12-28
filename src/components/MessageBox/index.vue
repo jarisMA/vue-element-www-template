@@ -1,13 +1,16 @@
 <template>
   <div class="message-box" v-show="isShowMessageBox">
     <div class="message-mask" @click="cancel"></div>
-    <div class="message-modal">
+    <div
+      class="message-modal"
+      :style="{ width: width + 'px', height: height + 'px' }"
+    >
       <h3 class="message-modal-header">
         <img class="close-icon" src="~images/close_logo.svg" @click="cancel" />
       </h3>
-      <div class="message-modal-body">
-        <img src="~images/common/deleteConfirm.svg" />
-        <p>确认删除方案</p>
+      <div :class="['message-modal-body', bodyClass]">
+        <img :src="img" />
+        <p v-html="content"></p>
       </div>
       <div class="message-modal-footer">
         <button class="btn-default" @click="cancel" v-if="showCancelBtn">
@@ -26,12 +29,26 @@
 </template>
 
 <script>
+import defaultImg from "images/common/deleteConfirm.svg";
+
 export default {
   name: "MessageBox",
   props: {
     title: {
       type: String,
       default: "标题"
+    },
+    width: {
+      type: Number,
+      default: 400
+    },
+    height: {
+      type: Number,
+      default: 270
+    },
+    img: {
+      type: String,
+      default: defaultImg
     },
     content: {
       type: String,
@@ -52,6 +69,10 @@ export default {
     confirmBtnText: {
       type: String,
       default: "确定"
+    },
+    bodyClass: {
+      type: String,
+      default: ""
     }
   },
   data() {
@@ -110,7 +131,7 @@ export default {
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
+  z-index: 9999;
   .message-mask {
     position: absolute;
     top: 0;
@@ -146,16 +167,18 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      margin-top: -14%;
+      margin-top: -10%;
+      padding: 0 7%;
       height: 55%;
       img {
-        height: 80%;
+        height: 70%;
       }
       p {
-        line-height: 18px;
+        line-height: 24px;
         font-size: 16px;
         font-weight: 500;
         color: #333;
+        text-align: center;
       }
     }
     .message-modal-footer {
@@ -168,6 +191,7 @@ export default {
       button {
         width: 30%;
         height: 50%;
+        max-height: 50px;
         background: #ffffff;
         font-size: 14px;
         font-weight: 400;

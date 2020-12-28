@@ -56,8 +56,15 @@
         </label>
       </div>
       <div class="homework-time-wrapper">
+        <span class="homework-start">
+          <icon-svg svg-class="clock-icon" svg-name="clock" />最佳提交日期：{{
+            formatDate(homework.start_at)
+          }}
+        </span>
         <span class="homework-end"
-          >提交截止日期：{{ formatDate(homework.end_at) }}
+          >提交截止日期：{{ formatDate(homework.end_at) }}（剩余{{
+            formNowFormatDay(homework.end_at)
+          }}）
         </span>
       </div>
     </div>
@@ -65,12 +72,18 @@
       <div class="homework-desc-wrapper">
         <div class="homework-desc">
           <label class="homework-label">
-            提交要求：
+            作业要求：
           </label>
-          <div
-            class="homework-desc-content"
-            v-html="homework.description"
-          ></div>
+          <div class="homework-desc-content">
+            <the-fold :isFold="fold">
+              <slot>
+                <div
+                  class="homework-desc-content_info"
+                  v-html="homework.description"
+                ></div>
+              </slot>
+            </the-fold>
+          </div>
         </div>
         <el-button
           class="homework-submit-btn"
@@ -83,8 +96,10 @@
         >
           {{
             homework.user_homework && homework.user_homework.status === 3
-              ? "重选作业"
-              : "上传作业"
+              ? "重新提交"
+              : !homework.user_homework
+              ? "上传作业"
+              : "作业已提交"
           }}
         </el-button>
       </div>
@@ -94,15 +109,19 @@
       >
         <div class="homework-desc">
           <label class="homework-label">
-            小结：
+            设计阐述与说明：
           </label>
-          <div class="homework-content-wrapper">
-            <div class="homework-desc-image" v-if="q_images.length > 0">
-              <the-preview-image :url="q_images[0]" :srcList="q_images" />
-            </div>
-            <div class="homework-desc-content">
-              {{ q_content }}
-            </div>
+          <div class="homework-desc-content">
+            <the-fold :maxHeight="224" :isFold="fold">
+              <div class="homework-desc-content_info">
+                <div class="homework-desc-info">
+                  {{ q_content }}
+                </div>
+                <div class="homework-desc-image" v-if="q_images.length > 0">
+                  <the-preview-image :srcList="q_images" />
+                </div>
+              </div>
+            </the-fold>
           </div>
         </div>
         <div class="homework-plan-card">
@@ -140,28 +159,31 @@
               homework.user_homework.status === 3)
         "
       >
-        <the-avatar
-          :size="46"
-          :url="homework.user_homework.teacher.avatar_url"
-        />
-        <div class="reply-desc">
+        <label class="homework-label">作业点评：</label>
+        <div class="reply-teacher-info">
+          <the-avatar
+            :size="46"
+            :url="homework.user_homework.teacher.avatar_url"
+          />
           <label class="reply-name">
             {{ homework.user_homework.teacher.nickname }}
           </label>
-          <div class="reply-content-wrapper">
-            <label>作业批复：</label>
-            <p v-html="homework.user_homework.a_content"></p>
-          </div>
+        </div>
+        <div class="reply-content-wrapper">
+          <the-fold :maxHeight="156" :isFold="fold">
+            <div
+              class="reply-content"
+              v-html="homework.user_homework.a_content"
+            ></div>
+          </the-fold>
         </div>
       </div>
     </div>
     <label class="fold-label">
       <span v-if="!fold" @click="fold = true">
-        展开
-        <icon-svg svg-class="unfold-icon" svg-name="fold" />
+        <icon-svg svg-class="unfold-icon" svg-name="unfold" />
       </span>
       <span v-else @click="fold = false">
-        收起
         <icon-svg svg-class="fold-icon" svg-name="fold" />
       </span>
     </label>
@@ -172,13 +194,14 @@
 import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
 import ThePreviewImage from "components/ThePreviewImage";
+import TheFold from "components/TheFold";
 
-import { formatDate } from "utils/moment";
+import { formatDate, formNowFormatDay } from "utils/moment";
 import { USER_HOMEWORK_SCORE } from "utils/const";
 const HOMEWORK_STATUS = {
-  0: "待批改",
-  1: "待批改", // 保存草稿
-  2: "已批改",
+  0: "待批复",
+  1: "待批复", // 保存草稿
+  2: "已批复",
   3: "被驳回" // 已驳回
 };
 export default {
@@ -186,7 +209,8 @@ export default {
   components: {
     TheLoadingImage,
     TheAvatar,
-    ThePreviewImage
+    ThePreviewImage,
+    TheFold
   },
   props: {
     homework: {
@@ -206,7 +230,9 @@ export default {
   },
   watch: {
     homework(val) {
-      this.parseContent(val.user_homework.q_content);
+      this.q_content = null;
+      this.q_images = [];
+      this.parseContent(val.user_homework && val.user_homework.q_content);
     }
   },
   created() {
@@ -217,6 +243,7 @@ export default {
   },
   methods: {
     formatDate,
+    formNowFormatDay,
     judgeExpired() {
       this.isExpired = new Date(this.homework.end_at) <= new Date();
     },
@@ -278,8 +305,8 @@ export default {
       border: 1px solid @unsubmit;
       &.unsubmit,
       &.rejected {
-        color: @unsubmit;
-        border-color: @unsubmit;
+        color: #fff;
+        background: @unsubmit;
         &::after {
           position: absolute;
           left: -4px;
@@ -288,6 +315,7 @@ export default {
           height: 8px;
           content: "";
           background: @unsubmit;
+          border: 1px solid #fff;
           border-radius: 50%;
         }
       }
@@ -304,7 +332,8 @@ export default {
         border-color: @primaryColor;
       }
       &.rejected {
-        color: @rejected;
+        color: #fff;
+        background: @rejected;
         border-color: @rejected;
         &::after {
           background: @rejected;
@@ -314,120 +343,128 @@ export default {
   }
   .homework-time-wrapper {
     line-height: 1;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 400;
-    color: #ababab;
+    .homework-start {
+      color: @primaryColor;
+      .clock-icon {
+        display: inline-block;
+        margin-right: 6px;
+        font-size: 17px;
+      }
+    }
+    .homework-end {
+      display: inline-block;
+      margin-left: 15px;
+      color: #d40000ff;
+    }
   }
   .fold-wrapper {
     margin-bottom: 20px;
   }
   .homework-desc-wrapper {
-    margin-top: 16px;
+    margin-top: 20px;
     min-height: 64px;
     display: flex;
     align-items: flex-start;
     .homework-desc {
-      position: relative;
       width: @leftWidth;
       margin-right: @leftMarginRight;
-      padding: 10px;
-      background: #f5f5f5;
-      &::after {
-        position: absolute;
-        top: 7px;
-        right: -10px;
-        content: "";
-        width: 0px;
-        height: 0px;
-        border-top: 7px solid transparent;
-        border-bottom: 7px solid transparent;
-        border-left: 10px solid #f5f5f5ff;
-        font-size: 0px;
-        line-height: 0px;
-      }
-      .homework-content-wrapper {
-        display: flex;
-      }
-      .homework-desc-image {
-        position: relative;
-        width: 148px;
-        height: 148px;
-        margin-right: 10px;
-        background: #33333380;
-        cursor: pointer;
-      }
       .homework-desc-content {
-        margin-top: 4px;
-        line-height: 17px;
-        font-weight: 400;
-        color: #ababab;
-      }
-    }
-  }
-  .homework-reply-wrapper {
-    display: flex;
-    margin-top: 20px;
-    padding-top: 15px;
-    width: 100%;
-    border-top: 1px dashed #e6e6e6ff;
-    .reply-desc {
-      flex: 1;
-      margin-left: 20px;
-      .reply-name {
-        line-height: 20px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #747474;
-      }
-      .reply-content-wrapper {
-        margin-top: 6px;
         position: relative;
-        padding: 10px;
+        width: 100%;
+        min-height: 75px;
         background: #f5f5f5;
         &::after {
           position: absolute;
           top: 7px;
-          left: -10px;
+          right: -10px;
           content: "";
           width: 0px;
           height: 0px;
           border-top: 7px solid transparent;
           border-bottom: 7px solid transparent;
-          border-right: 10px solid #f5f5f5ff;
+          border-left: 10px solid #f5f5f5ff;
           font-size: 0px;
           line-height: 0px;
         }
-        label {
-          line-height: 20px;
-          font-size: 12px;
-          font-weight: 400;
-          color: #747474;
+        .homework-desc-content_info {
+          padding: 10px;
         }
-        p {
-          margin-top: 4px;
-          line-height: 17px;
-          font-size: 12px;
-          font-weight: 400;
-          color: #ababab;
-        }
+      }
+      .homework-desc-image {
+        margin-top: 10px;
       }
     }
   }
+  .homework-reply-wrapper {
+    margin-top: 20px;
+    padding-top: 20px;
+    width: 100%;
+    border-top: 1px dashed #e6e6e6ff;
+    .reply-teacher-info {
+      display: flex;
+      align-items: center;
+      .reply-name {
+        display: inline-block;
+        margin-left: 7px;
+      }
+    }
+    .reply-content-wrapper {
+      margin-top: 12px;
+      position: relative;
+      background: #f5f5f5;
+      &::after {
+        position: absolute;
+        top: -10px;
+        left: 15px;
+        content: "";
+        width: 0px;
+        height: 0px;
+        border-bottom: 10px solid #f5f5f5ff;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        font-size: 0px;
+        line-height: 0px;
+      }
+      .reply-content {
+        padding: 10px;
+      }
+      label {
+        line-height: 20px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #747474;
+      }
+      p {
+        margin-top: 4px;
+        line-height: 17px;
+        font-size: 12px;
+        font-weight: 400;
+        color: #ababab;
+      }
+    }
+  }
+  .homework-desc-content,
+  .reply-content-wrapper {
+    font-weight: 400;
+    color: #ababab;
+  }
   .homework-label {
     display: inline-block;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     line-height: 17px;
     font-size: 12px;
-    font-weight: 400;
-    color: #747474;
+    font-weight: bold;
+    color: #333333;
   }
   .homework-submit-wrapper {
-    .homework-desc {
-      min-height: 192px;
+    .homework-desc-content {
+      min-height: 224px !important;
     }
     .homework-plan-card {
       display: flex;
-      margin-top: -32px;
+      margin-top: 30px;
       width: 448px;
       height: 224px;
       padding: 10px;
@@ -471,6 +508,7 @@ export default {
   }
 }
 .homework-submit-btn {
+  margin-top: 31px;
   padding: 7px 23px;
   line-height: 1;
   font-size: 14px;
@@ -495,8 +533,9 @@ export default {
   font-weight: 400;
   color: #ababab;
   cursor: pointer;
-  .unfold-icon {
-    transform: rotate(180deg);
+  .unfold-icon,
+  .fold-icon {
+    font-size: 24px;
   }
 }
 .score-icon {
@@ -581,9 +620,11 @@ export default {
   img {
     max-width: 100%;
   }
-  ul,
   ul li {
     list-style: disc;
+  }
+  ul,
+  ol {
     margin-left: 20px;
   }
   ol,
