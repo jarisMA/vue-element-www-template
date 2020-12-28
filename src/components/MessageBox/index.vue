@@ -1,32 +1,36 @@
 <template>
-  <div :class="['message-box',theme]"
-       v-show="isShowMessageBox">
-    <div class="message-mask"
-         @click="cancel"></div>
-    <div class="message-modal"
-         :style="{ width: width + 'px', height: height + 'px' }">
+  <div :class="['message-box', theme]" v-show="isShowMessageBox">
+    <div class="message-mask" @click="cancel"></div>
+    <div
+      class="message-modal"
+      :style="{ width: width + 'px', height: height + 'px' }"
+    >
       <h3 class="message-modal-header">
-        <img v-if="showCloseBtn"
-             class="close-icon"
-             src="~images/close_logo.svg"
-             @click="cancel" />
+        <img
+          v-if="showCloseBtn"
+          class="close-icon"
+          src="~images/close_logo.svg"
+          @click="cancel"
+        />
       </h3>
       <div :class="['message-modal-body', bodyClass]">
         <img :src="img" />
         <p v-html="content"></p>
       </div>
       <div class="message-modal-footer">
-        <button class="btn-default"
-                @click="cancel"
-                v-if="showCancelBtn">
+        <button class="btn-default" @click="cancel" v-if="showCancelBtn">
           {{ cancelBtnText }}
         </button>
-        <button class="btn-primary btn-confirm"
-                @click="confirm"
-                v-if="showConfirmBtn">
-          <icon-svg v-if="confirmBtnIcon"
-                    svg-class="confirm-icon"
-                    :svg-name="confirmBtnIcon" />{{ confirmBtnText }}
+        <button
+          class="btn-primary btn-confirm"
+          @click="confirm"
+          v-if="showConfirmBtn"
+        >
+          <icon-svg
+            v-if="confirmBtnIcon"
+            svg-class="confirm-icon"
+            :svg-name="confirmBtnIcon"
+          />{{ confirmBtnText }}
         </button>
       </div>
     </div>
@@ -92,7 +96,7 @@ export default {
       default: ""
     }
   },
-  data () {
+  data() {
     return {
       isShowMessageBox: false,
       resolve: "",
@@ -102,7 +106,7 @@ export default {
   },
   methods: {
     // 弹出messageBox,并创建promise对象
-    showMsgBox () {
+    showMsgBox() {
       this.isShowMessageBox = true;
       this.promise = new Promise((resolve, reject) => {
         this.resolve = resolve;
@@ -112,23 +116,23 @@ export default {
       return this.promise;
     },
     // 确定,将promise断定为resolve状态
-    confirm () {
+    confirm() {
       this.isShowMessageBox = false;
       this.resolve("confirm");
       this.remove();
     },
     // 取消,将promise断定为reject状态
-    cancel () {
+    cancel() {
       this.isShowMessageBox = false;
       this.reject("cancel");
       this.remove();
     },
-    remove () {
+    remove() {
       setTimeout(() => {
         this.destroy();
       }, 300);
     },
-    destroy () {
+    destroy() {
       this.$destroy();
       document.body.removeChild(this.$el);
     }

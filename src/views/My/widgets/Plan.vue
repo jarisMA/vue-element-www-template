@@ -6,23 +6,27 @@
         <span>新建方案</span>
       </el-button>
     </div> -->
-    <plan-list canDelete
-               :showNoTips="false"
-               :plans="plans"
-               :size="planCount"
-               :page="planPage"
-               :total="planTotalCount"
-               theme="my"
-               @itemClick="editPlan"
-               @editClick="isEditPlanInfo"
-               @delete="delelePlan"
-               @pageChange="getPlan"
-               @add="addPlan" />
-    <edit-plan-name-dialog :visible.sync="addVisible"
-                           :plan="plan"
-                           :btnLoading="btnLoading"
-                           @confirm="editPlanInfo"
-                           @beforeClose="beforeCloseDialog" />
+    <plan-list
+      canDelete
+      :showNoTips="false"
+      :plans="plans"
+      :size="planCount"
+      :page="planPage"
+      :total="planTotalCount"
+      theme="my"
+      @itemClick="editPlan"
+      @editClick="isEditPlanInfo"
+      @delete="delelePlan"
+      @pageChange="getPlan"
+      @add="addPlan"
+    />
+    <edit-plan-name-dialog
+      :visible.sync="addVisible"
+      :plan="plan"
+      :btnLoading="btnLoading"
+      @confirm="editPlanInfo"
+      @beforeClose="beforeCloseDialog"
+    />
   </div>
 </template>
 
@@ -45,7 +49,7 @@ export default {
       default: true
     }
   },
-  data () {
+  data() {
     return {
       plans: [],
       planCount: 16,
@@ -66,13 +70,13 @@ export default {
   computed: {
     ...mapState(["userInfo"])
   },
-  beforeRoute (to, from, next) {
+  beforeRoute(to, from, next) {
     if (["EditPlan", "DrawPlan"].indexOf(from.name) > -1) {
       this.pardon = true;
     }
     next();
   },
-  created () {
+  created() {
     this.getPlan();
     if (this.pardon) {
       const timer = setTimeout(() => {
@@ -83,7 +87,7 @@ export default {
   },
   methods: {
     goDrawPlan,
-    getPlan (start = 1) {
+    getPlan(start = 1) {
       this.$emit("update:loading", true);
       kujialeService
         .designList({
@@ -99,7 +103,7 @@ export default {
           this.$emit("update:loading", false);
         });
     },
-    addPlan () {
+    addPlan() {
       if (this.plans.length > 0 && this.userInfo.kujiale_type !== 1) {
         this.$notice({
           type: "warning",
@@ -109,17 +113,17 @@ export default {
         goDrawPlan();
       }
     },
-    editPlan (data) {
+    editPlan(data) {
       goEditPlan({
         designId: data.designId
       });
     },
-    delelePlan (index, plan) {
+    delelePlan(index, plan) {
       this.$msgBox
         .showMsgBox({
           width: 400,
           height: 270,
-          theme: 'img_h_80pc',
+          theme: "img_h_80pc",
           content: "<p style='color:#333;font-weight:bold;'>确认删除方案</p>"
         })
         .then(async () => {
@@ -139,17 +143,17 @@ export default {
           // ...
         });
     },
-    beforeCloseDialog (done) {
+    beforeCloseDialog(done) {
       if (this.btnLoading) {
         return;
       }
       done();
     },
-    isEditPlanInfo (index, data) {
+    isEditPlanInfo(index, data) {
       this.plan = { ...data, index };
       this.addVisible = true;
     },
-    editPlanInfo (value) {
+    editPlanInfo(value) {
       if (!value) {
         return;
       }

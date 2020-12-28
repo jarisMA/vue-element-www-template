@@ -1,19 +1,24 @@
 <template>
   <div>
-    <el-dialog :visible="loginDialogVisibles()"
-               :width="
+    <el-dialog
+      :visible="loginDialogVisibles()"
+      :width="
         loginDialogVisible == 4 || loginDialogVisible == 8 ? '672px' : '416px'
       "
-               center
-               :before-close="handleClose"
-               :close-on-click-modal="loginDialogVisible == 4 || loginDialogVisible == 8"
-               :close-on-press-escape="false">
+      center
+      :before-close="handleClose"
+      :close-on-click-modal="loginDialogVisible == 4 || loginDialogVisible == 8"
+      :close-on-press-escape="false"
+    >
       <StepWechat v-if="loginDialogVisible === 1" />
       <StepPhone v-if="loginDialogVisible === 2" />
-      <StepObjective v-if="loginDialogVisible === 3"
-                     @submit="handleSumbit" />
-      <registeredSuccessfully v-if="loginDialogVisible === 4"></registeredSuccessfully>
-      <registeredSuccessfullyTitle v-if="loginDialogVisible == 8"></registeredSuccessfullyTitle>
+      <StepObjective v-if="loginDialogVisible === 3" @submit="handleSumbit" />
+      <registeredSuccessfully
+        v-if="loginDialogVisible === 4"
+      ></registeredSuccessfully>
+      <registeredSuccessfullyTitle
+        v-if="loginDialogVisible == 8"
+      ></registeredSuccessfullyTitle>
     </el-dialog>
   </div>
 </template>
@@ -38,25 +43,25 @@ export default {
     registeredSuccessfullyTitle
   },
   prop: {},
-  created () { },
-  data () {
+  created() {},
+  data() {
     return {};
   },
   computed: {
-    loginDialogVisible () {
+    loginDialogVisible() {
       return this.$store.state.loginDialogVisible;
     }
   },
   methods: {
-    loginDialogVisibles () {
+    loginDialogVisibles() {
       return [1, 2, 3, 4, 8].some(
         item => item == this.$store.state.loginDialogVisible
       );
     },
-    handleClose () {
+    handleClose() {
       this.$store.commit("END_DIALOG_SHOW");
     },
-    handleSumbit (identity, objective, other) {
+    handleSumbit(identity, objective, other) {
       const data = {
         identity: identity,
         remark: objective || other
@@ -66,7 +71,7 @@ export default {
           if (res.status === 1) {
             this.$msgBox.showMsgBox({
               img: douxiGif,
-              theme: 'img_ml_65',
+              theme: "img_ml_65",
               content: `<p style='color:#14AF64FF;'>欢迎来到「斗西家计划」，</p><p style='color:#14AF64FF;'>一年期<span style='font-weight:bold;'>尊柜会员</span><img width='38' height='38' style='vertical-align:-8px;' src=${vipImg} />已发放到当前账户，</p><p style='color:#14AF64FF;'>期待看到你的新家，设计吧少年！</p>`,
               confirmBtnText: "确定",
               showCancelBtn: false,

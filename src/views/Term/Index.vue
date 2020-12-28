@@ -1,23 +1,26 @@
 <template>
-  <div class="term-container"
-       v-loading="loading">
-    <div class="term-info-wrapper"
-         v-if="detail">
+  <div class="term-container" v-loading="loading">
+    <div class="term-info-wrapper" v-if="detail">
       <div class="container-1200">
         <div class="term-cover">
-          <the-loading-image :url="detail.cover_file_url"
-                             :width="284"
-                             :height="212" />
+          <the-loading-image
+            :url="detail.cover_file_url"
+            :width="284"
+            :height="212"
+          />
         </div>
         <div class="term-info">
           <div class="term-name-wrapper">
             <h4 class="term-name">{{ detail.name }}</h4>
-            <label :class="{
+            <label
+              :class="{
                 'term-status': true,
                 started: detail.status === 1,
                 ended: detail.status === 2,
                 unstart: detail.status === 0
-              }">{{ TERM_STATUS[detail.status] }}</label>
+              }"
+              >{{ TERM_STATUS[detail.status] }}</label
+            >
           </div>
           <div class="term-time-wrapper">
             课程有效期：
@@ -33,70 +36,68 @@
     </div>
     <div class="term-content container-1200">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="作业"
-                     name="homework">
+        <el-tab-pane label="作业" name="homework">
           <p class="homework-tips">
             *请先在「我的方案」中创建方案并完成作业要求，再进行作业提交。
           </p>
           <ul class="homework-list">
-            <li v-for="homework of homeworks"
-                :key="homework.id">
-              <homework :homework="homework"
-                        @submitClick="showHomeworkDialog(homework)" />
+            <li v-for="homework of homeworks" :key="homework.id">
+              <homework
+                :homework="homework"
+                @submitClick="showHomeworkDialog(homework)"
+              />
             </li>
           </ul>
-          <the-empty v-if="homeworks.length === 0 && !loading"
-                     noText="暂无作业可发挥" />
+          <the-empty
+            v-if="homeworks.length === 0 && !loading"
+            noText="暂无作业可发挥"
+          />
         </el-tab-pane>
-        <el-tab-pane label="讨论区"
-                     name="discussion"
-                     disabled> </el-tab-pane>
+        <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
     </div>
-    <el-dialog class="submitHomeworkDialog"
-               width="800px"
-               :visible.sync="visible"
-               :close-on-click-modal="false"
-               :close-on-press-escape="false"
-               :show-close="false">
-      <el-steps class="step-wrapper"
-                align-center
-                :active="activeStep">
+    <el-dialog
+      class="submitHomeworkDialog"
+      width="800px"
+      :visible.sync="visible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <el-steps class="step-wrapper" align-center :active="activeStep">
         <el-step title="选择设计方案"></el-step>
         <el-step title="设计阐述与说明"></el-step>
       </el-steps>
-      <div class="step-1 my-plan-wrapper"
-           v-show="activeStep === 1">
-        <div class="add-plan-button"
-             v-if="plans.length > 0 && false"
-             @click="goDrawPlan()">
-          <icon-svg svg-class="add-icon"
-                    svg-name="add" />
+      <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
+        <div
+          class="add-plan-button"
+          v-if="plans.length > 0 && false"
+          @click="goDrawPlan()"
+        >
+          <icon-svg svg-class="add-icon" svg-name="add" />
           新建方案
         </div>
-        <plan-list :showNoTips="false"
-                   :plans="plans"
-                   :activeIndex="activePlan && activePlan.planId"
-                   :size="dialogPagination.size"
-                   :page="dialogPagination.page"
-                   :total="dialogPagination.total"
-                   :paginationLayout="paginationLayout"
-                   theme="homework"
-                   @itemClick="selectPlan"
-                   @pageChange="getPlans" />
-        <div class="more-wrapper"
-             v-if="!planLoading && plans.length === 0">
+        <plan-list
+          :showNoTips="false"
+          :plans="plans"
+          :activeIndex="activePlan && activePlan.planId"
+          :size="dialogPagination.size"
+          :page="dialogPagination.page"
+          :total="dialogPagination.total"
+          :paginationLayout="paginationLayout"
+          theme="homework"
+          @itemClick="selectPlan"
+          @pageChange="getPlans"
+        />
+        <div class="more-wrapper" v-if="!planLoading && plans.length === 0">
           <the-empty noText="还没有方案，你可以去新建一个" />
-          <div class="new-button"
-               @click="goDrawPlan()">
-            <icon-svg svg-class="add-icon"
-                      svg-name="add" />
+          <div class="new-button" @click="goDrawPlan()">
+            <icon-svg svg-class="add-icon" svg-name="add" />
             新建方案
           </div>
         </div>
       </div>
-      <div class="step-2"
-           v-if="activeStep === 2">
+      <div class="step-2" v-if="activeStep === 2">
         <h3 class="select-homework-title">
           {{ activeHomework.name }}
         </h3>
@@ -105,9 +106,11 @@
             <label class="label-title">已选方案</label>
             <div class="select-plan-card">
               <div class="card-top">
-                <the-loading-image :url="activePlan.planPic"
-                                   :width="260"
-                                   :height="260" />
+                <the-loading-image
+                  :url="activePlan.planPic"
+                  :width="260"
+                  :height="260"
+                />
               </div>
               <div class="card-bottom">
                 <h4 class="card-name">
@@ -124,9 +127,7 @@
                       {{ activePlan.filterCity }} {{ activePlan.commName }}
                     </span>
                   </div>
-                  <el-button class="button"
-                             type="primary"
-                             @click="stepBack">
+                  <el-button class="button" type="primary" @click="stepBack">
                     重新选择
                   </el-button>
                 </div>
@@ -136,8 +137,9 @@
           <div class="homework-input-wrapper">
             <div class="homework-content">
               <label class="label-title">设计阐述与说明</label>
-              <el-input type="textarea"
-                        placeholder="请简练的阐述问题与需求。
+              <el-input
+                type="textarea"
+                placeholder="请简练的阐述问题与需求。
 分段会更清晰：
 1..  
 2...
@@ -145,22 +147,27 @@
 4......
 （控制在500字内）
 "
-                        maxlength="500"
-                        show-word-limit
-                        v-model="activePlanContent"
-                        :rows="10"></el-input>
+                maxlength="500"
+                show-word-limit
+                v-model="activePlanContent"
+                :rows="10"
+              ></el-input>
             </div>
             <div class="homework-image">
               <label class="label-title">配图</label>
               <div class="homework-image-wrapper">
                 <ul>
-                  <li class="image-wrapper"
-                      v-for="(item, key) of activePlanPic"
-                      :key="item">
+                  <li
+                    class="image-wrapper"
+                    v-for="(item, key) of activePlanPic"
+                    :key="item"
+                  >
                     <img :src="item" />
-                    <icon-svg svg-class="delete-icon"
-                              svg-name="delete"
-                              @click="deleteActivePlanPic(key)" />
+                    <icon-svg
+                      svg-class="delete-icon"
+                      svg-name="delete"
+                      @click="deleteActivePlanPic(key)"
+                    />
                   </li>
                   <li v-if="activePlanPic.length < 3">
                     <upload-image @added="addActivePlanPic" />
@@ -171,16 +178,18 @@
           </div>
         </div>
       </div>
-      <span slot="footer"
-            class="dialog-footer">
+      <span slot="footer" class="dialog-footer">
         <template v-if="plans.length > 0">
-          <el-button class="button"
-                     @click="closeHomeworkDialog">取消</el-button>
-          <el-button class="button"
-                     type="primary"
-                     :disabled="!activePlan"
-                     :loading="submitLoading"
-                     @click="submit">
+          <el-button class="button" @click="closeHomeworkDialog"
+            >取消</el-button
+          >
+          <el-button
+            class="button"
+            type="primary"
+            :disabled="!activePlan"
+            :loading="submitLoading"
+            @click="submit"
+          >
             {{ activeStep === 2 ? "提交" : "下一步" }}
           </el-button>
         </template>
@@ -213,7 +222,7 @@ export default {
     TheEmpty,
     UploadImage
   },
-  data () {
+  data() {
     return {
       TERM_STATUS,
       loading: true,
@@ -239,14 +248,14 @@ export default {
       submitLoading: false
     };
   },
-  created () {
+  created() {
     this.getData();
     this.getPlans();
   },
   methods: {
     formatDate,
     goDrawPlan,
-    getData () {
+    getData() {
       this.loading = true;
       termService
         .campTerm(this.$route.params.id)
@@ -261,7 +270,7 @@ export default {
           this.loading = false;
         });
     },
-    getPlans (start = 1) {
+    getPlans(start = 1) {
       this.planLoading = true;
       kujialeService
         .designList({
@@ -277,35 +286,35 @@ export default {
           this.planLoading = false;
         });
     },
-    showHomeworkDialog (homework) {
+    showHomeworkDialog(homework) {
       this.activeHomework = homework;
       this.visible = true;
     },
-    selectPlan (item) {
+    selectPlan(item) {
       this.activePlan = item;
       let arr = item.city.split(" ");
       this.activePlan.filterCity = arr.length > 1 ? arr[1] : arr[0];
     },
-    stepBack () {
+    stepBack() {
       this.activeStep = 1;
       this.activePlan = null;
     },
-    addActivePlanPic (url) {
+    addActivePlanPic(url) {
       this.activePlanPic.push(url);
     },
-    deleteActivePlanPic (key) {
+    deleteActivePlanPic(key) {
       this.activePlanPic.splice(key, 1);
     },
-    submit () {
+    submit() {
       if (this.activeStep === 1) {
         this.activeStep = 2;
       } else if (this.activeStep === 2) {
         this.$msgBox
           .showMsgBox({
             img: submit_hw_img,
-            theme: 'img_h_225',
+            theme: "img_h_225",
             content:
-              "<p style='color:#14AF64FF;'>作业一定要按照要求认真完成,</p><p style='color:#14AF64FF;'>乱做或敷衍会被老师无情驳回噢~</p></p>",
+              "<p style='color:#14AF64FF;'>作业一旦提交就无法修，</p><p style='color:#14AF64FF;'>请认真完成再提交哦~</p></p>",
             confirmBtnText: "确定提交",
             cancelBtnText: "再调整一下",
             bodyClass: "submit-homework-modal-body"
@@ -343,7 +352,7 @@ export default {
                   this.getData();
                   this.$msgBox.showMsgBox({
                     img: success_img,
-                    theme: 'img_w_170',
+                    theme: "img_w_170",
                     content:
                       "<p style='color:#14AF64FF;'>提交成功</p><p style='color:#ABABABFF;font-size: 24px;'>请耐心等待老师的批复吧~</p>",
                     confirmBtnText: "确定",
@@ -376,7 +385,7 @@ export default {
           });
       }
     },
-    closeHomeworkDialog () {
+    closeHomeworkDialog() {
       this.visible = false;
       this.activeStep = 1;
       this.activeHomework = null;
