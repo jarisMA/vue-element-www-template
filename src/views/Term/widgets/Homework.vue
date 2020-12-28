@@ -118,7 +118,9 @@
             <the-fold :maxHeight="224" :isFold="fold">
               <div class="homework-desc-content_info">
                 <div class="homework-desc-info">
-                  {{ q_content }}
+                  <p v-for="(desc, key) of q_content.split('\n')" :key="key">
+                    {{ desc }}
+                  </p>
                 </div>
                 <div class="homework-desc-image" v-if="q_images.length > 0">
                   <the-preview-image :srcList="q_images" />
