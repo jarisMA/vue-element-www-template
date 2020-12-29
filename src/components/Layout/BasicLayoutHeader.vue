@@ -10,13 +10,7 @@
       <div class="header-hd">
         <span class="header-logo_img" @click="goHome()">
           <img
-            v-if="theme === 'primary' && !visible"
-            class="header-logo"
-            src="~images/logo2.png"
-            @click="visible = !visible"
-          />
-          <img
-            v-else-if="theme === 'primary' && visible"
+            v-if="theme === 'primary'"
             class="header-logo"
             src="~images/logo3.png"
             @click="visible = !visible"
@@ -29,7 +23,7 @@
           <icon-svg svg-class="more-icon"
                     svg-name="more" />
         </span> -->
-        <nav class="header-nav" v-show="theme !== 'primary' || visible">
+        <nav class="header-nav">
           <span class="header-nav-item My" @click="loginDialogVisible(6)"
             >斗西学社</span
           >
@@ -38,7 +32,7 @@
           >
         </nav>
       </div>
-      <div class="header-ft" v-if="theme !== 'primary' || visible">
+      <div class="header-ft" v-show="theme !== 'primary' || visible">
         <div class="user-handle-container">
           <el-button
             class="login-button"
@@ -185,6 +179,7 @@ export default {
       align-items: center;
       height: 100%;
     }
+
     .header-logo_img {
       width: 164px;
       margin-right: 58px;
@@ -402,14 +397,14 @@ export default {
   }
 }
 .page-header.primary {
-  height: 20px;
+  height: 15px;
   background-color: @primaryColor;
   overflow: hidden;
-  transition: all 1s;
+  transition: all 0.5s;
   &.primary_active {
     height: 52px;
-    .header-logo_img .header-logo {
-      height: 52px;
+    .header-ft {
+      opacity: 1;
     }
   }
   .header-logo_img {
@@ -418,7 +413,6 @@ export default {
     margin-right: 8px;
     .header-logo {
       width: 44px;
-      height: 20px;
     }
     &:hover {
       background: #38ca83;
@@ -440,6 +434,8 @@ export default {
   }
   .header-nav {
     .header-nav-item {
+      padding: 20px 0;
+      height: 52px;
       color: #fff;
       &:hover {
         background-color: #38ca83;
@@ -466,6 +462,10 @@ export default {
         }
       }
     }
+  }
+  .header-ft {
+    opacity: 0;
+    transition: all 0.5s;
   }
 }
 </style>

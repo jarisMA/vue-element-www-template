@@ -94,7 +94,7 @@ export default {
 .edit-plan-container {
   width: 100vw;
   height: calc(100vh - 40px);
-  transition: all 1s;
+  transition: all 0.5s;
   &.unfold {
     height: calc(100vh - 72px);
   }
