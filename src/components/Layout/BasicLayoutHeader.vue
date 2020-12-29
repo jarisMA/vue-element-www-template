@@ -36,50 +36,56 @@
           >
         </nav>
       </div>
-      <div class="header-ft" v-show="theme !== 'primary' || visible">
-        <div class="user-handle-container">
-          <el-button
-            class="login-button"
-            type="primary"
-            v-if="!userInfo"
-            @click="wxLogin"
-          >
-            登录 / 注册
-          </el-button>
-          <the-avatar
-            v-else
-            class="el-avatar-border"
-            :size="48"
-            :url="userInfo.avatar_url"
-          ></the-avatar>
-          <div class="user-handle_show" v-if="userInfo">
-            <div class="show-container landing">
-              <div class="login-content">
-                <p class="login-title">
-                  {{ userInfo.nickname }}
-                  <img
-                    v-if="userInfo && userInfo.kujiale_type === 1"
-                    class="user-icon"
-                    src="~images/vip.png"
-                  />
-                  <img v-else class="user-icon" src="~images/user.png" />
-                </p>
-              </div>
-              <ul class="login-operation">
-                <li @click="goMy()" class="workbench">
-                  <span>工作台</span>
-                </li>
-                <li @click="goProfile()" class="setting">
-                  <span>我的资料</span>
-                </li>
-              </ul>
-              <div class="logout" @click="handleLogout">
-                <span>退出登录</span>
+      <transition
+        enter-active-class="animated fadeIn"
+        leave-active-class="animated fadeOut"
+      >
+        <div class="header-ft" v-show="theme !== 'primary' || visible">
+          <div class="user-handle-container">
+            <el-button
+              class="login-button"
+              type="primary"
+              v-if="!userInfo"
+              @click="wxLogin"
+            >
+              登录 / 注册
+            </el-button>
+
+            <the-avatar
+              v-if="userInfo"
+              class="el-avatar-border"
+              :size="48"
+              :url="userInfo.avatar_url"
+            ></the-avatar>
+            <div class="user-handle_show" v-if="userInfo">
+              <div class="show-container landing">
+                <div class="login-content">
+                  <p class="login-title">
+                    {{ userInfo.nickname }}
+                    <img
+                      v-if="userInfo && userInfo.kujiale_type === 1"
+                      class="user-icon"
+                      src="~images/vip.png"
+                    />
+                    <img v-else class="user-icon" src="~images/user.png" />
+                  </p>
+                </div>
+                <ul class="login-operation">
+                  <li @click="goMy()" class="workbench">
+                    <span>工作台</span>
+                  </li>
+                  <li @click="goProfile()" class="setting">
+                    <span>我的资料</span>
+                  </li>
+                </ul>
+                <div class="logout" @click="handleLogout">
+                  <span>退出登录</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
   </header>
 </template>
@@ -267,7 +273,7 @@ export default {
       }
       .user-handle_show {
         position: absolute;
-        top: 60px;
+        top: 50px;
         right: 0;
         width: 170px;
         display: none;
@@ -404,11 +410,6 @@ export default {
   background-color: @primaryColor;
   overflow: hidden;
   transition: all 0.5s ease;
-  .el-avatar-border {
-    opacity: 0;
-    overflow: hidden;
-    transition: opacity 0.5s ease 1s;
-  }
   &.primary_active {
     height: 52px;
     overflow: visible;
@@ -430,9 +431,6 @@ export default {
           }
         }
       }
-    }
-    .el-avatar-border {
-      opacity: 1;
     }
     .header-nav {
       .header-nav-item {
