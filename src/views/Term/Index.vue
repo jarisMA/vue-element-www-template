@@ -314,7 +314,7 @@ export default {
             img: submit_hw_img,
             theme: "img_h_225",
             content:
-              "<p style='color:#14AF64FF;'>作业一旦提交就无法修，</p><p style='color:#14AF64FF;'>请认真完成再提交哦~</p></p>",
+              "<p style='color:#14AF64FF;'>作业一旦提交就无法修改，</p><p style='color:#14AF64FF;'>请认真完成再提交哦~</p></p>",
             confirmBtnText: "确定提交",
             cancelBtnText: "再调整一下",
             bodyClass: "submit-homework-modal-body"
