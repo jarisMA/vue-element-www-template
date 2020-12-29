@@ -434,6 +434,25 @@ export default {
     .el-avatar-border {
       opacity: 1;
     }
+    .header-nav {
+      .header-nav-item {
+        cursor: pointer;
+        &:hover {
+          background-color: #38ca83;
+          color: #fff;
+          &.My {
+            &::before {
+              background-image: url("~images/link_logo-2_white.svg");
+            }
+          }
+          &.Notes {
+            &::before {
+              background-image: url("~images/link_logo-3_white.svg");
+            }
+          }
+        }
+      }
+    }
   }
   .header-logo_img {
     height: 100%;
