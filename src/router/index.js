@@ -6,6 +6,7 @@ import "nprogress/nprogress.css";
 import userService from "service/user.js";
 import Store from "@/store/index";
 import cookies from "js-cookie";
+import { isChrome } from "utils/browser-support";
 
 Vue.use(VueRouter);
 
@@ -29,7 +30,7 @@ appRouter.beforeEach(async (to, from, next) => {
     try {
       const userInfo = await userService.getUserInfo();
       Store.commit("USERINFO", userInfo);
-      if (!userInfo.phone) {
+      if (!userInfo.phone && isChrome()) {
         Store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
       } else if (!userInfo.identity) {
         Store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
