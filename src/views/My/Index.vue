@@ -30,7 +30,7 @@
             <img class="user-icon" src="~images/user.png" />
           </el-tooltip>
         </div>
-        <el-menu default-active="plan" @select="handleSelectMenu">
+        <el-menu :default-active="currentMenu" @select="handleSelectMenu">
           <el-menu-item index="plan">我的方案</el-menu-item>
           <el-menu-item index="term">我的班级</el-menu-item>
         </el-menu>
@@ -76,12 +76,23 @@ export default {
       }
     });
   },
+  created() {
+    const { tab } = this.$route.query;
+    if (tab && ["plan", "term"].indexOf(tab) > -1) {
+      this.currentMenu = tab;
+    }
+  },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
     handleSelectMenu(menu) {
       this.currentMenu = menu;
+      this.$router.push({
+        query: {
+          tab: menu
+        }
+      });
     }
   }
 };
