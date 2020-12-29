@@ -51,7 +51,13 @@
           </div>
         </div>
 
-        <el-form ref="form" class="form" :model="form" :rules="formRules">
+        <el-form
+          ref="form"
+          class="form"
+          :model="form"
+          :rules="formRules"
+          @submit.native.prevent
+        >
           <el-form-item label="昵称" prop="nickname">
             <el-input
               v-model="form.nickname"
@@ -130,6 +136,7 @@
         ref="phoneForm"
         label-width="80px"
         class="phoneForm"
+        @submit.native.prevent
       >
         <el-form-item label="手机号">
           <el-input type="text" v-model="userInfo.phone" disabled></el-input>

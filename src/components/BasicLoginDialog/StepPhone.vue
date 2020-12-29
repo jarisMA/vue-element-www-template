@@ -17,6 +17,7 @@
         :model="formData"
         :rules="phoneRef"
         ref="phoneRefs"
+        @submit.native.prevent
       >
         <el-form-item prop="phone">
           <el-input

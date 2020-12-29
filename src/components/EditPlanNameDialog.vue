@@ -17,7 +17,13 @@
       </div>
       <div class="dialog-right">
         <i class="el-icon-close" @click="cancelClick" />
-        <el-form ref="form" :model="form" :rules="formRules" show-message>
+        <el-form
+          ref="form"
+          :model="form"
+          :rules="formRules"
+          show-message
+          @submit.native.prevent="confirmClick"
+        >
           <h3 class="dialog-title">{{ title }}</h3>
           <p class="dialog-input">
             <label class="dialog-label">方案名称：</label>
