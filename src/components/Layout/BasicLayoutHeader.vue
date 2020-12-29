@@ -24,10 +24,14 @@
                     svg-name="more" />
         </span> -->
         <nav class="header-nav">
-          <span class="header-nav-item My" @click="loginDialogVisible(6)"
+          <span
+            class="header-nav-item My"
+            @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
             >斗西学社</span
           >
-          <span class="header-nav-item Notes" @click="loginDialogVisible(5)"
+          <span
+            class="header-nav-item Notes"
+            @click="(visible || theme !== 'primary') && loginDialogVisible(5)"
             >斗西宝典</span
           >
         </nav>
@@ -179,7 +183,6 @@ export default {
       align-items: center;
       height: 100%;
     }
-
     .header-logo_img {
       width: 164px;
       margin-right: 58px;
@@ -397,7 +400,7 @@ export default {
   }
 }
 .page-header.primary {
-  height: 15px;
+  height: 14px;
   background-color: @primaryColor;
   overflow: hidden;
   transition: all 0.5s;
@@ -405,6 +408,25 @@ export default {
     height: 52px;
     .header-ft {
       opacity: 1;
+    }
+    .header-nav {
+      .header-nav-item {
+        cursor: pointer;
+        &:hover {
+          background-color: #38ca83;
+          color: #fff;
+          &.My {
+            &::before {
+              background-image: url("~images/link_logo-2_white.svg");
+            }
+          }
+          &.Notes {
+            &::before {
+              background-image: url("~images/link_logo-3_white.svg");
+            }
+          }
+        }
+      }
     }
   }
   .header-logo_img {
@@ -437,20 +459,7 @@ export default {
       padding: 20px 0;
       height: 52px;
       color: #fff;
-      &:hover {
-        background-color: #38ca83;
-        color: #fff;
-        &.My {
-          &::before {
-            background-image: url("~images/link_logo-2_white.svg");
-          }
-        }
-        &.Notes {
-          &::before {
-            background-image: url("~images/link_logo-3_white.svg");
-          }
-        }
-      }
+      cursor: auto;
       &.My {
         &::before {
           background-image: url("~images/link_logo-2_white.svg");
