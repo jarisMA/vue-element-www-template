@@ -124,7 +124,8 @@ export default {
           width: 400,
           height: 270,
           theme: "img_h_80pc",
-          content: "<p style='color:#333;font-weight:bold;'>确认删除方案</p>"
+          content:
+            "<p style='color:#333;font-weight:bold;font-size:26px;'>确认删除方案</p>"
         })
         .then(async () => {
           kujialeService
