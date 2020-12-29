@@ -54,7 +54,7 @@
       </div>
       <div class="homework-time-wrapper">
         <span class="homework-start">
-          <span @click.stop="showTips">
+          <span @click.stop="showTips" @mouseover="showTips">
             <icon-svg svg-class="clock-icon" svg-name="clock" />
           </span>
           最佳提交日期：{{ formatDate(homework.start_at) }}
@@ -496,6 +496,7 @@ export default {
   }
   .homework-submit-wrapper {
     margin-top: 20px;
+    margin-bottom: 26px;
     .homework-desc-content {
       min-height: 224px !important;
     }
