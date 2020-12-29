@@ -407,6 +407,11 @@ export default {
   min-height: calc(100vh - 130px);
   /deep/ .submitHomeworkDialog {
     .el-dialog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin-top: 0 !important;
+      transform: translate(-50%, -50%);
       background: #f7f7f7ff;
       .el-dialog__header {
         padding: 0;

@@ -385,11 +385,10 @@ export default {
     }
   }
   .fold-wrapper {
-    padding: 0 20px 20px;
-    margin-bottom: 20px;
+    padding: 0 0 40px;
   }
   .homework-desc-wrapper {
-    padding-top: 20px;
+    padding: 20px 20px 0;
     min-height: 64px;
     display: flex;
     align-items: flex-start;
@@ -433,8 +432,8 @@ export default {
     }
   }
   .homework-reply-wrapper {
-    margin-top: 20px;
-    padding-top: 20px;
+    margin: 20px 0 14px;
+    padding: 20px 20px 0;
     width: 100%;
     border-top: 1px dashed #e6e6e6ff;
     .reply-teacher-info {

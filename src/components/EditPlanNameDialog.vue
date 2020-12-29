@@ -138,6 +138,12 @@ export default {
 @import "~styles/variable.less";
 
 /deep/ .el-dialog {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: 0 !important;
+  transform: translate(-50%, -50%);
+  background: #f7f7f7ff;
   .el-dialog__header {
     padding: 0;
   }
