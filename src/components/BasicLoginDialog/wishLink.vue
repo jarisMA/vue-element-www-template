@@ -27,8 +27,8 @@ export default {
 .rwishLink_container {
   width: 672px;
   height: 500px;
-  background: url("~images/grid.png") repeat;
-  background-color: #e6d6e5;
+  // background: url("~images/grid.png") repeat;
+  background-color: #fff;
   border: 12px solid #af72a2;
   .header {
     text-align: right;

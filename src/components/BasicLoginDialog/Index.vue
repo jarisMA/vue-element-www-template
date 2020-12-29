@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="dialog-wrapper">
     <el-dialog
       :visible="loginDialogVisibles()"
       :width="
@@ -89,6 +89,15 @@ export default {
 </script>
 
 <style type="text/css" lang="less" scoped>
+.dialog-wrapper {
+  /deep/ .el-dialog {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 0 !important;
+    transform: translate(-50%, -50%);
+  }
+}
 /deep/ .el-dialog .el-dialog__header {
   display: none;
 }

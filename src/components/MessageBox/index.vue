@@ -162,7 +162,6 @@ export default {
     background: #00000066;
   }
   .message-modal {
-    margin-bottom: @height;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -271,6 +270,14 @@ export default {
     img {
       margin-top: 30px;
       height: 220px !important;
+    }
+  }
+}
+.img_w_100 {
+  .message-modal-body {
+    img {
+      margin: 40px 0 30px;
+      height: 100px !important;
     }
   }
 }

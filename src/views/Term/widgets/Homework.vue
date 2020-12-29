@@ -54,18 +54,9 @@
       </div>
       <div class="homework-time-wrapper">
         <span class="homework-start">
-          <el-popover
-            placement="bottom"
-            width="400"
-            trigger="hover"
-            content="最佳截止日期之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过最迟截止日期，则本节课作业无法提交。（注：不影响下次作业提交）"
-          >
-            <icon-svg
-              slot="reference"
-              svg-class="clock-icon"
-              svg-name="clock"
-            />
-          </el-popover>
+          <span @click.stop="showTips">
+            <icon-svg svg-class="clock-icon" svg-name="clock" />
+          </span>
           最佳提交日期：{{ formatDate(homework.start_at) }}
         </span>
         <span class="homework-end"
@@ -207,6 +198,8 @@ import TheFold from "components/TheFold";
 
 import { formatDate, formNowFormatDay } from "utils/moment";
 import { USER_HOMEWORK_SCORE } from "utils/const";
+import warningImg from "images/warning.png";
+
 const HOMEWORK_STATUS = {
   0: "待批复",
   1: "待批复", // 保存草稿
@@ -279,6 +272,17 @@ export default {
       } catch {
         this.q_content = val;
       }
+    },
+    showTips() {
+      this.$msgBox.showMsgBox({
+        img: warningImg,
+        theme: "img_w_100",
+        content:
+          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳截止日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（住：不影响下次作业提交）</p>',
+        confirmBtnText: "知道了",
+        showCancelBtn: false,
+        showCloseBtn: false
+      });
     }
   }
 };

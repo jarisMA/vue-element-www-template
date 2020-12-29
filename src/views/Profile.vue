@@ -8,25 +8,46 @@
             :src="form.avatar_url"
             v-loading="uploadingAvatar"
           ></el-avatar>
-          <div class="upload-avatar-wrapper">
-            <el-upload
-              ref="upload"
-              class="upload"
-              action=""
-              accept="image/*"
-              :before-upload="uploadAvatar"
+          <div class="user-info">
+            <el-tooltip
+              v-if="userInfo && userInfo.kujiale_type === 1"
+              popper-class="vip-popper"
+              effect="light"
+              content="您已是尊柜会员啦！"
+              placement="bottom"
             >
-              <div class="upload-avatar">
-                <icon-svg
-                  svg-class="replace-icon"
-                  svg-name="replace"
-                ></icon-svg>
-                <span>替换头像</span>
-              </div>
-              <label class="upload-tips">
-                只能上传JPG/PNG/JPEG格式文件，且不超过2MB
-              </label>
-            </el-upload>
+              <img class="user-icon" src="~images/vip.png" />
+            </el-tooltip>
+            <el-tooltip
+              v-else
+              popper-class="vip-popper"
+              effect="light"
+              content="您仍旧是一棵浮木……"
+              placement="bottom"
+            >
+              <img class="user-icon" src="~images/user.png" />
+            </el-tooltip>
+
+            <div class="upload-avatar-wrapper">
+              <el-upload
+                ref="upload"
+                class="upload"
+                action=""
+                accept="image/*"
+                :before-upload="uploadAvatar"
+              >
+                <div class="upload-avatar">
+                  <icon-svg
+                    svg-class="replace-icon"
+                    svg-name="replace"
+                  ></icon-svg>
+                  <span>替换头像</span>
+                </div>
+                <label class="upload-tips">
+                  只能上传JPG/PNG/JPEG格式文件，且不超过2MB
+                </label>
+              </el-upload>
+            </div>
           </div>
         </div>
 
@@ -364,7 +385,6 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      margin-left: 24px;
       line-height: 1;
       .upload-avatar {
         display: flex;
@@ -483,6 +503,18 @@ export default {
         width: 98px;
       }
     }
+  }
+}
+.user-info {
+  margin-left: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  .user-icon {
+    margin: 0 0 17px 4px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
   }
 }
 </style>
