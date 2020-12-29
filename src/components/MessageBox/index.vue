@@ -1,6 +1,6 @@
 <template>
   <div :class="['message-box', theme]" v-show="isShowMessageBox">
-    <div class="message-mask" @click="cancel"></div>
+    <div class="message-mask" @click="maskCancel && cancel()"></div>
     <div
       class="message-modal"
       :style="{ width: width + 'px', height: height + 'px' }"
@@ -15,7 +15,7 @@
         <img :src="img" />
         <p v-html="content"></p>
       </div>
-      <div class="message-modal-footer">
+      <div class="message-modal-footer" v-if="showCancelBtn || showConfirmBtn">
         <button class="btn-default" @click="cancel" v-if="showCancelBtn">
           {{ cancelBtnText }}
         </button>
@@ -88,6 +88,10 @@ export default {
     theme: {
       type: String,
       default: ""
+    },
+    maskCancel: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -295,6 +299,20 @@ export default {
       margin: 0 0 16px;
       width: 420px !important;
       height: 274px !important;
+    }
+  }
+}
+.chrome_tips {
+  .message-modal-body {
+    img {
+      margin: 59 0 0;
+      width: 268px !important;
+      height: 268px !important;
+    }
+    p {
+      font-size: 36px !important;
+      font-weight: 500 !important;
+      line-height: 50px !important;
     }
   }
 }
