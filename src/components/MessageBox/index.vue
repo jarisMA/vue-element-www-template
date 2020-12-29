@@ -281,4 +281,12 @@ export default {
     }
   }
 }
+.img_w_140 {
+  .message-modal-body {
+    img {
+      margin: 40px 0 23px;
+      height: 140px !important;
+    }
+  }
+}
 </style>
