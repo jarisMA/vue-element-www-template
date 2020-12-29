@@ -354,7 +354,7 @@ export default {
                     img: success_img,
                     theme: "img_w_170",
                     content:
-                      "<p style='color:#14AF64FF;'>提交成功</p><p style='color:#ABABABFF;font-size: 24px;'>请耐心等待老师的批复吧~</p>",
+                      "<p style='color:#14AF64FF;font-size:32px;line-height:48px;'>提交成功！</p><p style='color:#ABABABFF;font-size: 24px;line-height:36px;'>请耐心等待老师的批复吧~</p>",
                     confirmBtnText: "确定",
                     showCancelBtn: false
                   });
