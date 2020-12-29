@@ -68,10 +68,27 @@
     </div>
     <div class="fold-wrapper" v-show="fold">
       <div class="homework-desc-wrapper">
-        <div class="homework-desc">
+        <div class="homework-whole">
           <label class="homework-label">
             作业要求：
           </label>
+          <el-button
+            class="homework-submit-btn"
+            type="primary"
+            :disabled="
+              (!homework.user_homework && isExpired) ||
+                (homework.user_homework && homework.user_homework.status !== 3)
+            "
+            @click="handleSubmitClick"
+          >
+            {{
+              homework.user_homework && homework.user_homework.status === 3
+                ? "重新提交"
+                : !homework.user_homework
+                ? "上传作业"
+                : "作业已提交"
+            }}
+          </el-button>
           <div class="homework-desc-content">
             <the-fold :isFold="fold">
               <slot>
@@ -83,23 +100,6 @@
             </the-fold>
           </div>
         </div>
-        <el-button
-          class="homework-submit-btn"
-          type="primary"
-          :disabled="
-            (!homework.user_homework && isExpired) ||
-              (homework.user_homework && homework.user_homework.status !== 3)
-          "
-          @click="handleSubmitClick"
-        >
-          {{
-            homework.user_homework && homework.user_homework.status === 3
-              ? "重新提交"
-              : !homework.user_homework
-              ? "上传作业"
-              : "作业已提交"
-          }}
-        </el-button>
       </div>
       <div
         class="homework-desc-wrapper homework-submit-wrapper"
@@ -389,17 +389,20 @@ export default {
   }
   .homework-desc-wrapper {
     margin-top: 20px;
+    padding-top: 20px;
     min-height: 64px;
     display: flex;
     align-items: flex-start;
+    border-top: 1px dashed #e6e6e6ff;
+    .homework-whole {
+      position: relative;
+      margin-top: 14px;
+      width: 100%;
+    }
     .homework-desc {
       width: @leftWidth;
       margin-right: @leftMarginRight;
       .homework-desc-content {
-        position: relative;
-        width: 100%;
-        min-height: 75px;
-        background: #f5f5f5;
         &::after {
           position: absolute;
           top: 7px;
@@ -413,13 +416,20 @@ export default {
           font-size: 0px;
           line-height: 0px;
         }
-        .homework-desc-content_info {
-          padding: 10px;
-        }
       }
-      .homework-desc-image {
-        margin-top: 10px;
+    }
+    .homework-desc-content {
+      position: relative;
+      width: 100%;
+      min-height: 75px;
+      background: #f5f5f5;
+
+      .homework-desc-content_info {
+        padding: 10px;
       }
+    }
+    .homework-desc-image {
+      margin-top: 10px;
     }
   }
   .homework-reply-wrapper {
@@ -534,7 +544,9 @@ export default {
   }
 }
 .homework-submit-btn {
-  margin-top: 31px;
+  position: absolute;
+  top: -14px;
+  right: 0;
   padding: 7px 23px;
   line-height: 1;
   font-size: 14px;

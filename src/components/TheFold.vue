@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['fold-wrapper', visible ? 'unfold-wrapper' : '']"
+    :class="['the-fold-wrapper', visible ? 'unthe-fold-wrapper' : '']"
     :style="{ maxHeight: maxHeight + 'px', minHeight: maxHeight + 'px' }"
   >
     <div class="whole-wrapper" ref="whole">
@@ -61,11 +61,11 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-.fold-wrapper {
+.the-fold-wrapper {
   position: relative;
   overflow-x: visible;
   overflow-y: hidden;
-  &.unfold-wrapper {
+  &.unthe-fold-wrapper {
     max-height: unset !important;
     overflow: visible;
   }
