@@ -403,12 +403,15 @@ export default {
   height: 14px;
   background-color: @primaryColor;
   overflow: hidden;
-  transition: all 0.5s;
+  transition: all 0.5s ease;
+  .el-avatar-border {
+    opacity: 0;
+    overflow: hidden;
+    transition: opacity 0.5s ease 1s;
+  }
   &.primary_active {
     height: 52px;
-    .header-ft {
-      opacity: 1;
-    }
+    overflow: visible;
     .header-nav {
       .header-nav-item {
         cursor: pointer;
@@ -428,10 +431,14 @@ export default {
         }
       }
     }
+    .el-avatar-border {
+      opacity: 1;
+    }
   }
   .header-logo_img {
     height: 100%;
     width: 44px;
+    overflow: hidden;
     margin-right: 8px;
     .header-logo {
       width: 44px;
@@ -455,6 +462,8 @@ export default {
     }
   }
   .header-nav {
+    height: 100%;
+    overflow: hidden;
     .header-nav-item {
       padding: 20px 0;
       height: 52px;
@@ -471,10 +480,6 @@ export default {
         }
       }
     }
-  }
-  .header-ft {
-    opacity: 0;
-    transition: all 0.5s;
   }
 }
 </style>
