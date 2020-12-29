@@ -1,25 +1,21 @@
 <template>
   <div :class="['homework-card']">
-    <div
-      class="expired-tips"
-      v-if="!homework.user_homework && isExpired && fold"
-    >
+    <div class="expired-tips"
+         v-if="!homework.user_homework && isExpired && fold">
       <label>错过提交时间,下次早点来!</label>
       <img src="~images/expired.png" />
     </div>
 
-    <div class="homework-info" @click="fold = !fold">
-      <img
-        class="score-icon"
-        v-if="homework.user_homework && homework.user_homework.status === 2"
-        :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
-      />
-      <div
-        class="reject-tips"
-        v-if="homework.user_homework && homework.user_homework.status === 3"
-      >
+    <div class="homework-info"
+         @click="fold = !fold">
+      <img class="score-icon"
+           v-if="homework.user_homework && homework.user_homework.status === 2"
+           :src="USER_HOMEWORK_SCORE[homework.user_homework.score]" />
+      <div class="reject-tips"
+           v-if="homework.user_homework && homework.user_homework.status === 3">
         <div class="tips-wrapper">
-          <img class="warning-icon" src="~images/danger-warning.png" />
+          <img class="warning-icon"
+               src="~images/danger-warning.png" />
           <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
         </div>
         <img src="~images/reject.png" />
@@ -28,8 +24,7 @@
         <h4 class="homework-name">
           {{ homework.name }}
         </h4>
-        <label
-          :class="{
+        <label :class="{
             'homework-status': true,
             unsubmit: !homework.user_homework && !isExpired,
             expired: !homework.user_homework && isExpired,
@@ -41,8 +36,7 @@
               homework.user_homework && homework.user_homework.status === 2,
             rejected:
               homework.user_homework && homework.user_homework.status === 3
-          }"
-        >
+          }">
           {{
             homework.user_homework
               ? HOMEWORK_STATUS[homework.user_homework.status]
@@ -55,32 +49,31 @@
       <div class="homework-time-wrapper">
         <span class="homework-start">
           <span @click.stop="showTips">
-            <icon-svg svg-class="clock-icon" svg-name="clock" />
+            <icon-svg svg-class="clock-icon"
+                      svg-name="clock" />
           </span>
           最佳提交日期：{{ formatDate(homework.start_at) }}
         </span>
-        <span class="homework-end"
-          >最迟截止日期：{{ formatDate(homework.end_at) }}（剩余{{
+        <span class="homework-end">最迟截止日期：{{ formatDate(homework.end_at) }}（剩余{{
             formNowFormatDay(homework.end_at)
           }}）
         </span>
       </div>
     </div>
-    <div class="fold-wrapper" v-show="fold">
+    <div class="fold-wrapper"
+         v-show="fold">
       <div class="homework-desc-wrapper">
         <div class="homework-whole">
           <label class="homework-label">
             作业要求：
           </label>
-          <el-button
-            class="homework-submit-btn"
-            type="primary"
-            :disabled="
+          <el-button class="homework-submit-btn"
+                     type="primary"
+                     :disabled="
               (!homework.user_homework && isExpired) ||
                 (homework.user_homework && homework.user_homework.status !== 3)
             "
-            @click="handleSubmitClick"
-          >
+                     @click="handleSubmitClick">
             {{
               homework.user_homework && homework.user_homework.status === 3
                 ? "重新提交"
@@ -92,32 +85,31 @@
           <div class="homework-desc-content">
             <the-fold :isFold="fold">
               <slot>
-                <div
-                  class="homework-desc-content_info"
-                  v-html="homework.description"
-                ></div>
+                <div class="homework-desc-content_info"
+                     v-html="homework.description"></div>
               </slot>
             </the-fold>
           </div>
         </div>
       </div>
-      <div
-        class="homework-desc-wrapper homework-submit-wrapper"
-        v-if="homework.user_homework"
-      >
+      <div class="homework-desc-wrapper homework-submit-wrapper"
+           v-if="homework.user_homework">
         <div class="homework-desc">
           <label class="homework-label">
             设计阐述与说明：
           </label>
           <div class="homework-desc-content">
-            <the-fold :maxHeight="224" :isFold="fold">
+            <the-fold :maxHeight="224"
+                      :isFold="fold">
               <div class="homework-desc-content_info">
                 <div class="homework-desc-info">
-                  <p v-for="(desc, key) of q_content.split('\n')" :key="key">
+                  <p v-for="(desc, key) of q_content.split('\n')"
+                     :key="key">
                     {{ desc }}
                   </p>
                 </div>
-                <div class="homework-desc-image" v-if="q_images.length > 0">
+                <div class="homework-desc-image"
+                     v-if="q_images.length > 0">
                   <the-preview-image :srcList="q_images" />
                 </div>
               </div>
@@ -126,11 +118,9 @@
         </div>
         <div class="homework-plan-card">
           <div class="card-left">
-            <the-loading-image
-              :url="homework.user_homework.study_design_pic"
-              :width="200"
-              :height="200"
-            />
+            <the-loading-image :url="homework.user_homework.study_design_pic"
+                               :width="200"
+                               :height="200" />
           </div>
           <div class="card-right">
             <h4 class="card-name">
@@ -151,40 +141,39 @@
           </div>
         </div>
       </div>
-      <div
-        class="homework-reply-wrapper"
-        v-if="
+      <div class="homework-reply-wrapper"
+           v-if="
           homework.user_homework &&
             (homework.user_homework.status === 2 ||
               homework.user_homework.status === 3)
-        "
-      >
+        ">
         <label class="homework-label">作业点评：</label>
         <div class="reply-teacher-info">
-          <the-avatar
-            :size="46"
-            :url="homework.user_homework.teacher.avatar_url"
-          />
+          <the-avatar :size="46"
+                      :url="homework.user_homework.teacher.avatar_url" />
           <label class="reply-name">
             {{ homework.user_homework.teacher.nickname }}
           </label>
         </div>
         <div class="reply-content-wrapper">
-          <the-fold :maxHeight="156" :isFold="fold">
-            <div
-              class="reply-content"
-              v-html="homework.user_homework.a_content"
-            ></div>
+          <the-fold :maxHeight="156"
+                    :isFold="fold">
+            <div class="reply-content"
+                 v-html="homework.user_homework.a_content"></div>
           </the-fold>
         </div>
       </div>
     </div>
     <label class="fold-label">
-      <span v-if="!fold" @click.stop="fold = true">
-        <icon-svg svg-class="unfold-icon" svg-name="unfold" />
+      <span v-if="!fold"
+            @click.stop="fold = true">
+        <icon-svg svg-class="unfold-icon"
+                  svg-name="unfold" />
       </span>
-      <span v-else @click.stop="fold = false">
-        <icon-svg svg-class="fold-icon" svg-name="fold" />
+      <span v-else
+            @click.stop="fold = false">
+        <icon-svg svg-class="fold-icon"
+                  svg-name="fold" />
       </span>
     </label>
   </div>
@@ -228,7 +217,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       HOMEWORK_STATUS,
       HOMEWORK_STATUS_UPLOAD_DISPLAY,
@@ -240,13 +229,13 @@ export default {
     };
   },
   watch: {
-    homework(val) {
+    homework (val) {
       this.q_content = null;
       this.q_images = [];
       this.parseContent(val.user_homework && val.user_homework.q_content);
     }
   },
-  created() {
+  created () {
     this.judgeExpired();
     this.parseContent(
       this.homework.user_homework && this.homework.user_homework.q_content
@@ -255,16 +244,16 @@ export default {
   methods: {
     formatDate,
     formNowFormatDay,
-    judgeExpired() {
+    judgeExpired () {
       this.isExpired = new Date(this.homework.end_at) <= new Date();
     },
-    handleSubmitClick() {
+    handleSubmitClick () {
       this.judgeExpired();
       if (!this.isExpired) {
         this.$emit("submitClick");
       }
     },
-    parseContent(val) {
+    parseContent (val) {
       try {
         const content = JSON.parse(val);
         this.q_content = content.content;
@@ -273,7 +262,7 @@ export default {
         this.q_content = val;
       }
     },
-    showTips() {
+    showTips () {
       this.$msgBox.showMsgBox({
         img: warningImg,
         theme: "img_w_100",
@@ -300,9 +289,9 @@ export default {
   position: relative;
   width: 100%;
   // height: 82px;
-  padding: 20px;
   background: #ffffff;
   .homework-info {
+    padding: 20px;
     cursor: pointer;
   }
   .homework-name-wrapper {
@@ -385,10 +374,10 @@ export default {
     }
   }
   .fold-wrapper {
+    padding: 0 20px 20px;
     margin-bottom: 20px;
   }
   .homework-desc-wrapper {
-    margin-top: 20px;
     padding-top: 20px;
     min-height: 64px;
     display: flex;
@@ -495,6 +484,7 @@ export default {
     color: #333333;
   }
   .homework-submit-wrapper {
+    margin-top: 20px;
     .homework-desc-content {
       min-height: 224px !important;
     }

@@ -312,12 +312,12 @@ export default {
         this.$msgBox
           .showMsgBox({
             img: submit_hw_img,
-            theme: "img_h_225",
+            theme: "img_s_190_208",
             content:
-              "<p style='color:#14AF64FF;'>作业一旦提交就无法修改，</p><p style='color:#14AF64FF;'>请认真完成再提交哦~</p></p>",
+              "<p style='color:#14AF64FF;font-size:32px;line-height:45px;'>作业一旦提交就无法修改，</p><p style='color:#14AF64FF;font-size:32px;line-height:45px;'>请认真完成再提交哦~</p></p>",
             confirmBtnText: "确定提交",
             cancelBtnText: "再调整一下",
-            bodyClass: "submit-homework-modal-body"
+            showCloseBtn: false
           })
           .then(() => {
             const {
@@ -354,7 +354,7 @@ export default {
                     img: success_img,
                     theme: "img_w_140",
                     content:
-                      "<p style='color:#14AF64FF;font-size:32px;line-height:48px;'>提交成功</p><p style='color:#ABABABFF;font-size:24px;line-height:36px;margin-top:5px;'>请耐心等待老师的批复吧~</p>",
+                      "<p style='color:#14AF64FF;font-size:32px;line-height:32px;'>提交成功！</p><p style='color:#ABABABFF;font-size:24px;line-height:24px;margin-top:17px;'>请耐心等待老师的批复吧~</p>",
                     confirmBtnText: "确定",
                     showCancelBtn: false,
                     showCloseBtn: false
@@ -370,13 +370,13 @@ export default {
                   this.closeHomeworkDialog();
                   this.getData();
                   this.$msgBox.showMsgBox({
-                    width: 400,
-                    height: 270,
                     img: success_img,
+                    theme: "img_w_140",
                     content:
-                      "<p style='color:#14AF64FF;'>提交成功</p><p style='color:#ABABABFF;'>请耐心等待老师的批复吧~</p>",
+                      "<p style='color:#14AF64FF;font-size:32px;line-height:32px;'>提交成功！</p><p style='color:#ABABABFF;font-size:24px;line-height:24px;margin-top:17px;'>请耐心等待老师的批复吧~</p>",
                     confirmBtnText: "确定",
-                    showCancelBtn: false
+                    showCancelBtn: false,
+                    showCloseBtn: false
                   });
                 })
                 .finally(() => {
@@ -748,11 +748,6 @@ export default {
     li:not(:last-child) {
       margin-bottom: 20px;
     }
-  }
-}
-/deep/ .submit-homework-modal-body {
-  img {
-    width: 104px;
   }
 }
 </style>

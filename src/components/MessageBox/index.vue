@@ -5,14 +5,12 @@
       class="message-modal"
       :style="{ width: width + 'px', height: height + 'px' }"
     >
-      <h3 class="message-modal-header">
-        <img
-          v-if="showCloseBtn"
-          class="close-icon"
-          src="~images/close_logo.svg"
-          @click="cancel"
-        />
-      </h3>
+      <img
+        v-if="showCloseBtn"
+        class="close-icon"
+        src="~images/close_logo.svg"
+        @click="cancel"
+      />
       <div :class="['message-modal-body', bodyClass]">
         <img :src="img" />
         <p v-html="content"></p>
@@ -43,10 +41,6 @@ import defaultImg from "images/common/deleteConfirm.svg";
 export default {
   name: "MessageBox",
   props: {
-    title: {
-      type: String,
-      default: "标题"
-    },
     width: {
       type: Number,
       default: 672
@@ -169,18 +163,13 @@ export default {
     height: @height;
     background: #ffffff;
     z-index: 1;
-    .message-modal-header {
-      position: relative;
-      width: 100%;
-      height: 18%;
-      .close-icon {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: auto;
-        height: 50%;
-        cursor: pointer;
-      }
+    .close-icon {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
     }
     .message-modal-body {
       flex: 1;
@@ -188,7 +177,6 @@ export default {
       flex-direction: column;
       justify-content: flex-start;
       align-items: center;
-      margin-top: -10%;
       padding: 0 7%;
       height: 55%;
       img {
@@ -207,18 +195,17 @@ export default {
       justify-content: center;
       align-items: center;
       width: 100%;
-      height: 27%;
+      height: 140px;
       background: #ededed;
       button {
-        width: 30%;
-        height: 50%;
-        max-height: 50px;
+        width: 206px;
+        height: 50px;
         background: #ffffff;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: 400;
         cursor: pointer;
         .confirm-icon {
-          font-size: 28px;
+          font-size: 42px;
         }
         &.btn-default {
           border: 1px solid #b0b0b0;
@@ -233,13 +220,6 @@ export default {
           margin-right: 12%;
         }
       }
-    }
-  }
-}
-.img_ml_65 {
-  .message-modal-body {
-    img {
-      margin-left: 65px;
     }
   }
 }
@@ -260,7 +240,8 @@ export default {
 .img_w_170 {
   .message-modal-body {
     img {
-      margin-top: 50px;
+      margin: 13px 18px;
+      width: 170px !important;
       height: 170px !important;
     }
   }
@@ -276,7 +257,7 @@ export default {
 .img_w_100 {
   .message-modal-body {
     img {
-      margin: 40px 0 30px;
+      margin: 63px 0 35px;
       height: 100px !important;
     }
   }
@@ -284,8 +265,36 @@ export default {
 .img_w_140 {
   .message-modal-body {
     img {
-      margin: 40px 0 23px;
+      margin: 75px 0 23px;
       height: 140px !important;
+    }
+  }
+}
+.img_s_190_208 {
+  .message-modal-body {
+    img {
+      margin: 30px 0 13px;
+      width: 190px !important;
+      height: 208px !important;
+    }
+  }
+}
+.img_s_174_176 {
+  .message-modal-body {
+    img {
+      margin: 58px 0 37px;
+      width: 174px !important;
+      height: 176px !important;
+    }
+  }
+}
+
+.img_s_420_274 {
+  .message-modal-body {
+    img {
+      margin: 0 0 16px;
+      width: 420px !important;
+      height: 274px !important;
     }
   }
 }

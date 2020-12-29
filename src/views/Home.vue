@@ -37,12 +37,13 @@ export default {
           } else {
             this.$msgBox.showMsgBox({
               img: douxiGif,
-              theme: "img_w_220",
+              theme: "img_s_174_176",
               content:
-                "<p style='color:#14AF64FF;font-size: 36px;font-weight:500px;'>抱歉，你好像并没有报名噢…</p>",
+                "<p style='color:#14AF64FF;font-size: 36px;font-weight:500px;line-height:36px;'>抱歉，你好像并没有报名噢…</p>",
               confirmBtnText: "",
               confirmBtnIcon: "correct",
-              showCancelBtn: false
+              showCancelBtn: false,
+              showCloseBtn: false
             });
           }
         });

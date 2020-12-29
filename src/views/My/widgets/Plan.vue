@@ -119,11 +119,10 @@ export default {
     delelePlan(index, plan) {
       this.$msgBox
         .showMsgBox({
-          width: 400,
-          height: 270,
-          theme: "img_h_80pc",
+          theme: "img_s_420_274",
           content:
-            "<p style='color:#333;font-weight:bold;font-size:26px;'>确认删除方案</p>"
+            "<p style='color:#14AF64FF;font-weight:400;font-size:24px;line-height:33px;'>确认删除方案</p>",
+          showCloseBtn: false
         })
         .then(async () => {
           kujialeService

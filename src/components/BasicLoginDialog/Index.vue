@@ -71,11 +71,10 @@ export default {
           if (res.status === 1) {
             this.$msgBox.showMsgBox({
               img: douxiGif,
-              theme: "img_ml_65",
-              content: `<p style='color:#14AF64FF;'>欢迎来到「斗西家计划」，</p><p style='color:#14AF64FF;'>一年期<span style='font-weight:bold;'>尊柜会员</span><img width='38' height='38' style='vertical-align:-8px;' src=${vipImg} />已发放到当前账户，</p><p style='color:#14AF64FF;'>期待看到你的新家，设计吧少年！</p>`,
+              theme: "img_w_170",
+              content: `<p style='color:#14AF64FF;font-size:30px;line-height:50px;'>欢迎来到「斗西家计划」，</p><p style='color:#14AF64FF;font-size:30px;line-height:50px;'>一年期<span style='font-weight:bold;'>尊柜会员 </span><img width='38' height='38' style='vertical-align:-8px;' src=${vipImg} /> 已发放到当前账户，</p><p style='color:#14AF64FF;font-size:30px;line-height:50px;'>期待看到你的新家，设计吧少年！</p>`,
               confirmBtnText: "确定",
-              showCancelBtn: false,
-              showCloseBtn: false
+              showCancelBtn: false
             });
             this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
           } else {
