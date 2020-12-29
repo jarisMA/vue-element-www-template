@@ -47,6 +47,10 @@ export default {
     loading: {
       type: Boolean,
       default: true
+    },
+    pardon: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -64,26 +68,20 @@ export default {
         city: ""
       },
       btnLoading: false,
-      pardon: false
+      count: 0
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
-  beforeRoute(to, from, next) {
-    if (["EditPlan", "DrawPlan"].indexOf(from.name) > -1) {
-      this.pardon = true;
-    }
-    next();
-  },
   created() {
     this.getPlan();
-    if (this.pardon) {
-      const timer = setTimeout(() => {
+    const timer = setTimeout(() => {
+      if (this.pardon) {
         this.getPlan();
-        clearTimeout(timer);
-      }, 1000);
-    }
+      }
+      clearTimeout(timer);
+    }, 1000);
   },
   methods: {
     goDrawPlan,

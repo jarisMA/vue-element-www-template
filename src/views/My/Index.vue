@@ -37,7 +37,11 @@
       </div>
       <div class="right-container">
         <!-- <el-scrollbar class="scrollbar-section"> -->
-        <my-plan v-if="currentMenu === 'plan'" :loading.sync="loading" />
+        <my-plan
+          v-if="currentMenu === 'plan'"
+          :loading.sync="loading"
+          :pardon="pardon"
+        />
         <my-term v-if="currentMenu === 'term'" :loading.sync="loading" />
         <!-- </el-scrollbar> -->
       </div>
@@ -61,8 +65,16 @@ export default {
     return {
       userLogo,
       loading: true,
-      currentMenu: "plan"
+      currentMenu: "plan",
+      pardon: false
     };
+  },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (["EditPlan", "DrawPlan"].indexOf(from.name) > -1) {
+        vm.pardon = true;
+      }
+    });
   },
   computed: {
     ...mapState(["userInfo"])
