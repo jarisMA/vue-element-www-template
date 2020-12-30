@@ -501,7 +501,7 @@ export default {
     }
     .homework-plan-card {
       display: flex;
-      margin-top: 30px;
+      margin-top: 27px;
       width: 448px;
       height: 224px;
       padding: 10px;
