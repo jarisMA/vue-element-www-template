@@ -197,7 +197,14 @@ export default {
   }
 }
 .pagination-wrapper {
+  margin-top: 80px;
+}
+.pagination-wrapper {
   /deep/ &.homework {
+    position: absolute;
+    bottom: 26px;
+    margin-top: 0;
+    justify-content: flex-start;
     .el-pagination {
       margin: 0;
       padding: 0;

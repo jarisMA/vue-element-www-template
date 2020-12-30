@@ -80,38 +80,12 @@ export default {
 <style lang="less" scoped>
 .pagination-wrapper {
   display: flex;
+  justify-content: center;
   /deep/ .el-pagination {
-    margin: 30px auto 40px;
-    .number,
+    .el-pager li,
     .btn-prev,
-    .btn-next,
-    .el-input__inner {
-      display: inline-block;
-      min-width: 40px;
-      height: 40px !important;
-      margin-right: 8px;
-      font-family: Arial;
-      line-height: 38px;
-      text-align: center;
-      vertical-align: middle;
-      list-style: none;
-      background-color: #fff;
-      border: 1px solid #d9d9d9;
-      border-radius: 0;
-      outline: 0;
-      cursor: pointer;
-      user-select: none;
-    }
-    .el-icon-more,
-    .el-icon.more {
-      height: 40px;
-      line-height: 40px;
-    }
-    .el-pagination__jump {
-      line-height: 40px;
-    }
-    .el-pagination__sizes {
-      float: right;
+    .btn-next {
+      background: #fff;
     }
   }
 }

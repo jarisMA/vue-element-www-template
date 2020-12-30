@@ -7,6 +7,7 @@
         </li>
       </ul>
       <pagination
+        class="pagination-wrapper"
         :pageSize="pagination.size"
         :current-page.sync="pagination.page"
         :total="pagination.total"
@@ -43,7 +44,7 @@ export default {
     return {
       terms: [],
       pagination: {
-        size: 12,
+        size: 9,
         page: 1,
         total: 0
       },
@@ -94,5 +95,8 @@ export default {
       padding-right: 0;
     }
   }
+}
+.pagination-wrapper {
+  margin-top: 80px;
 }
 </style>

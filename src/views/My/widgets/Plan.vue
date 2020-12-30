@@ -58,7 +58,7 @@ export default {
   data() {
     return {
       plans: [],
-      planCount: 16,
+      planCount: 11,
       planPage: 1,
       planTotalCount: 0,
       addVisible: false,
