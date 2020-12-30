@@ -14,7 +14,7 @@
       <div class="carousel-wrapper">
         <carousel
           :paginationEnabled="false"
-          :perPage="3"
+          :perPage="5"
           navigationEnabled
           navigationPrevLabel='<div class="slide-icon L"></div>'
           navigationNextLabel='<div class="slide-icon R"></div>'
@@ -163,17 +163,19 @@ export default {
       transform: translateX(-50%);
     }
     .carousel-wrapper {
-      width: 960px;
+      width: 1070px;
       margin: auto;
-      padding-top: 72px;
+      padding-top: 120px;
       /deep/ .VueCarousel-navigation {
         .VueCarousel-navigation-prev {
+          margin: 0 !important;
           padding: 0 !important;
-          transform: translate(calc(-100% - 24px), -50%) !important;
+          transform: translate(calc(-100% - 18px), -50%) !important;
         }
         .VueCarousel-navigation-next {
+          margin: 0 !important;
           padding: 0 !important;
-          transform: translate(calc(100% + 24px), -50%) !important;
+          transform: translate(calc(100% + 18px), -50%) !important;
         }
         .slide-icon {
           width: 46px;

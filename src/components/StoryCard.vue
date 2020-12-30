@@ -1,6 +1,6 @@
 <template>
   <div class="story-card">
-    <the-avatar class="avatar-wrapper" :size="62" :url="story.avatar" />
+    <the-avatar class="avatar-wrapper" :size="40" :url="story.avatar" />
     <label class="user-wrapper">
       {{ story.nickname }}
     </label>
@@ -32,33 +32,33 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 10px;
-  width: 300px;
-  height: 366px;
-  padding: 68px 38px 46px;
+  width: 194px;
+  height: 278px;
+  padding: 36px 20px 0;
   background: url("~images/story_bg.png");
   .user-wrapper {
     display: inline-block;
-    margin: 10px 0 30px;
-    height: 18px;
-    line-height: 18px;
-    font-size: 18px;
+    margin: 10px 0 10px;
+    height: 24px;
+    line-height: 16px;
+    font-size: 16px;
     font-weight: bold;
     color: #333333;
   }
   .comment-wrapper {
-    height: 140px;
+    height: 128px;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
-    -webkit-line-clamp: 7;
-    line-clamp: 7;
+    -webkit-line-clamp: 8;
+    line-clamp: 8;
     -webkit-box-orient: vertical;
     .comment {
+      line-height: 16px;
       text-align: justify;
-      font-size: 14px;
+      font-size: 12px;
       font-weight: 400;
       color: #aeaeae;
-      line-height: 20px;
     }
   }
 }
