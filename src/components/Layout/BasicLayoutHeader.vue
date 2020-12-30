@@ -12,7 +12,7 @@
           <img
             v-if="theme === 'primary'"
             class="header-logo"
-            src="~images/logo3.png"
+            src="~images/layout/logo2.svg"
             @click="visible = !visible"
           />
           <img v-else class="header-logo" src="~images/logo_1.svg" />
@@ -460,6 +460,7 @@ export default {
     margin-right: 8px;
     .header-logo {
       width: 44px;
+      height: 52px;
     }
     &:hover {
       background: #38ca83;
@@ -483,7 +484,7 @@ export default {
     height: 100%;
     overflow: hidden;
     .header-nav-item {
-      padding: 20px 0;
+      // padding: 20px 0;
       height: 52px;
       color: #fff;
       cursor: auto;

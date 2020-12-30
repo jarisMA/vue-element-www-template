@@ -4,7 +4,7 @@
       <img src="~images/close_logo.svg" class="header-cancel" @click="show" />
     </div>
     <div class="content">
-      <img src="~images/college.png" />
+      <img src="~images/dialog/college.svg" />
       <div>
         <p>新版即将上线</p>
       </div>
