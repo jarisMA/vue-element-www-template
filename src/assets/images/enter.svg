@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="308px" height="98px" viewBox="0 0 308 98" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>进入班级按钮</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-805.000000, -797.000000)">
+            <g id="编组-8" transform="translate(805.000000, 797.000000)">
+                <g id="编组" transform="translate(13.000000, 11.227973)">
+                    <polygon id="Fill-1" fill="#FFFFFF" points="7.009 76.5329276 283.806 76.5329276 283.806 7.15323966 7.009 7.15323966"></polygon>
+                    <polygon id="Stroke-2" stroke="#000000" stroke-width="3" points="7.009 76.5329276 283.806 76.5329276 283.806 7.15323966 7.009 7.15323966"></polygon>
+                    <polygon id="Fill-4" fill="#7A55FF" points="162.6716 0.510260346 115.1266 0.510260346 0.5006 0.510260346 0.5006 69.8899483 277.2976 69.8899483 277.2976 0.510260346"></polygon>
+                    <g transform="translate(0.000000, 0.353171)">
+                        <polygon id="Stroke-5" stroke="#282828" stroke-width="3" stroke-linejoin="round" points="162.6716 0.157089553 115.1266 0.157089553 0.5006 0.157089553 0.5006 69.5367775 277.2976 69.5367775 277.2976 0.157089553"></polygon>
+                        <text id="进入班级" font-family="SourceHanSansCN-Heavy, Source Han Sans CN" font-size="43.9017" font-weight="600" fill="#FFFFFF">
+                            <tspan x="50.4341" y="50.6205325">进入班级</tspan>
+                        </text>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

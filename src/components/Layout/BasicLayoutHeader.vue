@@ -326,7 +326,7 @@ export default {
                     width: 24px;
                     height: 24px;
                     background: url("~images/workbench.svg") no-repeat center;
-                    vertical-align: middle;
+                    vertical-align: -7px;
                     margin-right: 12px;
                   }
                 }
@@ -340,7 +340,7 @@ export default {
                     width: 24px;
                     height: 24px;
                     background: url("~images/setting.svg") no-repeat center;
-                    vertical-align: middle;
+                    vertical-align: -7px;
                     margin-right: 12px;
                   }
                 }
@@ -382,7 +382,8 @@ export default {
                 width: 24px;
                 height: 24px;
                 background: url("~images/logout.svg") no-repeat center;
-                vertical-align: middle;
+                background-size: cover;
+                vertical-align: -7px;
                 margin-right: 12px;
               }
             }
@@ -390,7 +391,7 @@ export default {
               color: @primaryColor;
               span {
                 &::before {
-                  background-image: url("~images/logout_hover.svg");
+                  background-image: url("~images/logout_hover.png");
                 }
               }
             }

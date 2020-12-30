@@ -2,15 +2,16 @@
   <div class="home-page" v-loading="loading">
     <div class="img-wrapper">
       <div class="main-img-wrapper">
-        <img class="main-img" src="~images/home.png" />
+        <img class="hi-img" src="~images/hi.png" />
+        <img class="main-img" src="~images/home.svg" />
         <img class="douxi-gif" src="~images/douxi.gif" />
       </div>
     </div>
     <div class="enter-btn">
-      <img src="~images/enter.png" @click="enterClass" />
+      <img src="~images/enter.svg" @click="enterClass" />
     </div>
     <div class="story-wrapper">
-      <img class="story-img" src="~images/story.png" />
+      <img class="story-img" src="~images/story.svg" />
       <div class="carousel-wrapper">
         <carousel
           :paginationEnabled="false"
@@ -126,6 +127,13 @@ export default {
       border-bottom: 6px solid #000;
       border-left: 6px solid #000;
       border-bottom-left-radius: 6px;
+    }
+    .hi-img {
+      position: absolute;
+      top: 188px;
+      left: 220px;
+      width: 167px;
+      height: 124px;
     }
     .main-img {
       width: 100%;

@@ -35,7 +35,7 @@ export default {
   width: 194px;
   height: 278px;
   padding: 36px 20px 0;
-  background: url("~images/story_bg.png");
+  background: url("~images/story_bg.svg");
   .user-wrapper {
     display: inline-block;
     margin: 10px 0 10px;
