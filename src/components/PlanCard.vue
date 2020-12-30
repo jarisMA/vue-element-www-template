@@ -1,14 +1,14 @@
 <template>
   <div
-    :class="['plan-card', activeIndex === detail.planId ? 'active' : '']"
+    :class="['plan-card', theme, activeIndex === detail.planId ? 'active' : '']"
     @click="itemClick"
   >
-    <div class="plan-card-top">
+    <div :class="['plan-card-top', theme]">
       <!-- <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i> -->
       <the-loading-image
         class="image-wrapper"
         :width="theme === 'my' ? 200 : theme === 'homework' ? 150 : 258"
-        :height="theme === 'my' ? 214 : theme === 'homework' ? 150 : 270"
+        :height="theme === 'my' ? 200 : theme === 'homework' ? 150 : 258"
         :url="detail.planPic || defaultCoverImg"
       />
     </div>
@@ -38,12 +38,13 @@
         >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
       >
       <div class="house-desc" v-if="theme !== 'homework'">
-        <label class="house-address"
-          ><i class="el-icon-location-outline"></i> {{ filterCity }}
-          {{ detail.commName }}</label
-        >
-        <span v-if="theme === 'my'" class="plan-date">{{ date }}</span>
+        <label class="house-address">
+          <icon-svg class="location-icon" svg-name="location"></icon-svg
+          >{{ filterCity }}
+          {{ detail.commName }}
+        </label>
       </div>
+      <span v-if="theme === 'my'" class="plan-date">{{ date }}</span>
     </div>
   </div>
 </template>
@@ -89,7 +90,11 @@ export default {
       let arr = city.split(" ");
       this.filterCity = arr.length > 1 ? arr[1] : arr[0];
       this.date =
-        new Date(created).getMonth() + 1 + "-" + new Date(created).getDate();
+        new Date(created).getFullYear() +
+        "-" +
+        (new Date(created).getMonth() + 1) +
+        "-" +
+        new Date(created).getDate();
     }
   },
   methods: {
@@ -115,15 +120,20 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @padding: 12px;
+@homeworkPadding: 10px;
 .plan-card {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 0 @padding;
+  padding: 0;
   width: 100%;
   background: #fff;
+  box-sizing: border-box;
   cursor: pointer;
+  &.homework {
+    height: 224px;
+  }
   &.active {
     position: relative;
     border: 2px solid @primaryColor;
@@ -148,11 +158,17 @@ export default {
   }
   .plan-card-top {
     position: relative;
-    padding: @padding 0;
+    padding: @padding;
     width: 100%;
-    height: 0;
-    padding-top: calc(100% + @padding * 2);
+    height: 282px;
     text-align: center;
+    &.my {
+      height: 224px;
+    }
+    &.homework {
+      height: 170px;
+      padding: @homeworkPadding;
+    }
     .el-icon-delete {
       position: absolute;
       padding: 4px;
@@ -165,30 +181,28 @@ export default {
       z-index: 2;
       background: #e6e6e6b3;
     }
-
     .image-wrapper {
       position: absolute;
       top: @padding;
-      left: 0;
+      left: @padding;
       width: 100%;
+      height: 100%;
     }
   }
   .plan-card-bottom {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 11px 0 24px;
+    padding: 5px @padding 10px;
     border-top: 1px solid #e6e6e6;
     &.homework {
-      padding: 10px 0;
+      padding: 10px 10px;
     }
     .plan-name-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
       .plan-name {
         flex: 1;
-        margin-bottom: 0;
       }
       .el-icon-edit {
         color: @primaryColor;
@@ -209,12 +223,12 @@ export default {
     }
     .plan-name,
     .house-type {
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       width: 100%;
-      height: 14px;
-      line-height: 14px;
-      font-weight: 500;
+      height: 20px;
+      line-height: 20px;
       font-size: 14px;
+      font-weight: 500;
       color: #333;
       overflow: hidden;
       white-space: nowrap;
@@ -224,32 +238,60 @@ export default {
       display: flex;
       justify-content: space-between;
       width: 100%;
-      height: 12px;
-      line-height: 12px;
+      height: 16px;
+      line-height: 16px;
       font-size: 12px;
       font-weight: 400;
       color: #ababab;
       .house-address {
-        flex: 1;
+        width: 100%;
         height: 18px;
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
       }
-      .plan-date {
-        width: 37px;
-        text-align: right;
-      }
+    }
+    .plan-date {
+      display: inline-block;
+      margin-top: 8px;
+      width: 100%;
+      height: 16px;
+      line-height: 16px;
+      font-size: 12px;
+      font-weight: 400;
+      text-align: right;
+      color: #ababab;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
     &.my,
     &.homework {
       .house-type {
-        margin-bottom: 8px;
-        height: 12px;
-        line-height: 12px;
+        margin-bottom: 6px;
+        width: 100%;
+        height: 16px;
+        line-height: 16px;
         font-size: 12px;
         font-weight: 400;
         color: #ababab;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+    }
+    &.homework {
+      .plan-name,
+      .house-type {
+        margin: 0;
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+        text-shadow: 0px 0px 12px #cccccc;
+      }
+      .house-type {
+        height: 13px;
+        line-height: 13px;
       }
     }
   }

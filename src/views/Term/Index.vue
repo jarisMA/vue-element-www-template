@@ -410,7 +410,7 @@ export default {
       position: absolute;
       top: 50%;
       left: 50%;
-      margin-top: 0 !important;
+      margin: 0 !important;
       transform: translate(-50%, -50%);
       background: #f7f7f7ff;
       .el-dialog__header {
@@ -418,7 +418,7 @@ export default {
       }
       .el-dialog__body {
         padding: 20px 30px;
-        height: 650px;
+        height: 578px;
       }
       .el-dialog__footer {
         padding: 0 30px 20px;

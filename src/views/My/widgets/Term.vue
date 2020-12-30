@@ -43,7 +43,7 @@ export default {
     return {
       terms: [],
       pagination: {
-        size: 16,
+        size: 12,
         page: 1,
         total: 0
       },
@@ -64,7 +64,7 @@ export default {
         })
         .then(res => {
           this.terms = res.list;
-          this.pagination.total = res.totalCount;
+          this.pagination.total = res.pagination.total;
           this.pagination.page = start;
           this.showNoTips = true;
         })
@@ -77,7 +77,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@margin: 24px;
+@margin: 22px;
 @count: 3;
 .term-list-container {
   margin-top: 20px;

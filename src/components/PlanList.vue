@@ -139,7 +139,7 @@ export default {
   .add-plan {
     display: flex;
     flex-direction: column;
-    height: 338px;
+    height: 328px;
     padding: 10px;
     background: #fff;
     cursor: pointer;

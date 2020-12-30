@@ -102,19 +102,18 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    height: 105px;
-    padding: @padding;
+    // height: 95px;
+    padding: 5px @padding @padding;
     border-top: 1px solid #e6e6e6;
     .term-name-wrapper {
       display: flex;
       align-items: center;
-      margin-bottom: 10px;
       .term-name {
         flex: 1;
         margin-bottom: 0;
-        line-height: 1;
+        line-height: 20px;
         font-size: 14px;
-        font-weight: bold;
+        font-weight: 600;
         color: #333333;
         overflow: hidden;
         white-space: nowrap;
@@ -149,12 +148,13 @@ export default {
       color: #ababab;
     }
     .enter-btn {
-      margin-top: 10px;
+      margin-top: 9px;
       display: flex;
       align-items: center;
       justify-content: center;
       width: 100%;
-      height: 40px;
+      height: 38px;
+      line-height: 22px;
       font-size: 16px;
       font-weight: 500;
       color: #666666;

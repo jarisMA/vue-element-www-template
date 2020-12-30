@@ -3,13 +3,11 @@
     <div class="container-1200">
       <div class="left-container">
         <div class="login-user-wrapper">
-          <el-avatar
+          <the-avatar
             :size="80"
             class="login-user-image"
-            :src="
-              userInfo && userInfo.avatar_url ? userInfo.avatar_url : userLogo
-            "
-          ></el-avatar>
+            :url="userInfo && userInfo.avatar_url"
+          ></the-avatar>
           <span class="nickname">{{ userInfo && userInfo.nickname }}</span>
           <el-tooltip
             v-if="userInfo && userInfo.kujiale_type === 1"
@@ -50,20 +48,20 @@
 </template>
 
 <script>
-import userLogo from "images/user_logo.svg";
 import { mapState } from "vuex";
 import MyPlan from "./widgets/Plan";
 import MyTerm from "./widgets/Term";
+import TheAvatar from "components/TheAvatar";
 
 export default {
   name: "My",
   components: {
     MyPlan,
-    MyTerm
+    MyTerm,
+    TheAvatar
   },
   data() {
     return {
-      userLogo,
       loading: true,
       currentMenu: "plan",
       pardon: false
@@ -128,7 +126,7 @@ export default {
     }
     .login-user-image {
       margin-bottom: 20px;
-      border: 2px solid @primaryColor;
+      // border: 2px solid @primaryColor;
       background-color: transparent;
       cursor: auto;
     }
@@ -146,8 +144,8 @@ export default {
   }
   .el-menu-item {
     position: relative;
-    height: 50px;
-    line-height: 50px;
+    height: 42px;
+    line-height: 42px;
     text-align: left;
     font-size: 14px;
     font-weight: 500;
@@ -160,9 +158,10 @@ export default {
       &::before {
         position: absolute;
         left: 0;
-        top: 0;
+        top: 50%;
         width: 4px;
-        height: 100%;
+        height: 30px;
+        transform: translateY(-50%);
         content: "";
         background: @primaryColor;
       }
