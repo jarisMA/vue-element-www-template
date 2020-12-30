@@ -24,6 +24,7 @@
             :theme="theme"
             :activeIndex="activeIndex"
             @itemClick="itemClick(item)"
+            @copyClick="copyClick(item)"
             @editClick="editClick(index, item)"
             @delete="deleteItem(index, item)"
           />
@@ -109,6 +110,9 @@ export default {
     },
     itemClick(item) {
       this.$emit("itemClick", item);
+    },
+    copyClick(item) {
+      this.$emit("copyClick", item);
     },
     editClick(index, item) {
       this.$emit("editClick", index, item);

@@ -9,6 +9,22 @@
     <div class="enter-btn">
       <img src="~images/enter.png" @click="enterClass" />
     </div>
+    <!-- <div class="story-wrapper">
+      <img class="story-img"
+           src="~images/story.png" />
+      <div class="carousel-wrapper">
+        <carousel :paginationEnabled="false"
+                  :perPage="3"
+                  navigationEnabled
+                  navigationPrevLabel='<div class="slide-icon L"></div>'
+                  navigationNextLabel='<div class="slide-icon R"></div>'>
+          <slide v-for="item of 5"
+                 :key="item">
+            <story-card />
+          </slide>
+        </carousel>
+      </div>
+    </div> -->
   </div>
 </template>
 
@@ -17,9 +33,16 @@ import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
 import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
+// import { Carousel, Slide } from "vue-carousel";
+// import StoryCard from 'components/StoryCard';
 
 export default {
   name: "Home",
+  components: {
+    // Carousel,
+    // Slide,
+    // StoryCard
+  },
   data() {
     return {
       loading: false
@@ -121,6 +144,48 @@ export default {
       width: 100%;
       height: 100%;
       cursor: pointer;
+    }
+  }
+  .story-wrapper {
+    position: relative;
+    margin-top: 210px;
+    width: 100%;
+    height: 604px;
+    background: url("~images/home_bg.png") repeat;
+    .story-img {
+      position: absolute;
+      top: -61px;
+      left: 50%;
+      width: 538px;
+      height: 120px;
+      transform: translateX(-50%);
+    }
+    .carousel-wrapper {
+      width: 960px;
+      margin: auto;
+      padding-top: 72px;
+      /deep/ .VueCarousel-navigation {
+        .VueCarousel-navigation-prev {
+          padding: 0 !important;
+          transform: translate(calc(-100% - 24px), -50%) !important;
+        }
+        .VueCarousel-navigation-next {
+          padding: 0 !important;
+          transform: translate(calc(100% + 24px), -50%) !important;
+        }
+        .slide-icon {
+          width: 46px;
+          height: 70px;
+          background-size: cover;
+          background-repeat: no-repeat;
+          &.L {
+            background-image: url("~images/L.png");
+          }
+          &.R {
+            background-image: url("~images/R.png");
+          }
+        }
+      }
     }
   }
 }

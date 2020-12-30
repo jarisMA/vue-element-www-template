@@ -18,6 +18,8 @@ export default {
   kujialeDeleteDesign: `${PREFIX}/api/web/kujiale/design/deletion`,
   kujialeUpdateDesignName: designId =>
     `${PREFIX}/api/web/kujiale/design/${designId}/basic`,
+  kujialeCopyDesign: designId =>
+    `${PREFIX}/api/web/kujiale/design/${designId}/copy`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
   campTerms: `${PREFIX}/api/web/camp/terms`,

@@ -22,6 +22,9 @@ const KujialeService = {
   },
   updateDesignName: (designId, params) => {
     return request.post(API.kujialeUpdateDesignName(designId), params);
+  },
+  copyDesign: (designId, params) => {
+    return request.post(API.kujialeCopyDesign(designId), params);
   }
 };
 

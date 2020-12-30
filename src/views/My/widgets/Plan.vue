@@ -15,6 +15,7 @@
       :total="planTotalCount"
       theme="my"
       @itemClick="editPlan"
+      @copyClick="copyPlan"
       @editClick="isEditPlanInfo"
       @delete="delelePlan"
       @pageChange="getPlan"
@@ -24,6 +25,7 @@
       :visible.sync="addVisible"
       :plan="plan"
       :btnLoading="btnLoading"
+      :title="dialogTitle"
       @confirm="editPlanInfo"
       @beforeClose="beforeCloseDialog"
     />
@@ -60,6 +62,7 @@ export default {
       planPage: 1,
       planTotalCount: 0,
       addVisible: false,
+      dialogTitle: "编辑方案",
       plan: {
         specName: "",
         planPic: "",
@@ -68,7 +71,8 @@ export default {
         city: ""
       },
       btnLoading: false,
-      count: 0
+      count: 0,
+      editType: 1 // 1为编辑，2为复制
     };
   },
   computed: {
@@ -147,8 +151,16 @@ export default {
       }
       done();
     },
+    copyPlan(data) {
+      this.dialogTitle = "复制方案";
+      this.plan = data;
+      this.editType = 2;
+      this.addVisible = true;
+    },
     isEditPlanInfo(index, data) {
+      this.dialogTitle = "编辑方案";
       this.plan = { ...data, index };
+      this.editType = 1;
       this.addVisible = true;
     },
     editPlanInfo(value) {
@@ -157,21 +169,43 @@ export default {
       }
       const data = this.plan;
       this.btnLoading = true;
-      kujialeService
-        .updateDesignName(data.planId, {
-          name: value
-        })
-        .then(() => {
-          this.addVisible = false;
-          this.plans[data.index].name = value;
-          this.$notice({
-            type: "success",
-            title: "方案编辑成功"
+      if (this.editType === 1) {
+        kujialeService
+          .updateDesignName(data.planId, {
+            name: value
+          })
+          .then(() => {
+            this.addVisible = false;
+            this.plans[data.index].name = value;
+            this.$notice({
+              type: "success",
+              title: "方案编辑成功"
+            });
+          })
+          .finally(() => {
+            this.btnLoading = false;
           });
-        })
-        .finally(() => {
-          this.btnLoading = false;
-        });
+      } else {
+        kujialeService
+          .copyDesign(data.planId, {
+            name: value
+          })
+          .then(() => {
+            this.addVisible = false;
+            this.$emit("update:loading", true);
+            this.$notice({
+              type: "success",
+              title: "方案复制成功"
+            });
+            const timer = setTimeout(() => {
+              this.getPlan();
+              clearTimeout(timer);
+            }, 2000);
+          })
+          .finally(() => {
+            this.btnLoading = false;
+          });
+      }
     }
   }
 };

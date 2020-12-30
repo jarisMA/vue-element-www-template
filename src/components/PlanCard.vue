@@ -4,7 +4,7 @@
     @click="itemClick"
   >
     <div class="plan-card-top">
-      <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i>
+      <!-- <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i> -->
       <the-loading-image
         class="image-wrapper"
         :width="theme === 'my' ? 200 : theme === 'homework' ? 150 : 258"
@@ -20,7 +20,19 @@
         <h4 class="plan-name">
           {{ detail.name }}
         </h4>
-        <i class="el-icon-edit" @click="editClick" v-if="theme === 'my'"></i>
+        <!-- <i class="el-icon-edit"
+           @click="editClick"
+           v-if="theme === 'my'"></i> -->
+        <el-dropdown class="dropdown-wrapper" v-if="theme === 'my'">
+          <i class="el-icon-more" @click.stop></i>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="copyClick">复制</el-dropdown-item>
+            <el-dropdown-item @click.native="editClick">编辑</el-dropdown-item>
+            <el-dropdown-item @click.native="deleteItem" v-if="canDelete"
+              >删除</el-dropdown-item
+            >
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
       <span class="house-type"
         >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
@@ -88,6 +100,10 @@ export default {
       this.$emit("editClick");
       e.stopPropagation();
     },
+    copyClick(e) {
+      this.$emit("copyClick");
+      e.stopPropagation();
+    },
     deleteItem(e) {
       e.stopPropagation();
       this.$emit("delete");
@@ -149,6 +165,7 @@ export default {
       z-index: 2;
       background: #e6e6e6b3;
     }
+
     .image-wrapper {
       position: absolute;
       top: @padding;
@@ -179,6 +196,14 @@ export default {
         cursor: pointer;
         &:hover {
           transform: scale(1.5);
+        }
+      }
+      .dropdown-wrapper {
+        .el-icon-more {
+          padding: 4px;
+          color: @primaryColor;
+          cursor: pointer;
+          font-size: 16px;
         }
       }
     }

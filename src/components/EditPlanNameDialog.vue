@@ -36,7 +36,7 @@
           </p>
           <p class="dialog-desc">
             <label class="dialog-label">详细信息：</label>
-            <span>{{ plan.srcArea }}㎡ | {{ plan.specName }}</span>
+            <span>{{ parseInt(plan.srcArea) }}㎡ | {{ plan.specName }}</span>
             <span
               ><i class="el-icon-location-outline"></i> {{ plan.city }}
               {{ plan.commName }}
