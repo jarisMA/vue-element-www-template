@@ -54,6 +54,7 @@ export default {
     line-clamp: 7;
     -webkit-box-orient: vertical;
     .comment {
+      text-align: justify;
       font-size: 14px;
       font-weight: 400;
       color: #aeaeae;
