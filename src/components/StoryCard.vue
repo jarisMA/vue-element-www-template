@@ -38,7 +38,7 @@ export default {
   background: url("~images/story_bg.png");
   .user-wrapper {
     display: inline-block;
-    margin: 4px 0 30px;
+    margin: 10px 0 30px;
     height: 18px;
     line-height: 18px;
     font-size: 18px;
