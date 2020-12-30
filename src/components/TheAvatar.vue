@@ -1,5 +1,5 @@
 <template>
-  <el-avatar :size="size" :src="url || userLogo"></el-avatar>
+  <el-avatar class="the-avatar" :size="size" :src="url || userLogo"></el-avatar>
 </template>
 
 <script>
@@ -24,4 +24,11 @@ export default {
 };
 </script>
 
-<style lang="less" scoped></style>
+<style lang="less" scoped>
+.the-avatar {
+  /deep/ img {
+    width: 100% !important;
+    height: 100% !important;
+  }
+}
+</style>

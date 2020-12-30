@@ -9,22 +9,22 @@
     <div class="enter-btn">
       <img src="~images/enter.png" @click="enterClass" />
     </div>
-    <!-- <div class="story-wrapper">
-      <img class="story-img"
-           src="~images/story.png" />
+    <div class="story-wrapper">
+      <img class="story-img" src="~images/story.png" />
       <div class="carousel-wrapper">
-        <carousel :paginationEnabled="false"
-                  :perPage="3"
-                  navigationEnabled
-                  navigationPrevLabel='<div class="slide-icon L"></div>'
-                  navigationNextLabel='<div class="slide-icon R"></div>'>
-          <slide v-for="item of 5"
-                 :key="item">
-            <story-card />
+        <carousel
+          :paginationEnabled="false"
+          :perPage="3"
+          navigationEnabled
+          navigationPrevLabel='<div class="slide-icon L"></div>'
+          navigationNextLabel='<div class="slide-icon R"></div>'
+        >
+          <slide v-for="(item, key) of stories" :key="key">
+            <story-card :story="item" />
           </slide>
         </carousel>
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -33,19 +33,21 @@ import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
 import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
-// import { Carousel, Slide } from "vue-carousel";
-// import StoryCard from 'components/StoryCard';
+import { Carousel, Slide } from "vue-carousel";
+import StoryCard from "components/StoryCard";
+import stories from "utils/story";
 
 export default {
   name: "Home",
   components: {
-    // Carousel,
-    // Slide,
-    // StoryCard
+    Carousel,
+    Slide,
+    StoryCard
   },
   data() {
     return {
-      loading: false
+      loading: false,
+      stories
     };
   },
   computed: {
