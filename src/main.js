@@ -4,13 +4,16 @@ import router from "./router";
 import store from "./store";
 import IconSvg from "./plugins/icons";
 import "./element";
+import "swiper/dist/css/swiper.css";
 import "styles/reset.less";
 import "styles/common.less";
 import "../theme/index.css";
 import animate from "animate.css";
 import MessageBox from "components/MessageBox/index";
 import Notification from "components/Notification/index";
+import VueAwesomeSwiper from "vue-awesome-swiper";
 
+Vue.use(VueAwesomeSwiper);
 Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(MessageBox);

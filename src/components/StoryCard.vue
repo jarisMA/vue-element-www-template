@@ -31,7 +31,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 10px;
+  // margin: 0 10px;
   width: 194px;
   height: 278px;
   padding: 36px 20px 0;

@@ -13,28 +13,31 @@
     <div class="story-wrapper">
       <img class="story-img" src="~images/home/story.svg" />
       <div class="carousel-wrapper">
-        <carousel
-          :paginationEnabled="false"
-          :perPage="5"
-          navigationEnabled
-          navigationPrevLabel='<div class="slide-icon L"></div>'
-          navigationNextLabel='<div class="slide-icon R"></div>'
-        >
-          <slide v-for="(item, key) of stories" :key="key">
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide v-for="(item, key) of stories" :key="key">
             <story-card :story="item" />
-          </slide>
-        </carousel>
+          </swiper-slide>
+          <!-- <div class="swiper-button-prev"
+               slot="button-prev"></div>
+          <div class="swiper-button-next"
+               slot="button-next"></div> -->
+        </swiper>
+        <div class="carousel-button-prev" @click="prev"></div>
+        <div class="carousel-button-next" @click="next"></div>
       </div>
     </div>
-    <!-- <div class="works-wrapper">
-      <div class="carousel-wrapper">
-        <carousel :perPage="1" paginationEnabled>
-          <slide v-for="(item, key) of works" :key="key">
-            <work-card :work="item" />
-          </slide>
-        </carousel>
-      </div>
-    </div> -->
+    <!-- <div class="
+             works-wrapper">
+          <div class="carousel-wrapper">
+            <carousel :perPage="1"
+                      paginationEnabled>
+              <slide v-for="(item, key) of works"
+                     :key="key">
+                <work-card :work="item" />
+              </slide>
+            </carousel>
+          </div>
+        </div> -->
   </div>
 </template>
 
@@ -43,7 +46,7 @@ import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
 import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
-import { Carousel, Slide } from "vue-carousel";
+// import { Carousel, Slide } from "vue-carousel";
 import StoryCard from "components/StoryCard";
 // import WorkCard from "components/WorkCard";
 import {
@@ -54,14 +57,31 @@ import {
 export default {
   name: "Home",
   components: {
-    Carousel,
-    Slide,
+    // Carousel,
+    // Slide,
     StoryCard
     // WorkCard
   },
   data() {
     return {
       loading: false,
+      swiperOptions: {
+        slidesPerView: 5,
+        spaceBetween: 20,
+        loop: true,
+        loopedSlides: 0,
+        autoplay: true,
+        speed: 5000,
+        autoplayDisableOnInteraction: true,
+        navigation: {
+          nextEl: ".carousel-button-next",
+          prevEl: ".carousel-button-prev"
+        }
+        // navigation: {
+        //   nextEl: '.swiper-button-next',
+        //   prevEl: '.swiper-button-prev'
+        // }
+      },
       stories
       // works
     };
@@ -91,6 +111,14 @@ export default {
       } else {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
+    },
+    prev() {
+      this.$refs.mySwiper.$swiper.stopAutoplay();
+      this.$refs.mySwiper.$swiper.slidePrev(null, 1000);
+    },
+    next() {
+      this.$refs.mySwiper.$swiper.stopAutoplay();
+      this.$refs.mySwiper.$swiper.slideNext(null, 1000);
     }
   }
 };
@@ -188,34 +216,30 @@ export default {
       transform: translateX(-50%);
     }
     .carousel-wrapper {
-      width: 1070px;
+      position: relative;
+      width: 1090px;
       margin: auto;
       padding-top: 120px;
-      /deep/ .VueCarousel-navigation {
-        .VueCarousel-navigation-prev,
-        .VueCarousel-navigation-next {
-          margin: 0 !important;
-          padding: 0 !important;
-          outline: unset;
-        }
-        .VueCarousel-navigation-prev {
-          transform: translate(calc(-100% - 18px), -50%) !important;
-        }
-        .VueCarousel-navigation-next {
-          transform: translate(calc(100% + 18px), -50%) !important;
-        }
-        .slide-icon {
-          width: 46px;
-          height: 70px;
-          background-size: cover;
-          background-repeat: no-repeat;
-          &.L {
-            background-image: url("~images/L.png");
-          }
-          &.R {
-            background-image: url("~images/R.png");
-          }
-        }
+      .carousel-button-prev,
+      .carousel-button-next {
+        position: absolute;
+        top: 224px;
+        width: 46px;
+        height: 70px;
+        background-size: cover;
+        cursor: pointer;
+      }
+      .carousel-button-prev {
+        left: -60px;
+        background: url("~images/L.png") no-repeat;
+      }
+      .carousel-button-next {
+        right: -60px;
+        background: url("~images/R.png") no-repeat;
+      }
+      /deep/ .swiper-wrapper {
+        // transition-timing-function: linear !important;
+        // transition-delay: 3000ms;
       }
     }
   }

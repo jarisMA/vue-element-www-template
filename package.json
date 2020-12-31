@@ -19,7 +19,7 @@
     "moment": "^2.26.0",
     "nprogress": "^0.2.0",
     "qiniu-js": "^2.5.5",
-    "swiper": "^6.1.2",
+    "swiper": "3",
     "vue": "^2.6.11",
     "vue-awesome-swiper": "^4.1.1",
     "vue-carousel": "^0.18.0",
