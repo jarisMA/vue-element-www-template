@@ -26,7 +26,7 @@
         </carousel>
       </div>
     </div>
-    <div class="works-wrapper">
+    <!-- <div class="works-wrapper">
       <div class="carousel-wrapper">
         <carousel :perPage="1" paginationEnabled>
           <slide v-for="(item, key) of works" :key="key">
@@ -34,7 +34,7 @@
           </slide>
         </carousel>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -45,22 +45,25 @@ import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
 import { Carousel, Slide } from "vue-carousel";
 import StoryCard from "components/StoryCard";
-import WorkCard from "components/WorkCard";
-import { stories, works } from "utils/story";
+// import WorkCard from "components/WorkCard";
+import {
+  stories
+  // works
+} from "utils/story";
 
 export default {
   name: "Home",
   components: {
     Carousel,
     Slide,
-    StoryCard,
-    WorkCard
+    StoryCard
+    // WorkCard
   },
   data() {
     return {
       loading: false,
-      stories,
-      works
+      stories
+      // works
     };
   },
   computed: {
