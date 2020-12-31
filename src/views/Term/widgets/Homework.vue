@@ -484,7 +484,6 @@ export default {
   .homework-desc-content,
   .reply-content-wrapper {
     font-weight: 400;
-    color: #ababab;
   }
   .homework-label {
     display: inline-block;
