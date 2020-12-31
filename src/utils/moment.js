@@ -8,7 +8,7 @@ export const formNowFormatDay = date => {
   const end = new Date(date).valueOf();
   const now = new Date().valueOf();
   if (end <= now) {
-    return "0天";
+    return -1;
   }
-  return Math.floor((end - now) / 1000 / 60 / 60 / 24) + "天";
+  return Math.floor((end - now) / 1000 / 60 / 60 / 24);
 };

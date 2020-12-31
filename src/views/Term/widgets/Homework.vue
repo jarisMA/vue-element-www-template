@@ -58,9 +58,14 @@
           最佳提交日期：{{ formatDate(homework.start_at) }}
         </span>
         <span class="homework-end"
-          >最迟截止日期：{{ formatDate(homework.end_at) }}（剩余{{
-            formNowFormatDay(homework.end_at)
-          }}）
+          >最迟截止日期：{{ formatDate(homework.end_at) }}
+          <template v-if="formNowFormatDay(homework.end_at) > -1">
+            （剩余{{
+              formNowFormatDay(homework.end_at) > 0
+                ? formNowFormatDay(homework.end_at) + "天"
+                : countDownTime
+            }}）
+          </template>
         </span>
       </div>
     </div>
@@ -240,7 +245,9 @@ export default {
       fold: false,
       isExpired: true,
       q_content: null,
-      q_images: []
+      q_images: [],
+      countDownTime: "",
+      timer: null
     };
   },
   watch: {
@@ -248,6 +255,7 @@ export default {
       this.q_content = null;
       this.q_images = [];
       this.parseContent(val.user_homework && val.user_homework.q_content);
+      this.judgeExpired();
     }
   },
   created() {
@@ -261,6 +269,21 @@ export default {
     formNowFormatDay,
     judgeExpired() {
       this.isExpired = new Date(this.homework.end_at) <= new Date();
+      if (!this.isExpired && formNowFormatDay(this.homework.end_at) < 1) {
+        const endTime = new Date(this.homework.end_at).valueOf();
+        let dis = endTime - new Date().valueOf();
+        this.countDown(dis);
+        dis -= 1000;
+        this.timer = setInterval(() => {
+          this.countDown(dis);
+          dis -= 1000;
+          if (dis <= 0) {
+            clearInterval(this.timer);
+            this.timer = null;
+            this.judgeExpired();
+          }
+        }, 1000);
+      }
     },
     handleSubmitClick() {
       this.judgeExpired();
@@ -288,6 +311,14 @@ export default {
         showCancelBtn: false,
         showCloseBtn: false
       });
+    },
+    countDown(dis) {
+      const hour = Math.floor(dis / 1000 / 60 / 60);
+      dis -= hour * 1000 * 60 * 60;
+      const minute = Math.floor(dis / 1000 / 60);
+      dis -= minute * 1000 * 60;
+      const second = Math.floor(dis / 1000);
+      this.countDownTime = hour + "小时" + minute + "分钟" + second + "秒";
     }
   }
 };
@@ -395,7 +426,7 @@ export default {
     padding: 0 0 26px;
   }
   .homework-desc-wrapper {
-    padding: 20px 20px 0;
+    padding: 20px;
     min-height: 64px;
     display: flex;
     align-items: flex-start;
@@ -500,7 +531,6 @@ export default {
     color: #333333;
   }
   .homework-submit-wrapper {
-    margin: 20px 0;
     .homework-desc-content {
       min-height: 224px !important;
     }
