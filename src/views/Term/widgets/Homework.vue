@@ -1,13 +1,5 @@
 <template>
   <div :class="['homework-card']">
-    <div
-      class="expired-tips"
-      v-if="!homework.user_homework && isExpired && fold"
-    >
-      <label>错过提交时间,下次早点来!</label>
-      <img src="~images/expired.png" />
-    </div>
-
     <div class="homework-info" @click="fold = !fold">
       <img
         class="score-icon"
@@ -22,7 +14,13 @@
           <img class="warning-icon" src="~images/danger-warning.png" />
           <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
         </div>
-        <img src="~images/reject.png" />
+        <img src="~images/term/rejected.svg" />
+      </div>
+      <div class="expired-tips" v-if="!homework.user_homework && isExpired">
+        <div class="tips-wrapper">
+          <label class="tips"> 错过提交时间,下次早点来!</label>
+        </div>
+        <img src="~images/term/expired.svg" />
       </div>
       <div class="homework-name-wrapper">
         <h4 class="homework-name">
@@ -180,12 +178,18 @@
       </div>
     </div>
     <label class="fold-label">
-      <span v-if="!fold" @click.stop="fold = true">
-        <icon-svg svg-class="unfold-icon" svg-name="unfold" />
-      </span>
-      <span v-else @click.stop="fold = false">
-        <icon-svg svg-class="fold-icon" svg-name="fold" />
-      </span>
+      <img
+        v-if="!fold"
+        @click.stop="fold = true"
+        class="unfold-icon"
+        src="~images/term/unfold.svg"
+      />
+      <img
+        v-else
+        @click.stop="fold = false"
+        class="fold-icon"
+        src="~images/term/fold.svg"
+      />
     </label>
   </div>
 </template>
@@ -279,7 +283,7 @@ export default {
         img: warningImg,
         theme: "img_w_100",
         content:
-          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳截止日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
+          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳提交日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
         confirmBtnText: "知道了",
         showCancelBtn: false,
         showCloseBtn: false
@@ -303,7 +307,7 @@ export default {
   // height: 82px;
   background: #ffffff;
   .homework-info {
-    padding: 20px;
+    padding: 25px 20px 24px;
     cursor: pointer;
   }
   .homework-name-wrapper {
@@ -312,6 +316,7 @@ export default {
     margin-bottom: 11px;
     .homework-name {
       max-width: 690px;
+      line-height: 20px;
       font-size: 20px;
       font-weight: bold;
       color: #333333;
@@ -368,6 +373,7 @@ export default {
     }
   }
   .homework-time-wrapper {
+    height: 14px;
     line-height: 1;
     font-size: 14px;
     font-weight: 400;
@@ -386,7 +392,7 @@ export default {
     }
   }
   .fold-wrapper {
-    padding: 0 0 40px;
+    padding: 0 0 26px;
   }
   .homework-desc-wrapper {
     padding: 20px 20px 0;
@@ -433,7 +439,7 @@ export default {
     }
   }
   .homework-reply-wrapper {
-    margin: 20px 0 14px;
+    margin: 0 0 40px;
     padding: 20px 20px 0;
     width: 100%;
     border-top: 1px dashed #e6e6e6ff;
@@ -494,8 +500,7 @@ export default {
     color: #333333;
   }
   .homework-submit-wrapper {
-    margin-top: 20px;
-    margin-bottom: 26px;
+    margin: 20px 0;
     .homework-desc-content {
       min-height: 224px !important;
     }
@@ -567,45 +572,66 @@ export default {
 .fold-label {
   position: absolute;
   right: 21px;
-  bottom: 5px;
-  font-size: 12px;
-  font-weight: 400;
-  color: #ababab;
+  bottom: 10px;
+  height: 16px;
   cursor: pointer;
   .unfold-icon,
   .fold-icon {
-    font-size: 24px;
+    width: 24px;
+    height: 16px;
   }
 }
 .score-icon {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 11px;
+  right: 11px;
   width: 71.25px;
   height: 50px;
 }
 .expired-tips {
   position: absolute;
-  top: 50px;
-  right: 147px;
+  top: 11px;
+  right: 11px;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  img {
-    width: 114px;
-    height: 80px;
-  }
-  label {
-    line-height: 20px;
+  align-items: flex-start;
+  .tips-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 7px 1px 0 0;
+    padding: 0 5px;
+    // width: 272px;
+    height: 23px;
+    line-height: 22.5px;
     font-size: 12px;
     font-weight: 400;
-    color: #ababab;
+    color: @expired;
+    border: 1px solid @expired;
+    border-right: 0;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    &::after {
+      position: absolute;
+      top: 2.5px;
+      right: -7.5px;
+      display: inline-block;
+      border-bottom: 1px solid;
+      border-left: 1px solid;
+      width: 14.5px;
+      height: 14.5px;
+      border-color: @expired;
+      transform: rotate(-135deg);
+      content: "";
+    }
+  }
+  img {
+    width: 71.25px;
+    height: 50px;
   }
 }
 .reject-tips {
   position: absolute;
   top: 11px;
-  right: 10px;
+  right: 11px;
   display: flex;
   align-items: flex-start;
   .tips-wrapper {

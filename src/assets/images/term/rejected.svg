@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="114px" height="80px" viewBox="0 0 114 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>进入班级备份</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="进入班级备份-14-更新" transform="translate(-1436.000000, -1163.000000)">
+            <g id="编组-15备份" transform="translate(1163.000000, 1163.000000)">
+                <g id="编组-9" transform="translate(273.000000, 0.000000)">
+                    <g id="编组" transform="translate(33.000000, 6.000000)">
+                        <polygon id="Fill-1" fill="#E9E9E9" points="0.5004 0.5005 0.5004 58.1145 51.1824 58.1145 51.1824 10.7655 40.9164 0.5005"></polygon>
+                        <polygon id="Stroke-2" stroke="#D40000" points="51.1819 58.1145 0.4999 58.1145 0.4999 0.5005 40.9159 0.5005 51.1819 10.7645"></polygon>
+                        <polygon id="Fill-4" fill="#FFFFFF" points="45.8406 55.8122 5.8406 55.8122 5.8406 6.8022 43.8851107 6.8022 45.8406 8.9012"></polygon>
+                        <polygon id="Stroke-5" stroke="#CBCBCB" stroke-linecap="round" stroke-linejoin="round" points="45.8406 55.8122 5.8406 55.8122 5.8406 6.8022 43.8851107 6.8022 45.8406 8.9012"></polygon>
+                        <polygon id="Fill-6" fill="#FFFFFF" points="40.9167 10.765 51.1817 10.765 40.9167 0.5"></polygon>
+                        <polygon id="Stroke-7" stroke="#D40000" stroke-linecap="round" stroke-linejoin="round" points="40.9163 10.7649 51.1823 10.7649 40.9163 0.4999"></polygon>
+                        <path d="M11.6028,15.6511 L40.0798,15.6511 L11.6028,15.6511 Z" id="Fill-9" fill="#FFFFFF"></path>
+                        <line x1="11.6028" y1="15.6511" x2="40.0798" y2="15.6511" id="Stroke-10" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+                        <path d="M11.6028,24.7555 L40.0798,24.7555 L11.6028,24.7555 Z" id="Fill-11" fill="#FFFFFF"></path>
+                        <line x1="11.6028" y1="24.7551" x2="40.0798" y2="24.7551" id="Stroke-12" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+                        <path d="M11.6028,33.859 L40.0798,33.859 L11.6028,33.859 Z" id="Fill-13" fill="#FFFFFF"></path>
+                        <line x1="11.6028" y1="33.8591" x2="40.0798" y2="33.8591" id="Stroke-14" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+                        <path d="M11.6028,42.9634 L40.0798,42.9634 L11.6028,42.9634 Z" id="Fill-15" fill="#FFFFFF"></path>
+                        <line x1="11.6028" y1="42.9631" x2="40.0798" y2="42.9631" id="Stroke-16" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></line>
+                    </g>
+                    <g id="编组-8" transform="translate(23.000000, 56.000000)">
+                        <rect id="矩形" stroke="#D0021B" fill="#D40000" x="0" y="0" width="72" height="18"></rect>
+                        <text id="被驳回" font-family="SourceHanSansCN-Regular, Source Han Sans CN" font-size="14" font-weight="normal" fill="#FFFFFF">
+                            <tspan x="15" y="14">被驳回</tspan>
+                        </text>
+                    </g>
+                    <g id="编组" transform="translate(16.000000, 35.000000)">
+                        <path d="M1.1469,13.1003 C1.1469,6.4413 6.5649,1.0233 13.2239,1.0233 C19.8839,1.0233 25.3019,6.4413 25.3019,13.1003 C25.3019,19.7603 19.8839,25.1783 13.2239,25.1783 C6.5649,25.1783 1.1469,19.7603 1.1469,13.1003 Z" id="Fill-17" fill="#FFFFFF"></path>
+                        <polyline id="Stroke-29" stroke="#D0021B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="17.3069 19.1265 15.2679 17.1265 13.2279 19.1265 11.1849 17.1265 9.1409 19.1265"></polyline>
+                        <path d="M13.2249,0.023 C6.0139,0.023 0.1469,5.889 0.1469,13.101 C0.1469,20.312 6.0139,26.178 13.2249,26.178 C20.4359,26.178 26.3019,20.312 26.3019,13.101 C26.3019,5.889 20.4359,0.023 13.2249,0.023 M13.2249,2.023 C19.3419,2.023 24.3019,6.982 24.3019,13.101 C24.3019,19.218 19.3419,24.178 13.2249,24.178 C7.1059,24.178 2.1469,19.218 2.1469,13.101 C2.1469,6.982 7.1059,2.023 13.2249,2.023" id="Fill-19" fill="#D0051C"></path>
+                    </g>
+                    <polyline id="Stroke-26" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="34.6917 43.9249 31.9217 45.3699 34.6917 46.8509"></polyline>
+                    <polyline id="Stroke-23" stroke="#D40000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="23.7561 43.9249 26.5271 45.3699 23.7561 46.8509"></polyline>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
