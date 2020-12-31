@@ -64,7 +64,11 @@
       :close-on-press-escape="false"
       :show-close="false"
     >
-      <el-steps class="step-wrapper" align-center :active="activeStep">
+      <el-steps
+        :class="['step-wrapper', activeStep === 2 ? 'active-line' : '']"
+        align-center
+        :active="activeStep"
+      >
         <el-step title="选择设计方案"></el-step>
         <el-step title="设计阐述与说明"></el-step>
       </el-steps>
@@ -425,11 +429,29 @@ export default {
       }
       .step-wrapper {
         margin: auto;
-        width: 200px;
+        width: 250px;
+        &.active-line {
+          .el-step__head {
+            .el-step__line {
+              background: url("~images/term/ellipsis_2.svg");
+            }
+          }
+        }
         .el-step__head {
           &.is-finish {
             .el-step__icon.is-text {
               background: @primaryColor;
+            }
+          }
+          .el-step__line {
+            left: 86px;
+            right: auto;
+            width: 76px;
+            height: 4px;
+            transition: all 0.15s ease-out;
+            background: url("~images/term/ellipsis_1.svg");
+            .el-step__line-inner {
+              display: none;
             }
           }
           .el-step__icon.is-text {

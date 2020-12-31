@@ -48,7 +48,7 @@ const stories = [
     ]
   },
   {
-    nickname: "鲁延夫",
+    nickname: "小白菜爱吃菜",
     avatar: img_6,
     comments: [
       "老师发的作业批改真是太厉害了就这都值学费了；无限敬仰；没被抽到神来之笔一点都不遗憾 > <"
