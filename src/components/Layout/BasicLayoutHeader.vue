@@ -273,7 +273,7 @@ export default {
       }
       .user-handle_show {
         position: absolute;
-        top: 50px;
+        top: 60px;
         right: 0;
         width: 170px;
         display: none;
@@ -450,6 +450,11 @@ export default {
             }
           }
         }
+      }
+    }
+    .header-ft {
+      .user-handle_show {
+        top: 50px;
       }
     }
   }

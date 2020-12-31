@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="326px" height="460px" viewBox="0 0 326 460" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>学员作业人名卡</title>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="首页" transform="translate(-410.000000, -1774.000000)" stroke="#333333" stroke-width="2">
+            <g id="编组-9" transform="translate(410.000000, 1774.000000)">
+                <path d="M1,1 L325,1 L325,459 L1,459 L1,1 Z" id="矩形" fill="#D8EFE4"></path>
+                <path d="M312.466667,24.1147541 L312.466667,415.946621 L282.972274,445.459016 L13.5333333,445.459016 L13.5333333,24.1147541 L312.466667,24.1147541 Z" id="矩形" fill="#FFFFFF"></path>
+                <path d="M312.08,418.775911 L312.08,445.459016 L285.413172,445.459016 L312.08,418.775911 Z" id="矩形" fill="#14AF64" transform="translate(298.040000, 431.409836) scale(-1, -1) translate(-298.040000, -431.409836) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

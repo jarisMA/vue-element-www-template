@@ -11,7 +11,7 @@ import img_7 from "images/home/7.png";
 import img_11 from "images/home/11.png";
 import img_12 from "images/home/12.png";
 
-const stories = [
+export const stories = [
   {
     nickname: "鲤鱼",
     avatar: img_1,
@@ -77,4 +77,26 @@ const stories = [
     ]
   }
 ];
-export default stories;
+
+export const works = [
+  {
+    nickname: "鲤鱼",
+    avatar: img_1,
+    term: "户型大改造·二期班",
+    homework: "3班-第4次作业",
+    comments: [
+      "谢谢老师的神来之笔，走廊的空间都利用起来了，卫生间也实现了干湿分离，太棒啦。次卧也更大了，书桌换成这个方向了感觉工作时候更很舒适不会被打扰到。比心～"
+    ],
+    work_img: ""
+  },
+  {
+    nickname: "鲤鱼",
+    avatar: img_1,
+    term: "户型大改造·二期班",
+    homework: "3班-第4次作业",
+    comments: [
+      "谢谢老师的神来之笔，走廊的空间都利用起来了，卫生间也实现了干湿分离，太棒啦。次卧也更大了，书桌换成这个方向了感觉工作时候更很舒适不会被打扰到。比心～"
+    ],
+    work_img: ""
+  }
+];

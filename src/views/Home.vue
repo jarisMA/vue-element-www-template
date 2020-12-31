@@ -3,15 +3,15 @@
     <div class="img-wrapper">
       <div class="main-img-wrapper">
         <img class="hi-img" src="~images/hi.png" />
-        <img class="main-img" src="~images/home.svg" />
+        <img class="main-img" src="~images/home/home.svg" />
         <img class="douxi-gif" src="~images/douxi.gif" />
       </div>
     </div>
     <div class="enter-btn">
-      <img src="~images/enter.svg" @click="enterClass" />
+      <img src="~images/home/enter.svg" @click="enterClass" />
     </div>
     <div class="story-wrapper">
-      <img class="story-img" src="~images/story.svg" />
+      <img class="story-img" src="~images/home/story.svg" />
       <div class="carousel-wrapper">
         <carousel
           :paginationEnabled="false"
@@ -26,6 +26,15 @@
         </carousel>
       </div>
     </div>
+    <div class="works-wrapper">
+      <div class="carousel-wrapper">
+        <carousel :perPage="1" paginationEnabled>
+          <slide v-for="(item, key) of works" :key="key">
+            <work-card :work="item" />
+          </slide>
+        </carousel>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -36,19 +45,22 @@ import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
 import { Carousel, Slide } from "vue-carousel";
 import StoryCard from "components/StoryCard";
-import stories from "utils/story";
+import WorkCard from "components/WorkCard";
+import { stories, works } from "utils/story";
 
 export default {
   name: "Home",
   components: {
     Carousel,
     Slide,
-    StoryCard
+    StoryCard,
+    WorkCard
   },
   data() {
     return {
       loading: false,
-      stories
+      stories,
+      works
     };
   },
   computed: {
@@ -82,6 +94,8 @@ export default {
 </script>
 
 <style type="text/css" lang="less" scoped>
+@import "~styles/variable";
+
 .home-page {
   .img-wrapper {
     position: relative;
@@ -175,14 +189,16 @@ export default {
       margin: auto;
       padding-top: 120px;
       /deep/ .VueCarousel-navigation {
-        .VueCarousel-navigation-prev {
-          margin: 0 !important;
-          padding: 0 !important;
-          transform: translate(calc(-100% - 18px), -50%) !important;
-        }
+        .VueCarousel-navigation-prev,
         .VueCarousel-navigation-next {
           margin: 0 !important;
           padding: 0 !important;
+          outline: unset;
+        }
+        .VueCarousel-navigation-prev {
+          transform: translate(calc(-100% - 18px), -50%) !important;
+        }
+        .VueCarousel-navigation-next {
           transform: translate(calc(100% + 18px), -50%) !important;
         }
         .slide-icon {
@@ -195,6 +211,36 @@ export default {
           }
           &.R {
             background-image: url("~images/R.png");
+          }
+        }
+      }
+    }
+  }
+  .works-wrapper {
+    width: 100%;
+    height: 754px;
+    background: #f5f5f5ff;
+    .carousel-wrapper {
+      position: relative;
+      width: 1200px;
+      height: 688px;
+      margin: -21px auto 0;
+      /deep/ .VueCarousel-pagination {
+        position: absolute;
+        width: auto;
+        left: 65px;
+        bottom: 26px;
+        .VueCarousel-dot {
+          padding: 0 !important;
+          margin: 0 10px;
+          width: 14px !important;
+          height: 14px !important;
+          background: #d8d8d8ff;
+          border: 1px solid #979797;
+          outline: unset !important;
+          &.VueCarousel-dot--active {
+            background-color: @primaryColor !important;
+            border-color: @primaryColor !important;
           }
         }
       }
