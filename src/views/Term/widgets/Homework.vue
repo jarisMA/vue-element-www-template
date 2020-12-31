@@ -260,7 +260,8 @@ export default {
     },
     handleSubmitClick() {
       this.judgeExpired();
-      if (!this.isExpired) {
+      const { user_homework } = this.homework;
+      if (!this.isExpired || (user_homework && user_homework.status === 3)) {
         this.$emit("submitClick");
       }
     },
