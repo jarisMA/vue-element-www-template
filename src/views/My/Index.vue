@@ -25,6 +25,7 @@
             effect="light"
             content="您仍旧是一棵浮木……"
             placement="bottom"
+            :visible-arrow="false"
           >
             <img class="user-icon" src="~images/user.png" />
           </el-tooltip>
