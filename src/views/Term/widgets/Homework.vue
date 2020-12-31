@@ -55,7 +55,7 @@
           <span @click.stop="showTips" @mouseover="showTips">
             <icon-svg svg-class="clock-icon" svg-name="clock" />
           </span>
-          最佳提交日期：{{ formatDate(homework.start_at) }}
+          最佳提交日期：{{ formatDate(homework.best_at) }}
         </span>
         <span class="homework-end"
           >最迟截止日期：{{ formatDate(homework.end_at) }}
