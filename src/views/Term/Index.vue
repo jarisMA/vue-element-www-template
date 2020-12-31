@@ -265,7 +265,11 @@ export default {
         .campTerm(this.$route.params.id)
         .then(res => {
           this.detail = res.camp_term;
-          this.homeworks = res.homeworks;
+          this.homeworks = res.homeworks.filter(
+            item =>
+              item.is_online === 1 &&
+              new Date().valueOf() >= new Date(item.start_at).valueOf()
+          );
         })
         .catch(() => {
           goMy("replace");
