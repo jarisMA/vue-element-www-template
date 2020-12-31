@@ -15,6 +15,7 @@
               effect="light"
               content="您已是尊柜会员啦！"
               placement="bottom"
+              :visible-arrow="false"
             >
               <img class="user-icon" src="~images/vip.png" />
             </el-tooltip>

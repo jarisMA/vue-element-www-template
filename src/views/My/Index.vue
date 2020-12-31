@@ -15,6 +15,7 @@
             effect="light"
             content="您已是尊柜会员啦！"
             placement="bottom"
+            :visible-arrow="false"
           >
             <img class="user-icon" src="~images/vip.png" />
           </el-tooltip>
@@ -172,6 +173,31 @@ export default {
   }
   .scrollbar-section {
     height: calc(100vh - 120px);
+  }
+}
+</style>
+<style lang="less">
+.vip-popper {
+  position: relative;
+  padding: 3px 6px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #333333;
+  line-height: 18px;
+  border: unset !important;
+  box-shadow: 0px 0px 4px 0px rgba(180, 180, 180, 0.5);
+  z-index: 1;
+  &::before {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    content: "";
+    transform: translate(-50%, -50%) rotate(45deg);
+    background: white;
+    z-index: 0;
+    box-shadow: -2px -2px 3px 0px rgba(180, 180, 180, 0.5);
   }
 }
 </style>
