@@ -13,7 +13,11 @@
     <div class="story-wrapper">
       <img class="story-img" src="~images/home/story.svg" />
       <div class="carousel-wrapper">
-        <swiper ref="mySwiper" :options="swiperOptions">
+        <swiper
+          ref="mySwiper"
+          :options="swiperOptions"
+          @mouseover.native="stopAutoplay"
+        >
           <swiper-slide v-for="(item, key) of stories" :key="key">
             <story-card :story="item" />
           </swiper-slide>
@@ -73,14 +77,10 @@ export default {
         autoplay: true,
         speed: 5000,
         autoplayDisableOnInteraction: true,
-        navigation: {
-          nextEl: ".carousel-button-next",
-          prevEl: ".carousel-button-prev"
-        }
-        // navigation: {
-        //   nextEl: '.swiper-button-next',
-        //   prevEl: '.swiper-button-prev'
-        // }
+        nextButton: ".carousel-button-next",
+        prevButton: ".carousel-button-prev"
+        // nextButton: '.swiper-button-next',
+        // prevButton: '.swiper-button-prev',
       },
       stories
       // works
@@ -113,12 +113,15 @@ export default {
       }
     },
     prev() {
-      this.$refs.mySwiper.$swiper.stopAutoplay();
+      this.stopAutoplay();
       this.$refs.mySwiper.$swiper.slidePrev(null, 1000);
     },
     next() {
-      this.$refs.mySwiper.$swiper.stopAutoplay();
+      this.stopAutoplay();
       this.$refs.mySwiper.$swiper.slideNext(null, 1000);
+    },
+    stopAutoplay() {
+      this.$refs.mySwiper.$swiper.stopAutoplay();
     }
   }
 };
