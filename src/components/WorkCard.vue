@@ -140,7 +140,10 @@ export default {
       border: 2px solid #333333;
     }
     .the-image-wrapper {
-      border: 2px solid #333333;
+      /deep/ img {
+        box-sizing: border-box;
+        border: 2px solid #333333;
+      }
     }
     /deep/ .img-carousel {
       width: 852px;
