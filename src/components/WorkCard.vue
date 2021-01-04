@@ -16,7 +16,19 @@
       </div>
     </div>
     <div class="img-wrapper">
-      <the-loading-image :width="852" :height="518" :url="work.work_img" />
+      <el-carousel
+        class="img-carousel"
+        arrow="never"
+        height="518px"
+        direction="vertical"
+        loop
+        trigger="click"
+        :interval="5000"
+      >
+        <el-carousel-item v-for="(item, key) in work.work_imgs" :key="key">
+          <the-loading-image :width="852" :height="518" :url="item" />
+        </el-carousel-item>
+      </el-carousel>
     </div>
   </div>
 </template>
@@ -44,20 +56,20 @@ export default {
 
 .work-card {
   position: relative;
-  width: 1200px;
+  width: 1110px;
   height: 688px;
-  background: url("~images/home/work_bg.svg") no-repeat;
-  background-size: cover;
+  // background: url("~images/home/work_bg.svg") no-repeat;
+  // background-size: cover;
   .content-wrapper {
     position: absolute;
     top: 135px;
-    left: 50px;
+    left: 0;
     width: 326px;
     height: 460px;
     padding: 93px 46px 58px;
     background: url("~images/home/work_content_bg.svg") no-repeat;
     background-size: cover;
-    z-index: 1;
+    z-index: 5;
     .user-info {
       display: flex;
       margin-bottom: 37px;
@@ -109,10 +121,42 @@ export default {
   .img-wrapper {
     position: absolute;
     top: 106px;
-    left: 290px;
+    left: 240px;
     width: 852px;
     height: 518px;
-    background: @primaryColor;
+    &::before {
+      position: absolute;
+      top: -15px;
+      left: 14px;
+      width: 852px;
+      height: 518px;
+      content: "";
+      background: #d8efe4;
+      border: 2px solid #333333;
+    }
+    /deep/ .img-carousel {
+      width: 852px;
+      height: 518px;
+      .el-carousel__indicator {
+        padding: 5px 12px;
+        &.is-active {
+          .el-carousel__button {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(151, 151, 151, 0.6);
+          }
+        }
+        .el-carousel__button {
+          width: 10px;
+          height: 10px;
+          background: rgba(51, 51, 51, 0.3);
+          box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0.5);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          opacity: 1 !important;
+        }
+      }
+    }
   }
 }
 </style>

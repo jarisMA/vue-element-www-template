@@ -30,18 +30,23 @@
         <div class="carousel-button-next" @click="next"></div>
       </div>
     </div>
-    <!-- <div class="
-             works-wrapper">
-          <div class="carousel-wrapper">
-            <carousel :perPage="1"
-                      paginationEnabled>
-              <slide v-for="(item, key) of works"
-                     :key="key">
-                <work-card :work="item" />
-              </slide>
-            </carousel>
-          </div>
-        </div> -->
+    <div class="works-wrapper">
+      <div class="work-carousel-wrapper">
+        <el-carousel
+          class="work-carousel"
+          arrow="never"
+          height="688px"
+          loop
+          trigger="click"
+          :autoplay="false"
+          :interval="5000"
+        >
+          <el-carousel-item v-for="(item, key) in works" :key="key">
+            <work-card :work="item" />
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -50,21 +55,15 @@ import { goTerm } from "utils/routes";
 import { mapState } from "vuex";
 import termService from "service/term";
 import douxiGif from "images/douxi2.gif";
-// import { Carousel, Slide } from "vue-carousel";
 import StoryCard from "components/StoryCard";
-// import WorkCard from "components/WorkCard";
-import {
-  stories
-  // works
-} from "utils/story";
+import WorkCard from "components/WorkCard";
+import { stories, works } from "utils/story";
 
 export default {
   name: "Home",
   components: {
-    // Carousel,
-    // Slide,
-    StoryCard
-    // WorkCard
+    StoryCard,
+    WorkCard
   },
   data() {
     return {
@@ -80,10 +79,10 @@ export default {
         nextButton: ".carousel-button-next",
         prevButton: ".carousel-button-prev"
         // nextButton: '.swiper-button-next',
-        // prevButton: '.swiper-button-prev',
+        // prevButton: '.swiper-button-prev'
       },
-      stories
-      // works
+      stories,
+      works
     };
   },
   computed: {
@@ -241,7 +240,13 @@ export default {
         background: url("~images/R.png") no-repeat;
       }
       /deep/ .swiper-wrapper {
-        // transition-timing-function: linear !important;
+        // transition-timing-function: cubic-bezier(
+        //   0.64,
+        //   0.24,
+        //   0.3,
+        //   1.01
+        // ) !important;
+        transition-timing-function: ease-in-out !important;
         // transition-delay: 3000ms;
       }
     }
@@ -250,27 +255,39 @@ export default {
     width: 100%;
     height: 754px;
     background: #f5f5f5ff;
-    .carousel-wrapper {
-      position: relative;
+    .work-carousel-wrapper {
+      margin: auto;
       width: 1200px;
       height: 688px;
-      margin: -21px auto 0;
-      /deep/ .VueCarousel-pagination {
-        position: absolute;
-        width: auto;
-        left: 65px;
+      background: url("~images/home/work_bg.svg") no-repeat;
+      background-size: cover;
+    }
+    /deep/ .work-carousel {
+      margin: auto;
+      width: 1110px;
+      height: 688px;
+      .el-carousel__indicators--horizontal {
+        transform: unset;
+        left: 5px;
         bottom: 26px;
-        .VueCarousel-dot {
-          padding: 0 !important;
-          margin: 0 10px;
-          width: 14px !important;
-          height: 14px !important;
-          background: #d8d8d8ff;
-          border: 1px solid #979797;
-          outline: unset !important;
-          &.VueCarousel-dot--active {
-            background-color: @primaryColor !important;
-            border-color: @primaryColor !important;
+        .el-carousel__indicator {
+          padding: 0;
+          .el-carousel__button {
+            padding: 0 !important;
+            margin: 0 10px;
+            width: 14px !important;
+            height: 14px !important;
+            background: #d8d8d8ff;
+            border: 1px solid #979797;
+            outline: unset !important;
+            border-radius: 50%;
+            opacity: 1 !important;
+          }
+          &.is-active {
+            .el-carousel__button {
+              background-color: @primaryColor !important;
+              border-color: @primaryColor !important;
+            }
           }
         }
       }

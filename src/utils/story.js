@@ -82,21 +82,44 @@ export const works = [
   {
     nickname: "鲤鱼",
     avatar: img_1,
-    term: "户型大改造·二期班",
-    homework: "3班-第4次作业",
+    term: "户型大改造 - 训练营",
+    homework: "班级学员",
     comments: [
-      "谢谢老师的神来之笔，走廊的空间都利用起来了，卫生间也实现了干湿分离，太棒啦。次卧也更大了，书桌换成这个方向了感觉工作时候更很舒适不会被打扰到。比心～"
+      "都说互联网能让我们学到任何想学的知识。",
+      "但想要通过碎片知识来习得一项有系统结构得技能，不但不利于理解反而增加学习的负担，消磨学习得兴趣。",
+      "所以，知乎微博已阅读并收藏了几百篇家装科普的我，深深知道斗西家计划有多厉害。",
+      "祝斗西团队越来越好！"
     ],
-    work_img: ""
+    work_imgs: [
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/KG1jjzUc0k1VqIHLVERMMydTYWfFFElRx2QV9Wls.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/wJM1Z3imyDAAjuFFMdDinqMRuxnLnjE2YMIQimv6.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/UKGrtfgaTCwwkDiVYuQHXXvLIoRjUd6VdJ2Xp64u.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/qnUq3GOcAOM9psXSMrXBkxy8lsc1GKTbaCkE7hEO.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/gs6m9GZWKt6nzzxeaaCxdrrQbZjpUBa8PMzj4DTI.png"
+    ]
   },
   {
-    nickname: "鲤鱼",
+    nickname: "KK",
     avatar: img_1,
-    term: "户型大改造·二期班",
-    homework: "3班-第4次作业",
+    term: "户型大改造【训练营】",
+    homework: "班级学员",
     comments: [
-      "谢谢老师的神来之笔，走廊的空间都利用起来了，卫生间也实现了干湿分离，太棒啦。次卧也更大了，书桌换成这个方向了感觉工作时候更很舒适不会被打扰到。比心～"
+      "感谢斗西老师的谆谆教诲，让我成功从一枚设计小白变成了一枚开始懂得空间布局运用法则的老白！曾经空间布局靠凭空想象加画草图，经过了斗西老师的心法战法讲解、自己的实战操作和老师团队的批改讲解，简直茅塞顿开，让人了解了何为设计，如何设计。坐等下一课程～"
     ],
-    work_img: ""
+    work_imgs: [
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/Q2yBctwodyEynSxzPk88deZ3vdU6smy4u16Zf5Z2.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/48tGGIfs5mUWj3yiWj612m5URygGpKpl8OYCgGQu.png"
+    ]
+  },
+  {
+    nickname: "昵称",
+    avatar: img_1,
+    term: "户型大改造【训练营】",
+    homework: "班级学员",
+    comments: ["评论"],
+    work_imgs: [
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/vA05fBxwaMPZtslAoewc3r3BOpShoUJaChFkr0hJ.png",
+      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/Itipwoxa0bOiYibs1PnYti7DV4uItJyopNODU2wi.png"
+    ]
   }
 ];
