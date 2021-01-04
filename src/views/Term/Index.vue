@@ -38,7 +38,13 @@
       <el-tabs v-model="activeName">
         <el-tab-pane label="作业" name="homework">
           <p class="homework-tips">
-            *请先在「我的方案」中创建方案并完成作业要求，再进行作业提交。
+            <img class="warning-icon" src="~images/term/warning.png" /><span
+              class="primary"
+              >最佳截止日期</span
+            >之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span
+              class="danger"
+              >最迟截止日期</span
+            >，则本节课作业无法提交。（注：不影响下次作业提交）
           </p>
           <ul class="homework-list">
             <li v-for="homework of homeworks" :key="homework.id">
@@ -769,11 +775,24 @@ export default {
     }
   }
   .homework-tips {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
     line-height: 20px;
     font-size: 14px;
     font-weight: 400;
-    color: #ababab;
+    color: #333;
+    .warning-icon {
+      display: inline-block;
+      margin-right: 4px;
+      width: 16px;
+      height: 16px;
+      vertical-align: text-top;
+    }
+    .primary {
+      color: @primaryColor;
+    }
+    .danger {
+      color: #d0021bff;
+    }
   }
   .homework-list {
     li:not(:last-child) {

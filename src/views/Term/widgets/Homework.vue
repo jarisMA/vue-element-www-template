@@ -52,9 +52,10 @@
       </div>
       <div class="homework-time-wrapper">
         <span class="homework-start">
-          <span @click.stop="showTips" @mouseover="showTips">
-            <icon-svg svg-class="clock-icon" svg-name="clock" />
-          </span>
+          <!-- <span @click.stop="showTips">
+            <icon-svg svg-class="clock-icon"
+                      svg-name="clock" />
+          </span> -->
           最佳提交日期：{{ formatDate(homework.best_at) }}
         </span>
         <span class="homework-end"
