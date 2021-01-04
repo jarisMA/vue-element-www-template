@@ -10,6 +10,7 @@ import img_7 from "images/home/7.png";
 // import img_10 from 'images/home/10.png';
 import img_11 from "images/home/11.png";
 import img_12 from "images/home/12.png";
+import img_13 from "images/home/13.png";
 
 export const stories = [
   {
@@ -100,7 +101,7 @@ export const works = [
   },
   {
     nickname: "KK",
-    avatar: img_1,
+    avatar: img_13,
     term: "户型大改造【训练营】",
     homework: "班级学员",
     comments: [
@@ -110,16 +111,16 @@ export const works = [
       "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/Q2yBctwodyEynSxzPk88deZ3vdU6smy4u16Zf5Z2.png",
       "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/48tGGIfs5mUWj3yiWj612m5URygGpKpl8OYCgGQu.png"
     ]
-  },
-  {
-    nickname: "昵称",
-    avatar: img_1,
-    term: "户型大改造【训练营】",
-    homework: "班级学员",
-    comments: ["评论"],
-    work_imgs: [
-      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/vA05fBxwaMPZtslAoewc3r3BOpShoUJaChFkr0hJ.png",
-      "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/Itipwoxa0bOiYibs1PnYti7DV4uItJyopNODU2wi.png"
-    ]
   }
+  // {
+  //   nickname: "昵称",
+  //   avatar: img_1,
+  //   term: "户型大改造【训练营】",
+  //   homework: "班级学员",
+  //   comments: ["评论"],
+  //   work_imgs: [
+  //     "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/vA05fBxwaMPZtslAoewc3r3BOpShoUJaChFkr0hJ.png",
+  //     "http://homeplan-public.oss-cn-shanghai.aliyuncs.com/cover/2021/0104/cover/Itipwoxa0bOiYibs1PnYti7DV4uItJyopNODU2wi.png"
+  //   ]
+  // }
 ];
