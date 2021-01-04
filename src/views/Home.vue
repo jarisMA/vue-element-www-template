@@ -73,7 +73,7 @@ export default {
         spaceBetween: 20,
         loop: true,
         loopedSlides: 0,
-        autoplay: true,
+        // autoplay: true,
         speed: 5000,
         autoplayDisableOnInteraction: true,
         nextButton: ".carousel-button-next",
@@ -221,7 +221,7 @@ export default {
       position: relative;
       width: 1090px;
       margin: auto;
-      padding-top: 120px;
+      padding-top: 100px;
       .carousel-button-prev,
       .carousel-button-next {
         position: absolute;
@@ -252,11 +252,14 @@ export default {
     }
   }
   .works-wrapper {
+    position: relative;
+    z-index: 10;
     width: 100%;
     height: 754px;
     background: #f5f5f5ff;
+    overflow: visible;
     .work-carousel-wrapper {
-      margin: auto;
+      margin: -76px auto 0;
       width: 1200px;
       height: 688px;
       background: url("~images/home/work_bg.svg") no-repeat;

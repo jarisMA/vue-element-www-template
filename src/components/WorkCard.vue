@@ -26,7 +26,12 @@
         :interval="5000"
       >
         <el-carousel-item v-for="(item, key) in work.work_imgs" :key="key">
-          <the-loading-image :width="852" :height="518" :url="item" />
+          <the-loading-image
+            class="the-image-wrapper"
+            :width="852"
+            :height="518"
+            :url="item"
+          />
         </el-carousel-item>
       </el-carousel>
     </div>
@@ -132,6 +137,9 @@ export default {
       height: 518px;
       content: "";
       background: #d8efe4;
+      border: 2px solid #333333;
+    }
+    .the-image-wrapper {
       border: 2px solid #333333;
     }
     /deep/ .img-carousel {
