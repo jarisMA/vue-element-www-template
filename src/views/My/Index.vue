@@ -10,7 +10,7 @@
           ></the-avatar>
           <span class="nickname">{{ userInfo && userInfo.nickname }}</span>
           <el-tooltip
-            v-if="userInfo && userInfo.kujiale_type === 1"
+            v-if="userInfo && isVip()"
             popper-class="vip-popper"
             effect="light"
             content="您已是尊柜会员啦！"
@@ -54,6 +54,7 @@ import { mapState } from "vuex";
 import MyPlan from "./widgets/Plan";
 import MyTerm from "./widgets/Term";
 import TheAvatar from "components/TheAvatar";
+import { isVip } from "utils/function";
 
 export default {
   name: "My",
@@ -86,6 +87,7 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    isVip,
     handleSelectMenu(menu) {
       this.currentMenu = menu;
       this.$router.push({

@@ -10,7 +10,7 @@
           ></el-avatar>
           <div class="user-info">
             <el-tooltip
-              v-if="userInfo && userInfo.kujiale_type === 1"
+              v-if="userInfo && isVip()"
               popper-class="vip-popper"
               effect="light"
               content="您已是尊柜会员啦！"
@@ -180,7 +180,8 @@ import { mapMutations, mapState } from "vuex";
 import { GENDER, IDENTITY } from "utils/const";
 import userService from "service/user";
 import ossService from "service/oss";
-import smsService from "service/sms.js";
+import smsService from "service/sms";
+import { isVip } from "utils/function";
 
 export default {
   name: "Profile",
@@ -261,6 +262,7 @@ export default {
   },
   methods: {
     ...mapMutations(["USERINFO"]),
+    isVip,
     uploadAvatar(file) {
       this.uploadingAvatar = true;
       ossService.upload(

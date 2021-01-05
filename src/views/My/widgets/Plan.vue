@@ -38,6 +38,7 @@ import EditPlanNameDialog from "components/EditPlanNameDialog";
 import kujialeService from "service/kujiale";
 import { goEditPlan, goDrawPlan } from "utils/routes";
 import { mapState } from "vuex";
+import { isVip } from "utils/function";
 
 export default {
   name: "MyPlan",
@@ -106,7 +107,7 @@ export default {
         });
     },
     addPlan() {
-      if (this.plans.length > 0 && this.userInfo.kujiale_type !== 1) {
+      if (this.plans.length > 0 && !isVip()) {
         this.$notice({
           type: "warning",
           title: "oops～方案创建数量已达上限"

@@ -63,7 +63,7 @@
                   <p class="login-title">
                     {{ userInfo.nickname }}
                     <img
-                      v-if="userInfo && userInfo.kujiale_type === 1"
+                      v-if="userInfo && isVip()"
                       class="user-icon"
                       src="~images/vip.png"
                     />
@@ -93,7 +93,7 @@
 import { mapMutations, mapState } from "vuex";
 import { goHome, goMy, goProfile } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
-
+import { isVip } from "utils/function";
 export default {
   name: "BasicLayoutHeader",
   components: {
@@ -121,6 +121,7 @@ export default {
   },
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
+    isVip,
     goHome() {
       if (this.theme === "primary") {
         return;
