@@ -173,11 +173,12 @@
                     :key="item"
                   >
                     <img :src="item" />
-                    <icon-svg
-                      svg-class="delete-icon"
-                      svg-name="delete"
+                    <span
+                      class="delete-icon-wrapper"
                       @click="deleteActivePlanPic(key)"
-                    />
+                    >
+                      <icon-svg svg-class="delete-icon" svg-name="delete" />
+                    </span>
                   </li>
                   <li v-if="activePlanPic.length < 3">
                     <upload-image @added="addActivePlanPic" />
