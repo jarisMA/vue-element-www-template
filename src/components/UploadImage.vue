@@ -25,7 +25,23 @@ export default {
     };
   },
   methods: {
+    validateFile(file) {
+      const fileName = file.name;
+      const suffix = fileName.split(".").pop();
+      const imageRegex = /(jpg|jpeg|gif|png|svg)/;
+      if (!imageRegex.test(suffix)) {
+        this.$notice({
+          type: "danger",
+          title: "只能上传jpg|jpeg|gif|png|svg的图片哦～"
+        });
+        return false;
+      }
+      return true;
+    },
     upload(file) {
+      if (!this.validateFile(file)) {
+        return false;
+      }
       this.uploading = true;
       ossService.upload(
         {
