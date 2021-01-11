@@ -101,10 +101,17 @@ export default {
   },
   watch: {
     plan(val) {
-      this.form.name = this.type === "edit" ? val.name || "" : "";
+      this.form.name =
+        this.type === "edit"
+          ? val.name || ""
+          : this.type === "copy"
+          ? val.name
+            ? val.name + "-副本"
+            : ""
+          : "";
     },
     visible(val) {
-      if (!val && this.type !== "edit") {
+      if (!val && ["edit", "copy"].indexOf(this.type) < 0) {
         this.$refs.form.resetFields();
       }
     }
