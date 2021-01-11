@@ -102,13 +102,7 @@ export default {
   watch: {
     plan(val) {
       this.form.name =
-        this.type === "edit"
-          ? val.name || ""
-          : this.type === "copy"
-          ? val.name
-            ? val.name + "-副本"
-            : ""
-          : "";
+        this.type === "copy" ? val.name + "-副本" : val.name || "";
     },
     visible(val) {
       if (!val && ["edit", "copy"].indexOf(this.type) < 0) {
@@ -121,13 +115,7 @@ export default {
       defaultCoverImg,
       form: {
         name:
-          this.type === "edit"
-            ? this.plan.name || ""
-            : this.type === "copy"
-            ? this.plan.name
-              ? this.plan.name + "-副本"
-              : ""
-            : ""
+          this.type === "copy" ? this.plan.name + "-副本" : this.plan.name || ""
       },
       formRules: {
         name: [

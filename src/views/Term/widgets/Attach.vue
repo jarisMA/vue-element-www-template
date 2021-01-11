@@ -4,7 +4,7 @@
       <li class="list-th">
         <div class="list-th-label w-90">类型</div>
         <label class="list-th-label w-754">资料名</label>
-        <label class="list-th-label w-72">容量</label>
+        <label class="list-th-label w-72">大小</label>
         <label class="list-th-label w-102">操作</label>
       </li>
       <li v-for="attach of attaches" :key="attach.id">
