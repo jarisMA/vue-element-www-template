@@ -35,12 +35,14 @@
             </el-form-item>
           </p>
           <p class="dialog-desc">
-            <label class="dialog-label">详细信息：</label>
-            <span>{{ parseInt(plan.srcArea) }}㎡ | {{ plan.specName }}</span>
-            <span
-              ><i class="el-icon-location-outline"></i> {{ plan.city }}
-              {{ plan.commName }}
-            </span>
+            <template v-if="showDesc">
+              <label class="dialog-label">详细信息：</label>
+              <span>{{ parseInt(plan.srcArea) }}㎡ | {{ plan.specName }}</span>
+              <span
+                ><i class="el-icon-location-outline"></i> {{ plan.city }}
+                {{ plan.commName }}
+              </span>
+            </template>
           </p>
           <div class="dialog-right-footer">
             <el-button @click="cancelClick">取消</el-button>
@@ -88,6 +90,10 @@ export default {
     type: {
       type: String,
       default: "edit"
+    },
+    showDesc: {
+      type: Boolean,
+      default: true
     }
   },
   components: {
@@ -96,6 +102,11 @@ export default {
   watch: {
     plan(val) {
       this.form.name = this.type === "edit" ? val.name || "" : "";
+    },
+    visible(val) {
+      if (!val && this.type !== "edit") {
+        this.$refs.form.resetFields();
+      }
     }
   },
   data() {
@@ -194,6 +205,7 @@ export default {
       }
       .dialog-desc {
         margin-top: 20px;
+        height: 60px;
       }
       .dialog-label {
         margin-bottom: 10px;

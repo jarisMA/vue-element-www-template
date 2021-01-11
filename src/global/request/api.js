@@ -27,5 +27,6 @@ export default {
   campHomework: (campId, termId, homeworkId) =>
     `${PREFIX}/api/web/camp/${campId}/term/${termId}/homework/${homeworkId}`,
   campHomeworkUpdate: id => `${PREFIX}/api/web/camp/homework/${id}`,
-  checkTerm: id => `${PREFIX}/api/web/camp/term/${id}/check`
+  checkTerm: id => `${PREFIX}/api/web/camp/term/${id}/check`,
+  campAttaches: termId => `${PREFIX}/api/web/camp/term/${termId}/attach`
 };

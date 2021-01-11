@@ -17,7 +17,10 @@
         />
       </li>
     </ul>
-    <the-empty v-if="homeworks.length === 0" noText="暂无作业可发挥" />
+    <the-empty
+      v-if="homeworks.length === 0 && !loading"
+      noText="暂无作业可发挥"
+    />
     <el-dialog
       class="submitHomeworkDialog"
       width="800px"
@@ -35,14 +38,13 @@
         <el-step title="设计阐述与说明"></el-step>
       </el-steps>
       <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
-        <div
-          class="add-plan-button"
-          v-if="plans.length > 0 && false"
-          @click="goDrawPlan()"
-        >
-          <icon-svg svg-class="add-icon" svg-name="add" />
+        <!-- <div class="add-plan-button"
+             v-if="plans.length > 0 && false"
+             @click="goDrawPlan()">
+          <icon-svg svg-class="add-icon"
+                    svg-name="add" />
           新建方案
-        </div>
+        </div> -->
         <plan-list
           :showNoTips="false"
           :plans="plans"
@@ -190,6 +192,10 @@ export default {
     homeworks: {
       type: Array,
       required: true
+    },
+    loading: {
+      type: Boolean,
+      default: true
     }
   },
   data() {

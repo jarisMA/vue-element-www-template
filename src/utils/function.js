@@ -8,3 +8,14 @@ export const isVip = () => {
   }
   return new Date(date).valueOf() > new Date().valueOf();
 };
+
+// 格式化size
+export const sizeFormat = (size, decimal = 2) => {
+  if (Math.floor(size / 1024 / 1024) > 0) {
+    return (size / 1024 / 1024).toFixed(decimal) + "MB";
+  } else if (Math.floor(size / 1024) > 0) {
+    return (size / 1024).toFixed(decimal) + "KB";
+  } else {
+    return size + "B";
+  }
+};

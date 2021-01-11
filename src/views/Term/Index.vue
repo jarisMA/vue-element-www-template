@@ -35,9 +35,16 @@
       </div>
     </div>
     <div class="term-content container-1200">
-      <el-tabs v-model="activeName">
+      <el-tabs v-model="activeName" @tab-click="tabClick">
         <el-tab-pane label="作业" name="homework">
-          <homework :homeworks="homeworks" @added="getData" />
+          <homework
+            :homeworks="homeworks"
+            :loading="loading"
+            @added="getData"
+          />
+        </el-tab-pane>
+        <el-tab-pane label="资料包" name="attach">
+          <attach />
         </el-tab-pane>
         <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
@@ -49,6 +56,7 @@
 import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
+import Attach from "./widgets/Attach";
 
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
@@ -58,7 +66,8 @@ export default {
   name: "Term",
   components: {
     TheLoadingImage,
-    Homework
+    Homework,
+    Attach
   },
   data() {
     return {
@@ -70,6 +79,10 @@ export default {
     };
   },
   created() {
+    const { tab } = this.$route.query;
+    if (tab && ["homework", "attach"].includes(tab)) {
+      this.activeName = tab;
+    }
     this.getData();
   },
   methods: {
@@ -93,6 +106,15 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    tabClick(tab) {
+      if (tab.name !== this.$route.query.tab) {
+        this.$router.push({
+          query: {
+            tab: tab.name
+          }
+        });
+      }
     }
   }
 };
@@ -183,14 +205,18 @@ export default {
     .el-tabs__active-bar {
       // display: none;
       width: 70px !important;
-      transform: translateX(0) !important;
+      // transform: translateX(0) !important;
+      height: 4px;
     }
     .el-tabs__item {
       position: relative;
-      padding: 0 20px !important;
+      padding: 0 20px 0 0 !important;
+      width: 70px;
+      text-align: center;
       font-size: 16px;
       font-weight: bold;
       color: #333333;
+      box-sizing: content-box;
     }
     .el-tabs__nav-wrap::after {
       width: 0 !important;

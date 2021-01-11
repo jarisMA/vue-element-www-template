@@ -16,6 +16,9 @@ const termRequest = {
   },
   checkTerm(id = process.env.VUE_APP_TERM_ID) {
     return request.get(API.checkTerm(id));
+  },
+  campAttach(termId) {
+    return request.get(API.campAttaches(termId));
   }
 };
 
