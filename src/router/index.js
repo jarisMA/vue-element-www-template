@@ -13,7 +13,14 @@ Vue.use(VueRouter);
 const appRouter = new VueRouter({
   mode: "history",
   base: process.env.BASE_URL,
-  routes
+  routes,
+  scrollBehavior(to) {
+    if (to.hash) {
+      return {
+        selector: to.hash
+      };
+    }
+  }
 });
 
 appRouter.firstInit = false;
