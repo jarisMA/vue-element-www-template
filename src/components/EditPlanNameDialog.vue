@@ -120,7 +120,14 @@ export default {
     return {
       defaultCoverImg,
       form: {
-        name: this.type === "edit" ? this.plan.name || "" : ""
+        name:
+          this.type === "edit"
+            ? this.plan.name || ""
+            : this.type === "copy"
+            ? this.plan.name
+              ? this.plan.name + "-副本"
+              : ""
+            : ""
       },
       formRules: {
         name: [
