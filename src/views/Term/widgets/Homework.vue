@@ -1,325 +1,348 @@
 <template>
-  <div :class="['homework-card']">
-    <div class="homework-info" @click="fold = !fold">
-      <img
-        class="score-icon"
-        v-if="homework.user_homework && homework.user_homework.status === 2"
-        :src="USER_HOMEWORK_SCORE[homework.user_homework.score]"
-      />
-      <div
-        class="reject-tips"
-        v-if="homework.user_homework && homework.user_homework.status === 3"
+  <div class="homework-wrapper">
+    <p class="homework-tips">
+      <img class="warning-icon" src="~images/term/warning.png" /><span
+        class="primary"
+        >最佳截止日期</span
+      >之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span
+        class="danger"
+        >最迟截止日期</span
+      >，则本节课作业无法提交。（注：不影响下次作业提交）
+    </p>
+    <ul class="homework-list">
+      <li v-for="homework of homeworks" :key="homework.id">
+        <homework-card
+          :homework="homework"
+          @submitClick="showHomeworkDialog(homework)"
+        />
+      </li>
+    </ul>
+    <the-empty v-if="homeworks.length === 0" noText="暂无作业可发挥" />
+    <el-dialog
+      class="submitHomeworkDialog"
+      width="800px"
+      :visible.sync="visible"
+      :close-on-click-modal="false"
+      :close-on-press-escape="false"
+      :show-close="false"
+    >
+      <el-steps
+        :class="['step-wrapper', activeStep === 2 ? 'active-line' : '']"
+        align-center
+        :active="activeStep"
       >
-        <div class="tips-wrapper">
-          <img class="warning-icon" src="~images/danger-warning.png" />
-          <label class="tips"> 作业被驳回了，请按照老师要求重新提交吧！</label>
-        </div>
-        <img src="~images/term/rejected.svg" />
-      </div>
-      <div class="expired-tips" v-if="!homework.user_homework && isExpired">
-        <div class="tips-wrapper">
-          <label class="tips"> 错过提交时间,下次早点来!</label>
-        </div>
-        <img src="~images/term/expired.svg" />
-      </div>
-      <div class="homework-name-wrapper">
-        <h4 class="homework-name">
-          {{ homework.name }}
-        </h4>
-        <label
-          :class="{
-            'homework-status': true,
-            unsubmit: !homework.user_homework && !isExpired,
-            expired: !homework.user_homework && isExpired,
-            uncorrected:
-              homework.user_homework &&
-              (homework.user_homework.status === 0 ||
-                homework.user_homework.status === 1),
-            corrected:
-              homework.user_homework && homework.user_homework.status === 2,
-            rejected:
-              homework.user_homework && homework.user_homework.status === 3
-          }"
+        <el-step title="选择设计方案"></el-step>
+        <el-step title="设计阐述与说明"></el-step>
+      </el-steps>
+      <div class="step-1 my-plan-wrapper" v-show="activeStep === 1">
+        <div
+          class="add-plan-button"
+          v-if="plans.length > 0 && false"
+          @click="goDrawPlan()"
         >
-          {{
-            homework.user_homework
-              ? HOMEWORK_STATUS[homework.user_homework.status]
-              : isExpired
-              ? "已过期"
-              : "待提交"
-          }}
-        </label>
-      </div>
-      <div class="homework-time-wrapper">
-        <span class="homework-start">
-          <!-- <span @click.stop="showTips">
-            <icon-svg svg-class="clock-icon"
-                      svg-name="clock" />
-          </span> -->
-          最佳提交日期：{{ formatDate(homework.best_at) }}
-        </span>
-        <span class="homework-end"
-          >最迟截止日期：{{ formatDate(homework.end_at) }}
-          <template v-if="formNowFormatDay(homework.end_at) > -1">
-            （剩余{{
-              formNowFormatDay(homework.end_at) > 0
-                ? formNowFormatDay(homework.end_at) + "天"
-                : countDownTime
-            }}）
-          </template>
-        </span>
-      </div>
-    </div>
-    <div class="fold-wrapper" v-show="fold">
-      <div class="homework-desc-wrapper">
-        <div class="homework-whole">
-          <label class="homework-label">
-            作业要求：
-          </label>
-          <el-button
-            class="homework-submit-btn"
-            type="primary"
-            :disabled="
-              (!homework.user_homework && isExpired) ||
-                (homework.user_homework && homework.user_homework.status !== 3)
-            "
-            @click="handleSubmitClick"
-          >
-            {{
-              homework.user_homework && homework.user_homework.status === 3
-                ? "重新提交"
-                : !homework.user_homework
-                ? "上传作业"
-                : "作业已提交"
-            }}
-          </el-button>
-          <div class="homework-desc-content">
-            <the-fold :isFold="fold">
-              <slot>
-                <div
-                  class="homework-desc-content_info"
-                  v-html="homework.description"
-                ></div>
-              </slot>
-            </the-fold>
+          <icon-svg svg-class="add-icon" svg-name="add" />
+          新建方案
+        </div>
+        <plan-list
+          :showNoTips="false"
+          :plans="plans"
+          :activeIndex="activePlan && activePlan.planId"
+          :size="dialogPagination.size"
+          :page="dialogPagination.page"
+          :total="dialogPagination.total"
+          :paginationLayout="paginationLayout"
+          theme="homework"
+          @itemClick="selectPlan"
+          @pageChange="getPlans"
+        />
+        <div class="more-wrapper" v-if="!planLoading && plans.length === 0">
+          <the-empty noText="还没有方案，你可以去新建一个" />
+          <div class="new-button" @click="goDrawPlan()">
+            <icon-svg svg-class="add-icon" svg-name="add" />
+            新建方案
           </div>
         </div>
       </div>
-      <div
-        class="homework-desc-wrapper homework-submit-wrapper"
-        v-if="homework.user_homework"
-      >
-        <div class="homework-desc">
-          <label class="homework-label">
-            设计阐述与说明：
-          </label>
-          <div class="homework-desc-content">
-            <the-fold :maxHeight="224" :isFold="fold">
-              <div class="homework-desc-content_info">
-                <div class="homework-desc-info">
-                  <p v-for="(desc, key) of q_content.split('\n')" :key="key">
-                    {{ desc }}
-                  </p>
-                </div>
-                <div class="homework-desc-image" v-if="q_images.length > 0">
-                  <the-preview-image :srcList="q_images" />
+      <div class="step-2" v-if="activeStep === 2">
+        <h3 class="select-homework-title">
+          {{ activeHomework.name }}
+        </h3>
+        <div class="step-2-content">
+          <div class="select-plan-wrapper">
+            <label class="label-title">已选方案</label>
+            <div class="select-plan-card">
+              <div class="card-top">
+                <the-loading-image
+                  :url="activePlan.planPic"
+                  :width="260"
+                  :height="260"
+                />
+              </div>
+              <div class="card-bottom">
+                <h4 class="card-name">
+                  {{ activePlan.name }}
+                </h4>
+                <div class="card-bottom-right">
+                  <div class="card-desc">
+                    <span class="card-type">
+                      {{ parseInt(activePlan.srcArea) }}㎡ |
+                      {{ activePlan.specName }}
+                    </span>
+                    <span class="card-address">
+                      <i class="el-icon-location-outline"></i>
+                      {{ activePlan.filterCity }} {{ activePlan.commName }}
+                    </span>
+                  </div>
+                  <el-button class="button" type="primary" @click="stepBack">
+                    重新选择
+                  </el-button>
                 </div>
               </div>
-            </the-fold>
+            </div>
           </div>
-        </div>
-        <div class="homework-plan-card">
-          <div class="card-left">
-            <the-loading-image
-              :url="homework.user_homework.study_design_pic"
-              :width="200"
-              :height="200"
-            />
-          </div>
-          <div class="card-right">
-            <h4 class="card-name">
-              {{ homework.user_homework.study_design_name }}
-            </h4>
-            <div class="card-desc">
-              <label>详细信息：</label>
-              <span class="card-type">
-                {{ parseInt(homework.user_homework.study_design_src_area) }}㎡ |
-                {{ homework.user_homework.study_design_spec_name }}
-              </span>
-              <span class="card-address">
-                <i class="el-icon-location-outline"></i>
-                {{ homework.user_homework.study_design_city }}
-                {{ homework.user_homework.study_design_comm_name }}
-              </span>
+          <div class="homework-input-wrapper">
+            <div class="homework-content">
+              <label class="label-title">设计阐述与说明</label>
+              <el-input
+                type="textarea"
+                placeholder="请简练的阐述问题与需求。
+分段会更清晰：
+1..  
+2...
+3....
+4......
+（控制在500字内）
+"
+                maxlength="500"
+                show-word-limit
+                v-model="activePlanContent"
+                :rows="10"
+              ></el-input>
+            </div>
+            <div class="homework-image">
+              <label class="label-title">配图</label>
+              <div class="homework-image-wrapper">
+                <ul>
+                  <li
+                    class="image-wrapper"
+                    v-for="(item, key) of activePlanPic"
+                    :key="item"
+                  >
+                    <img :src="item" />
+                    <span
+                      class="delete-icon-wrapper"
+                      @click="deleteActivePlanPic(key)"
+                    >
+                      <icon-svg svg-class="delete-icon" svg-name="delete" />
+                    </span>
+                  </li>
+                  <li v-if="activePlanPic.length < 3">
+                    <upload-image @added="addActivePlanPic" />
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div
-        class="homework-reply-wrapper"
-        v-if="
-          homework.user_homework &&
-            (homework.user_homework.status === 2 ||
-              homework.user_homework.status === 3)
-        "
-      >
-        <label class="homework-label">作业点评：</label>
-        <div class="reply-teacher-info">
-          <the-avatar
-            :size="46"
-            :url="homework.user_homework.teacher.avatar_url"
-          />
-          <label class="reply-name">
-            {{ homework.user_homework.teacher.nickname }}
-          </label>
-        </div>
-        <div class="reply-content-wrapper">
-          <the-fold :maxHeight="156" :isFold="fold">
-            <div
-              class="reply-content"
-              v-html="homework.user_homework.a_content"
-            ></div>
-          </the-fold>
-        </div>
-      </div>
-    </div>
-    <label class="fold-label">
-      <img
-        v-if="!fold"
-        @click.stop="fold = true"
-        class="unfold-icon"
-        src="~images/term/unfold.svg"
-      />
-      <img
-        v-else
-        @click.stop="fold = false"
-        class="fold-icon"
-        src="~images/term/fold.svg"
-      />
-    </label>
+      <span slot="footer" class="dialog-footer">
+        <template v-if="plans.length > 0">
+          <el-button class="button" @click="closeHomeworkDialog"
+            >取消</el-button
+          >
+          <el-button
+            class="button"
+            type="primary"
+            :disabled="!activePlan"
+            :loading="submitLoading"
+            @click="submit"
+          >
+            {{ activeStep === 2 ? "提交" : "下一步" }}
+          </el-button>
+        </template>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import HomeworkCard from "./HomeworkCard";
+import PlanList from "components/PlanList";
+import TheEmpty from "components/TheEmpty";
+import UploadImage from "components/UploadImage";
 import TheLoadingImage from "components/TheLoadingImage";
-import TheAvatar from "components/TheAvatar";
-import ThePreviewImage from "components/ThePreviewImage";
-import TheFold from "components/TheFold";
 
-import { formatDate, formNowFormatDay } from "utils/moment";
-import { USER_HOMEWORK_SCORE } from "utils/const";
-import warningImg from "images/warning.png";
-
-const HOMEWORK_STATUS = {
-  0: "待批复",
-  1: "待批复", // 保存草稿
-  2: "已批复",
-  3: "被驳回" // 已驳回
-};
-
-const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
-  0: "作业已提交",
-  1: "作业已提交",
-  2: "作业已批改",
-  3: "重新提交" // 已驳回
-};
+import termService from "service/term";
+import kujialeService from "service/kujiale";
+import submit_hw_img from "images/submit_hw.png";
+import success_img from "images/success.svg";
 
 export default {
   name: "TermHomework",
   components: {
-    TheLoadingImage,
-    TheAvatar,
-    ThePreviewImage,
-    TheFold
+    HomeworkCard,
+    PlanList,
+    TheEmpty,
+    UploadImage,
+    TheLoadingImage
   },
   props: {
-    homework: {
-      type: Object,
+    homeworks: {
+      type: Array,
       required: true
     }
   },
   data() {
     return {
-      HOMEWORK_STATUS,
-      HOMEWORK_STATUS_UPLOAD_DISPLAY,
-      USER_HOMEWORK_SCORE,
-      fold: false,
-      isExpired: true,
-      q_content: null,
-      q_images: [],
-      countDownTime: "",
-      timer: null
+      visible: false,
+      activeStep: 1,
+      dialogPagination: {
+        size: 8,
+        page: 1,
+        total: 0
+      },
+      paginationLayout: {
+        small: true
+      },
+      plans: [],
+      planLoading: true,
+      activeHomework: null,
+      activePlan: null,
+      activePlanContent: "",
+      activePlanPic: [],
+      submitLoading: false
     };
   },
-  watch: {
-    homework(val) {
-      this.q_content = null;
-      this.q_images = [];
-      this.parseContent(val.user_homework && val.user_homework.q_content);
-      this.judgeExpired();
-    }
-  },
   created() {
-    this.judgeExpired();
-    this.parseContent(
-      this.homework.user_homework && this.homework.user_homework.q_content
-    );
+    this.getPlans();
   },
   methods: {
-    formatDate,
-    formNowFormatDay,
-    judgeExpired() {
-      this.isExpired = new Date(this.homework.end_at) <= new Date();
-      if (!this.isExpired && formNowFormatDay(this.homework.end_at) < 1) {
-        const endTime = new Date(this.homework.end_at).valueOf();
-        let dis = endTime - new Date().valueOf();
-        this.countDown(dis);
-        dis -= 1000;
-        this.timer = setInterval(() => {
-          this.countDown(dis);
-          dis -= 1000;
-          if (dis <= 0) {
-            clearInterval(this.timer);
-            this.timer = null;
-            this.judgeExpired();
-          }
-        }, 1000);
+    getPlans(start = 1) {
+      this.planLoading = true;
+      kujialeService
+        .designList({
+          page: start,
+          page_size: this.dialogPagination.size
+        })
+        .then(res => {
+          this.dialogPagination.total = res.totalCount;
+          this.plans = res.result;
+          this.dialogPagination.page = start;
+        })
+        .finally(() => {
+          this.planLoading = false;
+        });
+    },
+    showHomeworkDialog(homework) {
+      this.activeHomework = homework;
+      this.visible = true;
+    },
+    selectPlan(item) {
+      this.activePlan = item;
+      let arr = item.city.split(" ");
+      this.activePlan.filterCity = arr.length > 1 ? arr[1] : arr[0];
+    },
+    stepBack() {
+      this.activeStep = 1;
+      this.activePlan = null;
+    },
+    addActivePlanPic(url) {
+      this.activePlanPic.push(url);
+    },
+    deleteActivePlanPic(key) {
+      this.activePlanPic.splice(key, 1);
+    },
+    submit() {
+      if (this.activeStep === 1) {
+        this.activeStep = 2;
+      } else if (this.activeStep === 2) {
+        this.$msgBox
+          .showMsgBox({
+            img: submit_hw_img,
+            theme: "img_s_190_208",
+            content:
+              "<p style='color:#14AF64FF;font-size:32px;line-height:45px;'>作业一旦提交就无法修改，</p><p style='color:#14AF64FF;font-size:32px;line-height:45px;'>请认真完成再提交哦~</p></p>",
+            confirmBtnText: "确定提交",
+            cancelBtnText: "再调整一下",
+            showCloseBtn: false
+          })
+          .then(() => {
+            const {
+              planId,
+              name,
+              planPic,
+              srcArea,
+              specName,
+              city,
+              commName
+            } = this.activePlan;
+            const params = {
+              study_design_id: planId,
+              study_design_name: name,
+              study_design_pic: planPic,
+              study_design_src_area: srcArea,
+              study_design_spec_name: specName,
+              study_design_city: city,
+              study_design_comm_name: commName,
+              q_content: JSON.stringify({
+                content: this.activePlanContent,
+                images: this.activePlanPic
+              })
+            };
+            const { camp_id, term_id, id, user_homework } = this.activeHomework;
+            this.submitLoading = true;
+            if (user_homework) {
+              termService
+                .updateCampHomework(user_homework.id, params)
+                .then(() => {
+                  this.closeHomeworkDialog();
+                  this.$emit("added");
+                  this.$msgBox.showMsgBox({
+                    img: success_img,
+                    theme: "img_w_140",
+                    content:
+                      "<p style='color:#14AF64FF;font-size:32px;line-height:32px;'>提交成功！</p><p style='color:#ABABABFF;font-size:24px;line-height:24px;margin-top:17px;'>请耐心等待老师的批复吧~</p>",
+                    confirmBtnText: "确定",
+                    showCancelBtn: false,
+                    showCloseBtn: false
+                  });
+                })
+                .finally(() => {
+                  this.submitLoading = false;
+                });
+            } else {
+              termService
+                .campHomework(camp_id, term_id, id, params)
+                .then(() => {
+                  this.closeHomeworkDialog();
+                  this.$emit("added");
+                  this.$msgBox.showMsgBox({
+                    img: success_img,
+                    theme: "img_w_140",
+                    content:
+                      "<p style='color:#14AF64FF;font-size:32px;line-height:32px;'>提交成功！</p><p style='color:#ABABABFF;font-size:24px;line-height:24px;margin-top:17px;'>请耐心等待老师的批复吧~</p>",
+                    confirmBtnText: "确定",
+                    showCancelBtn: false,
+                    showCloseBtn: false
+                  });
+                })
+                .finally(() => {
+                  this.submitLoading = false;
+                });
+            }
+          });
       }
     },
-    handleSubmitClick() {
-      this.judgeExpired();
-      const { user_homework } = this.homework;
-      if (!this.isExpired || (user_homework && user_homework.status === 3)) {
-        this.$emit("submitClick");
+    closeHomeworkDialog() {
+      this.visible = false;
+      this.activeStep = 1;
+      this.activeHomework = null;
+      this.activePlan = null;
+      this.activePlanContent = null;
+      this.activePlanPic = [];
+      if (this.dialogPagination.page !== 1) {
+        this.getPlans();
       }
-    },
-    parseContent(val) {
-      try {
-        const content = JSON.parse(val);
-        this.q_content = content.content;
-        this.q_images = content.images;
-      } catch {
-        this.q_content = val;
-      }
-    },
-    showTips() {
-      this.$msgBox.showMsgBox({
-        img: warningImg,
-        theme: "img_w_100",
-        content:
-          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳提交日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
-        confirmBtnText: "知道了",
-        showCancelBtn: false,
-        showCloseBtn: false
-      });
-    },
-    countDown(dis) {
-      const hour = Math.floor(dis / 1000 / 60 / 60);
-      dis -= hour * 1000 * 60 * 60;
-      const minute = Math.floor(dis / 1000 / 60);
-      dis -= minute * 1000 * 60;
-      const second = Math.floor(dis / 1000);
-      this.countDownTime = hour + "小时" + minute + "分钟" + second + "秒";
     }
   }
 };
@@ -327,528 +350,290 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-@leftWidth: 692px;
-@leftMarginRight: 20px;
-@unsubmit: #61c3d0ff;
-@uncorrected: #ffb163ff;
-@expired: #a0a0a0ff;
-@rejected: #d40000ff;
-.homework-card {
-  position: relative;
-  width: 100%;
-  // height: 82px;
-  background: #ffffff;
-  .homework-info {
-    padding: 25px 20px 24px;
-    cursor: pointer;
-  }
-  .homework-name-wrapper {
-    display: flex;
-    align-items: center;
-    margin-bottom: 11px;
-    .homework-name {
-      max-width: 690px;
-      line-height: 20px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333333;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-    }
-    .homework-status {
-      position: relative;
-      margin-left: 15px;
-      height: 20px;
-      padding: 0 7px;
-      line-height: 20px;
-      font-size: 12px;
-      font-weight: 400;
-      color: @unsubmit;
-      border: 1px solid @unsubmit;
-      &.unsubmit,
-      &.rejected {
-        color: #fff;
-        background: @unsubmit;
-        &::after {
-          position: absolute;
-          left: -4px;
-          top: -4px;
-          width: 8px;
-          height: 8px;
-          content: "";
-          background: @unsubmit;
-          border: 1px solid #fff;
-          border-radius: 50%;
-        }
-      }
-      &.expired {
-        color: @expired;
-        border-color: @expired;
-      }
-      &.uncorrected {
-        color: @uncorrected;
-        border-color: @uncorrected;
-      }
-      &.corrected {
-        color: @primaryColor;
-        border-color: @primaryColor;
-      }
-      &.rejected {
-        color: #fff;
-        background: @rejected;
-        border-color: @rejected;
-        &::after {
-          background: @rejected;
-        }
-      }
-    }
-  }
-  .homework-time-wrapper {
-    height: 14px;
-    line-height: 1;
+
+.homework-wrapper {
+  .homework-tips {
+    margin-bottom: 20px;
+    line-height: 20px;
     font-size: 14px;
     font-weight: 400;
-    .homework-start {
-      color: @primaryColor;
-      .clock-icon {
-        display: inline-block;
-        margin-right: 6px;
-        font-size: 17px;
-      }
-    }
-    .homework-end {
+    color: #333;
+    .warning-icon {
       display: inline-block;
-      margin-left: 15px;
-      color: #d40000ff;
+      margin-right: 4px;
+      width: 16px;
+      height: 16px;
+      vertical-align: text-top;
+    }
+    .primary {
+      color: @primaryColor;
+    }
+    .danger {
+      color: #d0021bff;
     }
   }
-  .fold-wrapper {
-    padding: 0 0 26px;
-  }
-  .homework-desc-wrapper {
-    padding: 20px;
-    min-height: 64px;
-    display: flex;
-    align-items: flex-start;
-    border-top: 1px dashed #e6e6e6ff;
-    .homework-whole {
-      position: relative;
-      margin-top: 14px;
-      width: 100%;
+  .homework-list {
+    li:not(:last-child) {
+      margin-bottom: 20px;
     }
-    .homework-desc {
-      width: @leftWidth;
-      margin-right: @leftMarginRight;
-      .homework-desc-content {
-        &::after {
-          position: absolute;
-          top: 7px;
-          right: -10px;
-          content: "";
-          width: 0px;
-          height: 0px;
-          border-top: 7px solid transparent;
-          border-bottom: 7px solid transparent;
-          border-left: 10px solid #f5f5f5ff;
-          font-size: 0px;
-          line-height: 0px;
+  }
+  /deep/ .submitHomeworkDialog {
+    .el-dialog {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      margin: 0 !important;
+      transform: translate(-50%, -50%);
+      background: #f7f7f7ff;
+      .el-dialog__header {
+        padding: 0;
+      }
+      .el-dialog__body {
+        padding: 20px 30px;
+        height: 578px;
+      }
+      .el-dialog__footer {
+        padding: 0 30px 20px;
+      }
+      .step-wrapper {
+        margin: auto;
+        width: 250px;
+        &.active-line {
+          .el-step__head {
+            .el-step__line {
+              background: url("~images/term/ellipsis_2.svg");
+            }
+          }
         }
-      }
-    }
-    .homework-desc-content {
-      position: relative;
-      width: 100%;
-      min-height: 75px;
-      background: #f5f5f5;
-
-      .homework-desc-content_info {
-        padding: 10px;
-      }
-    }
-    .homework-desc-image {
-      margin-top: 10px;
-    }
-  }
-  .homework-reply-wrapper {
-    margin: 0 0 40px;
-    padding: 20px 20px 0;
-    width: 100%;
-    border-top: 1px dashed #e6e6e6ff;
-    .reply-teacher-info {
-      display: flex;
-      align-items: center;
-      .reply-name {
-        display: inline-block;
-        margin-left: 7px;
-      }
-    }
-    .reply-content-wrapper {
-      margin-top: 12px;
-      position: relative;
-      min-height: 156px;
-      background: #f5f5f5;
-      &::after {
-        position: absolute;
-        top: -10px;
-        left: 15px;
-        content: "";
-        width: 0px;
-        height: 0px;
-        border-bottom: 10px solid #f5f5f5ff;
-        border-left: 7px solid transparent;
-        border-right: 7px solid transparent;
-        font-size: 0px;
-        line-height: 0px;
-      }
-      .reply-content {
-        padding: 10px;
-      }
-      label {
-        line-height: 20px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #747474;
-      }
-      p {
-        margin-top: 4px;
-        line-height: 17px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #ababab;
-      }
-    }
-  }
-  .homework-desc-content,
-  .reply-content-wrapper {
-    font-weight: 400;
-  }
-  .homework-label {
-    display: inline-block;
-    margin-bottom: 10px;
-    line-height: 17px;
-    font-size: 16px;
-    font-weight: bold;
-    color: #333333;
-  }
-  .homework-submit-wrapper {
-    .homework-desc-content {
-      min-height: 224px !important;
-    }
-    .homework-plan-card {
-      display: flex;
-      margin-top: 27px;
-      width: 448px;
-      height: 224px;
-      padding: 10px;
-      background: #fbfbfb;
-      box-shadow: 0px 0px 12px 0px #cccccc;
-      .card-left {
-        width: 200px;
-        height: 200px;
-        margin-right: 20px;
-      }
-      .card-right {
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        padding: 10px 0 18px;
-        .card-name {
-          font-size: 18px;
-          font-weight: bold;
-          color: #333333;
+        .el-step__head {
+          &.is-finish {
+            .el-step__icon.is-text {
+              background: @primaryColor;
+            }
+          }
+          .el-step__line {
+            left: 86px;
+            right: auto;
+            width: 76px;
+            height: 4px;
+            transition: all 0.15s ease-out;
+            background: url("~images/term/ellipsis_1.svg");
+            .el-step__line-inner {
+              display: none;
+            }
+          }
+          .el-step__icon.is-text {
+            width: 30px;
+            height: 30px;
+            color: #fff;
+            background: #d9d9d9ff;
+            border: none;
+            .el-step__icon-inner {
+              font-size: 14px;
+              font-weight: bold;
+            }
+          }
         }
-        .card-desc {
-          display: flex;
-          flex-direction: column;
+        .el-step__title {
+          margin-top: 10px;
           line-height: 1;
           font-size: 12px;
           font-weight: 400;
           color: #ababab;
-          label {
-            font-size: 14px;
-            font-weight: 400;
-            color: #787878;
+        }
+      }
+      .my-plan-wrapper {
+        margin-top: 25px;
+        .add-plan-button {
+          position: absolute;
+          top: 50px;
+          right: 30px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 100px;
+          height: 30px;
+          color: #fff;
+          font-size: 14px;
+          font-weight: 500;
+          background: @primaryColor;
+          cursor: pointer;
+          .add-icon {
+            margin-right: 4px;
+            font-size: 12px;
           }
-          span {
-            display: inline-block;
-            margin-top: 10px;
+        }
+        .more-wrapper {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          .empty-wrapper {
+            padding: 145px 0 20px;
+            img {
+              width: 170px;
+              height: 120px;
+            }
+          }
+          .new-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 204px;
+            height: 40px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            background: @primaryColor;
+            cursor: pointer;
+            .add-icon {
+              margin-right: 4px;
+              font-size: 12px;
+            }
+          }
+        }
+      }
+      .step-2 {
+        padding-top: 44px;
+        .label-title {
+          display: inline-block;
+          margin-bottom: 10px;
+          font-size: 14px;
+          font-weight: 500;
+          color: #787878;
+        }
+        .step-2-content {
+          display: flex;
+        }
+        .select-plan-wrapper {
+          width: 280px;
+          margin-right: 24px;
+        }
+        .homework-input-wrapper {
+          flex: 1;
+        }
+        .select-homework-title {
+          position: relative;
+          margin-bottom: 20px;
+          padding-left: 14px;
+          line-height: 20px;
+          font-size: 20px;
+          font-weight: bold;
+          color: #333333;
+          &::before {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            content: "";
+            background: @primaryColor;
+          }
+        }
+        .select-plan-card {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding: 10px;
+          background: #fff;
+          .card-top {
+            width: 260px;
+            height: 260px;
+            padding-bottom: 10px;
+          }
+          .card-bottom {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 0 0;
+            height: 100px;
+            border-top: 1px solid #e6e6e6ff;
+            .card-name {
+              font-size: 14px;
+              font-weight: bold;
+              color: #333333;
+            }
+            .card-bottom-right {
+              flex: 1;
+              width: 100%;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-start;
+              .button {
+                align-self: flex-end;
+              }
+            }
+            .card-desc {
+              display: flex;
+              flex-direction: column;
+              line-height: 1;
+              label {
+                margin-bottom: 12px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #787878;
+              }
+              span {
+                display: inline-block;
+                margin-top: 10px;
+                font-size: 12px;
+                font-weight: 400;
+                color: #ababab;
+              }
+            }
+          }
+        }
+        .homework-content {
+          .el-textarea__inner {
+            border-color: #ccccccff;
+            border-radius: unset;
+          }
+        }
+        .homework-image {
+          margin-top: 25px;
+          ul {
+            display: flex;
+          }
+          .image-wrapper {
+            position: relative;
+            width: 100px;
+            height: 100px;
+            background: #d8d8d8;
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+            &:not(:last-child) {
+              margin-right: 20px;
+            }
+            .delete-icon {
+              position: absolute;
+              top: 0;
+              right: 0;
+              font-size: 22px;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+      .button {
+        width: 74px;
+        height: 32px;
+        padding: 0;
+        line-height: 32px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #787878;
+        border-radius: unset;
+        &.el-button--primary {
+          color: #fff;
+          &:focus {
+            background: @primaryColor;
+            border-color: @primaryColor;
           }
         }
       }
     }
   }
-}
-.homework-submit-btn {
-  position: absolute;
-  top: -14px;
-  right: 0;
-  padding: 7px 23px;
-  line-height: 1;
-  font-size: 14px;
-  font-weight: 400;
-  color: #ffffff;
-  background: #14af64;
-  border-radius: unset;
-  &.is-disabled,
-  &.is-disabled:hover,
-  &.is-disabled:focus,
-  &.is-disabled:active {
-    background: #d0d0d0;
-    border-color: #d0d0d0;
-    color: #fff;
-  }
-}
-.fold-label {
-  position: absolute;
-  right: 21px;
-  bottom: 10px;
-  height: 16px;
-  cursor: pointer;
-  .unfold-icon,
-  .fold-icon {
-    width: 24px;
-    height: 16px;
-  }
-}
-.score-icon {
-  position: absolute;
-  top: 11px;
-  right: 11px;
-  width: 71.25px;
-  height: 50px;
-}
-.expired-tips {
-  position: absolute;
-  top: 11px;
-  right: 11px;
-  display: flex;
-  align-items: flex-start;
-  .tips-wrapper {
-    position: relative;
-    display: inline-block;
-    margin: 7px 1px 0 0;
-    padding: 0 5px;
-    // width: 272px;
-    height: 23px;
-    line-height: 22.5px;
-    font-size: 12px;
-    font-weight: 400;
-    color: @expired;
-    border: 1px solid @expired;
-    border-right: 0;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    &::after {
-      position: absolute;
-      top: 2.5px;
-      right: -7.5px;
-      display: inline-block;
-      border-bottom: 1px solid;
-      border-left: 1px solid;
-      width: 14.5px;
-      height: 14.5px;
-      border-color: @expired;
-      transform: rotate(-135deg);
-      content: "";
-    }
-  }
-  img {
-    width: 71.25px;
-    height: 50px;
-  }
-}
-.reject-tips {
-  position: absolute;
-  top: 11px;
-  right: 11px;
-  display: flex;
-  align-items: flex-start;
-  .tips-wrapper {
-    display: flex;
-    align-items: center;
-    position: relative;
-    display: inline-block;
-    margin: 7px 1px 0 0;
-    padding: 0 5px;
-    // width: 272px;
-    height: 23px;
-    line-height: 23px;
-    font-size: 12px;
-    font-weight: 400;
-    color: @rejected;
-    border: 1px solid @rejected;
-    border-right: 0;
-    border-top-left-radius: 4px;
-    border-bottom-left-radius: 4px;
-    &::after {
-      position: absolute;
-      top: 2.5px;
-      right: -7.5px;
-      display: inline-block;
-      border-bottom: 1px solid;
-      border-left: 1px solid;
-      width: 14.5px;
-      height: 14.5px;
-      border-color: @rejected;
-      transform: rotate(-135deg);
-      content: "";
-    }
-    .warning-icon {
-      width: 18px;
-      height: 18px;
-      vertical-align: -4px;
-    }
-    .tips {
-      flex: 1;
-    }
-  }
-  img {
-    width: 71.25px;
-    height: 50px;
-  }
-}
-.pointer {
-  cursor: pointer;
-}
-</style>
-
-<style lang="less">
-.homework-card {
-  img {
-    max-width: 100%;
-  }
-  ul li {
-    list-style: disc;
-  }
-  ul,
-  ol {
-    margin-left: 20px;
-  }
-  ol,
-  ol li {
-    list-style: decimal;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: 700;
-    font-size: 0.67em;
-  }
-
-  h5 {
-    font-size: 0.83em;
-  }
-
-  h4 {
-    font-size: 1em;
-  }
-
-  h3 {
-    font-size: 1.17em;
-  }
-
-  h2 {
-    font-size: 1.5em;
-  }
-
-  h1 {
-    font-size: 2em;
-  }
-}
-
-a {
-  text-decoration: none;
-}
-
-.ql-syntax {
-  background-color: #23241f;
-  color: #f8f8f2;
-  overflow: visible;
-  white-space: pre-wrap;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  padding: 5px 10px;
-  border-radius: 3px;
-}
-
-blockquote {
-  border-left: 4px solid #ccc;
-  margin-bottom: 5px;
-  margin-top: 5px;
-  padding-left: 16px;
-}
-
-.ql-align-justify {
-  text-align: justify;
-}
-
-.ql-align-right {
-  text-align: right;
-}
-
-.ql-align-center {
-  text-align: center;
-}
-
-.ql-size-huge {
-  font-size: 2.5em;
-}
-
-.ql-size-large {
-  font-size: 1.5em;
-}
-
-.ql-size-small {
-  font-size: 0.75em;
-}
-
-.ql-direction-rtl {
-  direction: rtl;
-}
-
-.ql-font-serif {
-  font-family: Georgia, Times New Roman, serif;
-}
-
-.ql-font-monospace {
-  font-family: Monaco, Courier New, monospace;
-}
-
-.ql-indent-8 {
-  padding-left: 24em;
-}
-
-.ql-indent-7 {
-  padding-left: 21em;
-}
-
-.ql-indent-6 {
-  padding-left: 18em;
-}
-
-.ql-indent-5 {
-  padding-left: 15em;
-}
-
-.ql-indent-4 {
-  padding-left: 12em;
-}
-
-.ql-indent-3 {
-  padding-left: 9em;
-}
-
-.ql-indent-2 {
-  padding-left: 6em;
-}
-
-.ql-indent-1 {
-  padding-left: 3em;
 }
 </style>

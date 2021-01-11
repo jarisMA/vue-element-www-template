@@ -32,7 +32,7 @@ appRouter.beforeEach(async (to, from, next) => {
       Store.commit("USERINFO", userInfo);
       if (!userInfo.phone && isChrome()) {
         Store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
-      } else if (!userInfo.identity) {
+      } else if (!userInfo.identity && isChrome()) {
         Store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
       }
       appRouter.firstInit = true;
