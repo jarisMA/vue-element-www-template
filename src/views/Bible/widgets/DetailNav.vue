@@ -6,14 +6,17 @@
           <div
             :class="[
               'bible-nav-item',
-              'ellipsis',
+
               'len-' + (navs.length >= 6 ? 6 : navs.length >= 5 ? 5 : 4),
               activeNav.id === item.id ? 'active' : ''
             ]"
-            :style="{ color: activeNav.id === item.id ? color : '' }"
             @click="toggleNav(item)"
           >
-            {{ item.name }}
+            <label
+              class="bible-nav-item-label ellipsis"
+              :style="{ color: activeNav.id === item.id ? color : '' }"
+              >{{ item.name }}</label
+            >
           </div>
         </swiper-slide>
       </swiper>
@@ -99,34 +102,47 @@ export default {
     width: 816px;
     height: 40px;
     margin: auto;
-    overflow: hidden;
   }
-  .bible-nav-inner {
-    width: 100%;
-    display: flex;
-    height: 40px;
+  /deep/ .swiper-slide {
+    cursor: pointer;
   }
   .bible-nav-item {
     display: inline-block;
     position: relative;
     width: 204px;
-    height: 40px;
-    line-height: 40px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #fff;
-    text-align: center;
-    background: rgba(255, 255, 255, 0.3);
-    box-shadow: 0px 0px 8px 0px rgba(111, 111, 111, 0.5);
+    height: 0px;
+    border-width: 0px 30px 40px 0px;
+    border-style: none solid solid;
+    border-color: transparent transparent rgba(255, 255, 255, 0.3);
+    box-shadow: -2px -8px 8px 0px rgba(111, 111, 111, 0.5);
+    box-sizing: border-box;
     cursor: pointer;
     &.active {
-      background: #fff;
+      border-color: transparent transparent #fff;
     }
     &.len-5 {
       width: 163.2px;
+      .bible-nav-item-label {
+        width: 133.2px;
+      }
     }
     &.len-6 {
       width: 136px;
+      .bible-nav-item-label {
+        width: 106px;
+      }
+    }
+    .bible-nav-item-label {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 174px;
+      line-height: 40px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      cursor: pointer;
     }
   }
   .left-arrow,
