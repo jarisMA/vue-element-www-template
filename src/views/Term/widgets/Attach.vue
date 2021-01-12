@@ -1,5 +1,5 @@
 <template>
-  <div class="attach-wrapper" v-loading="loading">
+  <div class="attach-wrapper">
     <ul class="attach-list" v-if="attaches.length > 0">
       <li class="list-th">
         <div class="list-th-label w-90">类型</div>
@@ -31,7 +31,6 @@
 
 <script>
 import AttachCard from "./AttachCard";
-import termService from "service/term";
 import kujialeService from "service/kujiale";
 
 import EditPlanNameDialog from "components/EditPlanNameDialog";
@@ -46,10 +45,18 @@ export default {
     EditPlanNameDialog,
     TheEmpty
   },
+  props: {
+    attaches: {
+      type: Array,
+      required: true
+    },
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  },
   data() {
     return {
-      loading: true,
-      attaches: [],
       visible: false,
       dialogTitle: "复制方案",
       plan: {
@@ -58,21 +65,7 @@ export default {
       btnLoading: false
     };
   },
-  created() {
-    this.getData();
-  },
   methods: {
-    getData() {
-      this.loading = true;
-      termService
-        .campAttach(this.$route.params.id)
-        .then(res => {
-          this.attaches = res;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
     showDialog(data) {
       this.plan = data;
       this.plan.planPic = data.design_cover_url;

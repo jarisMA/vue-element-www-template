@@ -44,7 +44,7 @@
           />
         </el-tab-pane>
         <el-tab-pane label="资料包" name="attach">
-          <attach />
+          <attach :attaches="attaches" :loading="loading" />
         </el-tab-pane>
         <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
       </el-tabs>
@@ -75,7 +75,8 @@ export default {
       loading: true,
       detail: null,
       activeName: "homework",
-      homeworks: []
+      homeworks: [],
+      attaches: []
     };
   },
   created() {
@@ -90,15 +91,16 @@ export default {
     goDrawPlan,
     getData() {
       this.loading = true;
-      termService
-        .campTerm(this.$route.params.id)
-        .then(res => {
+      const id = this.$route.params.id;
+      Promise.all([termService.campTerm(id), termService.campAttach(id)])
+        .then(([res, attaches]) => {
           this.detail = res.camp_term;
           this.homeworks = res.homeworks.filter(
             item =>
               item.is_online === 1 &&
               new Date().valueOf() >= new Date(item.start_at).valueOf()
           );
+          this.attaches = attaches;
         })
         .catch(() => {
           goMy("replace");
