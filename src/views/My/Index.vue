@@ -122,11 +122,16 @@ export default {
     height: @leftWidth;
     background: #fff;
     .nickname {
-      display: inline-block;
+      display: -webkit-box;
+      width: 190px;
       line-height: 30px;
       font-size: 20px;
       font-weight: 500;
       color: #333333;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+      text-align: center;
     }
     .login-user-image {
       margin-bottom: 20px;
