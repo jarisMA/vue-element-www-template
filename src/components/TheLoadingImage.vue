@@ -3,13 +3,7 @@
     class="cover-img"
     :style="{ width: width + 'px', height: height + 'px' }"
   >
-    <img
-      v-show="show"
-      :src="url"
-      :width="width"
-      :height="height"
-      @error="error"
-    />
+    <div class="cover" :style="{ backgroundImage: `url(${url})` }"></div>
   </div>
 </template>
 <script>
@@ -55,8 +49,12 @@ export default {
   background-size: 400% 100%;
   animation: coverLoading 1.4s ease infinite;
   overflow: hidden;
-  img {
-    object-fit: cover;
+  .cover {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
   }
 }
 </style>

@@ -1,5 +1,10 @@
 <template>
-  <div class="bible-detail-page" v-loading="loading">
+  <div
+    class="bible-detail-page"
+    v-loading="loading"
+    oncontextmenu="return false;"
+    onselect="return false;"
+  >
     <div class="bible-header">
       <div class="container-1200"></div>
     </div>
@@ -173,6 +178,7 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 .bible-detail-page {
+  user-select: none;
   background: #fff !important;
 }
 .bible-header {
