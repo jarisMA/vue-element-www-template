@@ -42,7 +42,7 @@
                   >
                   <ul class="bible-item">
                     <li v-for="item of submenu.children" :key="item.id">
-                      <div class="bible-item-card">
+                      <div class="bible-item-card" @click="showDetail(item)">
                         <div class="bible-card-top">
                           <the-loading-image
                             :width="260"
@@ -63,6 +63,23 @@
         </div>
       </div>
     </div>
+    <el-drawer
+      :title="activeCard.name"
+      direction="rtl"
+      :visible.sync="drawerVisible"
+      size="700px"
+    >
+      <el-tabs v-model="activePane">
+        <el-tab-pane
+          v-for="(item, key) of activeCard.content"
+          :label="item.name"
+          :name="'pane-' + (key + 1)"
+          :key="key"
+        >
+          {{ item.name }}
+        </el-tab-pane>
+      </el-tabs>
+    </el-drawer>
   </div>
 </template>
 
@@ -86,7 +103,10 @@ export default {
       activeNav: {},
       menus: [],
       activeSubMenu: {},
-      color: "#ff7300"
+      color: "#ff7300",
+      drawerVisible: false,
+      activeCard: {},
+      activePane: null
     };
   },
   created() {
@@ -121,6 +141,15 @@ export default {
       this.activeNav = nav;
       this.menus = this.activeNav.children || [];
       this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
+    },
+    showDetail(data) {
+      data.content = JSON.parse(data.content);
+      if (data.content.length < 1 || !data.content[0].label) {
+        return;
+      }
+      this.activeCard = data;
+      this.activePane = "pane-1";
+      this.drawerVisible = true;
     }
   }
 };
@@ -131,6 +160,54 @@ export default {
 .bible-detail-page {
   user-select: none;
   background: #fff !important;
+  /deep/ .el-drawer__wrapper {
+    .el-drawer__header {
+      height: 60px;
+      padding: 0 20px;
+      margin: 0;
+      span {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333333;
+        outline: none;
+      }
+      .el-drawer__close-btn {
+        outline: none;
+      }
+      .el-dialog__close {
+        font-size: 30px;
+        font-weight: bold;
+        color: #333333;
+      }
+    }
+    .el-drawer__body {
+      .el-tabs__header {
+        margin: 0;
+        .el-tabs__nav-scroll {
+          padding: 0 20px;
+        }
+        .el-tabs__nav {
+          display: flex;
+          width: 100%;
+          .el-tabs__active-bar {
+            height: 4px;
+          }
+          .el-tabs__item {
+            flex: 1;
+            width: 50px;
+            height: 76px;
+            line-height: 76px;
+            font-size: 16px;
+            font-weight: 600;
+            text-align: center;
+          }
+        }
+      }
+      .el-tabs__content {
+        padding: 13px 20px 20px;
+      }
+    }
+  }
 }
 .bible-header {
   position: fixed;

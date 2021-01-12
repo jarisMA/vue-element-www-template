@@ -4,6 +4,7 @@ import {
   Dialog,
   Avatar,
   Autocomplete,
+  Drawer,
   Dropdown,
   DropdownMenu,
   DropdownItem,
@@ -84,6 +85,7 @@ Vue.use(Pagination);
 Vue.use(Dialog);
 Vue.use(Avatar);
 Vue.use(Autocomplete);
+Vue.use(Drawer);
 Vue.use(Dropdown);
 Vue.use(DropdownMenu);
 Vue.use(DropdownItem);
