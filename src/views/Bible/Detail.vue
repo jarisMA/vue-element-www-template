@@ -115,13 +115,6 @@ export default {
   created() {
     this.getData();
   },
-  mounted() {
-    if (this.$route.hash) {
-      this.$router.push({
-        hash: this.$route.hash
-      });
-    }
-  },
   computed: {
     isActiveMenu() {
       return key => {
@@ -183,17 +176,26 @@ export default {
   background: #fff !important;
 }
 .bible-header {
+  position: fixed;
+  top: 60px;
+  left: 0;
   width: 100%;
   height: 76px;
   background: @primaryColor;
+  z-index: 1;
 }
 .bible-body {
-  padding-top: 40px;
+  height: calc(100vh - 120px);
+  overflow: auto;
+  padding-top: 100px;
   .container-1200 {
     display: flex;
     position: relative;
   }
   .bible-menu-wrapper {
+    position: sticky;
+    top: 0;
+    left: 0;
     margin-right: 20px;
     width: 280px;
     .bible-menu {

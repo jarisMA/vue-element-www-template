@@ -1,6 +1,6 @@
 <template>
   <div class="page-basic-layout">
-    <BasicLayoutHeader :theme="headerTheme" />
+    <BasicLayoutHeader class="page-basic-header" :theme="headerTheme" />
     <router-view class="page-basic-body" />
     <BasicLayoutFooter :theme="headerTheme" />
     <BasicLoginDialog />
@@ -35,7 +35,14 @@ export default {
   display: flex;
   flex-direction: column;
 }
+.page-basic-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+}
 .page-basic-body {
+  margin-top: 60px;
   flex: 1;
   background: #fafafa;
 }
