@@ -6,48 +6,54 @@
     onselect="return false;"
   >
     <div class="bible-header" :style="{ backgroundColor: color }">
-      <div class="container-1200"></div>
-    </div>
-    <div class="bible-body" ref="bibleBody">
       <div class="container-1200">
-        <detail-menu
-          :menus="menus"
-          :activeSubMenu="activeSubMenu"
-          :color="color"
-          @foldChange="foldChange"
-          @toggleMenu="toggleMenu"
-        />
-        <div class="bible-content">
-          <ul class="bible-list" v-for="menu of menus" :key="menu.id">
-            <label class="bible-list-name" :id="'menu-' + menu.id">{{
-              menu.name
-            }}</label>
-            <ul class="bible-sublist">
-              <li v-for="submenu of menu.children" :key="submenu.id">
-                <label
-                  class="bible-sublist-name"
-                  :id="'submenu-' + submenu.id"
-                  >{{ submenu.name }}</label
-                >
-                <ul class="bible-item">
-                  <li v-for="item of submenu.children" :key="item.id">
-                    <div class="bible-item-card">
-                      <div class="bible-card-top">
-                        <the-loading-image
-                          :width="260"
-                          :height="190"
-                          :url="item.cover_url"
-                        />
+        <div class="bible-title">
+          <label class="bible-title-label ellipsis"> {{ detail.name }} </label>
+        </div>
+      </div>
+    </div>
+    <div class="bible-body">
+      <div ref="bibleBody" class="scroll-inner">
+        <div class="container-1200">
+          <detail-menu
+            :menus="menus"
+            :activeSubMenu="activeSubMenu"
+            :color="color"
+            @foldChange="foldChange"
+            @toggleMenu="toggleMenu"
+          />
+          <div class="bible-content">
+            <ul class="bible-list" v-for="menu of menus" :key="menu.id">
+              <label class="bible-list-name" :id="'menu-' + menu.id">{{
+                menu.name
+              }}</label>
+              <ul class="bible-sublist">
+                <li v-for="submenu of menu.children" :key="submenu.id">
+                  <label
+                    class="bible-sublist-name"
+                    :id="'submenu-' + submenu.id"
+                    >{{ submenu.name }}</label
+                  >
+                  <ul class="bible-item">
+                    <li v-for="item of submenu.children" :key="item.id">
+                      <div class="bible-item-card">
+                        <div class="bible-card-top">
+                          <the-loading-image
+                            :width="260"
+                            :height="190"
+                            :url="item.cover_url"
+                          />
+                        </div>
+                        <div class="bible-card-bottom">
+                          {{ item.name }}
+                        </div>
                       </div>
-                      <div class="bible-card-bottom">
-                        {{ item.name }}
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </li>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
             </ul>
-          </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -68,6 +74,7 @@ export default {
   data() {
     return {
       loading: true,
+      detail: {},
       menus: [],
       activeSubMenu: {},
       color: "#ff7300"
@@ -82,6 +89,7 @@ export default {
       bibleService
         .bible(this.$route.params.id)
         .then(res => {
+          this.detail = res;
           this.menus = res.children[0].children;
           this.activeSubMenu = this.menus[0].children[1];
         })
@@ -117,11 +125,36 @@ export default {
   height: 76px;
   background: @primaryColor;
   z-index: 1;
+  .bible-title {
+    position: relative;
+    width: 294px;
+    height: 86px;
+    background-image: url("~images/bible/1.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    .bible-title-label {
+      position: absolute;
+      top: 19px;
+      right: 29px;
+      width: 159px;
+      height: 46px;
+      line-height: 46px;
+      font-size: 22px;
+      font-weight: 600;
+      text-align: center;
+      color: #000000;
+    }
+  }
 }
 .bible-body {
-  height: calc(100vh - 120px);
-  overflow-y: scroll;
+  height: calc(100vh - 60px);
+  overflow: hidden;
   padding-top: 100px;
+  .scroll-inner {
+    width: calc(100% + 18px);
+    height: 100%;
+    overflow-y: scroll;
+  }
   .container-1200 {
     display: flex;
     position: relative;
