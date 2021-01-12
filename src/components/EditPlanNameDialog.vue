@@ -101,10 +101,11 @@ export default {
   },
   watch: {
     plan(val) {
-      this.form.name = this.type === "edit" ? val.name || "" : "";
+      this.form.name =
+        this.type === "copy" ? val.name + "-副本" : val.name || "";
     },
     visible(val) {
-      if (!val && this.type !== "edit") {
+      if (!val && ["edit", "copy"].indexOf(this.type) < 0) {
         this.$refs.form.resetFields();
       }
     }
@@ -113,7 +114,8 @@ export default {
     return {
       defaultCoverImg,
       form: {
-        name: this.type === "edit" ? this.plan.name || "" : ""
+        name:
+          this.type === "copy" ? this.plan.name + "-副本" : this.plan.name || ""
       },
       formRules: {
         name: [

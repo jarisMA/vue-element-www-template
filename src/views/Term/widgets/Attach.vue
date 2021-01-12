@@ -1,10 +1,10 @@
 <template>
-  <div class="attach-wrapper">
-    <ul class="attach-list">
+  <div class="attach-wrapper" v-loading="loading">
+    <ul class="attach-list" v-if="attaches.length > 0">
       <li class="list-th">
         <div class="list-th-label w-90">类型</div>
         <label class="list-th-label w-754">资料名</label>
-        <label class="list-th-label w-72">容量</label>
+        <label class="list-th-label w-72">大小</label>
         <label class="list-th-label w-102">操作</label>
       </li>
       <li v-for="attach of attaches" :key="attach.id">
@@ -15,6 +15,7 @@
         />
       </li>
     </ul>
+    <the-empty noText="暂时还没资料分享" v-else-if="!loading" />
     <edit-plan-name-dialog
       type="copy"
       :visible.sync="visible"
@@ -36,12 +37,14 @@ import kujialeService from "service/kujiale";
 import EditPlanNameDialog from "components/EditPlanNameDialog";
 
 import { saveAs } from "file-saver";
+import TheEmpty from "components/TheEmpty.vue";
 
 export default {
   name: "TermAttach",
   components: {
     AttachCard,
-    EditPlanNameDialog
+    EditPlanNameDialog,
+    TheEmpty
   },
   data() {
     return {
