@@ -10,6 +10,12 @@
         <div class="bible-title">
           <label class="bible-title-label ellipsis"> {{ detail.name }} </label>
         </div>
+        <detail-nav
+          :color="color"
+          :navs="detail.children"
+          :activeNav="activeNav"
+          @toggleNav="toggleNav"
+        />
       </div>
     </div>
     <div class="bible-body">
@@ -64,17 +70,20 @@
 import bibleService from "service/bible";
 import TheLoadingImage from "components/TheLoadingImage";
 import DetailMenu from "./widgets/DetailMenu";
+import DetailNav from "./widgets/DetailNav";
 
 export default {
   name: "BibleDetail",
   components: {
     TheLoadingImage,
-    DetailMenu
+    DetailMenu,
+    DetailNav
   },
   data() {
     return {
       loading: true,
-      detail: {},
+      detail: { children: [] },
+      activeNav: {},
       menus: [],
       activeSubMenu: {},
       color: "#ff7300"
@@ -90,6 +99,7 @@ export default {
         .bible(this.$route.params.id)
         .then(res => {
           this.detail = res;
+          this.activeNav = res.children[0];
           this.menus = res.children[0].children;
           this.activeSubMenu = this.menus[0].children[1];
         })
@@ -106,6 +116,11 @@ export default {
       const offsetTop = document.getElementById("submenu-" + item.id).offsetTop;
       const dom = this.$refs["bibleBody"];
       dom.scrollTo(0, offsetTop);
+    },
+    toggleNav(nav) {
+      this.activeNav = nav;
+      this.menus = this.activeNav.children || [];
+      this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
     }
   }
 };
@@ -125,6 +140,9 @@ export default {
   height: 76px;
   background: @primaryColor;
   z-index: 1;
+  .container-1200 {
+    display: flex;
+  }
   .bible-title {
     position: relative;
     width: 294px;
