@@ -93,9 +93,11 @@ export default {
 
 .edit-plan-container {
   width: 100vw;
+  margin-top: 14px !important;
   height: calc(100vh - 36px);
   transition: all 0.5s ease;
   &.unfold {
+    margin-top: 52px !important;
     height: calc(100vh - 72px);
   }
 }

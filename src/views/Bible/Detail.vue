@@ -5,65 +5,18 @@
     oncontextmenu="return false;"
     onselect="return false;"
   >
-    <div class="bible-header">
+    <div class="bible-header" :style="{ backgroundColor: color }">
       <div class="container-1200"></div>
     </div>
-    <div class="bible-body">
+    <div class="bible-body" ref="bibleBody">
       <div class="container-1200">
-        <div class="bible-menu-wrapper">
-          <ul class="bible-menu" v-for="(menu, key) of menus" :key="menu.id">
-            <div class="bible-menu-header" @click="foldChange(key)">
-              <label
-                :class="[
-                  'menu-header-icon',
-                  'bible-menu-label',
-                  isActiveMenu(key) ? 'active' : ''
-                ]"
-                >{{ menu.name }}</label
-              >
-              <img
-                :class="[menu.isFold ? 'unfold-icon' : 'fold-icon']"
-                src="~images/bible/fold.svg"
-              />
-            </div>
-            <div
-              :class="[
-                'bible-submenu-wrapper',
-                menu.isFold ? 'fold' : 'unfold'
-              ]"
-              :style="{
-                maxHeight: menu.isFold ? '0px' : maxHeight(menu.children)
-              }"
-            >
-              <ul class="bible-submenu">
-                <li
-                  v-for="item of menu.children"
-                  :key="item.id"
-                  :class="item.id === activeSubMenu.id ? 'active' : ''"
-                  @click="toggleMenu(item)"
-                >
-                  <div class="bible-submenu-name">
-                    {{ item.name }}
-                  </div>
-                  <template v-if="item.cover_url">
-                    <div
-                      :class="[
-                        'bible-submenu-cover',
-                        item.id === activeSubMenu.id ? 'active' : ''
-                      ]"
-                    >
-                      <the-loading-image
-                        :width="260"
-                        :height="260"
-                        :url="item.cover_url"
-                      />
-                    </div>
-                  </template>
-                </li>
-              </ul>
-            </div>
-          </ul>
-        </div>
+        <detail-menu
+          :menus="menus"
+          :activeSubMenu="activeSubMenu"
+          :color="color"
+          @foldChange="foldChange"
+          @toggleMenu="toggleMenu"
+        />
         <div class="bible-content">
           <ul class="bible-list" v-for="menu of menus" :key="menu.id">
             <label class="bible-list-name" :id="'menu-' + menu.id">{{
@@ -104,49 +57,24 @@
 <script>
 import bibleService from "service/bible";
 import TheLoadingImage from "components/TheLoadingImage";
+import DetailMenu from "./widgets/DetailMenu";
 
 export default {
   name: "BibleDetail",
   components: {
-    TheLoadingImage
+    TheLoadingImage,
+    DetailMenu
   },
   data() {
     return {
       loading: true,
       menus: [],
-      activeSubMenu: null
+      activeSubMenu: {},
+      color: "#ff7300"
     };
   },
   created() {
     this.getData();
-  },
-  computed: {
-    isActiveMenu() {
-      return key => {
-        let flag = false;
-        ((this.menus[key] || {}).children || []).some(item => {
-          if (item.id === this.activeSubMenu.id) {
-            flag = true;
-            return true;
-          }
-        });
-        return flag;
-      };
-    },
-    maxHeight() {
-      return arr => {
-        let height = 0;
-        if (arr && arr.length > 0) {
-          arr.map(item => {
-            if (item.cover_url) {
-              height += 280;
-            }
-            height += 40;
-          });
-        }
-        return height + "px";
-      };
-    }
   },
   methods: {
     getData() {
@@ -167,9 +95,9 @@ export default {
     },
     toggleMenu(item) {
       this.activeSubMenu = item;
-      this.$router.push({
-        hash: "#submenu-" + item.id
-      });
+      const offsetTop = document.getElementById("submenu-" + item.id).offsetTop;
+      const dom = this.$refs["bibleBody"];
+      dom.scrollTo(0, offsetTop);
     }
   }
 };
@@ -192,110 +120,16 @@ export default {
 }
 .bible-body {
   height: calc(100vh - 120px);
-  overflow: auto;
+  overflow-y: scroll;
   padding-top: 100px;
   .container-1200 {
     display: flex;
     position: relative;
   }
-  .bible-menu-wrapper {
-    position: sticky;
-    top: 0;
-    left: 0;
-    margin-right: 20px;
-    width: 280px;
-    .bible-menu {
-      width: 100%;
-      user-select: none;
-      .bible-menu-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        height: 50px;
-        border-bottom: 1px solid #efefefff;
-        cursor: pointer;
-        .menu-header-icon {
-          transition: all 0.2s;
-        }
-        .unfold-icon {
-          transform: rotate(180deg);
-        }
-      }
-      .bible-menu-label {
-        position: relative;
-        display: inline-block;
-        line-height: 50px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #9ba2a5;
-        &::after {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 50px;
-          height: 4px;
-          content: "";
-          background: #efefef;
-        }
-        &.active {
-          color: @primaryColor;
-          &::after {
-            background: @primaryColor;
-          }
-        }
-      }
-      .bible-submenu-wrapper {
-        margin-top: 10px;
-        transition: all 0.2s;
-        &.fold {
-          overflow: hidden;
-        }
-        .bible-submenu {
-          li {
-            cursor: pointer;
-            .bible-submenu-name {
-              padding: 0 50px;
-              height: 40px;
-              line-height: 40px;
-              font-size: 12px;
-              color: #9ba2a5;
-              transition: all 0.2;
-            }
-            .bible-submenu-cover {
-              height: 0;
-              overflow: hidden;
-              transition: height 0.1s;
-              &.active {
-                padding: 10px;
-                height: 280px;
-              }
-            }
-            &:hover {
-              .bible-submenu-name {
-                font-size: 16px;
-                color: @primaryColor;
-              }
-            }
-            &.active {
-              .bible-submenu-name {
-                font-size: 16px;
-                color: #ffffff;
-                background: @primaryColor;
-              }
-              .bible-submenu-cover {
-                border: 1px solid @primaryColor;
-                border-top: unset;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
   .bible-content {
     flex: 1;
+    margin-left: 300px;
     width: 900px;
-
     .bible-list {
       .bible-list-name {
         line-height: 50px;

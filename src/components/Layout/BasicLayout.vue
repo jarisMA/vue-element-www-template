@@ -1,7 +1,7 @@
 <template>
   <div class="page-basic-layout">
     <BasicLayoutHeader class="page-basic-header" :theme="headerTheme" />
-    <router-view class="page-basic-body" />
+    <router-view :class="['page-basic-body', headerTheme]" />
     <BasicLayoutFooter :theme="headerTheme" />
     <BasicLoginDialog />
     <temporaryIndex />
