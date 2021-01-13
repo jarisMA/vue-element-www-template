@@ -47,7 +47,27 @@
           @click="bibleClick(bible)"
         >
           <div class="bible-book">
-            <img src="~images/bible/book.svg" width="340" height="222" />
+            <!-- <img src="~images/bible/book.svg"
+                 width="340"
+                 height="222" /> -->
+            <icon-svg
+              svg-class="book-svg"
+              svg-name="book"
+              :style="{ fill: bible.color + ' !important' }"
+            ></icon-svg>
+            <div class="bible-book-content">
+              <div class="bible-book-title">
+                {{ bible.name }}
+              </div>
+              <div class="bible-book-desc">
+                <p
+                  v-for="(desc, key) of bible.description.split('\n') || []"
+                  :key="key"
+                >
+                  {{ desc }}
+                </p>
+              </div>
+            </div>
           </div>
           <div
             class="bible-cover"
@@ -139,7 +159,7 @@ export default {
 <style lang="less" scoped>
 .bible-page {
   position: relative;
-  // background-color: #f6f2dc !important;
+  min-height: 1150px;
   background-image: linear-gradient(
     to bottom,
     #fefedf,
@@ -264,15 +284,22 @@ export default {
         width: 340px;
         height: 222px;
         transform: translateX(-50%) scale(0.1);
-        // background-image: url("~images/bible/book.svg");
-        // background-size: cover;
-        // background-repeat: no-repeat;
         transition: all 0.5s;
         opacity: 0;
-        img {
+        overflow: hidden;
+        .book-svg {
           position: absolute;
-          top: 0;
-          left: 0;
+          top: -80px;
+          left: -22px;
+          font-size: 384px;
+          fill: red !important;
+        }
+        .bible-book-content {
+          position: relative;
+          padding: 40px 30px;
+          .bible-book-title {
+            text-align: center;
+          }
         }
       }
       &::after {
