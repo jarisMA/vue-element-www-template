@@ -7,12 +7,15 @@
   >
     <div class="bible-header" :style="{ backgroundColor: color }">
       <div class="container-1200">
-        <div class="bible-title">
+        <div
+          class="bible-title"
+          :style="{ backgroundImage: `url(${detail.title_bg_url})` }"
+        >
           <label class="bible-title-label ellipsis"> {{ detail.name }} </label>
         </div>
         <detail-nav
           :color="color"
-          :navs="detail.children"
+          :navs="root.children"
           :activeNav="activeNav"
           @toggleNav="toggleNav"
         />
@@ -72,11 +75,11 @@
       <el-tabs v-model="activePane">
         <el-tab-pane
           v-for="(item, key) of activeCard.content"
-          :label="item.name"
+          :label="item.label"
           :name="'pane-' + (key + 1)"
           :key="key"
         >
-          {{ item.name }}
+          <div v-html="item.content"></div>
         </el-tab-pane>
       </el-tabs>
     </el-drawer>
@@ -99,7 +102,8 @@ export default {
   data() {
     return {
       loading: true,
-      detail: { children: [] },
+      root: { children: [] },
+      detail: {},
       activeNav: {},
       menus: [],
       activeSubMenu: {},
@@ -118,7 +122,9 @@ export default {
       bibleService
         .bible(this.$route.params.id)
         .then(res => {
-          this.detail = res;
+          this.root = res;
+          this.detail = res.bible;
+          this.color = res.bible.color || "";
           this.activeNav = res.children[0];
           this.menus = res.children[0].children;
           this.activeSubMenu = this.menus[0].children[1];

@@ -31,7 +31,7 @@
           >
           <span
             class="header-nav-item Notes"
-            @click="(visible || theme !== 'primary') && loginDialogVisible(5)"
+            @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
           >
         </nav>
@@ -91,7 +91,7 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import { goHome, goMy, goProfile } from "utils/routes";
+import { goHome, goMy, goProfile, goBible } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
 export default {
@@ -122,6 +122,7 @@ export default {
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
+    goBible,
     goHome() {
       if (this.theme === "primary") {
         return;
