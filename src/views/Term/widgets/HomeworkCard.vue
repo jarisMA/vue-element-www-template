@@ -245,7 +245,7 @@ export default {
       USER_HOMEWORK_SCORE,
       fold: false,
       isExpired: true,
-      q_content: null,
+      q_content: "",
       q_images: [],
       countDownTime: "",
       timer: null
@@ -253,7 +253,7 @@ export default {
   },
   watch: {
     homework(val) {
-      this.q_content = null;
+      this.q_content = "";
       this.q_images = [];
       this.parseContent(val.user_homework && val.user_homework.q_content);
       this.judgeExpired();
@@ -296,10 +296,10 @@ export default {
     parseContent(val) {
       try {
         const content = JSON.parse(val);
-        this.q_content = content.content;
+        this.q_content = content.content || "";
         this.q_images = content.images;
       } catch {
-        this.q_content = val;
+        this.q_content = val || "";
       }
     },
     showTips() {

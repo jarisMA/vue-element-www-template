@@ -26,7 +26,9 @@
         <el-dropdown class="dropdown-wrapper" v-if="theme === 'my'">
           <i class="el-icon-more" @click.stop></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="copyClick">复制</el-dropdown-item>
+            <el-dropdown-item v-if="isVip()" @click.native="copyClick"
+              >复制</el-dropdown-item
+            >
             <el-dropdown-item @click.native="editClick">编辑</el-dropdown-item>
             <el-dropdown-item @click.native="deleteItem" v-if="canDelete"
               >删除</el-dropdown-item
@@ -52,6 +54,7 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import defaultCoverImg from "images/planCover.png";
+import { isVip } from "utils/function";
 
 export default {
   name: "PlanCard",
@@ -98,6 +101,7 @@ export default {
     }
   },
   methods: {
+    isVip,
     itemClick() {
       this.$emit("itemClick");
     },
