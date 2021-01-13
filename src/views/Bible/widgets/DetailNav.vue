@@ -114,7 +114,7 @@ export default {
     border-width: 0px 30px 40px 0px;
     border-style: none solid solid;
     border-color: transparent transparent rgba(255, 255, 255, 0.3);
-    box-shadow: -2px -8px 8px 0px rgba(111, 111, 111, 0.5);
+    box-shadow: -2px -2px 3px 0px rgba(111, 111, 111, 0.5);
     box-sizing: border-box;
     cursor: pointer;
     &.active {

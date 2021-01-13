@@ -258,6 +258,7 @@ export default {
   .bible-bottom {
     .bible-list {
       display: flex;
+      justify-content: center;
       width: 1064px;
       margin: auto;
     }
