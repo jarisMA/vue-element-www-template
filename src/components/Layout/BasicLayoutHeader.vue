@@ -30,7 +30,11 @@
             >斗西学社</span
           >
           <span
-            class="header-nav-item Notes"
+            :class="[
+              'header-nav-item',
+              'Notes',
+              ['Bible', 'BibleDetail'].indexOf($route.name) > -1 ? 'active' : ''
+            ]"
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
           >
@@ -215,6 +219,7 @@ export default {
         color: #333333;
         font-weight: 500;
         cursor: pointer;
+        &.active,
         &:hover {
           color: @primaryColor;
         }

@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="bible-body">
-      <div ref="bibleBody" class="scroll-inner">
+      <div ref="bibleBody" class="scroll-inner" @scroll="handleScroll">
         <div class="container-1200">
           <detail-menu
             :menus="menus"
@@ -79,7 +79,7 @@
           :name="'pane-' + (key + 1)"
           :key="key"
         >
-          <div v-html="item.content"></div>
+          <div class="pane-content" v-html="item.content"></div>
         </el-tab-pane>
       </el-tabs>
     </el-drawer>
@@ -107,7 +107,7 @@ export default {
       activeNav: {},
       menus: [],
       activeSubMenu: {},
-      color: "#ff7300",
+      color: "",
       drawerVisible: false,
       activeCard: {},
       activePane: null
@@ -144,18 +144,30 @@ export default {
       dom.scrollTo(0, offsetTop);
     },
     toggleNav(nav) {
+      window.scrollTo(0, 0);
+      this.$refs["bibleBody"].scrollTo(0, 0);
       this.activeNav = nav;
       this.menus = this.activeNav.children || [];
       this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
     },
     showDetail(data) {
-      data.content = JSON.parse(data.content);
+      data.content =
+        data.content instanceof Array
+          ? data.content
+          : (data.content && JSON.parse(data.content)) || [];
       if (data.content.length < 1 || !data.content[0].label) {
         return;
       }
       this.activeCard = data;
       this.activePane = "pane-1";
       this.drawerVisible = true;
+    },
+    handleScroll(e) {
+      let scroll = e.target.scrollTop;
+      console.log(scroll);
+      // for (let i = this.menus.length; i < 0; i--) {
+
+      // }
     }
   }
 };
@@ -317,6 +329,56 @@ export default {
           }
         }
       }
+    }
+  }
+}
+</style>
+<style lang="less">
+.pane-content {
+  .homework-card {
+    img {
+      max-width: 100%;
+    }
+    ul li {
+      list-style: disc;
+    }
+    ul,
+    ol {
+      margin-left: 20px;
+    }
+    ol,
+    ol li {
+      list-style: decimal;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-weight: 700;
+      font-size: 0.67em;
+    }
+
+    h5 {
+      font-size: 0.83em;
+    }
+
+    h4 {
+      font-size: 1em;
+    }
+
+    h3 {
+      font-size: 1.17em;
+    }
+
+    h2 {
+      font-size: 1.5em;
+    }
+
+    h1 {
+      font-size: 2em;
     }
   }
 }
