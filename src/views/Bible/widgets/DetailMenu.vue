@@ -209,7 +209,7 @@ export default {
             line-height: 40px;
             font-size: 12px;
             color: #9ba2a5;
-            transition: all 0.2;
+            transition: all 0.2s;
           }
           .bible-submenu-cover {
             height: 0;
