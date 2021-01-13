@@ -154,6 +154,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@duration: 0.2s;
 .bible-page {
   position: relative;
   min-height: 1150px;
@@ -267,13 +268,12 @@ export default {
       width: 126px;
       height: 178px;
       cursor: pointer;
-      transition: all 0.5s;
       .bible-cover {
         width: 126px;
         height: 150px;
         background-size: cover;
         background-repeat: no-repeat;
-        transition: all 0.5s;
+        transition: all @duration;
       }
       .bible-book {
         position: absolute;
@@ -282,7 +282,7 @@ export default {
         width: 340px;
         height: 222px;
         transform: translateX(-50%) scale(0.1);
-        transition: all 0.5s;
+        transition: all @duration;
         opacity: 0;
         overflow: hidden;
         .book-svg {
@@ -323,6 +323,7 @@ export default {
         border-radius: 50%;
         transform: translateX(-50%);
         content: "";
+        transition: all @duration;
       }
       &:hover {
         .bible-cover {
@@ -334,7 +335,7 @@ export default {
           transform: translateX(-50%) scale(1);
         }
         &::after {
-          width: 50px;
+          transform: translateX(-50%) scale(0.7);
         }
       }
       &.gray {
