@@ -296,7 +296,7 @@ export default {
     parseContent(val) {
       try {
         const content = JSON.parse(val);
-        this.q_content = content.content;
+        this.q_content = content.content || "";
         this.q_images = content.images;
       } catch {
         this.q_content = val || "";
