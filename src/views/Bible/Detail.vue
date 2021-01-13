@@ -214,6 +214,9 @@ export default {
   user-select: none;
   background: #fff !important;
   /deep/ .el-drawer__wrapper {
+    .el-drawer {
+      outline: unset;
+    }
     .el-drawer__header {
       height: 60px;
       padding: 0 20px;
