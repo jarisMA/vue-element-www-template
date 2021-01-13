@@ -47,9 +47,6 @@
           @click="bibleClick(bible)"
         >
           <div class="bible-book">
-            <!-- <img src="~images/bible/book.svg"
-                 width="340"
-                 height="222" /> -->
             <icon-svg
               svg-class="book-svg"
               svg-name="book"
@@ -289,16 +286,29 @@ export default {
         overflow: hidden;
         .book-svg {
           position: absolute;
-          top: -80px;
-          left: -22px;
-          font-size: 384px;
+          top: -70px;
+          left: -15px;
+          font-size: 370px;
           fill: red !important;
         }
         .bible-book-content {
           position: relative;
-          padding: 40px 30px;
+          padding: 40px 55px;
           .bible-book-title {
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: 600;
+            color: #333333;
+            line-height: 28px;
             text-align: center;
+          }
+          .bible-book-desc {
+            p {
+              line-height: 20px;
+              font-size: 14px;
+              font-weight: 400;
+              color: #333333;
+            }
           }
         }
       }
