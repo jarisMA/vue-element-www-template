@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="bible-body">
-      <div ref="bibleBody" class="scroll-inner" @scroll="handleScroll">
+      <div ref="bibleBody" class="scroll-inner">
         <div class="container-1200">
           <detail-menu
             :menus="menus"
@@ -45,7 +45,13 @@
                   >
                   <ul class="bible-item">
                     <li v-for="item of submenu.children" :key="item.id">
-                      <div class="bible-item-card" @click="showDetail(item)">
+                      <div
+                        :class="[
+                          'bible-item-card',
+                          isShowDetail(item) ? 'info' : ''
+                        ]"
+                        @click="showDetail(item)"
+                      >
                         <div class="bible-card-top">
                           <the-loading-image
                             :width="260"
@@ -116,6 +122,12 @@ export default {
   created() {
     this.getData();
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll, false);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
+  },
   methods: {
     getData() {
       this.loading = true;
@@ -127,7 +139,7 @@ export default {
           this.color = res.bible.color || "";
           this.activeNav = res.children[0];
           this.menus = res.children[0].children;
-          this.activeSubMenu = this.menus[0].children[1];
+          this.activeSubMenu = this.menus[0].children[0];
         })
         .finally(() => {
           this.loading = false;
@@ -140,34 +152,57 @@ export default {
     toggleMenu(item) {
       this.activeSubMenu = item;
       const offsetTop = document.getElementById("submenu-" + item.id).offsetTop;
-      const dom = this.$refs["bibleBody"];
-      dom.scrollTo(0, offsetTop);
+      // const dom = this.$refs["bibleBody"];
+      // dom.scrollTo(0, offsetTop);
+      window.scrollTo(0, offsetTop);
     },
     toggleNav(nav) {
       window.scrollTo(0, 0);
-      this.$refs["bibleBody"].scrollTo(0, 0);
+      // this.$refs["bibleBody"].scrollTo(0, 0);
       this.activeNav = nav;
       this.menus = this.activeNav.children || [];
       this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
     },
-    showDetail(data) {
+    isShowDetail(data) {
       data.content =
         data.content instanceof Array
           ? data.content
           : (data.content && JSON.parse(data.content)) || [];
       if (data.content.length < 1 || !data.content[0].label) {
-        return;
+        return false;
       }
-      this.activeCard = data;
-      this.activePane = "pane-1";
-      this.drawerVisible = true;
+      return true;
     },
-    handleScroll(e) {
-      let scroll = e.target.scrollTop;
-      console.log(scroll);
-      // for (let i = this.menus.length; i < 0; i--) {
-
-      // }
+    showDetail(data) {
+      if (this.isShowDetail(data)) {
+        this.activeCard = data;
+        this.activePane = "pane-1";
+        this.drawerVisible = true;
+      }
+    },
+    handleScroll() {
+      let scroll = window.scrollY;
+      let flag = false;
+      for (let i = this.menus.length - 1; i >= 0; i--) {
+        if (
+          this.menus[i] &&
+          this.menus[i].children &&
+          this.menus[i].children.length > 0
+        ) {
+          for (let j = this.menus[i].children.length - 1; j >= 0; j--) {
+            const item = this.menus[i].children[j];
+            const dom = document.getElementById("submenu-" + item.id);
+            if (scroll >= dom.offsetTop) {
+              this.activeSubMenu = item;
+              flag = true;
+              break;
+            }
+          }
+        }
+        if (flag) {
+          break;
+        }
+      }
     }
   }
 };
@@ -260,14 +295,14 @@ export default {
   }
 }
 .bible-body {
-  height: calc(100vh - 60px);
-  overflow: hidden;
+  // height: calc(100vh - 60px);
+  // overflow: hidden;
   padding-top: 100px;
-  .scroll-inner {
-    width: calc(100% + 18px);
-    height: 100%;
-    overflow-y: scroll;
-  }
+  // .scroll-inner {
+  //   width: calc(100% + 18px);
+  //   height: 100%;
+  //   overflow-y: scroll;
+  // }
   .container-1200 {
     display: flex;
     position: relative;
@@ -311,6 +346,20 @@ export default {
             cursor: pointer;
             &:hover {
               box-shadow: 0px 0px 11px 0px rgba(183, 183, 183, 0.5);
+            }
+            &.info {
+              position: relative;
+              &::after {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                width: 20px;
+                height: 20px;
+                background-image: url("~images/bible/warn.svg");
+                background-size: cover;
+                background-repeat: no-repeat;
+                content: "";
+              }
             }
             .bible-card-top {
               padding: 10px;
