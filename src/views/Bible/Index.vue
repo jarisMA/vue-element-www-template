@@ -1,71 +1,136 @@
 <template>
   <div class="bible-page">
-    <div class="bible-page-wrapper">
-    </div>
+    <div class="bible-page-wrapper"></div>
     <div class="bible-top">
       <div class="bible-top-center">
-        <img src="~images/bible/title.svg"
-             width="380"
-             height="80"
-             class="bible-title" />
-        <img src="~images/bible/desc.svg"
-             width="290"
-             height="70"
-             class="bible-desc" />
+        <img
+          src="~images/bible/title.svg"
+          width="380"
+          height="80"
+          class="bible-title"
+        />
+        <img
+          src="~images/bible/desc.svg"
+          width="290"
+          height="70"
+          class="bible-desc"
+        />
         <div class="bible-person-wrapper">
-          <img src="~images/bible/person.svg"
-               width="220"
-               height="278"
-               class="bible-person" />
+          <img
+            src="~images/bible/person.svg"
+            width="220"
+            height="278"
+            class="bible-person"
+          />
           <div class="bible-person-shadow"></div>
         </div>
-        <img src="~images/bible/dialog_1.png"
-             width="404"
-             height="108"
-             class="bible-dialog_1" />
-        <img src="~images/bible/dialog_2.png"
-             width="402"
-             height="104"
-             class="bible-dialog_2" />
+        <img
+          src="~images/bible/dialog_1.png"
+          width="404"
+          height="108"
+          class="bible-dialog_1"
+        />
+        <img
+          src="~images/bible/dialog_2.png"
+          width="402"
+          height="104"
+          class="bible-dialog_2"
+        />
       </div>
     </div>
     <div class="bible-bottom">
       <ul class="bible-list">
-        <li :class="['bible-item',bible.status === 0 ? 'gray' : '']"
-            v-for="bible of bibles"
-            :key="bible.id">
-          <div class="bible-book"
-               v-if="bible.id===1"></div>
-          <div class="bible-cover"
-               :style="{backgroundImage:`url(${bible.cover_url})`}"></div>
+        <li
+          :class="['bible-item', bible.status === 0 ? 'gray' : '']"
+          v-for="bible of bibles"
+          :key="bible.id"
+          @click="bibleClick(bible)"
+        >
+          <div class="bible-book">
+            <img src="~images/bible/book.svg" width="340" height="222" />
+          </div>
+          <div
+            class="bible-cover"
+            :style="{ backgroundImage: `url(${bible.cover_url})` }"
+          ></div>
         </li>
       </ul>
     </div>
+    <el-dialog
+      class="bible-dialog"
+      width="788px"
+      :visible.sync="visible"
+      :show-close="false"
+    >
+      <div class="bible-dialog-body">
+        <div v-if="activeBible.status === 0">
+          <p>随着学习的精进，</p>
+          <p>宝典会渐渐打开的....</p>
+        </div>
+        <div v-if="activeBible.status === 2 && !isVip()">
+          <p>对不起少年，</p>
+          <p>此宝典只对门下学徒开放....</p>
+        </div>
+      </div>
+      <div class="bible-dialog-footer">
+        <div class="confirm-btn" @click="visible = false">知道了</div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import bibleService from "service/bible";
+import { mapMutations, mapState } from "vuex";
+import { isVip } from "utils/function";
+import { goBibleDetail } from "utils/routes";
 
 export default {
   name: "BibleIndex",
-  data () {
+  data() {
     return {
       loading: true,
-      bibles: []
-    }
+      bibles: [],
+      visible: false,
+      activeBible: {}
+    };
   },
-  created () {
-    this.getData()
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  created() {
+    this.getData();
   },
   methods: {
-    getData () {
-      this.loading = true
-      bibleService.bibles().then(bibles => {
-        this.bibles = bibles;
-      }).finally(() => {
-        this.loading = false;
-      })
+    ...mapMutations(["UPDATA_LOGINDIAL_VISIBLE"]),
+    isVip,
+    getData() {
+      this.loading = true;
+      bibleService
+        .bibles()
+        .then(bibles => {
+          this.bibles = bibles;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    bibleClick(bible) {
+      if (!this.userInfo) {
+        this.UPDATA_LOGINDIAL_VISIBLE(1);
+      }
+      this.activeBible = bible;
+      if (bible.status === 0) {
+        this.visible = true;
+        return;
+      }
+      if ((bible.status === 2 && isVip()) || bible.status === 1) {
+        goBibleDetail(bible.id);
+      }
+      if (bible.status === 2 && !isVip()) {
+        this.visible = true;
+        return;
+      }
     }
   }
 };
@@ -194,14 +259,21 @@ export default {
       }
       .bible-book {
         position: absolute;
-        top: -242px;
+        top: 0;
         left: 50%;
         width: 340px;
         height: 222px;
-        transform: translateX(-50%);
-        background-image: url("~images/bible/book.svg");
-        background-size: cover;
-        background-repeat: no-repeat;
+        transform: translateX(-50%) scale(0.1);
+        // background-image: url("~images/bible/book.svg");
+        // background-size: cover;
+        // background-repeat: no-repeat;
+        transition: all 0.5s;
+        opacity: 0;
+        img {
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
       }
       &::after {
         position: absolute;
@@ -217,6 +289,11 @@ export default {
       &:hover {
         .bible-cover {
           transform: translateY(-20px);
+        }
+        .bible-book {
+          opacity: 1;
+          top: -242px;
+          transform: translateX(-50%) scale(1);
         }
         &::after {
           width: 50px;
@@ -239,6 +316,48 @@ export default {
             z-index: 10;
           }
         }
+      }
+    }
+  }
+  /deep/ .bible-dialog {
+    .el-dialog {
+      background: transparent;
+      box-shadow: unset;
+    }
+    .el-dialog__header {
+      display: none;
+    }
+    .bible-dialog-body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 170px;
+      width: 788px;
+      height: 430px;
+      background: url("~images/bible/dialog_bg.png") no-repeat;
+      background-size: cover;
+      p {
+        font-size: 30px;
+        font-weight: 600;
+        color: #000000;
+        line-height: 50px;
+        text-align: center;
+      }
+    }
+    .bible-dialog-footer {
+      width: 100%;
+      .confirm-btn {
+        margin-left: 292px;
+        width: 206px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 16px;
+        font-weight: 500;
+        color: #ffffff;
+        text-align: center;
+        background: #14af64;
+        border: 3px solid #000000;
+        cursor: pointer;
       }
     }
   }

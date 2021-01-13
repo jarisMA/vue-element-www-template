@@ -5,10 +5,7 @@ const routes = [
   {
     path: "bible",
     name: "Bible",
-    component: BibleIndex,
-    meta: {
-      auth: true
-    }
+    component: BibleIndex
   },
   {
     path: "/bible/:id",
