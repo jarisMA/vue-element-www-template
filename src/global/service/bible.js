@@ -7,6 +7,9 @@ const bibleService = {
   },
   bible: id => {
     return request.get(API.bible(id));
+  },
+  biblePreview: id => {
+    return request.get(API.biblePreview(id));
   }
 };
 

@@ -30,5 +30,6 @@ export default {
   checkTerm: id => `${PREFIX}/api/web/camp/term/${id}/check`,
   campAttaches: termId => `${PREFIX}/api/web/camp/term/${termId}/attach`,
   bibles: `${PREFIX}/api/web/bible`,
-  bible: id => `${PREFIX}/api/web/bible/${id}`
+  bible: id => `${PREFIX}/api/web/bible/${id}`,
+  biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`
 };

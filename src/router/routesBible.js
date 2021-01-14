@@ -14,6 +14,14 @@ const routes = [
     meta: {
       auth: true
     }
+  },
+  {
+    path: "/bible/:id/preview",
+    name: "BiblePreview",
+    component: BibleDetail,
+    meta: {
+      auth: true
+    }
   }
 ];
 

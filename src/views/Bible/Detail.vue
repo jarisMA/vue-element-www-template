@@ -133,23 +133,42 @@ export default {
   methods: {
     getData() {
       this.loading = true;
-      bibleService
-        .bible(this.$route.params.id)
-        .then(res => {
-          if (res.bible.status === 0 || (res.bible.status === 2 && !isVip())) {
-            this.$notice({
-              type: "warning",
-              title: "暂未开放~"
-            });
-            goBible("replace");
-            return;
+      const isPreview = this.$route.name === "BiblePreview";
+      const id = this.$route.params.id;
+      let promiseArr = [];
+      if (isPreview) {
+        promiseArr.push(bibleService.biblePreview(id));
+      } else {
+        promiseArr.push(bibleService.bible(id));
+      }
+      Promise.all(promiseArr)
+        .then(([res]) => {
+          if (!isPreview) {
+            if (
+              res.bible.status === 0 ||
+              (res.bible.status === 2 && !isVip())
+            ) {
+              this.$notice({
+                type: "warning",
+                title: "暂未开放~"
+              });
+              goBible("replace");
+              return;
+            }
           }
           this.root = res;
           this.detail = res.bible;
           this.color = res.bible.color || "";
-          this.activeNav = res.children[0];
-          this.menus = res.children[0].children;
-          this.activeSubMenu = this.menus[0].children[0];
+          this.activeNav = res.children[0] || {};
+          this.menus = this.activeNav.children || [];
+          this.activeSubMenu =
+            (this.menus[0] && this.menus[0].children[0]) || {};
+        })
+        .catch(error => {
+          const { response } = error;
+          if (response && response.status === 403) {
+            goBible("replace");
+          }
         })
         .finally(() => {
           this.loading = false;
