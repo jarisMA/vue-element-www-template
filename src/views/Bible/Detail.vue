@@ -97,6 +97,8 @@ import bibleService from "service/bible";
 import TheLoadingImage from "components/TheLoadingImage";
 import DetailMenu from "./widgets/DetailMenu";
 import DetailNav from "./widgets/DetailNav";
+import { isVip } from "utils/function";
+import { goBible } from "utils/routes";
 
 export default {
   name: "BibleDetail",
@@ -134,6 +136,14 @@ export default {
       bibleService
         .bible(this.$route.params.id)
         .then(res => {
+          if (res.bible.status === 0 || (res.bible.status === 2 && !isVip())) {
+            this.$notice({
+              type: "warning",
+              title: "暂未开放~"
+            });
+            goBible("replace");
+            return;
+          }
           this.root = res;
           this.detail = res.bible;
           this.color = res.bible.color || "";

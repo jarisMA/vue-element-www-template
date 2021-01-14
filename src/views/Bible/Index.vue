@@ -47,11 +47,10 @@
           @click="bibleClick(bible)"
         >
           <div class="bible-book">
-            <icon-svg
-              svg-class="book-svg"
-              svg-name="book"
+            <book-svg
+              class="book-svg"
               :style="{ fill: bible.color + ' !important' }"
-            ></icon-svg>
+            ></book-svg>
             <div class="bible-book-content">
               <div class="bible-book-title">
                 {{ bible.name }}
@@ -98,12 +97,16 @@
 
 <script>
 import bibleService from "service/bible";
+import BookSvg from "./widgets/BookSvg";
 import { mapMutations, mapState } from "vuex";
 import { isVip } from "utils/function";
 import { goBibleDetail } from "utils/routes";
 
 export default {
   name: "BibleIndex",
+  components: {
+    BookSvg
+  },
   data() {
     return {
       loading: true,
@@ -154,6 +157,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 @duration: 0.2s;
 .bible-page {
   position: relative;
@@ -283,14 +287,14 @@ export default {
         height: 222px;
         transform: translateX(-50%) scale(0.1);
         transition: all @duration;
+        transform-origin: center top;
         opacity: 0;
         overflow: hidden;
         .book-svg {
           position: absolute;
-          top: -70px;
-          left: -15px;
-          font-size: 370px;
-          fill: red !important;
+          top: 0;
+          left: 0;
+          fill: @primaryColor;
         }
         .bible-book-content {
           position: relative;
