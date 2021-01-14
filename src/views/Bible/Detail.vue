@@ -28,46 +28,16 @@
             :menus="menus"
             :activeSubMenu="activeSubMenu"
             :color="color"
+            :depth="depth"
             @foldChange="foldChange"
             @toggleMenu="toggleMenu"
           />
-          <div class="bible-content">
-            <ul class="bible-list" v-for="menu of menus" :key="menu.id">
-              <label class="bible-list-name" :id="'menu-' + menu.id">{{
-                menu.name
-              }}</label>
-              <ul class="bible-sublist">
-                <li v-for="submenu of menu.children" :key="submenu.id">
-                  <label
-                    class="bible-sublist-name"
-                    :id="'submenu-' + submenu.id"
-                    >{{ submenu.name }}</label
-                  >
-                  <ul class="bible-item">
-                    <li v-for="item of submenu.children" :key="item.id">
-                      <div
-                        :class="[
-                          'bible-item-card',
-                          isShowDetail(item) ? 'info' : ''
-                        ]"
-                        @click="showDetail(item)"
-                      >
-                        <div class="bible-card-top">
-                          <the-loading-image
-                            :width="260"
-                            :height="260"
-                            :url="item.cover_url"
-                          />
-                        </div>
-                        <div class="bible-card-bottom">
-                          {{ item.name }}
-                        </div>
-                      </div>
-                    </li>
-                  </ul>
-                </li>
-              </ul>
-            </ul>
+          <div :class="['bible-content', depth < 2 ? 'more' : '']">
+            <detail-content
+              :menus="menus"
+              :depth="depth"
+              @showDetail="showDetail"
+            />
           </div>
         </div>
       </div>
@@ -94,18 +64,19 @@
 
 <script>
 import bibleService from "service/bible";
-import TheLoadingImage from "components/TheLoadingImage";
 import DetailMenu from "./widgets/DetailMenu";
 import DetailNav from "./widgets/DetailNav";
+import DetailContent from "./widgets/DetailContent";
+
 import { isVip } from "utils/function";
 import { goBible } from "utils/routes";
 
 export default {
   name: "BibleDetail",
   components: {
-    TheLoadingImage,
     DetailMenu,
-    DetailNav
+    DetailNav,
+    DetailContent
   },
   data() {
     return {
@@ -118,19 +89,40 @@ export default {
       color: "",
       drawerVisible: false,
       activeCard: {},
-      activePane: null
+      activePane: null,
+      depth: 0
     };
   },
   created() {
     this.getData();
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll, false);
+    // window.addEventListener("scroll", this.handleScroll, false);
   },
   destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
+    // window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
+    getDepth(arr, len) {
+      var flag = false;
+      var temp = [];
+      for (let i = 0; i < arr.length; i++) {
+        let isArr =
+          Object.prototype.toString.call(arr[i].children) == "[object Array]";
+        if (isArr) {
+          for (let j = 0; j < arr[i].children.length; j++) {
+            temp.push(arr[i].children[j]);
+          }
+          flag = true;
+        }
+      }
+      if (flag) {
+        len++;
+        return this.getDepth(temp, len);
+      } else {
+        return len;
+      }
+    },
     getData() {
       this.loading = true;
       const isPreview = this.$route.name === "BiblePreview";
@@ -164,6 +156,7 @@ export default {
           this.menus = this.activeNav.children || [];
           this.activeSubMenu =
             (this.menus[0] && this.menus[0].children[0]) || {};
+          this.depth = this.getDepth(this.menus, 0);
         })
         .catch(error => {
           const { response } = error;
@@ -181,34 +174,20 @@ export default {
     },
     toggleMenu(item) {
       this.activeSubMenu = item;
-      const offsetTop = document.getElementById("submenu-" + item.id).offsetTop;
-      // const dom = this.$refs["bibleBody"];
-      // dom.scrollTo(0, offsetTop);
+      const offsetTop = document.getElementById("menu-" + item.id).offsetTop;
       window.scrollTo(0, offsetTop);
     },
     toggleNav(nav) {
       window.scrollTo(0, 0);
-      // this.$refs["bibleBody"].scrollTo(0, 0);
       this.activeNav = nav;
       this.menus = this.activeNav.children || [];
+      this.depth = this.getDepth(this.menus, 0);
       this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
     },
-    isShowDetail(data) {
-      data.content =
-        data.content instanceof Array
-          ? data.content
-          : (data.content && JSON.parse(data.content)) || [];
-      if (data.content.length < 1 || !data.content[0].label) {
-        return false;
-      }
-      return true;
-    },
     showDetail(data) {
-      if (this.isShowDetail(data)) {
-        this.activeCard = data;
-        this.activePane = "pane-1";
-        this.drawerVisible = true;
-      }
+      this.activeCard = data;
+      this.activePane = "pane-1";
+      this.drawerVisible = true;
     },
     handleScroll() {
       let scroll = window.scrollY;
@@ -221,7 +200,7 @@ export default {
         ) {
           for (let j = this.menus[i].children.length - 1; j >= 0; j--) {
             const item = this.menus[i].children[j];
-            const dom = document.getElementById("submenu-" + item.id);
+            const dom = document.getElementById("menu-" + item.id);
             if (scroll >= dom.offsetTop) {
               this.activeSubMenu = item;
               flag = true;
@@ -328,14 +307,7 @@ export default {
   }
 }
 .bible-body {
-  // height: calc(100vh - 60px);
-  // overflow: hidden;
   padding-top: 100px;
-  // .scroll-inner {
-  //   width: calc(100% + 18px);
-  //   height: 100%;
-  //   overflow-y: scroll;
-  // }
   .container-1200 {
     display: flex;
     position: relative;
@@ -344,6 +316,9 @@ export default {
     flex: 1;
     margin-left: 300px;
     width: 900px;
+    &.more {
+      margin: 0 150px;
+    }
     .bible-list {
       .bible-list-name {
         line-height: 50px;

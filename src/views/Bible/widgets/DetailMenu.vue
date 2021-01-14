@@ -1,5 +1,5 @@
 <template>
-  <div class="bible-menu-wrapper">
+  <div class="bible-menu-wrapper" v-if="depth >= 2">
     <div class="scroll-inner">
       <ul class="bible-menu" v-for="(menu, key) of menus" :key="menu.id">
         <div class="bible-menu-header" @click="foldChange(key)">
@@ -17,6 +17,7 @@
             :style="{ backgroundColor: isActiveMenu(key) ? color : '' }"
           ></div>
           <img
+            v-if="menu.children && menu.children.length > 0"
             :class="[menu.isFold ? 'unfold-icon' : 'fold-icon']"
             src="~images/bible/fold.svg"
           />
@@ -27,7 +28,7 @@
             maxHeight: menu.isFold ? '0px' : maxHeight(menu.children)
           }"
         >
-          <ul class="bible-submenu">
+          <ul class="bible-submenu" v-if="menu.children">
             <li
               v-for="item of menu.children"
               :key="item.id"
@@ -93,6 +94,10 @@ export default {
     color: {
       type: String,
       default: "#14af64"
+    },
+    depth: {
+      type: Number,
+      required: true
     }
   },
   data() {
@@ -104,6 +109,9 @@ export default {
     isActiveMenu() {
       return key => {
         let flag = false;
+        if (this.menus[key].id === this.activeSubMenu.id) {
+          return true;
+        }
         ((this.menus[key] || {}).children || []).some(item => {
           if (item.id === this.activeSubMenu.id) {
             flag = true;
@@ -130,7 +138,11 @@ export default {
   },
   methods: {
     foldChange(key) {
-      this.$emit("foldChange", key);
+      if (this.menus[key].children && this.menus[key].children.length > 0) {
+        this.$emit("foldChange", key);
+      } else {
+        this.toggleMenu(this.menus[key]);
+      }
     },
     toggleMenu(item) {
       this.$emit("toggleMenu", item);
@@ -147,7 +159,7 @@ export default {
   top: 160px;
   left: calc((100vw - 1200px) / 2 - 8px);
   width: 280px;
-  height: calc(100vh - 160px -60px);
+  height: calc(100vh - 160px - 60px);
   overflow: hidden;
   .scroll-inner {
     width: 295px;
