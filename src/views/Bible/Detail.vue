@@ -55,7 +55,7 @@
                         <div class="bible-card-top">
                           <the-loading-image
                             :width="260"
-                            :height="190"
+                            :height="260"
                             :url="item.cover_url"
                           />
                         </div>
@@ -374,7 +374,7 @@ export default {
             display: flex;
             flex-direction: column;
             width: 280px;
-            height: 260px;
+            height: 330px;
             background: #fafafa;
             &:hover {
               box-shadow: 0px 0px 11px 0px rgba(183, 183, 183, 0.5);

@@ -21,14 +21,18 @@
         </swiper-slide>
       </swiper>
     </div>
-    <template v-if="navs.length > 6">
-      <img class="left-arrow" src="~images/bible/left.svg" slot="button-prev" />
-      <img
-        class="right-arrow"
-        src="~images/bible/right.svg"
-        slot="button-next"
-      />
-    </template>
+    <img
+      class="left-arrow"
+      src="~images/bible/left.svg"
+      slot="button-prev"
+      v-show="navs.length > 6"
+    />
+    <img
+      class="right-arrow"
+      src="~images/bible/right.svg"
+      slot="button-next"
+      v-show="navs.length > 6"
+    />
   </div>
 </template>
 
