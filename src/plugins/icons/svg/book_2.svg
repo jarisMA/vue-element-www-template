@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="340px" height="340px" viewBox="0 0 340 340" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <g id="斗西宝典-宝典展开" fill="inherit" transform="translate(-1839.000000, -115.000000)">
+        <g id="编组-2备份-3" fill="inherit" transform="translate(1839.000000, 115.000000)">
+            <rect id="矩形"  stroke="#979797" fill="#D8D8D8" x="54" y="104" width="231" height="28"></rect>
+            <rect id="矩形" stroke="#979797" fill="#D8D8D8" x="55" y="142" width="230" height="81"></rect>
+            <g id="编组" fill="inherit" transform="translate(25.000000, 75.000000)">
+                <g fill="inherit" transform="translate(0.000000, 0.541000)">
+                    <polygon id="Fill-1" fill="inherit" points="288.1824 9.3856 288.1824 176.7506 161.3094 176.7506 144.3694 191.4296 127.4284 176.7506 0.5704 176.7506 0.5704 9.3856 126.4394 9.3856 144.3694 25.7926 162.2984 9.3856"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="斗西宝典-宝典展开" transform="translate(-1839.000000, -115.000000)">
+            <g id="编组-2备份-3" transform="translate(1839.000000, 115.000000)">
+                <g id="编组" transform="translate(25.000000, 75.000000)">
+                    <g transform="translate(0.000000, 0.541000)">
+                        <polygon id="Stroke-3" stroke="#000000" stroke-width="3.14" stroke-linejoin="round" points="288.1824 9.3856 162.2984 9.3856 144.3694 25.7926 126.4394 9.3856 0.5704 9.3856 0.5704 176.7506 127.4284 176.7506 144.3694 191.4296 161.3094 176.7506 288.1824 176.7506"></polygon>
+                        <path d="M152.115,4.1779 L144.315,11.0129 L136.516,4.1779 C133.465,1.5039 129.545,0.0289 125.487,0.0289 L8.491,0.0289 L8.491,164.8899 L125.545,164.8899 C129.602,164.8899 133.522,166.3649 136.574,169.0389 L144.373,175.8739 L152.172,169.0389 C155.223,166.3649 159.143,164.8899 163.201,164.8899 L280.255,164.8899 L280.255,0.0289 L163.143,0.0289 C159.086,0.0289 155.167,1.5039 152.115,4.1779" id="Fill-5" fill="#FFFFFF"></path>
+                        <path d="M152.115,4.1779 L144.315,11.0129 L136.516,4.1779 C133.465,1.5039 129.545,0.0289 125.487,0.0289 L8.491,0.0289 L8.491,164.8899 L125.545,164.8899 C129.602,164.8899 133.522,166.3649 136.574,169.0389 L144.373,175.8739 L152.172,169.0389 C155.223,166.3649 159.143,164.8899 163.201,164.8899 L280.255,164.8899 L280.255,0.0289 L163.143,0.0289 C159.086,0.0289 155.167,1.5039 152.115,4.1779 Z" id="Stroke-7" stroke="#000000" stroke-width="3.14" stroke-linejoin="round"></path>
+                        <g transform="translate(143.000000, 11.000000)">
+                            <line x1="1.3152" y1="0.0126" x2="1.3152" y2="7.4006" id="Fill-9" fill="#FFFFFF"></line>
+                            <line x1="1.3152" y1="0.0126" x2="1.3152" y2="7.4006" id="Stroke-11" stroke="#000000" stroke-width="3.14" stroke-linecap="round" stroke-linejoin="round"></line>
+                        </g>
+                        <g transform="translate(143.000000, 162.000000)">
+                            <line x1="1.3728" y1="13.8742" x2="1.3728" y2="-0.0008" id="Fill-12" fill="#FFFFFF"></line>
+                            <line x1="1.3728" y1="13.8742" x2="1.3728" y2="-0.0008" id="Stroke-14" stroke="#000000" stroke-width="3.14" stroke-linecap="round" stroke-linejoin="round"></line>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

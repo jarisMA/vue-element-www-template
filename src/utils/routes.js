@@ -60,6 +60,27 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
+export const goBible = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Bible"
+    },
+    type
+  );
+};
+
+export const goBibleDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "BibleDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

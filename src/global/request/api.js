@@ -28,5 +28,8 @@ export default {
     `${PREFIX}/api/web/camp/${campId}/term/${termId}/homework/${homeworkId}`,
   campHomeworkUpdate: id => `${PREFIX}/api/web/camp/homework/${id}`,
   checkTerm: id => `${PREFIX}/api/web/camp/term/${id}/check`,
-  campAttaches: termId => `${PREFIX}/api/web/camp/term/${termId}/attach`
+  campAttaches: termId => `${PREFIX}/api/web/camp/term/${termId}/attach`,
+  bibles: `${PREFIX}/api/web/bible`,
+  bible: id => `${PREFIX}/api/web/bible/${id}`,
+  biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`
 };

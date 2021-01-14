@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="21px" height="20px" viewBox="0 0 21 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>收起</title>
+    <defs>
+        <filter id="filter-1">
+            <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 0 1.000000 0 0 0 1.000000 0"></feColorMatrix>
+        </filter>
+        <filter x="-20.0%" y="-18.2%" width="140.0%" height="136.4%" filterUnits="objectBoundingBox" id="filter-2">
+            <feOffset dx="0" dy="0" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.530315897   0 0 0 0 0.530315897   0 0 0 0 0.530315897  0 0 0 0.5 0" type="matrix" in="shadowBlurOuter1" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组-9备份" transform="translate(-1530.000000, -106.000000)" filter="url(#filter-1)">
+            <g filter="url(#filter-2)" transform="translate(1540.000000, 116.000000) scale(-1, 1) rotate(90.000000) translate(-1540.000000, -116.000000) translate(1530.000000, 105.000000)">
+                <polyline id="路径-4" stroke="#14AF64" stroke-width="2" transform="translate(10.000000, 7.500000) rotate(-45.000000) translate(-10.000000, -7.500000) " points="5 2.5 5 12.5 15 12.5"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
