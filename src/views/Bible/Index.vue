@@ -25,13 +25,13 @@
           <div class="bible-person-shadow"></div>
         </div>
         <img
-          src="~images/bible/dialog_1.png"
+          src="~images/bible/dialog_1.svg"
           width="404"
           height="108"
           class="bible-dialog_1"
         />
         <img
-          src="~images/bible/dialog_2.png"
+          src="~images/bible/dialog_2.svg"
           width="402"
           height="104"
           class="bible-dialog_2"
