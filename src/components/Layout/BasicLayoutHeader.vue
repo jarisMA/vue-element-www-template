@@ -33,7 +33,9 @@
             :class="[
               'header-nav-item',
               'Notes',
-              ['Bible', 'BibleDetail'].indexOf($route.name) > -1 ? 'active' : ''
+              ['Bible', 'BibleDetail', 'BiblePreview'].indexOf($route.name) > -1
+                ? 'active'
+                : ''
             ]"
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span

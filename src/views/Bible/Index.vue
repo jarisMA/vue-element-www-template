@@ -57,7 +57,8 @@
               </div>
               <div class="bible-book-desc">
                 <p
-                  v-for="(desc, key) of bible.description.split('\n') || []"
+                  v-for="(desc, key) of (bible.description || '').split('\n') ||
+                    []"
                   :key="key"
                 >
                   {{ desc }}
@@ -308,6 +309,10 @@ export default {
             text-align: center;
           }
           .bible-book-desc {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 4;
+            overflow: hidden;
             p {
               line-height: 20px;
               font-size: 14px;
