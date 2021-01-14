@@ -146,7 +146,8 @@ export default {
           if (!isPreview) {
             if (
               res.bible.status === 0 ||
-              (res.bible.status === 2 && !isVip())
+              (res.bible.status === 2 && !isVip()) ||
+              res.bible.is_online !== 1
             ) {
               this.$notice({
                 type: "warning",
@@ -375,12 +376,12 @@ export default {
             width: 280px;
             height: 260px;
             background: #fafafa;
-            cursor: pointer;
             &:hover {
               box-shadow: 0px 0px 11px 0px rgba(183, 183, 183, 0.5);
             }
             &.info {
               position: relative;
+              cursor: pointer;
               &::after {
                 position: absolute;
                 top: 20px;
