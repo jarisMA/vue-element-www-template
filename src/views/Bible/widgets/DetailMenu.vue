@@ -155,8 +155,10 @@ export default {
     overflow-y: scroll;
   }
   .bible-menu {
+    position: relative;
     width: 100%;
     user-select: none;
+    background: #fff;
     .bible-menu-header {
       position: relative;
       display: flex;
@@ -197,6 +199,7 @@ export default {
     .bible-submenu-wrapper {
       margin-top: 10px;
       transition: all 0.2s;
+      overflow: hidden;
       &.fold {
         overflow: hidden;
       }
