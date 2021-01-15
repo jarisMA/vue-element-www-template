@@ -76,9 +76,11 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
+import { detailMixin } from "../mixin";
 
 export default {
   name: "BibleDetailMenu",
+  mixins: [detailMixin],
   components: {
     TheLoadingImage
   },
@@ -106,28 +108,6 @@ export default {
     };
   },
   computed: {
-    getDepth() {
-      return (arr, len) => {
-        var flag = false;
-        var temp = [];
-        for (let i = 0; i < arr.length; i++) {
-          let isArr =
-            Object.prototype.toString.call(arr[i].children) == "[object Array]";
-          if (isArr) {
-            for (let j = 0; j < arr[i].children.length; j++) {
-              temp.push(arr[i].children[j]);
-            }
-            flag = true;
-          }
-        }
-        if (flag) {
-          len++;
-          return this.getDepth(temp, len);
-        } else {
-          return len;
-        }
-      };
-    },
     isActiveMenu() {
       return key => {
         let flag = false;
