@@ -17,7 +17,7 @@
             :style="{ backgroundColor: isActiveMenu(key) ? color : '' }"
           ></div>
           <img
-            v-if="menu.children && menu.children.length > 0"
+            v-if="getDepth(menu.children, 1) > 2"
             :class="[menu.isFold ? 'unfold-icon' : 'fold-icon']"
             src="~images/bible/fold.svg"
           />
@@ -28,7 +28,7 @@
             maxHeight: menu.isFold ? '0px' : maxHeight(menu.children)
           }"
         >
-          <ul class="bible-submenu" v-if="menu.children">
+          <ul class="bible-submenu" v-if="getDepth(menu.children, 1) > 2">
             <li
               v-for="item of menu.children"
               :key="item.id"
@@ -106,6 +106,28 @@ export default {
     };
   },
   computed: {
+    getDepth() {
+      return (arr, len) => {
+        var flag = false;
+        var temp = [];
+        for (let i = 0; i < arr.length; i++) {
+          let isArr =
+            Object.prototype.toString.call(arr[i].children) == "[object Array]";
+          if (isArr) {
+            for (let j = 0; j < arr[i].children.length; j++) {
+              temp.push(arr[i].children[j]);
+            }
+            flag = true;
+          }
+        }
+        if (flag) {
+          len++;
+          return this.getDepth(temp, len);
+        } else {
+          return len;
+        }
+      };
+    },
     isActiveMenu() {
       return key => {
         let flag = false;
@@ -138,7 +160,7 @@ export default {
   },
   methods: {
     foldChange(key) {
-      if (this.menus[key].children && this.menus[key].children.length > 0) {
+      if (this.getDepth(this.menus[key].children, 1) > 2) {
         this.$emit("foldChange", key);
       } else {
         this.toggleMenu(this.menus[key]);

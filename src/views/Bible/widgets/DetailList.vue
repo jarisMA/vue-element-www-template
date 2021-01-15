@@ -71,12 +71,12 @@ export default {
     width: 280px;
     height: 330px;
     background: #fafafa;
-    &:hover {
-      box-shadow: 0px 0px 11px 0px rgba(183, 183, 183, 0.5);
-    }
     &.info {
       position: relative;
       cursor: pointer;
+      &:hover {
+        box-shadow: 0px 0px 11px 0px rgba(183, 183, 183, 0.5);
+      }
       &::after {
         position: absolute;
         top: 20px;

@@ -90,7 +90,8 @@ export default {
       drawerVisible: false,
       activeCard: {},
       activePane: null,
-      depth: 0
+      depth: 0,
+      scrollTimer: null
     };
   },
   created() {
@@ -175,7 +176,10 @@ export default {
     toggleMenu(item) {
       this.activeSubMenu = item;
       const offsetTop = document.getElementById("menu-" + item.id).offsetTop;
-      window.scrollTo(0, offsetTop);
+      window.scrollTo({
+        top: offsetTop,
+        behavior: "smooth"
+      });
     },
     toggleNav(nav) {
       window.scrollTo(0, 0);
