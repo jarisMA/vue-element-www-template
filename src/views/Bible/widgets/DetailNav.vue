@@ -158,6 +158,10 @@ export default {
     object-fit: cover;
     transform: translateY(-50%);
     cursor: pointer;
+    &.swiper-button-disabled {
+      filter: opacity(0.5);
+      cursor: auto;
+    }
   }
   .left-arrow {
     left: 17px;
