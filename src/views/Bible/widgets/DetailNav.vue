@@ -10,7 +10,7 @@
               'len-' + (navs.length >= 6 ? 6 : navs.length >= 5 ? 5 : 4),
               activeNav.id === item.id ? 'active' : ''
             ]"
-            @click="toggleNav(item)"
+            @click="toggleNav(item, key)"
           >
             <label
               class="bible-nav-item-label ellipsis"
@@ -72,6 +72,8 @@ export default {
         speed: 200,
         nextButton: ".right-arrow",
         prevButton: ".left-arrow"
+        // centeredSlides: true,
+        // slideToClickedSlide: true
       }
     };
   },
@@ -85,7 +87,8 @@ export default {
     }
   },
   methods: {
-    toggleNav(nav) {
+    toggleNav(nav, key) {
+      this.$refs["mySwiper"].$swiper.slideTo(key - 2, 1000, false);
       if (this.activeNav.id !== nav.id) {
         this.$emit("toggleNav", nav);
       }
