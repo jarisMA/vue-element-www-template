@@ -23,7 +23,7 @@
           />
         </div>
         <div
-          v-if="getDepth(menu.children, 1) < 2 && menu.cover_url"
+          v-if="getDepth(menu.children, 1) === 2 && menu.cover_url"
           :class="['bible-menu-cover', isActiveMenu(key) ? 'active' : '']"
           :style="{
             borderColor: isActiveMenu(key) ? color : ''
