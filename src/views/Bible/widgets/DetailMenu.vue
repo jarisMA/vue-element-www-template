@@ -23,6 +23,21 @@
           />
         </div>
         <div
+          v-if="getDepth(menu.children, 1) < 2 && menu.cover_url"
+          :class="['bible-menu-cover', isActiveMenu(key) ? 'active' : '']"
+          :style="{
+            borderColor: isActiveMenu(key) ? color : ''
+          }"
+        >
+          <the-loading-image
+            class="loading-img"
+            :width="260"
+            :height="260"
+            :url="menu.cover_url"
+          />
+        </div>
+        <div
+          v-else-if="getDepth(menu.children, 1) > 2"
           :class="['bible-submenu-wrapper', menu.isFold ? 'fold' : 'unfold']"
           :style="{
             maxHeight: menu.isFold ? '0px' : maxHeight(menu.children)
@@ -155,7 +170,7 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-
+@duration: 0.2s;
 .bible-menu-wrapper {
   position: fixed;
   top: 160px;
@@ -196,6 +211,21 @@ export default {
         transform: rotate(180deg);
       }
     }
+    .bible-menu-cover {
+      height: 0;
+      overflow: hidden;
+      transition: all @duration;
+      border-color: transparent;
+      border-style: solid;
+      border-width: 1px;
+      box-sizing: border-box;
+      &.active {
+        height: 280px;
+      }
+      .loading-img {
+        margin: 10px;
+      }
+    }
     .bible-menu-label {
       position: relative;
       display: inline-block;
@@ -231,7 +261,7 @@ export default {
           .bible-submenu-cover {
             height: 0;
             overflow: hidden;
-            transition: height 0.1s;
+            transition: height @duration;
             &.active {
               padding: 10px;
               height: 280px;
