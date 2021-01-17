@@ -55,6 +55,11 @@ export default {
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
+    image-rendering: -moz-crisp-edges; /* Firefox */
+    image-rendering: -o-crisp-edges; /* Opera */
+    image-rendering: -webkit-optimize-contrast; /*Webkit (non-standard naming) */
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor; /* IE (non-standard property) */
   }
 }
 </style>
