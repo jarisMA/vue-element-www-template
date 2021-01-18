@@ -2,10 +2,11 @@
   <div class="attach-wrapper">
     <ul class="attach-list" v-if="attaches.length > 0">
       <li class="list-th">
-        <div class="list-th-label w-90">类型</div>
-        <label class="list-th-label w-754">资料名</label>
-        <label class="list-th-label w-72">大小</label>
-        <label class="list-th-label w-102">操作</label>
+        <div class="list-th-label type">类型</div>
+        <label class="list-th-label w-360">资料名</label>
+        <label class="list-th-label w-380">描述</label>
+        <label class="list-th-label w-80">大小</label>
+        <label class="list-th-label w-96">操作</label>
       </li>
       <li v-for="attach of attaches" :key="attach.id">
         <attach-card
@@ -106,8 +107,13 @@ export default {
 </script>
 
 <style lang='less' scoped>
+@padding: 20px;
 .attach-wrapper {
   margin-top: 16px;
+}
+.attach-list {
+  width: 100%;
+  padding: 0 10px;
 }
 .list-th {
   display: flex;
@@ -121,22 +127,28 @@ export default {
     font-size: 14px;
     font-weight: 400;
     color: #9b9b9b;
-    &.w-90 {
-      width: 90px;
-      margin-right: 16px;
+
+    &.type {
+      width: 80px;
+      margin-right: @padding;
       text-align: center;
     }
-    &.w-754 {
-      width: 754px;
+    &.w-360 {
+      width: 360px;
+      margin-right: @padding;
     }
-    &.w-72 {
-      width: 72px;
-      margin-right: 126px;
+    &.w-380 {
+      width: 380px;
+      margin-right: @padding;
+    }
+    &.w-80 {
+      width: 80px;
+      margin-right: 84px;
       text-align: center;
     }
-    &.w-102 {
-      width: 102px;
-      text-align: center;
+    &.w-96 {
+      width: 96px;
+      text-align: left;
     }
   }
 }

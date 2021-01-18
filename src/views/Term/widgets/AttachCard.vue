@@ -3,8 +3,8 @@
     <div class="image-wrapper">
       <the-loading-image
         v-if="attach.type === 'plan'"
-        :width="90"
-        :height="90"
+        :width="80"
+        :height="80"
         :url="attach.design_cover_url"
       />
       <img v-else class="file-icon" src="~images/term/data.svg" />
@@ -12,6 +12,9 @@
     <h3 class="attach-name ellipsis">
       {{ attach.name }}{{ attach.type === "plan" ? ".plan" : "" }}
     </h3>
+    <div class="attach-description">
+      {{ attach.description || "-" }}
+    </div>
     <div class="attach-size">
       {{ attach.type === "plan" ? "-" : sizeFormat(attach.size, 1) }}
     </div>
@@ -55,20 +58,16 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
+@padding: 20px;
 
 .attach-card {
   position: relative;
   margin-bottom: 20px;
-  padding: 0 20px;
+  padding: @padding;
   width: 100%;
-  height: 60px;
   display: flex;
   align-items: center;
   background: #fff;
-  &.plan {
-    padding: 15px 20px;
-    height: 120px;
-  }
   &::before {
     position: absolute;
     top: 0;
@@ -79,8 +78,8 @@ export default {
     content: "";
   }
   .image-wrapper {
-    margin-right: 16px;
-    width: 90px;
+    margin-right: @padding;
+    width: 80px;
     text-align: center;
     .file-icon {
       width: 60px;
@@ -88,14 +87,22 @@ export default {
     }
   }
   .attach-name {
-    width: 754px;
+    margin-right: @padding;
+    width: 360px;
     font-size: 20px;
     font-weight: 600;
     color: #333333;
   }
+  .attach-description {
+    margin-right: @padding;
+    width: 380px;
+    font-size: 14px;
+    line-height: 21px;
+    color: #8ea098;
+  }
   .attach-size {
-    margin-right: 126px;
-    width: 72px;
+    margin-right: 84px;
+    width: 80px;
     font-size: 14px;
     font-weight: 400;
     color: #9b9b9b;
@@ -105,7 +112,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 102px;
+    width: 96px;
     height: 30px;
     line-height: 30px;
     font-size: 14px;
