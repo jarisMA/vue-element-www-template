@@ -35,12 +35,15 @@ export default {
 
   questionChannels: `${PREFIX}/api/web/question/channels`,
   questions: `${PREFIX}/api/web/questions`,
-  questionAdd: `${PREFIX}/question`,
-  question: id => `${PREFIX}/question/${id}`,
-  questionAnswers: questionId => `${PREFIX}/question/${questionId}/answers`,
-  questionAnswerAdd: questionId => `${PREFIX}/question/${questionId}/answer`,
-  questionAnswer: id => `${PREFIX}/question/answer/${id}`,
+  questionAdd: `${PREFIX}/api/web/question`,
+  question: id => `${PREFIX}/api/web/question/${id}`,
+  questionAnswers: questionId =>
+    `${PREFIX}/api/web/question/${questionId}/answers`,
+  questionAnswerAdd: questionId =>
+    `${PREFIX}/api/web/question/${questionId}/answer`,
+  questionAnswer: id => `${PREFIX}/api/web/question/answer/${id}`,
   questionCommentAdd: answerId =>
-    `${PREFIX}/question/answer/${answerId}/comment`,
-  questionComment: id => `${PREFIX}/question/answer/comment/${id}`
+    `${PREFIX}/api/web/question/answer/${answerId}/comment`,
+  questionComment: id => `${PREFIX}/api/web/question/answer/comment/${id}`,
+  questionLikeAdd: `${PREFIX}/api/web/question/like`
 };

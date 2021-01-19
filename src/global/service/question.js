@@ -5,6 +5,9 @@ const questionService = {
   channels: () => {
     return request.get(API.questionChannels);
   },
+  addLike: (params = {}) => {
+    return request.post(API.questionLikeAdd, params);
+  },
   questions: (params = {}) => {
     return request.get(API.questions, params);
   },

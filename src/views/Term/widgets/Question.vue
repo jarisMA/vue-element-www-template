@@ -2,18 +2,26 @@
   <div class="question-wrapper" v-loading="loading">
     <div class="operate-container">
       <ul class="filter-container">
-        <li :class="[isAll ? 'active' : '']">全部</li>
-        <li :class="[!isAll ? 'active' : '']">只看我的</li>
+        <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">全部</li>
+        <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
+          只看我的
+        </li>
       </ul>
       <el-button class="add-btn" type="primary" @click="addVisible = true"
         >我要提问</el-button
       >
     </div>
     <ul class="question-list">
-      <li class="question-item" v-for="item of questions" :key="item.id">
-        <question-card :question="item" />
+      <li class="question-item" v-for="(item, key) of questions" :key="item.id">
+        <question-card :question="item" @like="addLike(item.id, key)" />
       </li>
     </ul>
+    <pagination
+      :pageSize="pagination.size"
+      :current-page="pagination.page"
+      :total="pagination.total"
+      @change-page="getData"
+    />
     <el-dialog
       class="add-dialog"
       :visible.sync="addVisible"
@@ -97,6 +105,7 @@
 import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
 import QuestionCard from "./QuestionCard";
+import Pagination from "components/Pagination";
 
 import { mapState } from "vuex";
 import questionService from "service/question";
@@ -106,7 +115,8 @@ export default {
   components: {
     TheAvatar,
     UploadImage,
-    QuestionCard
+    QuestionCard,
+    Pagination
   },
   data() {
     return {
@@ -142,13 +152,22 @@ export default {
         this.channels = res;
       });
     },
+    getAllData(flag) {
+      if (this.isAll === flag) {
+        return;
+      }
+      this.isAll = flag;
+      this.getData();
+    },
     getData(start = 1) {
       this.loading = true;
+      let params = {
+        page: start,
+        page_size: this.pagination.size
+      };
+      !this.isAll && (params.mine = true);
       questionService
-        .questions({
-          page: start,
-          page_size: this.pagination.size
-        })
+        .questions(params)
         .then(res => {
           this.questions = res.list;
           this.pagination.page = start;
@@ -183,12 +202,26 @@ export default {
       this.addForm.images.push(url);
     },
     deleteImage(key) {
-      this.addForm.images.splice(key);
+      this.addForm.images.splice(key, 1);
     },
     handleClose(done) {
       this.$refs["addForm"].resetFields();
       done && done();
       this.addVisible = false;
+    },
+    addLike(id, key) {
+      questionService
+        .addLike({
+          type: 1,
+          resource_id: id
+        })
+        .then(() => {
+          this.$set(this.questions, key, {
+            ...this.questions[key],
+            like_count: this.questions[key].like_count + 1,
+            isLike: true
+          });
+        });
     }
   }
 };
@@ -198,6 +231,9 @@ export default {
 @import "~styles/variable";
 @baseColor: #8ea098;
 .question-wrapper {
+  .rz-icon {
+    font-size: 24px;
+  }
   .operate-container {
     display: flex;
     justify-content: space-between;
@@ -222,6 +258,20 @@ export default {
   }
   .question-list {
     margin-top: 20px;
+    .question-item {
+      position: relative;
+      &:not(:last-child) {
+        &::after {
+          position: absolute;
+          bottom: 0;
+          left: 20px;
+          width: calc(100% - 40px);
+          height: 1px;
+          content: "";
+          background: #efefef;
+        }
+      }
+    }
   }
   /deep/ .add-btn {
     height: 30px;
@@ -359,10 +409,5 @@ export default {
       }
     }
   }
-}
-</style>
-<style lang="less" scoped>
-.rz-icon {
-  font-size: 24px;
 }
 </style>
