@@ -1,13 +1,13 @@
 import routesPlan from "./routesPlan";
 import routesTerm from "./routesTerm";
 import routesBible from "./routesBible";
+import routesQuestion from "./routesQuestion";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import My from "@/views/My/Index";
 import Protocol from "@/views/Protocol";
 import Profile from "@/views/Profile";
-
 const routes = [
   {
     path: "/",
@@ -38,7 +38,8 @@ const routes = [
       },
       ...routesPlan,
       ...routesTerm,
-      ...routesBible
+      ...routesBible,
+      ...routesQuestion
     ]
   },
   {

@@ -1,5 +1,5 @@
 <template>
-  <div class="question-card">
+  <div class="question-card" @click="goQuestionDetail(question.id)">
     <div class="card-top">
       <label class="question-channel">
         <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
@@ -33,7 +33,7 @@
       <ul class="question-status">
         <li
           :class="['like-status', question.isLike ? 'active' : '']"
-          @click="handleLikeClick"
+          @click.stop="handleLikeClick"
         >
           <icon-svg class="like-icon" svg-name="like"></icon-svg>
           好问题
@@ -53,6 +53,7 @@
 import ThePreviewImage from "components/ThePreviewImage";
 import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
+import { goQuestionDetail } from "utils/routes";
 
 export default {
   name: "QuestionCard",
@@ -80,6 +81,7 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    goQuestionDetail,
     handleLikeClick() {
       this.$emit("like");
     }
@@ -135,6 +137,7 @@ export default {
 .question-card {
   padding: 24px 20px;
   background: #fff;
+  cursor: pointer;
   .card-top {
     .question-channel {
       line-height: 24px;
@@ -147,6 +150,7 @@ export default {
     .question-title {
       margin-top: 10px;
       line-height: 26px;
+      font-weight: bold;
       font-size: 20px;
       color: #111111;
     }
@@ -194,14 +198,14 @@ export default {
         color: #81948b;
         transition: all @duration;
         cursor: pointer;
-        &:hover {
-          color: @primaryColor;
-          .like-icon,
-          .comment-icon {
-            fill: @primaryColor;
-            stroke: @primaryColor;
-          }
-        }
+        // &:hover {
+        //   color: @primaryColor;
+        //   .like-icon,
+        //   .comment-icon {
+        //     fill: @primaryColor;
+        //     stroke: @primaryColor;
+        //   }
+        // }
         &.active {
           color: @primaryColor;
           .like-icon,

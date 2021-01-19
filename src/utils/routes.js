@@ -81,6 +81,18 @@ export const goBibleDetail = (id, type = "_self") => {
   );
 };
 
+export const goQuestionDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "QuestionDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&
