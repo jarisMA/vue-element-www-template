@@ -255,6 +255,8 @@ export default {
         }
       }
       .el-tabs__content {
+        overflow-y: auto;
+        height: calc(100vh - 136px);
         padding: 13px 20px 20px;
       }
     }
