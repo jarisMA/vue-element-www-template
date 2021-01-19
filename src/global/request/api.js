@@ -31,5 +31,16 @@ export default {
   campAttaches: termId => `${PREFIX}/api/web/camp/term/${termId}/attach`,
   bibles: `${PREFIX}/api/web/bible`,
   bible: id => `${PREFIX}/api/web/bible/${id}`,
-  biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`
+  biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`,
+
+  questionChannels: `${PREFIX}/api/web/question/channels`,
+  questions: `${PREFIX}/api/web/questions`,
+  questionAdd: `${PREFIX}/question`,
+  question: id => `${PREFIX}/question/${id}`,
+  questionAnswers: questionId => `${PREFIX}/question/${questionId}/answers`,
+  questionAnswerAdd: questionId => `${PREFIX}/question/${questionId}/answer`,
+  questionAnswer: id => `${PREFIX}/question/answer/${id}`,
+  questionCommentAdd: answerId =>
+    `${PREFIX}/question/answer/${answerId}/comment`,
+  questionComment: id => `${PREFIX}/question/answer/comment/${id}`
 };

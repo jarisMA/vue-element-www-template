@@ -583,7 +583,7 @@
         left: 100%;
         z-index: 10;
         border: 1px solid #E4E7ED;
-        border-radius: 2px;
+        border-radius: 0;
         -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
         box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
       .el-menu--collapse .el-submenu.is-opened > .el-submenu__title .el-submenu__icon-arrow {
@@ -594,7 +594,7 @@
     min-width: 200px;
     border: none;
     padding: 5px 0;
-    border-radius: 2px;
+    border-radius: 0;
     -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1); }
     .el-menu--popup-bottom-start {

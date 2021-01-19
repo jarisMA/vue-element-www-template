@@ -46,7 +46,9 @@
         <el-tab-pane label="资料包" name="attach">
           <attach :attaches="attaches" :loading="loading" />
         </el-tab-pane>
-        <el-tab-pane label="讨论区" name="discussion" disabled> </el-tab-pane>
+        <el-tab-pane label="讨论区" name="question">
+          <question />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -57,6 +59,7 @@ import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
 import Attach from "./widgets/Attach";
+import Question from "./widgets/Question";
 
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
@@ -67,7 +70,8 @@ export default {
   components: {
     TheLoadingImage,
     Homework,
-    Attach
+    Attach,
+    Question
   },
   data() {
     return {
@@ -81,7 +85,7 @@ export default {
   },
   created() {
     const { tab } = this.$route.query;
-    if (tab && ["homework", "attach"].includes(tab)) {
+    if (tab && ["homework", "attach", "question"].includes(tab)) {
       this.activeName = tab;
     }
     this.getData();

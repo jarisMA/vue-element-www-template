@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="uploading">
+  <div :class="[theme]" v-loading="uploading">
     <el-upload
       ref="upload"
       class="upload"
@@ -19,6 +19,11 @@ import ossService from "service/oss";
 
 export default {
   name: "UploadImage",
+  props: {
+    theme: {
+      type: String
+    }
+  },
   data() {
     return {
       uploading: false
@@ -82,6 +87,18 @@ export default {
   img {
     width: 44px;
     height: 44px;
+  }
+}
+.question {
+  .add-image {
+    width: 80px;
+    height: 80px;
+    border-color: #efefef;
+    background: transparent;
+    img {
+      width: 24px;
+      height: 24px;
+    }
   }
 }
 </style>
