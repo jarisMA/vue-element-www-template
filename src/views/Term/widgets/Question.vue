@@ -13,7 +13,11 @@
     </div>
     <ul class="question-list">
       <li class="question-item" v-for="(item, key) of questions" :key="item.id">
-        <question-card :question="item" @like="addLike(item.id, key)" />
+        <question-card
+          :question="item"
+          @like="addLike(item.id, key)"
+          @unlike="deleteLike(item.id, key)"
+        />
       </li>
     </ul>
     <pagination
@@ -22,6 +26,12 @@
       :total="pagination.total"
       @change-page="getData"
     />
+    <div class="question-more">
+      <p>没有想了解的内容？</p>
+      <p>
+        你还可以 <span class="primary" @click="addVisible = true">去提问</span>
+      </p>
+    </div>
     <el-dialog
       class="add-dialog"
       :visible.sync="addVisible"
@@ -219,9 +229,18 @@ export default {
           this.$set(this.questions, key, {
             ...this.questions[key],
             like_count: this.questions[key].like_count + 1,
-            isLike: true
+            is_like: true
           });
         });
+    },
+    deleteLike(id, key) {
+      questionService.deleteLike(1, id).then(() => {
+        this.$set(this.questions, key, {
+          ...this.questions[key],
+          like_count: this.questions[key].like_count - 1,
+          is_like: false
+        });
+      });
     }
   }
 };
@@ -231,6 +250,7 @@ export default {
 @import "~styles/variable";
 @baseColor: #8ea098;
 .question-wrapper {
+  padding: 0 10px;
   .rz-icon {
     font-size: 24px;
   }
@@ -271,6 +291,38 @@ export default {
           background: #efefef;
         }
       }
+    }
+  }
+  .question-more {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 30px auto 60px;
+    width: 108px;
+    line-height: 18px;
+    font-size: 12px;
+    text-align: center;
+    color: #8ea098;
+    &::before,
+    &::after {
+      position: absolute;
+      top: 50%;
+      width: 60px;
+      height: 1px;
+      background: #efefef;
+      content: "";
+      transform: translateY(-50%);
+    }
+    &::before {
+      left: -80px;
+    }
+    &::after {
+      right: -80px;
+    }
+    .primary {
+      color: @primaryColor;
+      cursor: pointer;
     }
   }
   /deep/ .add-btn {

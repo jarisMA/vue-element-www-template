@@ -45,5 +45,7 @@ export default {
   questionCommentAdd: answerId =>
     `${PREFIX}/api/web/question/answer/${answerId}/comment`,
   questionComment: id => `${PREFIX}/api/web/question/answer/comment/${id}`,
-  questionLikeAdd: `${PREFIX}/api/web/question/like`
+  questionLikeAdd: `${PREFIX}/api/web/question/like`,
+  questionLikeDelete: (type, resourceId) =>
+    `${PREFIX}/api/web/question/${type}/${resourceId}/like`
 };

@@ -32,7 +32,7 @@
       </div>
       <ul class="question-status">
         <li
-          :class="['like-status', question.isLike ? 'active' : '']"
+          :class="['like-status', question.is_like ? 'active' : '']"
           @click.stop="handleLikeClick"
         >
           <icon-svg class="like-icon" svg-name="like"></icon-svg>
@@ -83,7 +83,11 @@ export default {
   methods: {
     goQuestionDetail,
     handleLikeClick() {
-      this.$emit("like");
+      if (this.question.is_like) {
+        this.$emit("unlike");
+      } else {
+        this.$emit("like");
+      }
     }
   }
 };
