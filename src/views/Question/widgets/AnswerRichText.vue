@@ -1,6 +1,6 @@
 <template>
   <div class="answer-rich-text-wrapper">
-    <the-rich-text :value.sync="content" placeholder="写回答" />
+    <the-rich-text ref="richText" :value.sync="content" placeholder="写回答" />
     <div class="answer-info">
       <div class="answer-user">
         <the-avatar :size="32" :url="userInfo.avatar_url" />
@@ -71,6 +71,11 @@ export default {
         return true;
       }
       return false;
+    },
+    focus() {
+      this.$nextTick(() => {
+        this.$refs["richText"].focus();
+      });
     }
   }
 };

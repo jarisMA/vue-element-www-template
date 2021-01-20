@@ -7,7 +7,10 @@
       accept="image/*"
       :before-upload="upload"
     >
-      <div class="add-image">
+      <div v-if="theme === 'comment'">
+        <icon-svg svg-class="pic-icon" svg-name="pic"></icon-svg>
+      </div>
+      <div class="add-image" v-else>
         <img src="~images/add.png" />
       </div>
     </el-upload>
@@ -75,6 +78,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 .add-image {
   display: flex;
   align-items: center;
@@ -89,6 +94,7 @@ export default {
     height: 44px;
   }
 }
+.comment-more,
 .question {
   .add-image {
     width: 80px;
@@ -100,5 +106,15 @@ export default {
       height: 24px;
     }
   }
+}
+.comment-more {
+  .add-image {
+    width: 130px;
+    height: 130px;
+  }
+}
+.pic-icon {
+  font-size: 24px;
+  color: @primaryColor;
 }
 </style>

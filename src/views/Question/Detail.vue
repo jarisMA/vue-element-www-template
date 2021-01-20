@@ -1,12 +1,10 @@
 <template>
-  <div class="question-detail-page"
-       v-loading="loading">
+  <div class="question-detail-page" v-loading="loading">
     <div class="detail-wrapper">
       <div class="container-920">
         <div class="detail-top">
           <label class="question-channel">
-            <icon-svg svg-class="rz-icon"
-                      svg-name="rz"></icon-svg>
+            <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
             {{ question.channel.name }}
           </label>
           <h3 class="question-title">
@@ -14,44 +12,46 @@
           </h3>
         </div>
         <div class="detail-content">
-          <div class="question-content"
-               v-if="question.content">
-            <p v-for="(item, key) of question.content.split('\n')"
-               :key="key">
+          <div class="question-content" v-if="question.content">
+            <p v-for="(item, key) of question.content.split('\n')" :key="key">
               {{ item }}
             </p>
           </div>
           <div class="question-images">
-            <the-preview-image width="80px"
-                               height="80px"
-                               :srcList="question.images" />
+            <the-preview-image
+              width="80px"
+              height="80px"
+              :srcList="question.images"
+            />
           </div>
         </div>
         <div class="detail-bottom">
-          <el-button class="add-btn"
-                     type="primary"
-                     @click="startAnswer">写回答</el-button>
+          <el-button class="add-btn" type="primary" @click="startAnswer"
+            >写回答</el-button
+          >
           <ul class="question-status">
-            <li :class="['like-status', question.is_like ? 'active' : '']"
-                @click.stop="toggleLikeClick">
-              <icon-svg class="like-icon"
-                        svg-name="like"></icon-svg>
+            <li
+              :class="['like-status', question.is_like ? 'active' : '']"
+              @click.stop="toggleLikeClick"
+            >
+              <icon-svg class="like-icon" svg-name="like"></icon-svg>
               好问题
               <span class="status-count">{{ question.like_count }}</span>
             </li>
             <li class="more-status">
-              <el-dropdown class="dropdown-wrapper"
-                           placement="top-end">
+              <el-dropdown class="dropdown-wrapper" placement="top-end">
                 <i class="el-icon-more"></i>
-                <el-dropdown-menu slot="dropdown"
-                                  class="question-dropdown">
-                  <el-dropdown-item v-if="userInfo.id === question.user.id"
-                                    @click.native="deleteQuestion">
+                <el-dropdown-menu slot="dropdown" class="question-dropdown">
+                  <el-dropdown-item
+                    v-if="userInfo.id === question.user.id"
+                    @click.native="deleteQuestion"
+                  >
                     <i class="el-icon-delete"></i>
                     <span class="delete-tip">删除</span>
                   </el-dropdown-item>
-                  <el-dropdown-item v-else
-                                    @click.native="reportQuestion">举报</el-dropdown-item>
+                  <el-dropdown-item v-else @click.native="reportQuestion"
+                    >举报</el-dropdown-item
+                  >
                 </el-dropdown-menu>
               </el-dropdown>
             </li>
@@ -60,38 +60,38 @@
       </div>
     </div>
     <div class="container-960">
-      <div class="total-answer-tip"
-           v-if="question.answer_count > 0">
+      <div class="total-answer-tip" v-if="question.answer_count > 0">
         共 <span>{{ question.answer_count }}</span> 条回答
       </div>
       <div class="question-main">
         <div class="question-main-left">
-          <div v-show="answerVisible"
-               :class="['rich-text-wrapper']">
-            <answer-rich-text @submited="addAnswerSucc" />
+          <div v-show="answerVisible" :class="['rich-text-wrapper']">
+            <answer-rich-text ref="answerRichText" @submited="addAnswerSucc" />
           </div>
-          <div class="answer-list-wrapper"
-               v-if="question.answer_count > 0">
+          <div class="answer-list-wrapper" v-if="question.answer_count > 0">
             <ul class="answer-list">
-              <li class="answer-item"
-                  v-for="item of answers"
-                  :key="item.id">
-                <answer-card :answer="item" />
+              <li
+                class="answer-item"
+                v-for="(item, key) of answers"
+                :key="item.id"
+              >
+                <answer-card
+                  :answer="item"
+                  @deleted="deleteAnswerSucc(key)"
+                  @commented="getAnswers()"
+                />
               </li>
             </ul>
             <div class="answer-more">
               <p>暂无更多回答</p>
               <p>
                 你还可以
-                <span class="primary"
-                      @click="startAnswer">写回答</span>
+                <span class="primary" @click="startAnswer">写回答</span>
               </p>
             </div>
           </div>
-          <div class="empty-wrapper"
-               v-else-if="!loading">
-            <img class="empty-icon"
-                 src="~images/question/answer_empty.svg" />
+          <div class="empty-wrapper" v-else-if="!loading">
+            <img class="empty-icon" src="~images/question/answer_empty.svg" />
             <div class="empty-content">
               <p>还没有人回答过这个问题</p>
               <p>开始 <span class="primary">写第一个回答</span></p>
@@ -102,21 +102,21 @@
           <div class="sticky-wrapper">
             <div class="question-card">
               <label class="question-channel">
-                <icon-svg svg-class="rz-icon"
-                          svg-name="rz"></icon-svg>
+                <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
                 {{ question.channel.name }}
               </label>
               <h3 class="question-title">
                 {{ question.title }}
               </h3>
-              <el-button class="add-btn"
-                         type="primary"
-                         @click="startAnswer">写回答</el-button>
+              <el-button class="add-btn" type="primary" @click="startAnswer"
+                >写回答</el-button
+              >
             </div>
-            <div class="back-top"
-                 @click="backTop">
-              <img class="back-top-icon"
-                   src="~images/question/back_to_top.svg" />
+            <div class="back-top" @click="backTop">
+              <img
+                class="back-top-icon"
+                src="~images/question/back_to_top.svg"
+              />
               <span>回到顶部</span>
             </div>
           </div>
@@ -140,7 +140,7 @@ export default {
     AnswerCard,
     AnswerRichText
   },
-  data () {
+  data() {
     return {
       id: null,
       loading: true,
@@ -161,12 +161,12 @@ export default {
   computed: {
     ...mapState(["userInfo"])
   },
-  created () {
+  created() {
     this.id = this.$route.params.id;
     this.getData();
   },
   methods: {
-    getData () {
+    getData() {
       const id = this.id;
       let promiseArr = [
         questionService.question(id),
@@ -186,7 +186,7 @@ export default {
           this.loading = false;
         });
     },
-    getAnswers (start = 1) {
+    getAnswers(start = 1) {
       this.loading = true;
       questionService
         .answers(this.id, {
@@ -202,16 +202,23 @@ export default {
           this.loading = false;
         });
     },
-    startAnswer () {
+    startAnswer() {
       this.answerVisible = true;
+      this.$nextTick(() => {
+        this.$refs["answerRichText"].focus();
+      });
       this.backTop();
     },
-    addAnswerSucc () {
+    addAnswerSucc() {
       this.answerVisible = false;
       this.question.answer_count++;
       this.getAnswers();
     },
-    toggleLikeClick () {
+    deleteAnswerSucc(key) {
+      this.question.answer_count--;
+      this.answers.splice(key, 1);
+    },
+    toggleLikeClick() {
       if (!this.question.is_like) {
         questionService
           .addLike({
@@ -227,7 +234,7 @@ export default {
         });
       }
     },
-    toggleLike (flag) {
+    toggleLike(flag) {
       if (flag) {
         this.$set(this.question, "like_count", this.question.like_count + 1);
       } else {
@@ -235,7 +242,7 @@ export default {
       }
       this.$set(this.question, "is_like", flag);
     },
-    deleteQuestion () {
+    deleteQuestion() {
       this.loading = true;
       questionService
         .deleteQuestion(this.id)
@@ -247,8 +254,8 @@ export default {
           this.loading = false;
         });
     },
-    reportQuestion () { },
-    backTop () {
+    reportQuestion() {},
+    backTop() {
       window.scrollTo({
         top: 0,
         behavior: "smooth"

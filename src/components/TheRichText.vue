@@ -198,6 +198,9 @@ export default {
           }
         });
       }
+    },
+    focus() {
+      this.$refs["quillEditor"].quill.focus();
     }
   }
 };
