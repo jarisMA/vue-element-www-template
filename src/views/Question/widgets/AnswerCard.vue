@@ -20,7 +20,7 @@
         </div>
         <div class="comment-wrapper">
           <icon-svg svg-class="comment-icon" svg-name="comment"></icon-svg>
-          <span>{{ answer.like_count }} 评论</span>
+          <span>{{ answer.comment_count }} 评论</span>
         </div>
       </div>
       <div class="operate-right">
@@ -41,14 +41,22 @@
         </el-dropdown>
       </div>
     </div>
-    <div class="comment-list-wrapper">
+    <div class="comment-list-wrapper" v-if="showComment">
       <div class="comment-tips">{{ answer.comment_count }} 条评论</div>
       <ul class="comment-list">
         <li class="comment-item" v-for="item of answer.comments" :key="item.id">
-          <comment-card :comment="item" />
+          <comment-card
+            :comment="item"
+            :answerId="answer.id"
+            @commented="commented"
+          />
         </li>
       </ul>
-      <comment :answerId="answer.id" @commented="commented" />
+      <comment
+        class="comment-wrapper"
+        :answerId="answer.id"
+        @commented="commented"
+      />
     </div>
   </div>
 </template>
@@ -193,6 +201,26 @@ export default {
     line-height: 21px;
     font-size: 14px;
     color: #606c66;
+  }
+  .comment-list {
+    .comment-item {
+      position: relative;
+      padding: 10px 0;
+      &:not(:last-child) {
+        &::after {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          background: #efefef;
+          content: "";
+        }
+      }
+    }
+  }
+  .comment-wrapper {
+    margin-top: 20px;
   }
 }
 </style>

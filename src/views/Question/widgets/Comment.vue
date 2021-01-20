@@ -154,6 +154,7 @@ export default {
   border: 1px solid #efefef;
   box-sizing: border-box;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  z-index: 10;
   &::before {
     position: absolute;
     top: -5px;
