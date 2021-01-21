@@ -7,7 +7,23 @@
       <div class="comment-detail">
         <div class="card-top">
           <div class="user-info">
-            <span class="user-name">{{ comment.user.nickname }}</span>
+            <span
+              :class="[
+                'user-name',
+                userInfo.id === comment.user.id ? 'active' : ''
+              ]"
+              >{{ comment.user.nickname }}</span
+            >
+            <template v-if="comment.cited_user">
+              <span class="reply-span">回复</span>
+              <span
+                :class="[
+                  'user-name',
+                  userInfo.id === comment.cited_user.id ? 'active' : ''
+                ]"
+                >{{ comment.cited_user.nickname }}</span
+              >
+            </template>
           </div>
           <div class="time-wrapper">
             {{ comment.created_at }}
@@ -50,6 +66,7 @@
           <comment
             :answerId="answerId"
             :parentId="comment.id"
+            :userId="comment.user.id"
             @commented="commented"
           />
         </div>
@@ -140,6 +157,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 @baseColor: #81948b;
 .comment-card {
   display: flex;
@@ -163,6 +182,17 @@ export default {
           font-weight: 500;
           font-size: 14px;
           color: #111;
+          &.active {
+            color: @primaryColor;
+          }
+        }
+        .reply-span {
+          display: inline-block;
+          margin: 0 10px;
+          line-height: 21px;
+          font-weight: normal;
+          font-size: 14px;
+          color: #81948b;
         }
       }
       .time-wrapper {

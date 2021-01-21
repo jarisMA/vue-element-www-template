@@ -82,6 +82,13 @@
                 />
               </li>
             </ul>
+            <pagination
+              class="pagination-wrapper"
+              :pageSize="pagination.size"
+              :current-page="pagination.page"
+              :total="pagination.total"
+              @change-page="getAnswers"
+            />
             <div class="answer-more">
               <p>暂无更多回答</p>
               <p>
@@ -131,6 +138,7 @@ import questionService from "service/question";
 import ThePreviewImage from "components/ThePreviewImage";
 import AnswerCard from "./widgets/AnswerCard";
 import AnswerRichText from "./widgets/AnswerRichText";
+import Pagination from "components/Pagination";
 import { mapState } from "vuex";
 
 export default {
@@ -138,7 +146,8 @@ export default {
   components: {
     ThePreviewImage,
     AnswerCard,
-    AnswerRichText
+    AnswerRichText,
+    Pagination
   },
   data() {
     return {
@@ -181,6 +190,8 @@ export default {
             (question.images && question.images.split(",")) || [];
           this.question = question;
           this.answers = answers.list;
+          this.pagination.page = 1;
+          this.pagination.total = answers.pagination.total;
         })
         .finally(() => {
           this.loading = false;
@@ -387,6 +398,9 @@ export default {
         border-bottom: 1px solid #efefef;
       }
     }
+  }
+  .pagination-wrapper {
+    margin-top: 20px;
   }
   .answer-more {
     position: relative;

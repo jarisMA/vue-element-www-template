@@ -14,6 +14,7 @@ import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
 
 import ossService from "service/oss";
+import unfoldSvg from "images/question/unfold.svg";
 
 const uploadConfig = {
   accept: "image/jpeg image/gif image/png",
@@ -34,7 +35,8 @@ const toolbarOptions = [
   // [{ align: [] }],
   ["blockquote"],
   ["link", "image"],
-  ["clean"]
+  ["clean"],
+  ["resize"]
 ];
 
 const handlers = function(that) {
@@ -75,6 +77,10 @@ const handlers = function(that) {
         );
       });
       fileInput.click();
+    },
+    resize: () => {
+      //添加工具方法
+      that.$emit("larger");
     }
   };
 };
@@ -133,6 +139,7 @@ export default {
       false
     );
     this.changeDisabled(this.disabled);
+    this.initResizeBtn();
   },
   methods: {
     changeDisabled(flag) {
@@ -201,6 +208,10 @@ export default {
     },
     focus() {
       this.$refs["quillEditor"].quill.focus();
+    },
+    initResizeBtn() {
+      const sourceEditorButton = document.querySelector(".ql-resize");
+      sourceEditorButton.style.cssText = `width:20px;height:20px;background-image:url(${unfoldSvg});background-size:cover; float:right;`;
     }
   }
 };
@@ -244,6 +255,12 @@ export default {
       height: 1px;
       content: "";
       background: #efefef;
+    }
+    .ql-formats {
+      &:last-child {
+        margin-right: 0;
+        float: right;
+      }
     }
   }
   .ql-container {

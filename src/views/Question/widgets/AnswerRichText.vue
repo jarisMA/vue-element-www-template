@@ -50,6 +50,7 @@ export default {
   methods: {
     submit() {
       if (!this.isEmpty(this.content)) {
+        this.submiting = true;
         questionService
           .addAnswer(this.$route.params.id, {
             content: this.content
@@ -57,6 +58,9 @@ export default {
           .then(() => {
             this.$emit("submited");
             this.content = null;
+          })
+          .finally(() => {
+            this.submiting = false;
           });
       } else {
         this.$notice({
