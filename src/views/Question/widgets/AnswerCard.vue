@@ -35,11 +35,18 @@
           <transition name="fade">
             <div class="count-tip" v-show="isClap">+ {{ clapCount }}</div>
           </transition>
-          <transition name="fadeFlower">
+          <transition name="fadeFlower1">
             <img
               v-show="isClap"
-              class="flower-icon"
-              src="~images/question/flower.svg"
+              class="flower1-icon"
+              src="~images/question/flower1.svg"
+            />
+          </transition>
+          <transition name="fadeFlower2">
+            <img
+              v-show="isClap"
+              class="flower2-icon"
+              src="~images/question/flower2.svg"
             />
           </transition>
           <img
@@ -239,9 +246,21 @@ export default {
 }
 @keyframes flower {
   0% {
+    opacity: 1;
     transform: scale(0.1);
   }
   100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+@keyframes flower2 {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  100% {
+    opacity: 1;
     transform: scale(1);
   }
 }
@@ -261,12 +280,7 @@ export default {
   transform: translateY(-50px);
   opacity: 0;
 }
-.fadeFlower-leave-active {
-  transition: all 0.5s;
-}
-.fadeFlower-leave-to {
-  opacity: 0;
-}
+
 .answer-card-wrapper {
   background: #fff;
 }
@@ -384,12 +398,18 @@ export default {
           animation: clap @duration infinite;
         }
       }
-      .flower-icon {
+      .flower1-icon,
+      .flower2-icon {
         position: absolute;
         left: 3px;
         top: -8px;
         width: 50px;
+      }
+      .flower1-icon {
         animation: flower 0.3s infinite;
+      }
+      .flower2-icon {
+        animation: flower2 0.3s infinite;
       }
       span {
         color: @primaryColor;

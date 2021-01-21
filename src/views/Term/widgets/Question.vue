@@ -60,7 +60,7 @@
           <the-avatar :size="40" :url="userInfo.avatar_url" />
           <el-input
             type="textarea"
-            v-model="addForm.title"
+            v-model.trim="addForm.title"
             resize="none"
             :rows="2"
             :autosize="{ minRows: 2, maxRows: 2 }"
@@ -208,6 +208,20 @@ export default {
     },
     addQuestion() {
       const { title, content, images, channel_id } = this.addForm;
+      if (!title) {
+        this.$notice({
+          type: "danger",
+          title: "问题不能为空"
+        });
+        return;
+      }
+      if (!channel_id) {
+        this.$notice({
+          type: "danger",
+          title: "请选择家装领域"
+        });
+        return;
+      }
       this.submiting = true;
       questionService
         .addQuestion({

@@ -94,6 +94,13 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.addForm.content) {
+        this.$notice({
+          type: "danger",
+          title: "请写下你的想法～"
+        });
+        return;
+      }
       let params = {
         content: this.addForm.content,
         images: this.addForm.images.join(",")
