@@ -49,12 +49,13 @@
         <el-dropdown class="dropdown-wrapper" placement="top-end">
           <i class="el-icon-more"></i>
           <el-dropdown-menu slot="dropdown" class="question-dropdown">
-            <el-dropdown-item
-              v-if="userInfo.id === answer.user.id"
-              @click.native="deleteAnswer"
-            >
-              <i class="el-icon-delete"></i>
-              <span class="delete-tip">删除</span>
+            <el-dropdown-item v-if="userInfo.id === answer.user.id">
+              <el-popconfirm @confirm="deleteAnswer" title="确定删除此回答吗？">
+                <div slot="reference">
+                  <i class="el-icon-delete"></i>
+                  <span class="delete-tip">删除</span>
+                </div>
+              </el-popconfirm>
             </el-dropdown-item>
             <el-dropdown-item v-else @click.native="reportAnswer"
               >举报</el-dropdown-item
@@ -117,7 +118,7 @@ export default {
     return {
       fold: true,
       showUnfoldBtn: false,
-      showComment: true,
+      showComment: false,
       maxHeight: 363,
       commentMaxHeight: 0
     };
@@ -321,5 +322,10 @@ export default {
   .comment-wrapper {
     margin-top: 20px;
   }
+}
+</style>
+<style lang="less">
+.el-popconfirm__main {
+  padding-bottom: 10px !important;
 }
 </style>

@@ -2,35 +2,52 @@
   <div class="question-wrapper" v-loading="loading">
     <div class="operate-container">
       <ul class="filter-container">
-        <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">全部</li>
-        <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
-          只看我的
-        </li>
+        <template v-if="questions.length > 0">
+          <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
+            全部
+          </li>
+          <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
+            只看我的
+          </li>
+        </template>
       </ul>
       <el-button class="add-btn" type="primary" @click="addVisible = true"
         >我要提问</el-button
       >
     </div>
-    <ul class="question-list">
-      <li class="question-item" v-for="(item, key) of questions" :key="item.id">
-        <question-card
-          :question="item"
-          @like="addLike(item.id, key)"
-          @unlike="deleteLike(item.id, key)"
-        />
-      </li>
-    </ul>
-    <pagination
-      :pageSize="pagination.size"
-      :current-page="pagination.page"
-      :total="pagination.total"
-      @change-page="getData"
-    />
-    <div class="question-more">
-      <p>没有想了解的内容？</p>
-      <p>
-        你还可以 <span class="primary" @click="addVisible = true">去提问</span>
-      </p>
+    <template v-if="questions.length > 0">
+      <ul class="question-list">
+        <li
+          class="question-item"
+          v-for="(item, key) of questions"
+          :key="item.id"
+        >
+          <question-card
+            :question="item"
+            @like="addLike(item.id, key)"
+            @unlike="deleteLike(item.id, key)"
+          />
+        </li>
+      </ul>
+      <pagination
+        :pageSize="pagination.size"
+        :current-page="pagination.page"
+        :total="pagination.total"
+        @change-page="getData"
+      />
+      <div class="question-more">
+        <p>没有想了解的内容？</p>
+        <p>
+          你还可以
+          <span class="primary" @click="addVisible = true">去提问</span>
+        </p>
+      </div>
+    </template>
+    <div v-else-if="!loading" class="empty-container">
+      <the-empty noText="还没有人提出过问题" />
+      <el-button class="add-btn" type="primary" @click="addVisible = true"
+        >我要提问</el-button
+      >
     </div>
     <el-dialog
       class="add-dialog"
@@ -116,6 +133,7 @@ import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
 import QuestionCard from "./QuestionCard";
 import Pagination from "components/Pagination";
+import TheEmpty from "components/TheEmpty";
 
 import { mapState } from "vuex";
 import questionService from "service/question";
@@ -126,7 +144,8 @@ export default {
     TheAvatar,
     UploadImage,
     QuestionCard,
-    Pagination
+    Pagination,
+    TheEmpty
   },
   data() {
     return {
@@ -459,6 +478,28 @@ export default {
           line-height: 14px;
         }
       }
+    }
+  }
+}
+.empty-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 40px;
+  width: 100%;
+  height: 515px;
+  background: #fff;
+  /deep/ .empty-wrapper {
+    padding: 0 0 20px;
+    img {
+      width: 260px;
+    }
+    span {
+      margin-top: 27px;
+      line-height: 21px;
+      font-size: 14px;
+      color: #8ea098;
     }
   }
 }

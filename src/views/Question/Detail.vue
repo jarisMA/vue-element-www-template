@@ -42,12 +42,16 @@
               <el-dropdown class="dropdown-wrapper" placement="top-end">
                 <i class="el-icon-more"></i>
                 <el-dropdown-menu slot="dropdown" class="question-dropdown">
-                  <el-dropdown-item
-                    v-if="userInfo.id === question.user.id"
-                    @click.native="deleteQuestion"
-                  >
-                    <i class="el-icon-delete"></i>
-                    <span class="delete-tip">删除</span>
+                  <el-dropdown-item v-if="userInfo.id === question.user.id">
+                    <el-popconfirm
+                      @confirm="deleteQuestion"
+                      title="确定删除此回答吗？"
+                    >
+                      <div slot="reference">
+                        <i class="el-icon-delete"></i>
+                        <span class="delete-tip">删除</span>
+                      </div>
+                    </el-popconfirm>
                   </el-dropdown-item>
                   <el-dropdown-item v-else @click.native="reportQuestion"
                     >举报</el-dropdown-item

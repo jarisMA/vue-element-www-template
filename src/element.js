@@ -76,7 +76,8 @@ import {
   // PageHeader,
   // CascaderPanel,
   Loading,
-  MessageBox
+  MessageBox,
+  Popconfirm
   // Message,
   // Notification
 } from "element-ui";
@@ -156,6 +157,7 @@ Vue.use(Image);
 // Vue.use(Backtop);
 // Vue.use(PageHeader);
 // Vue.use(CascaderPanel);
+Vue.use(Popconfirm);
 
 Vue.use(Loading.directive);
 

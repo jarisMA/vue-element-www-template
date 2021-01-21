@@ -51,13 +51,15 @@
           >
             <img src="~images/question/reply.svg" />回复
           </div>
-          <div
-            class="delete-operate operate-item"
+          <el-popconfirm
             v-if="allowDelete && userInfo.id === comment.user.id"
-            @click="deleteComment"
+            @confirm="deleteComment"
+            title="确定删除此评论吗？"
           >
-            <img src="~images/question/delete.svg" />删除
-          </div>
+            <div class="delete-operate operate-item" slot="reference">
+              <img src="~images/question/delete.svg" />删除
+            </div>
+          </el-popconfirm>
           <div class="report-operate operate-item" v-else-if="allowReport">
             <img src="~images/question/report.svg" />举报
           </div>
@@ -171,6 +173,14 @@ export default {
     width: 5px;
   }
   .comment-detail {
+    &:hover {
+      .card-bottom {
+        .report-operate,
+        .delete-operate {
+          display: flex;
+        }
+      }
+    }
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -215,6 +225,7 @@ export default {
     }
     .card-bottom {
       display: flex;
+      min-height: 18px;
       line-height: 18px;
       font-size: 12px;
       color: @baseColor;
@@ -229,6 +240,10 @@ export default {
         display: flex;
         align-items: center;
         cursor: pointer;
+      }
+      .report-operate,
+      .delete-operate {
+        display: none;
       }
       img {
         width: 18px;
