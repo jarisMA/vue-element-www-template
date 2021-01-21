@@ -35,12 +35,8 @@
               {{ item }}
             </p>
           </div>
-          <div class="comment-images">
-            <the-preview-image
-              width="60px"
-              height="60px"
-              :srcList="comment.images"
-            />
+          <div class="comment-images" v-if="images.length > 0">
+            <the-preview-image width="60px" height="60px" :srcList="images" />
           </div>
         </div>
         <div class="card-bottom">
@@ -220,7 +216,7 @@ export default {
         color: #111;
       }
       .comment-images {
-        margin-top: 10px;
+        margin: 10px 0;
       }
     }
     .card-bottom {

@@ -88,7 +88,10 @@
     </div>
     <div
       class="comment-fold-wrapper"
-      :style="{ maxHeight: showComment ? commentMaxHeight + 'px' : '0px' }"
+      :style="{
+        maxHeight: showComment ? commentMaxHeight + 'px' : '0px',
+        overflow: showComment ? 'visible' : 'hidden'
+      }"
     >
       <div class="comment-list-wrapper" ref="comment">
         <div class="comment-tips">{{ answer.comment_count }} 条评论</div>
@@ -151,18 +154,16 @@ export default {
   watch: {
     answer(val) {
       this.clapCount = val.auth_like_count;
+      this.$nextTick(() => {
+        this.initDom();
+      });
     }
   },
   computed: {
     ...mapState(["userInfo"])
   },
   mounted() {
-    let offsetHeight = this.$refs["card"].offsetHeight;
-    if (offsetHeight >= 363) {
-      this.maxHeight = offsetHeight;
-      this.showUnfoldBtn = true;
-    }
-    this.commentMaxHeight = this.$refs["comment"].offsetHeight;
+    this.initDom();
     window.addEventListener("mouseup", this.handleMouseUp);
   },
   destroyed() {
@@ -225,6 +226,15 @@ export default {
         }
       }
       this.isClap = false;
+    },
+    initDom() {
+      let offsetHeight = this.$refs["card"].offsetHeight;
+      if (offsetHeight >= 363) {
+        this.maxHeight = offsetHeight;
+        this.showUnfoldBtn = true;
+      }
+      this.commentMaxHeight = this.$refs["comment"].offsetHeight;
+      console.log(this.$refs["comment"].offsetHeight);
     }
   }
 };
