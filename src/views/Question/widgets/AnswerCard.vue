@@ -31,8 +31,23 @@
     </div>
     <div class="answer-operate">
       <div class="operate-left">
-        <div class="claps-wrapper">
-          <img src="~images/question/claps.svg" />
+        <div class="claps-wrapper" @mousedown="startClap">
+          <transition name="fade">
+            <div class="count-tip" v-show="isClap">+ {{ clapCount }}</div>
+          </transition>
+          <transition name="fadeFlower">
+            <img
+              v-show="isClap"
+              class="flower-icon"
+              src="~images/question/flower.svg"
+            />
+          </transition>
+          <img
+            :class="['clap-icon', isClap ? 'active' : '']"
+            v-if="answer.auth_like_count || isClap"
+            src="~images/question/claped.svg"
+          />
+          <img class="clap-icon" v-else src="~images/question/claps.svg" />
           <span>{{ answer.like_count }}</span>
         </div>
         <div class="comment-wrapper" @click="showComment = !showComment">
@@ -120,8 +135,16 @@ export default {
       showUnfoldBtn: false,
       showComment: false,
       maxHeight: 363,
-      commentMaxHeight: 0
+      commentMaxHeight: 0,
+      isClap: false,
+      clapCount: this.answer.auth_like_count,
+      timer: null
     };
+  },
+  watch: {
+    answer(val) {
+      this.clapCount = val.auth_like_count;
+    }
   },
   computed: {
     ...mapState(["userInfo"])
@@ -133,6 +156,10 @@ export default {
       this.showUnfoldBtn = true;
     }
     this.commentMaxHeight = this.$refs["comment"].offsetHeight;
+    window.addEventListener("mouseup", this.handleMouseUp);
+  },
+  destroyed() {
+    window.removeEventListener("mouseup", this.handleMouseUp);
   },
   methods: {
     deleteAnswer() {
@@ -146,6 +173,51 @@ export default {
     reportAnswer() {},
     commented() {
       this.$emit("commented");
+    },
+    startClap() {
+      this.isClap = true;
+      if (this.clapCount < 50) {
+        this.clapCount++;
+        this.timer = setInterval(() => {
+          if (this.clapCount >= 50) {
+            clearInterval(this.timer);
+            this.timer = null;
+          } else {
+            this.clapCount++;
+          }
+        }, 300);
+      }
+    },
+    handleMouseUp() {
+      clearInterval(this.timer);
+      this.timer = null;
+      if (this.isClap) {
+        if (!this.answer.auth_like_count) {
+          questionService
+            .addLike({
+              type: 2,
+              resource_id: this.answer.id,
+              count: this.clapCount
+            })
+            .then(() => {
+              this.answer.auth_like_count = this.clapCount;
+              this.answer.like_count += this.clapCount;
+            });
+        } else {
+          questionService
+            .updateLike({
+              type: 2,
+              resource_id: this.answer.id,
+              count: this.clapCount
+            })
+            .then(() => {
+              const dis = this.clapCount - this.answer.auth_like_count;
+              this.answer.auth_like_count = this.clapCount;
+              this.answer.like_count += dis;
+            });
+        }
+      }
+      this.isClap = false;
     }
   }
 };
@@ -153,7 +225,48 @@ export default {
 
 <style lang="less" scoped>
 @padding: 20px;
+@duration: 0.3s;
+@keyframes clap {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes flower {
+  0% {
+    transform: scale(0.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes tip {
+  0% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 @import "~styles/variable";
+.fade-leave-active {
+  transition: all 0.5s;
+}
+.fade-leave-to {
+  transform: translateY(-50px);
+  opacity: 0;
+}
+.fadeFlower-leave-active {
+  transition: all 0.5s;
+}
+.fadeFlower-leave-to {
+  opacity: 0;
+}
 .answer-card-wrapper {
   background: #fff;
 }
@@ -247,7 +360,37 @@ export default {
       }
     }
     .claps-wrapper {
+      position: relative;
       background: #e9fff4;
+      cursor: pointer;
+      .count-tip {
+        position: absolute;
+        top: -50px;
+        left: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+        border-radius: 50%;
+        background: @primaryColor;
+        color: #fff;
+        z-index: 1;
+        animation: tip @duration infinite;
+      }
+      .clap-icon {
+        &.active {
+          animation: clap @duration infinite;
+        }
+      }
+      .flower-icon {
+        position: absolute;
+        left: 3px;
+        top: -8px;
+        width: 50px;
+        animation: flower 0.3s infinite;
+      }
       span {
         color: @primaryColor;
       }
