@@ -221,6 +221,7 @@ export default {
     }
     .card-bottom {
       display: flex;
+      margin-top: 10px;
       min-height: 18px;
       line-height: 18px;
       font-size: 12px;
@@ -239,7 +240,7 @@ export default {
       }
       .report-operate,
       .delete-operate {
-        display: none;
+        // display: none;
       }
       img {
         width: 18px;
