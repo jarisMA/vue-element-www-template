@@ -234,7 +234,6 @@ export default {
         this.showUnfoldBtn = true;
       }
       this.commentMaxHeight = this.$refs["comment"].offsetHeight;
-      console.log(this.$refs["comment"].offsetHeight);
     }
   }
 };
