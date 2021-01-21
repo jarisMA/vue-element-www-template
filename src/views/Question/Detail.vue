@@ -1,5 +1,5 @@
 <template>
-  <div class="question-detail-page" v-loading="loading">
+  <div class="question-detail-page" ref="page" v-loading="loading">
     <div class="detail-wrapper">
       <div class="container-920">
         <div class="detail-top">
@@ -65,8 +65,23 @@
       </div>
       <div class="question-main">
         <div class="question-main-left">
-          <div v-show="answerVisible" :class="['rich-text-wrapper']">
-            <answer-rich-text ref="answerRichText" @submited="addAnswerSucc" />
+          <div
+            v-show="answerVisible"
+            :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
+          >
+            <h3 class="question-title" v-if="largerRichText">
+              {{ question.title }}
+            </h3>
+            <answer-rich-text
+              class="answer-rich-text"
+              ref="answerRichText"
+              @submited="addAnswerSucc"
+              @larger="larger"
+            />
+            <div class="recover-operate" v-if="largerRichText" @click="recover">
+              <icon-svg svg-name="fold_2" svg-class="recover-icon"></icon-svg>
+              <span>退出全屏</span>
+            </div>
           </div>
           <div class="answer-list-wrapper" v-if="question.answer_count > 0">
             <ul class="answer-list">
@@ -164,7 +179,8 @@ export default {
         size: 10,
         page: 1,
         total: 0
-      }
+      },
+      largerRichText: false
     };
   },
   computed: {
@@ -271,6 +287,18 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+    },
+    larger() {
+      this.largerRichText = true;
+      document.querySelector("html").style.overflow = "hidden";
+      this.$refs["page"].style.maxHeight = "calc(100vh - 120px)";
+      this.$refs["page"].style.overflow = "hidden";
+    },
+    recover() {
+      this.largerRichText = false;
+      document.querySelector("html").style.overflow = "auto";
+      this.$refs["page"].style.maxHeight = "auto";
+      this.$refs["page"].style.overflow = "auto";
     }
   }
 };
@@ -389,6 +417,85 @@ export default {
     .rich-text-wrapper {
       margin-bottom: 30px;
       background: #fff;
+      &.large {
+        position: fixed;
+        left: 0;
+        top: 60px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: calc(100vh - 120px);
+        width: 100%;
+        background: #fff;
+        content: "";
+        z-index: 11;
+        .question-title {
+          margin: 30px auto 20px;
+          width: 770px;
+          padding: 0 20px;
+          line-height: 32px;
+          font-weight: bold;
+          font-size: 24px;
+          color: #111;
+        }
+        .answer-rich-text {
+          position: relative;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          margin: auto;
+          width: 770px;
+          z-index: 12;
+          /deep/ .quillEditor-wrapper {
+            flex: 1;
+            height: 5px;
+            .quill-editor {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            }
+            .ql-toolbar {
+              &::before {
+                position: absolute;
+                left: 20px;
+                top: 0;
+                width: calc(100% - 20px * 2);
+                height: 1px;
+                content: "";
+                background: #efefef;
+              }
+            }
+            .ql-resize {
+              display: none;
+            }
+            .ql-container {
+              flex: 1;
+              padding-bottom: 42px;
+            }
+          }
+        }
+        .recover-operate {
+          position: absolute;
+          top: 20px;
+          right: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 112px;
+          height: 32px;
+          background: #fafafa;
+          cursor: pointer;
+          .recover-icon {
+            font-size: 20px;
+            color: #606c66;
+          }
+          span {
+            font-weight: 500;
+            font-size: 14px;
+            color: #606c66;
+          }
+        }
+      }
     }
   }
   .answer-list {
