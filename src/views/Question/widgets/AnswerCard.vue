@@ -382,6 +382,7 @@ export default {
   width: 100%;
   padding: @padding;
   background: #fff;
+  z-index: 1;
   .operate-left {
     display: flex;
     .claps-wrapper,
@@ -406,6 +407,7 @@ export default {
       position: relative;
       background: #e9fff4;
       cursor: pointer;
+      z-index: 2;
       .count-tip {
         position: absolute;
         top: -50px;
@@ -419,7 +421,7 @@ export default {
         border-radius: 50%;
         background: @primaryColor;
         color: #fff;
-        z-index: 1;
+        z-index: 2;
         animation: tip @duration infinite;
       }
       .clap-icon {

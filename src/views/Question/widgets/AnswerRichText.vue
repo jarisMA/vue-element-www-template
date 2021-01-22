@@ -60,8 +60,18 @@ export default {
           .addAnswer(this.$route.params.id, {
             content: this.content
           })
-          .then(() => {
-            this.$emit("submited");
+          .then(res => {
+            const { id, nickname, avatar_url } = this.userInfo;
+            this.$emit("submited", {
+              id: res.id,
+              content: this.content,
+              auth_like_count: 0,
+              comment_count: 0,
+              like_count: 0,
+              question_id: this.$route.params.id,
+              user: { id, nickname, avatar_url },
+              comments: []
+            });
             this.content = null;
           })
           .finally(() => {

@@ -121,7 +121,10 @@
             <img class="empty-icon" src="~images/question/answer_empty.svg" />
             <div class="empty-content">
               <p>还没有人回答过这个问题</p>
-              <p>开始 <span class="primary">写第一个回答</span></p>
+              <p>
+                开始
+                <span class="primary" @click="startAnswer">写第一个回答</span>
+              </p>
             </div>
           </div>
         </div>
@@ -241,10 +244,10 @@ export default {
       });
       this.backTop();
     },
-    addAnswerSucc() {
+    addAnswerSucc(value) {
       this.answerVisible = false;
       this.question.answer_count++;
-      this.getAnswers();
+      this.answers.unshift(value);
     },
     deleteAnswerSucc(key) {
       this.question.answer_count--;
