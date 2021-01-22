@@ -97,7 +97,8 @@
                 <answer-card
                   :answer="item"
                   @deleted="deleteAnswerSucc(key)"
-                  @commented="getAnswers()"
+                  @commented="updateCommentCount(key, 1)"
+                  @deletedComment="updateCommentCount(key, -1)"
                 />
               </li>
             </ul>
@@ -303,6 +304,12 @@ export default {
       document.querySelector("html").style.overflow = "auto";
       this.$refs["page"].style.maxHeight = "auto";
       this.$refs["page"].style.overflow = "auto";
+    },
+    updateCommentCount(key, count) {
+      this.$set(this.answers, key, {
+        ...this.answers[key],
+        comment_count: this.answers[key].comment_count + count
+      });
     }
   }
 };

@@ -98,13 +98,15 @@
         <ul class="comment-list">
           <li
             class="comment-item"
-            v-for="item of answer.comments"
+            v-for="(item, key) of answer.comments"
             :key="item.id"
           >
             <comment-card
               :comment="item"
               :answerId="answer.id"
-              @commented="commented"
+              @commented="initDom"
+              @deleted="deletedCommentSucc"
+              @delete="idx => deleteComment(key, idx)"
             />
           </li>
         </ul>
@@ -153,10 +155,9 @@ export default {
   },
   watch: {
     answer(val) {
+      console.log(val);
       this.clapCount = val.auth_like_count;
-      this.$nextTick(() => {
-        this.initDom();
-      });
+      this.initDom();
     }
   },
   computed: {
@@ -179,8 +180,20 @@ export default {
       });
     },
     reportAnswer() {},
-    commented() {
+    commented(val) {
       this.$emit("commented");
+      this.answer.comments.unshift(val);
+      this.initDom();
+    },
+    // 删除第一级评论
+    deletedCommentSucc(key) {
+      this.$emit("deletedComment");
+      this.answer.comments.splice(key, 1);
+      this.initDom();
+    },
+    // 删除第二级评论
+    deleteComment(key, idx) {
+      this.answer.comments[key].children.splice(idx, 1);
     },
     startClap() {
       this.isClap = true;
@@ -228,15 +241,17 @@ export default {
       this.isClap = false;
     },
     initDom() {
-      let offsetHeight = this.$refs["card"].offsetHeight;
-      if (offsetHeight >= 363) {
-        this.maxHeight = offsetHeight;
-        this.showUnfoldBtn = true;
-      }
-      let commentCount =
-        (this.answer.comments && this.answer.comments.length) || 0;
-      this.commentMaxHeight =
-        this.$refs["comment"].offsetHeight + commentCount * 114;
+      this.$nextTick(() => {
+        let offsetHeight = this.$refs["card"].offsetHeight;
+        if (offsetHeight >= 363) {
+          this.maxHeight = offsetHeight;
+          this.showUnfoldBtn = true;
+        }
+        let commentCount =
+          (this.answer.comments && this.answer.comments.length) || 0;
+        this.commentMaxHeight =
+          this.$refs["comment"].offsetHeight + commentCount * 114;
+      });
     }
   }
 };

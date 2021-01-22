@@ -63,13 +63,9 @@ import questionService from "service/question";
 export default {
   name: "QuestionComment",
   props: {
-    parentId: {
-      type: Number,
-      default: 0
-    },
-    userId: {
-      type: Number,
-      default: 0
+    parent: {
+      type: Object,
+      default: () => null
     },
     answerId: {
       type: Number,
@@ -105,12 +101,17 @@ export default {
         content: this.addForm.content,
         images: this.addForm.images.join(",")
       };
-      this.parentId && (params.parent_id = this.parentId);
-      this.userId && (params.cited_user_id = this.userId);
+      if (this.parent) {
+        params.parent_id = this.parent.id;
+        params.cited_user_id = this.parent.user.id;
+      }
       questionService.addComment(this.answerId, params).then(res => {
+        const { id, nickname, avatar_url } = this.userInfo;
         this.$emit("commented", {
           ...params,
-          id: res.id
+          id: res.id,
+          cited_user: this.parent ? this.parent.user : null,
+          user: { id, nickname, avatar_url }
         });
         this.$refs["addForm"].resetFields();
       });

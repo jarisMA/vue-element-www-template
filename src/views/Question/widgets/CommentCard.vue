@@ -63,8 +63,7 @@
         <div v-show="commentVisible" class="reply-comment">
           <comment
             :answerId="answerId"
-            :parentId="comment.id"
-            :userId="comment.user.id"
+            :parent="comment"
             @commented="commented"
           />
         </div>
@@ -83,6 +82,7 @@
             :answerId="answerId"
             :allowComment="false"
             :key="key"
+            @deleted="deletedCommentSucc(key)"
           />
         </li>
       </ul>
@@ -141,14 +141,21 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
-    commented() {
+    commented(val) {
       this.commentVisible = false;
-      this.$emit("commented");
+      if (this.comment.children) {
+        this.comment.children.unshift(val);
+      } else {
+        this.comment.children = [val];
+      }
     },
     deleteComment() {
       questionService.deleteComment(this.comment.id).then(() => {
-        this.$emit("commented");
+        this.$emit("deleted");
       });
+    },
+    deletedCommentSucc(key) {
+      this.$emit("delete", key);
     }
   }
 };
