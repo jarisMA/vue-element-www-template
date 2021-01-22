@@ -306,7 +306,7 @@ export default {
     recover() {
       this.largerRichText = false;
       document.querySelector("html").style.overflow = "auto";
-      this.$refs["page"].style.maxHeight = "auto";
+      this.$refs["page"].style.maxHeight = "unset";
       this.$refs["page"].style.overflow = "auto";
     },
     updateCommentCount(key, count) {
