@@ -230,12 +230,31 @@ export default {
           images: images.join(","),
           channel_id
         })
-        .then(() => {
-          this.$notice({
-            title: "提问成功"
-          });
+        .then(res => {
           this.handleClose();
-          this.getData();
+          const { id, nickname, avatar_url } = this.userInfo;
+          let channel = {};
+          this.channels.some(item => {
+            if (channel_id === item.id) {
+              channel = item;
+              return true;
+            }
+          });
+          this.questions.unshift({
+            id: res.id,
+            like_count: 0,
+            is_like: false,
+            answer_count: 0,
+            title,
+            content,
+            images: images.join(","),
+            channel,
+            user: { id, nickname, avatar_url }
+          });
+          window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+          });
         })
         .finally(() => {
           this.submiting = false;
