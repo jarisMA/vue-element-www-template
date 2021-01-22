@@ -1,6 +1,6 @@
 <template>
   <div class="question-detail-page" ref="page" v-loading="loading">
-    <div class="detail-wrapper">
+    <div class="detail-wrapper" ref="detail">
       <div class="container-920">
         <div class="detail-top">
           <label class="question-channel">
@@ -142,7 +142,7 @@
                 >写回答</el-button
               >
             </div>
-            <div class="back-top" @click="backTop">
+            <div class="back-top" @click="backTop" v-show="showBackTop">
               <img
                 class="back-top-icon"
                 src="~images/question/back_to_top.svg"
@@ -188,7 +188,8 @@ export default {
         page: 1,
         total: 0
       },
-      largerRichText: false
+      largerRichText: false,
+      showBackTop: false
     };
   },
   computed: {
@@ -197,6 +198,12 @@ export default {
   created() {
     this.id = this.$route.params.id;
     this.getData();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
     getData() {
@@ -313,6 +320,13 @@ export default {
         ...this.answers[key],
         comment_count: this.answers[key].comment_count + count
       });
+    },
+    handleScroll() {
+      if (window.scrollY > this.$refs["detail"].offsetHeight) {
+        this.showBackTop = true;
+      } else {
+        this.showBackTop = false;
+      }
     }
   }
 };
@@ -383,6 +397,7 @@ export default {
         color: @baseColor;
         transition: all @duration;
         cursor: pointer;
+        user-select: none;
         &.active {
           color: @primaryColor;
           .like-icon {
