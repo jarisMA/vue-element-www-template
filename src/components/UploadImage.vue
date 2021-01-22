@@ -79,7 +79,11 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-
+.comment {
+  /deep/ .upload {
+    line-height: 24px;
+  }
+}
 .add-image {
   display: flex;
   align-items: center;

@@ -107,8 +107,11 @@ export default {
       };
       this.parentId && (params.parent_id = this.parentId);
       this.userId && (params.cited_user_id = this.userId);
-      questionService.addComment(this.answerId, params).then(() => {
-        this.$emit("commented");
+      questionService.addComment(this.answerId, params).then(res => {
+        this.$emit("commented", {
+          ...params,
+          id: res.id
+        });
         this.$refs["addForm"].resetFields();
       });
     },

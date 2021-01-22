@@ -233,7 +233,10 @@ export default {
         this.maxHeight = offsetHeight;
         this.showUnfoldBtn = true;
       }
-      this.commentMaxHeight = this.$refs["comment"].offsetHeight;
+      let commentCount =
+        (this.answer.comments && this.answer.comments.length) || 0;
+      this.commentMaxHeight =
+        this.$refs["comment"].offsetHeight + commentCount * 114;
     }
   }
 };
@@ -299,6 +302,8 @@ export default {
   overflow: hidden;
   padding: @padding;
   transition: max-height 0.2s;
+  z-index: 1;
+  background: #fff;
   .card-top {
     display: flex;
     align-items: center;
