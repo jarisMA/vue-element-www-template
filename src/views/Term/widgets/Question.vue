@@ -55,7 +55,7 @@
       width="580px"
       :before-close="handleClose"
     >
-      <el-form :model="addForm" ref="addForm">
+      <el-form :model="addForm" ref="addForm" @submit.native.prevent>
         <el-form-item class="title-container" prop="title">
           <the-avatar :size="40" :url="userInfo.avatar_url" />
           <el-input

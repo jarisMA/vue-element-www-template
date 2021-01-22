@@ -1,7 +1,12 @@
 <template>
   <div class="comment-wrapper">
     <the-avatar :size="32" :url="userInfo.avatar_url" />
-    <el-form class="add-form" ref="addForm" :model="addForm">
+    <el-form
+      class="add-form"
+      ref="addForm"
+      :model="addForm"
+      @submit.native.prevent
+    >
       <el-form-item prop="content">
         <el-input
           placeholder="写下你的想法"
