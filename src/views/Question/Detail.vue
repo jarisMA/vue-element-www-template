@@ -34,7 +34,6 @@
               :class="['like-status', question.is_like ? 'active' : '']"
               @click.stop="toggleLikeClick"
             >
-              <icon-svg class="like-icon" svg-name="like"></icon-svg>
               好问题
               <span class="status-count">{{ question.like_count }}</span>
             </li>
@@ -83,7 +82,6 @@
               @larger="larger"
             />
             <div class="recover-operate" v-if="largerRichText" @click="recover">
-              <icon-svg svg-name="fold_2" svg-class="recover-icon"></icon-svg>
               <span>退出全屏</span>
             </div>
           </div>
@@ -143,10 +141,6 @@
               >
             </div>
             <div class="back-top" @click="backTop" v-show="showBackTop">
-              <img
-                class="back-top-icon"
-                src="~images/question/back_to_top.svg"
-              />
               <span>回到顶部</span>
             </div>
           </div>
@@ -392,33 +386,36 @@ export default {
     .question-status {
       display: flex;
       .like-status {
+        position: relative;
+        padding-left: 29px;
         line-height: 24px;
         font-size: 14px;
         color: @baseColor;
         transition: all @duration;
         cursor: pointer;
         user-select: none;
+        &::before {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 24px;
+          height: 24px;
+          content: "";
+          mask-image: url("~images/question/like.svg");
+          mask-repeat: no-repeat;
+          mask-size: cover;
+          background-color: @baseColor;
+        }
         &.active {
           color: @primaryColor;
-          .like-icon {
-            fill: @primaryColor;
-            stroke: @primaryColor;
-            animation: likeClick @duration 1;
+          &::before {
+            background-color: @primaryColor;
           }
         }
         .status-count {
           display: inline-block;
           margin: 0 0 0 5px;
         }
-      }
-      .like-icon {
-        display: inline-block;
-        margin-right: 5px;
-        font-size: 24px;
-        vertical-align: -6px;
-        fill: @baseColor;
-        stroke: @baseColor;
-        transition: all @duration;
       }
       .more-status {
         margin-left: 20px;
@@ -514,14 +511,26 @@ export default {
           height: 32px;
           background: #fafafa;
           cursor: pointer;
-          .recover-icon {
-            font-size: 20px;
-            color: #606c66;
-          }
           span {
+            position: relative;
+            display: inline-block;
+            padding-left: 24px;
+            line-height: 24px;
             font-weight: 500;
             font-size: 14px;
             color: #606c66;
+            &::before {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 24px;
+              height: 24px;
+              content: "";
+              background-color: @baseColor;
+              mask-image: url("~images/question/fold.svg");
+              mask-repeat: no-repeat;
+              mask-size: cover;
+            }
           }
         }
       }
@@ -625,12 +634,25 @@ export default {
       height: 48px;
       background: #fff;
       cursor: pointer;
-      .back-top-icon {
-        width: 24px;
-      }
       span {
+        position: relative;
+        display: inline-block;
+        padding-left: 24px;
+        line-height: 24px;
         font-size: 14px;
         color: @baseColor;
+        &::before {
+          position: absolute;
+          top: -1px;
+          left: 0;
+          width: 24px;
+          height: 24px;
+          content: "";
+          background-color: @baseColor;
+          mask-image: url("~images/question/back_to_top.svg");
+          mask-repeat: no-repeat;
+          mask-size: cover;
+        }
       }
     }
   }

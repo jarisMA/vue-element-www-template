@@ -35,12 +35,10 @@
           :class="['like-status', question.is_like ? 'active' : '']"
           @click.stop="handleLikeClick"
         >
-          <icon-svg class="like-icon" svg-name="like"></icon-svg>
           好问题
           <span class="status-count">{{ question.like_count }}</span>
         </li>
         <li class="comment-status">
-          <icon-svg class="comment-icon" svg-name="comment"></icon-svg>
           <span class="status-count">{{ question.answer_count }}</span
           >条回答
         </li>
@@ -96,48 +94,7 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @duration: 0.2s;
-@keyframes likeClick {
-  0% {
-    top: 0px;
-  }
-  10% {
-    top: -3px;
-  }
-  20% {
-    top: -6px;
-  }
-  30% {
-    top: -9px;
-  }
-  40% {
-    top: -12px;
-    transform: rotate(6deg);
-  }
-  50% {
-    top: -15px;
-    transform: rotate(12deg);
-  }
-  60% {
-    top: -18px;
-    transform: rotate(6deg);
-  }
-  70% {
-    top: -21px;
-    transform: rotate(0deg);
-  }
-  80% {
-    top: -24px;
-    transform: rotate(-6deg);
-  }
-  90% {
-    top: -27px;
-    transform: rotate(-12deg);
-  }
-  100% {
-    top: -30px;
-    transform: rotate(-6deg);
-  }
-}
+
 .question-card {
   padding: 24px 20px;
   background: #fff;
@@ -197,29 +154,28 @@ export default {
       display: flex;
       .like-status,
       .comment-status {
+        position: relative;
+        padding-left: 29px;
         line-height: 24px;
         font-size: 14px;
         color: #81948b;
         transition: all @duration;
         cursor: pointer;
-        // &:hover {
-        //   color: @primaryColor;
-        //   .like-icon,
-        //   .comment-icon {
-        //     fill: @primaryColor;
-        //     stroke: @primaryColor;
-        //   }
-        // }
+        user-select: none;
+        position: relative;
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 24px;
+          height: 24px;
+          content: "";
+          background-color: #81948b;
+          mask-repeat: no-repeat;
+          mask-size: cover;
+        }
         &.active {
           color: @primaryColor;
-          .like-icon,
-          .comment-icon {
-            fill: @primaryColor;
-            stroke: @primaryColor;
-          }
-          .like-icon {
-            animation: likeClick @duration 1;
-          }
         }
         .status-count {
           display: inline-block;
@@ -228,19 +184,22 @@ export default {
       }
       .like-status {
         margin-right: 20px;
+        &::before {
+          mask-image: url("~images/question/like.svg");
+        }
+        &.active {
+          &::before {
+            background-color: @primaryColor;
+          }
+        }
         .status-count {
           margin-right: 0;
         }
       }
-      .like-icon,
-      .comment-icon {
-        display: inline-block;
-        margin-right: 5px;
-        font-size: 24px;
-        vertical-align: -6px;
-        fill: #81948b;
-        stroke: #81948b;
-        transition: all @duration;
+      .comment-status {
+        &::before {
+          mask-image: url("~images/question/comment.svg");
+        }
       }
     }
   }

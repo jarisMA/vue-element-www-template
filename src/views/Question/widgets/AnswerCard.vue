@@ -58,7 +58,6 @@
           <span>{{ answer.like_count }}</span>
         </div>
         <div class="comment-wrapper" @click="showComment = !showComment">
-          <icon-svg svg-class="comment-icon" svg-name="comment"></icon-svg>
           <span v-if="!showComment">{{ answer.comment_count }} 评论</span>
           <span v-else>收起评论</span>
         </div>
@@ -446,9 +445,21 @@ export default {
         color: @primaryColor;
       }
     }
-    .comment-icon {
-      font-size: 24px;
-      color: #81948b;
+    .comment-wrapper {
+      position: relative;
+      padding-left: 53px;
+      &::before {
+        position: absolute;
+        top: 4px;
+        left: 24px;
+        width: 24px;
+        height: 24px;
+        content: "";
+        background-color: #81948b;
+        mask-image: url("~images/question/comment.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+      }
     }
   }
   .operate-right {

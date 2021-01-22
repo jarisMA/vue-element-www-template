@@ -45,7 +45,7 @@
             class="reply-operate operate-item"
             @click="commentVisible = true"
           >
-            <img src="~images/question/reply.svg" />回复
+            回复
           </div>
           <el-popconfirm
             v-if="allowDelete && userInfo.id === comment.user.id"
@@ -53,11 +53,11 @@
             title="确定删除此评论吗？"
           >
             <div class="delete-operate operate-item" slot="reference">
-              <img src="~images/question/delete.svg" />删除
+              删除
             </div>
           </el-popconfirm>
           <div class="report-operate operate-item" v-else-if="allowReport">
-            <img src="~images/question/report.svg" />举报
+            举报
           </div>
         </div>
         <div v-show="commentVisible" class="reply-comment">
@@ -241,9 +241,35 @@ export default {
       .reply-operate,
       .report-operate,
       .delete-operate {
+        position: relative;
+        padding-left: 18px;
         display: flex;
         align-items: center;
         cursor: pointer;
+        &::before {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 18px;
+          height: 18px;
+          content: "";
+          background-color: #81948b;
+          mask-repeat: no-repeat;
+          mask-size: cover;
+        }
+      }
+      .reply-operate {
+        &::before {
+          mask-image: url("~images/question/reply.svg");
+        }
+      }
+      .delete-operate {
+        &::before {
+          mask-image: url("~images/question/delete.svg");
+        }
+      }
+      .report-operate {
+        mask-image: url("~images/question/report.svg");
       }
       .report-operate,
       .delete-operate {
