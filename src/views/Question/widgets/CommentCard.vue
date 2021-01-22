@@ -56,7 +56,11 @@
               删除
             </div>
           </el-popconfirm>
-          <div class="report-operate operate-item" v-else-if="allowReport">
+          <div
+            class="report-operate operate-item"
+            v-else-if="allowReport"
+            @click="reportComment"
+          >
             举报
           </div>
         </div>
@@ -156,6 +160,12 @@ export default {
     },
     deletedCommentSucc(key) {
       this.$emit("delete", key);
+    },
+    reportComment() {
+      this.$notice({
+        type: "warning",
+        title: "等待开放..."
+      });
     }
   }
 };
@@ -176,14 +186,6 @@ export default {
     width: 5px;
   }
   .comment-detail {
-    &:hover {
-      .card-bottom {
-        .report-operate,
-        .delete-operate {
-          display: flex;
-        }
-      }
-    }
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -221,6 +223,7 @@ export default {
         line-height: 21px;
         font-size: 14px;
         color: #111;
+        word-break: break-all;
       }
       .comment-images {
         margin: 10px 0;
@@ -269,15 +272,9 @@ export default {
         }
       }
       .report-operate {
-        mask-image: url("~images/question/report.svg");
-      }
-      .report-operate,
-      .delete-operate {
-        // display: none;
-      }
-      img {
-        width: 18px;
-        height: 18px;
+        &::before {
+          mask-image: url("~images/question/report.svg");
+        }
       }
     }
     .reply-comment {

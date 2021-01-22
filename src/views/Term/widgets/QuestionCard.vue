@@ -114,6 +114,7 @@ export default {
       font-weight: bold;
       font-size: 20px;
       color: #111111;
+      word-break: break-all;
     }
   }
   .card-content {
@@ -128,6 +129,7 @@ export default {
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
       overflow: hidden;
+      word-break: break-all;
     }
   }
   .card-bottom {

@@ -178,7 +178,12 @@ export default {
         this.$emit("deleted");
       });
     },
-    reportAnswer() {},
+    reportAnswer() {
+      this.$notice({
+        type: "warning",
+        title: "等待开放..."
+      });
+    },
     commented(val) {
       this.$emit("commented");
       this.answer.comments.unshift(val);
@@ -344,6 +349,7 @@ export default {
   }
   .card-content {
     margin-top: 24px;
+    word-break: break-all;
   }
   .unfold-wrapper {
     position: absolute;

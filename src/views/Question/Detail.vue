@@ -290,7 +290,12 @@ export default {
           this.loading = false;
         });
     },
-    reportQuestion() {},
+    reportQuestion() {
+      this.$notice({
+        type: "warning",
+        title: "等待开放..."
+      });
+    },
     backTop() {
       window.scrollTo({
         top: 0,
@@ -367,6 +372,7 @@ export default {
       font-size: 20px;
       font-weight: bold;
       color: #111111;
+      word-break: break-all;
     }
   }
   .detail-content {
@@ -376,6 +382,7 @@ export default {
       line-height: 21px;
       font-size: 14px;
       color: #111111;
+      word-break: break-all;
     }
   }
   .detail-bottom {
