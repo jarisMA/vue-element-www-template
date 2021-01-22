@@ -1,3 +1,4 @@
+const webpack = require("webpack");
 const path = require("path");
 
 function resolve(dir) {
@@ -28,6 +29,11 @@ module.exports = {
   },
 
   chainWebpack: config => {
+    config.plugin("provide").use(webpack.ProvidePlugin, [
+      {
+        "window.Quill": "quill"
+      }
+    ]);
     // set svg-sprite-loader
     config.module
       .rule("svg")

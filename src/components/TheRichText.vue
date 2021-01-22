@@ -12,6 +12,9 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 import "quill/dist/quill.bubble.css";
 import { quillEditor } from "vue-quill-editor";
+import Quill from "quill";
+import ImageResize from "quill-image-resize-module";
+Quill.register("modules/imageResize", ImageResize);
 
 import ossService from "service/oss";
 import unfoldSvg from "images/question/unfold.svg";
@@ -111,6 +114,14 @@ export default {
       options: {
         placeholder: this.placeholder,
         modules: {
+          imageResize: {
+            handleStyles: {
+              backgroundColor: "black",
+              border: "none",
+              color: "white"
+            },
+            modules: ["Resize", "DisplaySize", "Toolbar"]
+          },
           toolbar: {
             container: toolbarOptions,
             handlers: handlers(this)
