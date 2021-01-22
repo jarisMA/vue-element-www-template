@@ -84,6 +84,7 @@ export default {
         })
         .then(() => {
           this.$notice({
+            type: "success",
             title: "方案复制成功~"
           });
           this.visible = false;

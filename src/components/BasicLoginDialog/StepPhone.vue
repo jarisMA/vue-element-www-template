@@ -130,6 +130,7 @@ export default {
             })
             .then(() => {
               this.$notice({
+                type: "success",
                 title: "手机绑定成功！"
               });
               this.$store.commit("UPDATA_PHONE", this.formData.phone);

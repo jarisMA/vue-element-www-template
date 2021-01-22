@@ -301,6 +301,7 @@ export default {
             .updateUserInfo(this.form)
             .then(() => {
               this.$notice({
+                type: "success",
                 title: "保存成功"
               });
               this.USERINFO({ ...this.userInfo, ...this.form });
@@ -358,6 +359,7 @@ export default {
             })
             .then(() => {
               this.$notice({
+                type: "success",
                 title: "手机号更改成功！"
               });
               this.$store.commit("UPDATA_PHONE", phone);
