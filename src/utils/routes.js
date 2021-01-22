@@ -81,7 +81,7 @@ export const goBibleDetail = (id, type = "_self") => {
   );
 };
 
-export const goQuestionDetail = (id, type = "_self") => {
+export const goQuestionDetail = (id, type = "_blank") => {
   return goRoute(
     {
       name: "QuestionDetail",
@@ -99,9 +99,9 @@ export const goRoute = (route, type = "_self") => {
     (type === "replace"
       ? router.replace(route)
       : type !== "_self"
-      ? typeof route === "object"
-        ? window.open(router.resolve(route).href, type)
-        : window.open(route, type)
-      : router.push(route))
+        ? typeof route === "object"
+          ? window.open(router.resolve(route).href, type)
+          : window.open(route, type)
+        : router.push(route))
   );
 };
