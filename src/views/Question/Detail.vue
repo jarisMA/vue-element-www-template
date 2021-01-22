@@ -183,7 +183,8 @@ export default {
         total: 0
       },
       largerRichText: false,
-      showBackTop: false
+      showBackTop: false,
+      liking: false
     };
   },
   computed: {
@@ -255,19 +256,30 @@ export default {
       this.answers.splice(key, 1);
     },
     toggleLikeClick() {
-      if (!this.question.is_like) {
-        questionService
-          .addLike({
-            type: 1,
-            resource_id: this.id
-          })
-          .then(() => {
-            this.toggleLike(true);
-          });
-      } else {
-        questionService.deleteLike(1, this.id).then(() => {
-          this.toggleLike(false);
-        });
+      if (!this.liking) {
+        this.liking = true;
+        if (!this.question.is_like) {
+          questionService
+            .addLike({
+              type: 1,
+              resource_id: this.id
+            })
+            .then(() => {
+              this.toggleLike(true);
+            })
+            .finally(() => {
+              this.liking = false;
+            });
+        } else {
+          questionService
+            .deleteLike(1, this.id)
+            .then(() => {
+              this.toggleLike(false);
+            })
+            .finally(() => {
+              this.liking = false;
+            });
+        }
       }
     },
     toggleLike(flag) {

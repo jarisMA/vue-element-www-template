@@ -149,7 +149,8 @@ export default {
       commentMaxHeight: 0,
       isClap: false,
       clapCount: this.answer.auth_like_count,
-      timer: null
+      timer: null,
+      claping: false
     };
   },
   watch: {
@@ -200,23 +201,26 @@ export default {
       this.answer.comments[key].children.splice(idx, 1);
     },
     startClap() {
-      this.isClap = true;
-      if (this.clapCount < 50) {
-        this.clapCount++;
-        this.timer = setInterval(() => {
-          if (this.clapCount >= 50) {
-            clearInterval(this.timer);
-            this.timer = null;
-          } else {
-            this.clapCount++;
-          }
-        }, 300);
+      if (!this.claping) {
+        this.isClap = true;
+        if (this.clapCount < 50) {
+          this.clapCount++;
+          this.timer = setInterval(() => {
+            if (this.clapCount >= 50) {
+              clearInterval(this.timer);
+              this.timer = null;
+            } else {
+              this.clapCount++;
+            }
+          }, 300);
+        }
       }
     },
     handleMouseUp() {
       clearInterval(this.timer);
       this.timer = null;
       if (this.isClap) {
+        this.claping = true;
         if (!this.answer.auth_like_count) {
           questionService
             .addLike({
@@ -227,6 +231,9 @@ export default {
             .then(() => {
               this.answer.auth_like_count = this.clapCount;
               this.answer.like_count += this.clapCount;
+            })
+            .finally(() => {
+              this.claping = false;
             });
         } else {
           questionService
@@ -239,6 +246,9 @@ export default {
               const dis = this.clapCount - this.answer.auth_like_count;
               this.answer.auth_like_count = this.clapCount;
               this.answer.like_count += dis;
+            })
+            .finally(() => {
+              this.claping = false;
             });
         }
       }

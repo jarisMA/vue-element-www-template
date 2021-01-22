@@ -165,7 +165,8 @@ export default {
         images: [],
         channel_id: null
       },
-      questions: []
+      questions: [],
+      liking: false
     };
   },
   computed: {
@@ -272,27 +273,41 @@ export default {
       this.addVisible = false;
     },
     addLike(id, key) {
-      questionService
-        .addLike({
-          type: 1,
-          resource_id: id
-        })
-        .then(() => {
-          this.$set(this.questions, key, {
-            ...this.questions[key],
-            like_count: this.questions[key].like_count + 1,
-            is_like: true
+      if (!this.liking) {
+        this.liking = true;
+        questionService
+          .addLike({
+            type: 1,
+            resource_id: id
+          })
+          .then(() => {
+            this.$set(this.questions, key, {
+              ...this.questions[key],
+              like_count: this.questions[key].like_count + 1,
+              is_like: true
+            });
+          })
+          .finally(() => {
+            this.liking = false;
           });
-        });
+      }
     },
     deleteLike(id, key) {
-      questionService.deleteLike(1, id).then(() => {
-        this.$set(this.questions, key, {
-          ...this.questions[key],
-          like_count: this.questions[key].like_count - 1,
-          is_like: false
-        });
-      });
+      if (!this.liking) {
+        this.liking = true;
+        questionService
+          .deleteLike(1, id)
+          .then(() => {
+            this.$set(this.questions, key, {
+              ...this.questions[key],
+              like_count: this.questions[key].like_count - 1,
+              is_like: false
+            });
+          })
+          .finally(() => {
+            this.liking = false;
+          });
+      }
     }
   }
 };
