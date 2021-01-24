@@ -175,7 +175,7 @@ export default {
   height: 60px;
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
-  z-index: 2;
+  z-index: 3;
   .user-icon {
     margin-left: 10px;
     width: 18px;
