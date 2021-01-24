@@ -63,7 +63,7 @@ export default {
           .then(res => {
             const { id, nickname, avatar_url } = this.userInfo;
             this.$emit("submited", {
-              id: res.id,
+              ...res,
               content: this.content,
               auth_like_count: 0,
               comment_count: 0,
