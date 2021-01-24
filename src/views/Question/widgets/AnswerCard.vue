@@ -187,7 +187,7 @@ export default {
     },
     commented(val) {
       this.$emit("commented");
-      this.answer.comments.unshift(val);
+      this.answer.comments.push(val);
       this.initDom();
     },
     // 删除第一级评论

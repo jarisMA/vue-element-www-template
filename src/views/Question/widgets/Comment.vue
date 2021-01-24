@@ -110,16 +110,22 @@ export default {
         params.parent_id = this.parent.id;
         params.cited_user_id = this.parent.user.id;
       }
-      questionService.addComment(this.answerId, params).then(res => {
-        const { id, nickname, avatar_url } = this.userInfo;
-        this.$emit("commented", {
-          ...params,
-          id: res.id,
-          cited_user: this.parent ? this.parent.user : null,
-          user: { id, nickname, avatar_url }
+      this.submiting = true;
+      questionService
+        .addComment(this.answerId, params)
+        .then(res => {
+          const { id, nickname, avatar_url } = this.userInfo;
+          this.$emit("commented", {
+            ...params,
+            ...res,
+            cited_user: this.parent ? this.parent.user : null,
+            user: { id, nickname, avatar_url }
+          });
+          this.$refs["addForm"].resetFields();
+        })
+        .finally(() => {
+          this.submiting = false;
         });
-        this.$refs["addForm"].resetFields();
-      });
     },
     addImage(url) {
       this.addForm.images.push(url);

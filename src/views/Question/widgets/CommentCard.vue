@@ -43,7 +43,7 @@
           <div
             v-if="allowComment"
             class="reply-operate operate-item"
-            @click="commentVisible = true"
+            @click="commentVisible = !commentVisible"
           >
             回复
           </div>
@@ -148,7 +148,7 @@ export default {
     commented(val) {
       this.commentVisible = false;
       if (this.comment.children) {
-        this.comment.children.unshift(val);
+        this.comment.children.push(val);
       } else {
         this.comment.children = [val];
       }
@@ -236,6 +236,7 @@ export default {
       line-height: 18px;
       font-size: 12px;
       color: @baseColor;
+      user-select: none;
       .operate-item {
         &:not(:last-child) {
           margin-right: 20px;
