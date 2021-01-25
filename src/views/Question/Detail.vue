@@ -96,7 +96,7 @@
                   :answer="item"
                   @deleted="deleteAnswerSucc(key)"
                   @commented="updateCommentCount(key, 1)"
-                  @deletedComment="updateCommentCount(key, -1)"
+                  @deletedComment="(j, k) => deletedComment(key, j, k)"
                 />
               </li>
             </ul>
@@ -331,6 +331,10 @@ export default {
         ...this.answers[key],
         comment_count: this.answers[key].comment_count + count
       });
+    },
+    deletedComment(i, j) {
+      this.answers[i].comments.splice(j, 1);
+      this.updateCommentCount(i, -1);
     },
     handleScroll() {
       if (window.scrollY > this.$refs["detail"].offsetHeight) {

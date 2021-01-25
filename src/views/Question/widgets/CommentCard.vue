@@ -82,7 +82,7 @@
           :key="item.id"
         >
           <question-comment-card
-            :comment="item"
+            :commentData="item"
             :answerId="answerId"
             :allowComment="false"
             :key="key"
@@ -109,7 +109,7 @@ export default {
     Comment
   },
   props: {
-    comment: {
+    commentData: {
       type: Object,
       required: true
     },
@@ -132,13 +132,24 @@ export default {
   },
   data() {
     return {
-      images: (this.comment.images && this.comment.images.split(",")) || [],
-      commentVisible: false
+      images:
+        (this.commentData &&
+          this.commentData.images &&
+          this.commentData.images.split(",")) ||
+        [],
+      commentVisible: false,
+      comment: this.commentData || {
+        user: {}
+      }
     };
   },
   watch: {
-    comment(val) {
-      this.images = (val.images && val.images.split(",")) || [];
+    commentData: {
+      handler(val) {
+        this.images = (val.images && val.images.split(",")) || [];
+        this.comment = val;
+      },
+      deep: true
     }
   },
   computed: {
@@ -148,10 +159,11 @@ export default {
     commented(val) {
       this.commentVisible = false;
       if (this.comment.children) {
-        this.comment.children.push(val);
+        this.comment.children.unshift(val);
       } else {
         this.comment.children = [val];
       }
+      this.$emit("initDom");
     },
     deleteComment() {
       questionService.deleteComment(this.comment.id).then(() => {
@@ -159,13 +171,16 @@ export default {
       });
     },
     deletedCommentSucc(key) {
-      this.$emit("delete", key);
+      this.comment.children.splice(key, 1);
     },
     reportComment() {
       this.$notice({
         type: "warning",
         title: "等待开放..."
       });
+    },
+    initDom() {
+      this.$emit("initDom");
     }
   }
 };

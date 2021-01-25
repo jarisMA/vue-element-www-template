@@ -2,14 +2,12 @@
   <div class="question-wrapper" v-loading="loading">
     <div class="operate-container">
       <ul class="filter-container">
-        <template v-if="questions.length > 0">
-          <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
-            全部
-          </li>
-          <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
-            只看我的
-          </li>
-        </template>
+        <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
+          全部
+        </li>
+        <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
+          只看我的
+        </li>
       </ul>
       <el-button class="add-btn" type="primary" @click="addVisible = true"
         >我要提问</el-button

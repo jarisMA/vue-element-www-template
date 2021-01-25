@@ -101,9 +101,10 @@
             :key="item.id"
           >
             <comment-card
-              :comment="item"
+              :commentData="item"
               :answerId="answer.id"
               @commented="initDom"
+              @initDom="initDom"
               @deleted="deletedCommentSucc"
               @delete="idx => deleteComment(key, idx)"
             />
@@ -192,13 +193,9 @@ export default {
     },
     // 删除第一级评论
     deletedCommentSucc(key) {
-      this.$emit("deletedComment");
-      this.answer.comments.splice(key, 1);
+      this.$emit("deletedComment", key);
+      // this.answer.comments.splice(key, 1);
       this.initDom();
-    },
-    // 删除第二级评论
-    deleteComment(key, idx) {
-      this.answer.comments[key].children.splice(idx, 1);
     },
     startClap() {
       if (!this.claping) {
@@ -256,6 +253,7 @@ export default {
     },
     initDom() {
       this.$nextTick(() => {
+        console.log("init");
         let offsetHeight = this.$refs["card"].offsetHeight;
         if (offsetHeight >= 363) {
           this.maxHeight = offsetHeight;
