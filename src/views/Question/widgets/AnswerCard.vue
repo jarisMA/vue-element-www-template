@@ -1,5 +1,5 @@
 <template>
-  <div class="answer-card-wrapper">
+  <div class="answer-card-wrapper" v-loading="loading">
     <div
       class="answer-card"
       :style="{ maxHeight: fold ? '363px' : maxHeight + 'px' }"
@@ -142,6 +142,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       fold: true,
       showUnfoldBtn: false,
       showComment: false,
@@ -178,12 +179,18 @@ export default {
   },
   methods: {
     deleteAnswer() {
-      questionService.deleteAnswer(this.answer.id).then(() => {
-        this.$notice({
-          title: "回答删除成功"
+      this.loading = true;
+      questionService
+        .deleteAnswer(this.answer.id)
+        .then(() => {
+          this.$notice({
+            title: "回答删除成功"
+          });
+          this.$emit("deleted");
+        })
+        .finally(() => {
+          this.loading = false;
         });
-        this.$emit("deleted");
-      });
     },
     reportAnswer() {
       this.$notice({

@@ -180,7 +180,7 @@ export default {
     },
     deletedCommentSucc(key) {
       this.comment.children.splice(key, 1);
-      this.$set(this.comment, "children", this.comment.children);
+      this.comment = JSON.parse(JSON.stringify(this.comment));
     },
     reportComment() {
       this.$notice({

@@ -457,11 +457,11 @@ export default {
       &.large {
         position: fixed;
         left: 0;
-        top: 60px;
+        top: 0;
         display: flex;
         flex-direction: column;
         align-items: center;
-        height: calc(100vh - 120px);
+        height: 100vh;
         width: 100%;
         background: #fff;
         content: "";
