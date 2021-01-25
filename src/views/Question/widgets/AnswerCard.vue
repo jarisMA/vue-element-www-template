@@ -1,9 +1,6 @@
 <template>
   <div class="answer-card-wrapper" v-loading="loading">
-    <div
-      class="answer-card"
-      :style="{ maxHeight: fold ? '363px' : maxHeight + 'px' }"
-    >
+    <div class="answer-card" :style="{ maxHeight: fold ? '363px' : 'unset' }">
       <div class="card-wrapper" ref="card">
         <div class="card-top">
           <the-avatar :size="40" :url="answer.user.avatar_url" />
@@ -85,13 +82,7 @@
         </el-dropdown>
       </div>
     </div>
-    <div
-      class="comment-fold-wrapper"
-      :style="{
-        maxHeight: showComment ? commentMaxHeight + 'px' : '0px',
-        overflow: showComment ? 'visible' : 'hidden'
-      }"
-    >
+    <div class="comment-fold-wrapper" v-if="showComment">
       <div class="comment-list-wrapper" ref="comment">
         <div class="comment-tips">{{ answer.comment_count }} 条评论</div>
         <ul class="comment-list" v-if="answer.comments">
@@ -267,20 +258,20 @@ export default {
       this.isClap = false;
     },
     initDom() {
-      this.$nextTick(() => {
-        console.log("init");
-        if (this.$refs["card"]) {
-          let offsetHeight = this.$refs["card"].offsetHeight;
-          if (offsetHeight >= 363) {
-            this.maxHeight = offsetHeight;
-            this.showUnfoldBtn = true;
-          }
-          let commentCount =
-            (this.answer.comments && this.answer.comments.length) || 0;
-          this.commentMaxHeight =
-            this.$refs["comment"].offsetHeight + commentCount * 114;
-        }
-      });
+      // this.$nextTick(() => {
+      //   console.log("init");
+      //   // if (this.$refs["card"]) {
+      //   //   let offsetHeight = this.$refs["card"].offsetHeight;
+      //   //   if (offsetHeight >= 363) {
+      //   //     this.maxHeight = offsetHeight;
+      //   //     this.showUnfoldBtn = true;
+      //   //   }
+      //   //   let commentCount =
+      //   //     (this.answer.comments && this.answer.comments.length) || 0;
+      //   //   this.commentMaxHeight =
+      //   //     this.$refs["comment"].offsetHeight + commentCount * 114;
+      //   // }
+      // });
     }
   }
 };
@@ -656,8 +647,8 @@ export default {
   }
 }
 .comment-fold-wrapper {
-  overflow: hidden;
-  transition: max-height 0.2s;
+  // overflow: hidden;
+  // transition: max-height 0.2s;
 }
 .comment-list-wrapper {
   position: relative;
