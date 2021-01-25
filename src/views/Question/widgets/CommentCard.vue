@@ -46,7 +46,7 @@
             class="reply-operate operate-item"
             @click="commentVisible = !commentVisible"
           >
-            回复
+            {{ commentVisible ? "取消回复" : "回复" }}
           </div>
           <el-popconfirm
             v-if="allowDelete && userInfo.id === comment.user.id"

@@ -266,7 +266,7 @@ export default {
       const id = this.id;
       let promiseArr = [
         questionService.question(id),
-        questionService.answers(this.id, {
+        questionService.answers(id, {
           page: 1,
           page_size: this.pagination.size
         })
@@ -279,8 +279,9 @@ export default {
             (question.images && question.images.split(",")) || [];
           this.question = question;
           this.originAnswers = answers.list;
+          this.answers = this.originAnswers;
           this.answers = this.originAnswers.filter(
-            item => item.id !== this.authAnswer.id
+            item => item.id !== (this.authAnswer && this.authAnswer.id)
           );
           this.pagination.page = 1;
           this.pagination.total = answers.pagination.total;
@@ -298,8 +299,9 @@ export default {
         })
         .then(res => {
           this.originAnswers = res.list;
+          this.answers = res.list;
           this.answers = this.originAnswers.filter(
-            item => item.id !== this.authAnswer.id
+            item => item.id !== (this.authAnswer && this.authAnswer.id)
           );
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
