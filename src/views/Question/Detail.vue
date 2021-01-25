@@ -31,6 +31,13 @@
           >
           <ul class="question-status">
             <li
+              class="edit-status"
+              v-if="userInfo.id === question.user.id"
+              @click.stop="isEdit = true"
+            >
+              修改问题
+            </li>
+            <li
               :class="['like-status', question.is_like ? 'active' : '']"
               @click.stop="toggleLikeClick"
             >
@@ -145,6 +152,11 @@
         </div>
       </div>
     </div>
+    <question-edit
+      :visible.sync="isEdit"
+      :question="question"
+      @update="updateQuestion"
+    />
   </div>
 </template>
 
@@ -154,6 +166,8 @@ import ThePreviewImage from "components/ThePreviewImage";
 import AnswerCard from "./widgets/AnswerCard";
 import AnswerRichText from "./widgets/AnswerRichText";
 import Pagination from "components/Pagination";
+import QuestionEdit from "./widgets/QuestionEdit";
+
 import { mapState } from "vuex";
 
 export default {
@@ -162,7 +176,8 @@ export default {
     ThePreviewImage,
     AnswerCard,
     AnswerRichText,
-    Pagination
+    Pagination,
+    QuestionEdit
   },
   data() {
     return {
@@ -182,7 +197,8 @@ export default {
       },
       largerRichText: false,
       showBackTop: false,
-      liking: false
+      liking: false,
+      isEdit: false
     };
   },
   computed: {
@@ -236,6 +252,12 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    updateQuestion(data) {
+      this.question = {
+        ...this.question,
+        ...data
+      };
     },
     startAnswer() {
       this.answerVisible = true;
@@ -396,13 +418,16 @@ export default {
     align-items: center;
     .question-status {
       display: flex;
+      li + li {
+        margin-left: 20px;
+      }
+      .edit-status,
       .like-status {
         position: relative;
         padding-left: 29px;
         line-height: 24px;
         font-size: 14px;
         color: @baseColor;
-        transition: all @duration;
         cursor: pointer;
         user-select: none;
         &::before {
@@ -412,11 +437,11 @@ export default {
           width: 24px;
           height: 24px;
           content: "";
-          mask-image: url("~images/question/like.svg");
           mask-repeat: no-repeat;
           mask-size: cover;
           background-color: @baseColor;
         }
+        &:hover,
         &.active {
           color: @primaryColor;
           &::before {
@@ -428,11 +453,20 @@ export default {
           margin: 0 0 0 5px;
         }
       }
+      .edit-status {
+        &::before {
+          mask-image: url("~images/question/edit.svg");
+        }
+      }
+      .like-status {
+        &::before {
+          mask-image: url("~images/question/like.svg");
+        }
+      }
       .more-status {
-        margin-left: 20px;
         .el-icon-more {
           line-height: 24px;
-          color: #c4c4c4;
+          color: #81948b;
           cursor: pointer;
           outline: unset;
         }
