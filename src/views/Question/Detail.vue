@@ -26,9 +26,17 @@
           </div>
         </div>
         <div class="detail-bottom">
-          <el-button class="add-btn" type="primary" @click="startAnswer"
+          <el-button
+            v-if="authAnswer"
+            class="add-btn"
+            type="primary"
+            @click="showAuthAnswer"
+            >查看回答</el-button
+          >
+          <el-button v-else class="add-btn" type="primary" @click="startAnswer"
             >写回答</el-button
           >
+
           <ul class="question-status">
             <li
               class="edit-status"
@@ -85,8 +93,11 @@
             <answer-rich-text
               class="answer-rich-text"
               ref="answerRichText"
+              :isEdit="isEditAnswer"
+              :answer="authAnswer"
               @submited="addAnswerSucc"
               @larger="larger"
+              @updated="updatedAnswer"
             />
             <div class="recover-operate" v-if="largerRichText" @click="recover">
               <span>退出全屏</span>
@@ -94,6 +105,16 @@
           </div>
           <div class="answer-list-wrapper" v-if="question.answer_count > 0">
             <ul class="answer-list">
+              <li
+                class="answer-item auth-answer"
+                v-if="authAnswerVisible && authAnswer"
+              >
+                <answer-card
+                  :answerData="authAnswer"
+                  allowEdit
+                  @editAnswer="editAnswer"
+                />
+              </li>
               <li
                 class="answer-item"
                 v-for="(item, key) of answers"
@@ -116,7 +137,10 @@
               <p>暂无更多回答</p>
               <p>
                 你还可以
-                <span class="primary" @click="startAnswer">写回答</span>
+                <span v-if="authAnswer" class="primary" @click="showAuthAnswer"
+                  >查看回答</span
+                >
+                <span v-else class="primary" @click="startAnswer">写回答</span>
               </p>
             </div>
           </div>
@@ -141,7 +165,18 @@
               <h3 class="question-title">
                 {{ question.title }}
               </h3>
-              <el-button class="add-btn" type="primary" @click="startAnswer"
+              <el-button
+                v-if="authAnswer"
+                class="add-btn"
+                type="primary"
+                @click="showAuthAnswer"
+                >查看回答</el-button
+              >
+              <el-button
+                v-else
+                class="add-btn"
+                type="primary"
+                @click="startAnswer"
                 >写回答</el-button
               >
             </div>
@@ -189,6 +224,11 @@ export default {
         images: [],
         user: {}
       },
+      isEdit: false,
+      isEditAnswer: false,
+      authAnswer: null,
+      authAnswerVisible: false,
+      originAnswers: [],
       answers: [],
       pagination: {
         size: 10,
@@ -197,8 +237,7 @@ export default {
       },
       largerRichText: false,
       showBackTop: false,
-      liking: false,
-      isEdit: false
+      liking: false
     };
   },
   computed: {
@@ -225,11 +264,14 @@ export default {
         })
       ];
       Promise.all(promiseArr)
-        .then(([question, answers]) => {
+        .then(([res, answers]) => {
+          const { question, auth_answer } = res;
+          this.authAnswer = auth_answer;
           question.images =
             (question.images && question.images.split(",")) || [];
           this.question = question;
-          this.answers = answers.list;
+          this.originAnswers = answers.list;
+          this.answers = this.originAnswers;
           this.pagination.page = 1;
           this.pagination.total = answers.pagination.total;
         })
@@ -245,7 +287,14 @@ export default {
           page_size: this.pagination.size
         })
         .then(res => {
-          this.answers = res.list;
+          this.originAnswers = res.list;
+          if (this.showAuthAnswer) {
+            this.answers = this.originAnswers.filter(
+              item => item.id !== this.authAnswer.id
+            );
+          } else {
+            this.answers = this.originAnswers;
+          }
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
         })
@@ -265,6 +314,21 @@ export default {
         this.$refs["answerRichText"].focus();
       });
       this.backTop();
+    },
+    showAuthAnswer() {
+      this.backTop();
+      this.answerVisible = false;
+      this.isEditAnswer = false;
+      this.authAnswerVisible = true;
+    },
+    editAnswer() {
+      this.authAnswerVisible = false;
+      this.isEditAnswer = true;
+      this.startAnswer();
+    },
+    updatedAnswer(val) {
+      this.authAnswer.content = val;
+      this.showAuthAnswer();
     },
     addAnswerSucc(value) {
       this.answerVisible = false;
@@ -598,7 +662,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     margin: 30px auto 60px;
-    width: 90px;
+    width: 100px;
     line-height: 18px;
     font-size: 12px;
     text-align: center;

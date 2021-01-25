@@ -43,11 +43,31 @@ export default {
     TheRichText,
     TheAvatar
   },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    answer: {
+      type: Object,
+      default: () => null
+    }
+  },
   data() {
     return {
-      content: null,
+      content: this.isEdit
+        ? (this.answer && this.answer.content) || null
+        : null,
       submiting: false
     };
+  },
+  watch: {
+    isEdit(val) {
+      this.content = val ? (this.answer && this.answer.content) || null : null;
+    },
+    answer(val) {
+      this.content = this.isEdit ? (val && val.content) || null : null;
+    }
   },
   computed: {
     ...mapState(["userInfo"])
@@ -56,27 +76,41 @@ export default {
     submit() {
       if (!this.isEmpty(this.content)) {
         this.submiting = true;
-        questionService
-          .addAnswer(this.$route.params.id, {
-            content: this.content
-          })
-          .then(res => {
-            const { id, nickname, avatar_url } = this.userInfo;
-            this.$emit("submited", {
-              ...res,
-              content: this.content,
-              auth_like_count: 0,
-              comment_count: 0,
-              like_count: 0,
-              question_id: this.$route.params.id,
-              user: { id, nickname, avatar_url },
-              comments: []
+        if (this.isEdit) {
+          questionService
+            .updateAnswer(this.answer.id, {
+              content: this.content
+            })
+            .then(() => {
+              this.$emit("updated", this.content);
+              this.content = null;
+            })
+            .finally(() => {
+              this.submiting = false;
             });
-            this.content = null;
-          })
-          .finally(() => {
-            this.submiting = false;
-          });
+        } else {
+          questionService
+            .addAnswer(this.$route.params.id, {
+              content: this.content
+            })
+            .then(res => {
+              const { id, nickname, avatar_url } = this.userInfo;
+              this.$emit("submited", {
+                ...res,
+                content: this.content,
+                auth_like_count: 0,
+                comment_count: 0,
+                like_count: 0,
+                question_id: this.$route.params.id,
+                user: { id, nickname, avatar_url },
+                comments: []
+              });
+              this.content = null;
+            })
+            .finally(() => {
+              this.submiting = false;
+            });
+        }
       } else {
         this.$notice({
           type: "danger",

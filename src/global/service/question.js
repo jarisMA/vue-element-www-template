@@ -35,6 +35,9 @@ const questionService = {
   addAnswer: (questionId, params = {}) => {
     return request.post(API.questionAnswerAdd(questionId), params);
   },
+  updateAnswer: (id, params = {}) => {
+    return request.post(API.questionAnswer(id), params);
+  },
   deleteAnswer: id => {
     return request.delete(API.questionAnswer(id));
   },

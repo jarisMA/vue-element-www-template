@@ -58,6 +58,9 @@
           <span v-if="!showComment">{{ answer.comment_count }} 评论</span>
           <span v-else>收起评论</span>
         </div>
+        <div class="edit-wrapper" v-if="allowEdit" @click="editAnswer">
+          <span>编辑回答</span>
+        </div>
       </div>
       <div class="operate-right">
         <label class="fold-wrapper" v-if="!fold" @click="fold = true">
@@ -129,6 +132,10 @@ export default {
     answerData: {
       type: Object,
       required: true
+    },
+    allowEdit: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -272,6 +279,9 @@ export default {
           //   this.$refs["comment"].offsetHeight + commentCount * 114;
         }
       });
+    },
+    editAnswer() {
+      this.$emit("editAnswer");
     }
   }
 };
@@ -544,7 +554,8 @@ export default {
   .operate-left {
     display: flex;
     .claps-wrapper,
-    .comment-wrapper {
+    .comment-wrapper,
+    .edit-wrapper {
       display: flex;
       align-items: center;
       justify-content: center;
@@ -604,9 +615,10 @@ export default {
         color: @primaryColor;
       }
     }
-    .comment-wrapper {
+    .comment-wrapper,
+    .edit-wrapper {
       position: relative;
-      padding-left: 53px;
+      padding: 0 0 0 53px;
       &::before {
         position: absolute;
         top: 4px;
@@ -618,6 +630,19 @@ export default {
         mask-image: url("~images/question/comment.svg");
         mask-repeat: no-repeat;
         mask-size: cover;
+      }
+      &:hover {
+        span {
+          color: @primaryColor;
+        }
+        &::before {
+          background-color: @primaryColor;
+        }
+      }
+    }
+    .edit-wrapper {
+      &::before {
+        mask-image: url("~images/question/edit.svg");
       }
     }
   }
