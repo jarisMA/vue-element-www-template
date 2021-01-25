@@ -186,6 +186,7 @@ export default {
           channel_id
         })
         .then(() => {
+          this.submiting = false;
           this.handleClose();
           let channel = {};
           this.channels.some(item => {
