@@ -91,6 +91,7 @@
             :citedUser="item.user"
             :key="item.id"
             @deleted="deletedCommentSucc(key)"
+            @commented="val => commented(val, key)"
           />
         </li>
       </ul>
@@ -176,13 +177,23 @@ export default {
   },
   methods: {
     fromNow,
-    commented(val) {
+    commented(val, key) {
       this.commentVisible = false;
-      if (this.comment.children) {
-        this.comment.children.unshift(val);
+      if (this.isSecondary) {
+        this.$emit("commented", val);
       } else {
-        this.comment.children = [val];
+        if (this.comment.children) {
+          if (typeof key === "number") {
+            this.comment.children.splice(key + 1, 0, val);
+            this.comment = JSON.parse(JSON.stringify(this.comment));
+          } else {
+            this.comment.children.unshift(val);
+          }
+        } else {
+          this.comment.children = [val];
+        }
       }
+
       this.$emit("initDom");
     },
     deleteComment() {
