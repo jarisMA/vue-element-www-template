@@ -258,20 +258,20 @@ export default {
       this.isClap = false;
     },
     initDom() {
-      // this.$nextTick(() => {
-      //   console.log("init");
-      //   // if (this.$refs["card"]) {
-      //   //   let offsetHeight = this.$refs["card"].offsetHeight;
-      //   //   if (offsetHeight >= 363) {
-      //   //     this.maxHeight = offsetHeight;
-      //   //     this.showUnfoldBtn = true;
-      //   //   }
-      //   //   let commentCount =
-      //   //     (this.answer.comments && this.answer.comments.length) || 0;
-      //   //   this.commentMaxHeight =
-      //   //     this.$refs["comment"].offsetHeight + commentCount * 114;
-      //   // }
-      // });
+      this.$nextTick(() => {
+        // console.log("init");
+        if (this.$refs["card"]) {
+          let offsetHeight = this.$refs["card"].offsetHeight;
+          if (offsetHeight >= 363) {
+            this.maxHeight = offsetHeight;
+            this.showUnfoldBtn = true;
+          }
+          // let commentCount =
+          //   (this.answer.comments && this.answer.comments.length) || 0;
+          // this.commentMaxHeight =
+          //   this.$refs["comment"].offsetHeight + commentCount * 114;
+        }
+      });
     }
   }
 };
@@ -333,10 +333,8 @@ export default {
 }
 .answer-card {
   position: relative;
-  max-height: 363px;
   overflow: hidden;
   padding: @padding;
-  transition: max-height 0.2s;
   z-index: 1;
   background: #fff;
   .card-top {
