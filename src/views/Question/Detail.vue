@@ -648,6 +648,9 @@ export default {
   .answer-list {
     width: 100%;
     .answer-item {
+      &.auth-answer {
+        margin-bottom: 30px;
+      }
       &:not(:last-child) {
         border-bottom: 1px solid #efefef;
       }
