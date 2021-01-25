@@ -30,8 +30,8 @@
             v-if="authAnswer"
             class="add-btn"
             type="primary"
-            @click="showAuthAnswer"
-            >查看回答</el-button
+            @click="editAnswer"
+            >编辑回答</el-button
           >
           <el-button v-else class="add-btn" type="primary" @click="startAnswer"
             >写回答</el-button
@@ -52,8 +52,12 @@
               好问题
               <span class="status-count">{{ question.like_count }}</span>
             </li>
-            <li class="more-status">
-              <el-dropdown class="dropdown-wrapper" placement="top-end">
+            <li class="more-status" v-if="userInfo.id === question.user.id">
+              <el-dropdown
+                class="dropdown-wrapper"
+                placement="top-end"
+                trigger="click"
+              >
                 <i class="el-icon-more"></i>
                 <el-dropdown-menu slot="dropdown" class="question-dropdown">
                   <el-dropdown-item v-if="userInfo.id === question.user.id">
@@ -113,7 +117,11 @@
                   :answerData="authAnswer"
                   allowEdit
                   @editAnswer="editAnswer"
+                  @deleted="deletedAuthAnswer"
                 />
+              </li>
+              <li class="more-item" v-if="answers.length > 0">
+                更多回答
               </li>
               <li
                 class="answer-item"
@@ -137,8 +145,8 @@
               <p>暂无更多回答</p>
               <p>
                 你还可以
-                <span v-if="authAnswer" class="primary" @click="showAuthAnswer"
-                  >查看回答</span
+                <span v-if="authAnswer" class="primary" @click="editAnswer"
+                  >编辑回答</span
                 >
                 <span v-else class="primary" @click="startAnswer">写回答</span>
               </p>
@@ -169,8 +177,8 @@
                 v-if="authAnswer"
                 class="add-btn"
                 type="primary"
-                @click="showAuthAnswer"
-                >查看回答</el-button
+                @click="editAnswer"
+                >编辑回答</el-button
               >
               <el-button
                 v-else
@@ -227,7 +235,7 @@ export default {
       isEdit: false,
       isEditAnswer: false,
       authAnswer: null,
-      authAnswerVisible: false,
+      authAnswerVisible: true,
       originAnswers: [],
       answers: [],
       pagination: {
@@ -271,7 +279,9 @@ export default {
             (question.images && question.images.split(",")) || [];
           this.question = question;
           this.originAnswers = answers.list;
-          this.answers = this.originAnswers;
+          this.answers = this.originAnswers.filter(
+            item => item.id !== this.authAnswer.id
+          );
           this.pagination.page = 1;
           this.pagination.total = answers.pagination.total;
         })
@@ -288,13 +298,9 @@ export default {
         })
         .then(res => {
           this.originAnswers = res.list;
-          if (this.showAuthAnswer) {
-            this.answers = this.originAnswers.filter(
-              item => item.id !== this.authAnswer.id
-            );
-          } else {
-            this.answers = this.originAnswers;
-          }
+          this.answers = this.originAnswers.filter(
+            item => item.id !== this.authAnswer.id
+          );
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
         })
@@ -322,6 +328,7 @@ export default {
       this.authAnswerVisible = true;
     },
     editAnswer() {
+      this.backTop();
       this.authAnswerVisible = false;
       this.isEditAnswer = true;
       this.startAnswer();
@@ -333,7 +340,10 @@ export default {
     addAnswerSucc(value) {
       this.answerVisible = false;
       this.question.answer_count++;
-      this.answers.unshift(value);
+      this.authAnswer = value;
+    },
+    deletedAuthAnswer() {
+      this.authAnswer = null;
     },
     deleteAnswerSucc(key) {
       this.question.answer_count--;
@@ -530,9 +540,12 @@ export default {
       .more-status {
         .el-icon-more {
           line-height: 24px;
-          color: #81948b;
+          color: @baseColor;
           cursor: pointer;
           outline: unset;
+          &:hover {
+            color: @primaryColor;
+          }
         }
       }
     }
@@ -550,7 +563,7 @@ export default {
   .question-main-left {
     width: 770px;
     .rich-text-wrapper {
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       background: #fff;
       &.large {
         position: fixed;
@@ -647,9 +660,39 @@ export default {
   }
   .answer-list {
     width: 100%;
+    .more-item {
+      position: relative;
+      padding: 15px 20px 0;
+      color: #606c66;
+      background: #fff;
+      text-align: center;
+      line-height: 21px;
+      font-size: 14px;
+      color: #606c66;
+      &::before {
+        position: absolute;
+        top: 25px;
+        left: 20px;
+        width: calc((100% - 96px - 40px) / 2);
+        height: 1px;
+        background: #efefef;
+        content: "";
+        transform: translateY(-50%);
+      }
+      &::after {
+        position: absolute;
+        top: 25px;
+        right: 20px;
+        width: calc((100% - 96px - 40px) / 2);
+        height: 1px;
+        background: #efefef;
+        content: "";
+        transform: translateY(-50%);
+      }
+    }
     .answer-item {
       &.auth-answer {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
       }
       &:not(:last-child) {
         border-bottom: 1px solid #efefef;

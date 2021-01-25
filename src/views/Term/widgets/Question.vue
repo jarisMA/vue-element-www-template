@@ -87,10 +87,14 @@
             </span>
           </div>
           <ul class="image-list">
-            <li v-for="(item, key) of addForm.images" :key="item">
+            <li
+              class="image-wrapper"
+              v-for="(item, key) of addForm.images"
+              :key="item"
+            >
               <img class="uploaded-img" :src="item" />
               <span class="delete-icon-wrapper" @click="deleteImage(key)">
-                <icon-svg svg-class="delete-icon" svg-name="delete" />
+                <icon-svg svg-class="delete-icon" svg-name="delete_2" />
               </span>
             </li>
             <li v-if="addForm.images.length < 3">
@@ -433,7 +437,8 @@ export default {
         padding: 14px;
         line-height: 21px;
         font-weight: 400;
-        font-size: 14px;
+        font-size: 15px;
+        line-height: 1.67;
         color: #2c3330;
         border: 1px solid #efefef;
         &::placeholder {
@@ -469,7 +474,7 @@ export default {
       }
       .image-list {
         display: flex;
-        li {
+        li.image-wrapper {
           position: relative;
           width: 80px;
           height: 80px;
@@ -485,8 +490,30 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
+            display: none;
             font-size: 22px;
             cursor: pointer;
+            color: #fff;
+            opacity: 0.5;
+            cursor: pointer;
+            z-index: 2;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+          &:hover {
+            &::after {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              content: "";
+              background: rgba(0, 0, 0, 0.3);
+            }
+            .delete-icon {
+              display: inline-block;
+            }
           }
         }
       }

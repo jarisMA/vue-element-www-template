@@ -59,7 +59,7 @@
           </el-popconfirm>
           <div
             class="report-operate operate-item"
-            v-else-if="allowReport"
+            v-else-if="allowReport && false"
             @click="reportComment"
           >
             举报
@@ -230,6 +230,7 @@ export default {
 @baseColor: #81948b;
 .comment-card {
   display: flex;
+
   .card-left {
     width: 20px;
   }
@@ -239,6 +240,11 @@ export default {
     width: 5px;
   }
   .comment-detail {
+    &:hover {
+      .delete-operate {
+        display: flex !important;
+      }
+    }
     .card-top {
       display: flex;
       justify-content: space-between;
@@ -314,6 +320,10 @@ export default {
           mask-repeat: no-repeat;
           mask-size: cover;
         }
+      }
+      .report-operate,
+      .delete-operate {
+        display: none;
       }
       .reply-operate {
         &::before {

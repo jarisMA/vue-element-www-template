@@ -247,12 +247,12 @@ export default {
         display: none;
         font-size: 24px;
         color: #fff;
-        opacity: 0.3;
+        opacity: 0.5;
         z-index: 10;
         cursor: pointer;
         transition: opacity 0.1s;
         &:hover {
-          opacity: 0.5;
+          opacity: 0.8;
         }
       }
       &:hover {

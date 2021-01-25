@@ -252,6 +252,8 @@ export default {
   .ql-editor {
     padding: @padding;
     min-height: 146px;
+    font-size: 15px;
+    line-height: 1.67;
     &.ql-blank::before {
       left: @padding;
       font-style: normal;

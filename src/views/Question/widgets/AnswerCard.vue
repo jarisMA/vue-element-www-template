@@ -67,7 +67,12 @@
           <img src="~images/question/drop_up.svg" />
           <span>收起</span>
         </label>
-        <el-dropdown class="dropdown-wrapper" placement="top-end">
+        <el-dropdown
+          class="dropdown-wrapper"
+          placement="top-end"
+          trigger="click"
+          v-if="userInfo.id === answer.user.id"
+        >
           <i class="el-icon-more"></i>
           <el-dropdown-menu slot="dropdown" class="question-dropdown">
             <el-dropdown-item v-if="userInfo.id === answer.user.id">
@@ -290,6 +295,7 @@ export default {
 <style lang="less" scoped>
 @padding: 20px;
 @duration: 0.3s;
+@baseColor: #81948b;
 @keyframes clap {
   0% {
     transform: scale(1);
@@ -569,7 +575,7 @@ export default {
       span {
         font-weight: normal;
         font-size: 14px;
-        color: #81948b;
+        color: @baseColor;
       }
     }
     .claps-wrapper {
@@ -626,7 +632,7 @@ export default {
         width: 24px;
         height: 24px;
         content: "";
-        background-color: #81948b;
+        background-color: @baseColor;
         mask-image: url("~images/question/comment.svg");
         mask-repeat: no-repeat;
         mask-size: cover;
@@ -659,13 +665,16 @@ export default {
       }
       span {
         font-size: 14px;
-        color: #81948b;
+        color: @baseColor;
       }
     }
     .el-icon-more {
-      color: #c4c4c4;
+      color: @baseColor;
       cursor: pointer;
       outline: none;
+      &:hover {
+        color: @primaryColor;
+      }
     }
   }
 }
@@ -716,5 +725,16 @@ export default {
 <style lang="less">
 .el-popconfirm__main {
   padding-bottom: 10px !important;
+}
+
+.question-dropdown {
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05) !important;
+  /deep/ .el-dropdown-menu__item {
+    line-height: 24px !important;
+    padding: 10px !important;
+  }
+  /deep/ .popper__arrow {
+    display: none !important;
+  }
 }
 </style>
