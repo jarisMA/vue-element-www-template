@@ -94,7 +94,7 @@
     >
       <div class="comment-list-wrapper" ref="comment">
         <div class="comment-tips">{{ answer.comment_count }} 条评论</div>
-        <ul class="comment-list">
+        <ul class="comment-list" v-if="answer.comments">
           <li
             class="comment-item"
             v-for="(item, key) of answer.comments"
@@ -105,8 +105,7 @@
               :answerId="answer.id"
               @commented="initDom"
               @initDom="initDom"
-              @deleted="deletedCommentSucc"
-              @delete="idx => deleteComment(key, idx)"
+              @deleted="deletedCommentSucc(key)"
             />
           </li>
         </ul>
@@ -136,7 +135,7 @@ export default {
     Comment
   },
   props: {
-    answer: {
+    answerData: {
       type: Object,
       required: true
     }
@@ -149,16 +148,22 @@ export default {
       maxHeight: 363,
       commentMaxHeight: 0,
       isClap: false,
-      clapCount: this.answer.auth_like_count,
+      clapCount: this.answerData.auth_like_count,
       timer: null,
-      claping: false
+      claping: false,
+      answer: this.answerData || {
+        user: {}
+      }
     };
   },
   watch: {
-    answer(val) {
-      console.log(val);
-      this.clapCount = val.auth_like_count;
-      this.initDom();
+    answerData: {
+      handler(val) {
+        this.clapCount = val.auth_like_count;
+        this.answer = val;
+        this.initDom();
+      },
+      deep: true
     }
   },
   computed: {
@@ -187,14 +192,17 @@ export default {
       });
     },
     commented(val) {
-      this.$emit("commented");
+      this.updateCommentCount(1);
       this.answer.comments.push(val);
       this.initDom();
     },
+    updateCommentCount(count) {
+      this.answer.comment_count += count;
+    },
     // 删除第一级评论
     deletedCommentSucc(key) {
-      this.$emit("deletedComment", key);
-      // this.answer.comments.splice(key, 1);
+      this.updateCommentCount(-1);
+      this.answer.comments.splice(key, 1);
       this.initDom();
     },
     startClap() {
@@ -254,15 +262,17 @@ export default {
     initDom() {
       this.$nextTick(() => {
         console.log("init");
-        let offsetHeight = this.$refs["card"].offsetHeight;
-        if (offsetHeight >= 363) {
-          this.maxHeight = offsetHeight;
-          this.showUnfoldBtn = true;
+        if (this.$refs["card"]) {
+          let offsetHeight = this.$refs["card"].offsetHeight;
+          if (offsetHeight >= 363) {
+            this.maxHeight = offsetHeight;
+            this.showUnfoldBtn = true;
+          }
+          let commentCount =
+            (this.answer.comments && this.answer.comments.length) || 0;
+          this.commentMaxHeight =
+            this.$refs["comment"].offsetHeight + commentCount * 114;
         }
-        let commentCount =
-          (this.answer.comments && this.answer.comments.length) || 0;
-        this.commentMaxHeight =
-          this.$refs["comment"].offsetHeight + commentCount * 114;
       });
     }
   }

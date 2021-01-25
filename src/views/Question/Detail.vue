@@ -93,10 +93,8 @@
                 :key="item.id"
               >
                 <answer-card
-                  :answer="item"
+                  :answerData="item"
                   @deleted="deleteAnswerSucc(key)"
-                  @commented="updateCommentCount(key, 1)"
-                  @deletedComment="(j, k) => deletedComment(key, j, k)"
                 />
               </li>
             </ul>
@@ -325,16 +323,6 @@ export default {
       document.querySelector("html").style.overflow = "auto";
       this.$refs["page"].style.maxHeight = "unset";
       this.$refs["page"].style.overflow = "auto";
-    },
-    updateCommentCount(key, count) {
-      this.$set(this.answers, key, {
-        ...this.answers[key],
-        comment_count: this.answers[key].comment_count + count
-      });
-    },
-    deletedComment(i, j) {
-      this.answers[i].comments.splice(j, 1);
-      this.updateCommentCount(i, -1);
     },
     handleScroll() {
       if (window.scrollY > this.$refs["detail"].offsetHeight) {
