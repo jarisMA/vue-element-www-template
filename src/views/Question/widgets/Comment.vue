@@ -72,6 +72,10 @@ export default {
       type: Object,
       default: () => null
     },
+    citedUser: {
+      type: Object,
+      default: () => null
+    },
     answerId: {
       type: Number,
       required: true
@@ -108,19 +112,27 @@ export default {
       };
       if (this.parent) {
         params.parent_id = this.parent.id;
-        params.cited_user_id = this.parent.user.id;
+        params.cited_user_id = this.citedUser
+          ? this.citedUser.id
+          : this.parent.user.id;
       }
       this.submiting = true;
       questionService
         .addComment(this.answerId, params)
         .then(res => {
           const { id, nickname, avatar_url } = this.userInfo;
+
           this.$emit("commented", {
             ...params,
             ...res,
-            cited_user: this.parent ? this.parent.user : null,
+            cited_user: this.citedUser
+              ? this.citedUser
+              : this.parent
+              ? this.parent.user
+              : null,
             user: { id, nickname, avatar_url }
           });
+
           this.$refs["addForm"].resetFields();
         })
         .finally(() => {

@@ -68,7 +68,8 @@
         <div v-show="commentVisible" class="reply-comment">
           <comment
             :answerId="answerId"
-            :parent="comment"
+            :parent="parent || comment"
+            :citedUser="citedUser"
             @commented="commented"
           />
         </div>
@@ -83,9 +84,11 @@
           :key="item.id"
         >
           <question-comment-card
+            isSecondary
             :commentData="item"
             :answerId="answerId"
-            :allowComment="false"
+            :parent="comment"
+            :citedUser="item.user"
             :key="item.id"
             @deleted="deletedCommentSucc(key)"
           />
@@ -111,6 +114,14 @@ export default {
     Comment
   },
   props: {
+    parent: {
+      type: Object,
+      default: () => null
+    },
+    citedUser: {
+      type: Object,
+      default: () => null
+    },
     commentData: {
       type: Object,
       required: true
@@ -130,6 +141,10 @@ export default {
     allowReport: {
       type: Boolean,
       default: true
+    },
+    isSecondary: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
