@@ -120,7 +120,7 @@
                   @deleted="deletedAuthAnswer"
                 />
               </li>
-              <li class="more-item" v-if="answers.length > 0">
+              <li class="more-item" v-if="authAnswer && answers.length > 0">
                 更多回答
               </li>
               <li
@@ -345,6 +345,7 @@ export default {
       this.authAnswer = value;
     },
     deletedAuthAnswer() {
+      this.question.answer_count--;
       this.authAnswer = null;
     },
     deleteAnswerSucc(key) {
