@@ -12,3 +12,7 @@ export const formNowFormatDay = date => {
   }
   return Math.floor((end - now) / 1000 / 60 / 60 / 24);
 };
+
+export const fromNow = (date, format = "YYYY年MM月DD日 HH:mm") => {
+  return moment(date, format).fromNow();
+};

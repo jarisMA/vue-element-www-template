@@ -104,13 +104,13 @@
             placeholder="选择一个家装领域"
           >
             <el-option
+              class="question-select"
               v-for="item of channels"
               :key="item.id"
               :label="item.name"
               :value="item.id"
             >
-              <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
-              {{ item.name }}
+              <label class="question-select-option">{{ item.name }}</label>
             </el-option>
           </el-select>
           <el-button
@@ -546,6 +546,27 @@ export default {
       line-height: 21px;
       font-size: 14px;
       color: #8ea098;
+    }
+  }
+}
+</style>
+<style lang="less">
+.el-select-dropdown {
+  /deep/ .question-select {
+    .question-select-option {
+      position: relative;
+      padding-left: 17px;
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 17px;
+        height: 17px;
+        background: url("~images/question/rz.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        content: "";
+      }
     }
   }
 }

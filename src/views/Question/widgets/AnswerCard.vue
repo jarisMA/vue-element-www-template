@@ -288,7 +288,7 @@ export default {
 
 <style lang="less" scoped>
 @padding: 20px;
-@duration: 0.3s;
+@duration: 0.1s;
 @keyframes clap {
   0% {
     transform: scale(1);

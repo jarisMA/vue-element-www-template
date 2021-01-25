@@ -26,6 +26,7 @@
             </template>
           </div>
           <div class="time-wrapper">
+            <!-- {{ fromNow(comment.created_at) }} -->
             {{ comment.created_at }}
           </div>
         </div>
@@ -100,6 +101,7 @@ import ThePreviewImage from "components/ThePreviewImage";
 import Comment from "./Comment";
 import { mapState } from "vuex";
 import questionService from "service/question";
+import { fromNow } from "utils/moment";
 
 export default {
   name: "QuestionCommentCard",
@@ -158,6 +160,7 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    fromNow,
     commented(val) {
       this.commentVisible = false;
       if (this.comment.children) {
