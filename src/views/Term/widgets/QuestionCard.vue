@@ -202,6 +202,9 @@ export default {
         &::before {
           mask-image: url("~images/question/comment.svg");
         }
+        .status-count {
+          margin-left: 0;
+        }
       }
     }
   }
