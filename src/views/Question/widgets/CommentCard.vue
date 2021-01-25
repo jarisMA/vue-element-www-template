@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-card">
+  <div class="comment-card" v-loading="loading">
     <div class="card-left">
       <the-avatar :size="20" :url="comment.user.avatar_url" />
     </div>
@@ -85,7 +85,7 @@
             :commentData="item"
             :answerId="answerId"
             :allowComment="false"
-            :key="key"
+            :key="item.id"
             @deleted="deletedCommentSucc(key)"
           />
         </li>
@@ -132,6 +132,7 @@ export default {
   },
   data() {
     return {
+      loading: false,
       images:
         (this.commentData &&
           this.commentData.images &&
@@ -139,7 +140,8 @@ export default {
         [],
       commentVisible: false,
       comment: this.commentData || {
-        user: {}
+        user: {},
+        children: []
       }
     };
   },
@@ -166,12 +168,19 @@ export default {
       this.$emit("initDom");
     },
     deleteComment() {
-      questionService.deleteComment(this.comment.id).then(() => {
-        this.$emit("deleted");
-      });
+      this.loading = true;
+      questionService
+        .deleteComment(this.comment.id)
+        .then(() => {
+          this.$emit("deleted");
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     deletedCommentSucc(key) {
       this.comment.children.splice(key, 1);
+      this.$set(this.comment, "children", this.comment.children);
     },
     reportComment() {
       this.$notice({
