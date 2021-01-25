@@ -120,7 +120,11 @@ export default {
               border: "none",
               color: "white"
             },
-            modules: ["Resize", "DisplaySize", "Toolbar"]
+            modules: [
+              "Resize",
+              "DisplaySize"
+              // "Toolbar"
+            ]
           },
           toolbar: {
             container: toolbarOptions,
@@ -276,6 +280,10 @@ export default {
   }
   .ql-container {
     border: unset;
+    img {
+      margin: 0 auto !important;
+      display: block !important;
+    }
   }
 }
 </style>
