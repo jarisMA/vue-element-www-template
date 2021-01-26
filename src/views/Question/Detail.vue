@@ -304,6 +304,7 @@ export default {
           page_size: this.pagination.size
         })
         .then(res => {
+          this.backTop();
           this.originAnswers = res.list;
           this.answers = res.list;
           this.answers = this.originAnswers.filter(
