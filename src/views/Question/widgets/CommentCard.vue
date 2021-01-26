@@ -279,8 +279,8 @@ export default {
     .card-content {
       .comment-content {
         margin-top: 10px;
-        line-height: 21px;
-        font-size: 14px;
+        line-height: 1.67;
+        font-size: 15px;
         color: #111;
         word-break: break-all;
       }

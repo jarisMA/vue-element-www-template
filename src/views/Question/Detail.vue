@@ -482,8 +482,8 @@ export default {
     margin-top: 20px;
     .question-content {
       margin-bottom: 10px;
-      line-height: 21px;
-      font-size: 14px;
+      line-height: 1.67;
+      font-size: 15px;
       color: #111111;
       word-break: break-all;
     }

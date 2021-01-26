@@ -379,6 +379,8 @@ export default {
   }
   .card-content {
     margin-top: 24px;
+    font-size: 15px;
+    line-height: 1.67;
     word-break: break-all;
     /deep/ .content {
       img {

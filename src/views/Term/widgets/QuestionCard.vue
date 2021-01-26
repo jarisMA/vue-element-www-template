@@ -126,9 +126,9 @@ export default {
     margin-top: 20px;
     .question-content {
       margin-bottom: 10px;
-      max-height: 42px;
-      line-height: 21px;
-      font-size: 14px;
+      max-height: 51px;
+      line-height: 1.67;
+      font-size: 15px;
       color: #111111;
       display: -webkit-box;
       -webkit-box-orient: vertical;
