@@ -436,7 +436,6 @@ export default {
 
 <style lang="less" scoped>
 @duration: 0.2s;
-@baseColor: #81948b;
 @import "~styles/variable";
 .container-920 {
   width: 920px;
@@ -466,7 +465,7 @@ export default {
       font-size: 14px;
       .rz-icon {
         font-size: 24px;
-        color: #606c66;
+        color: @hoverColor;
       }
     }
     .question-title {
@@ -518,7 +517,12 @@ export default {
           mask-size: cover;
           background-color: @baseColor;
         }
-        &:hover,
+        &:hover {
+          color: @hoverColor;
+          &::before {
+            background-color: @hoverColor;
+          }
+        }
         &.active {
           color: @primaryColor;
           &::before {
@@ -547,7 +551,7 @@ export default {
           cursor: pointer;
           outline: unset;
           &:hover {
-            color: @primaryColor;
+            color: @hoverColor;
           }
         }
       }
@@ -559,7 +563,7 @@ export default {
   line-height: 24px;
   font-weight: 500;
   font-size: 16px;
-  color: #606c66;
+  color: @hoverColor;
 }
 .question-main {
   display: flex;
@@ -643,7 +647,7 @@ export default {
             line-height: 24px;
             font-weight: 500;
             font-size: 14px;
-            color: #606c66;
+            color: @hoverColor;
             &::before {
               position: absolute;
               top: 0;
@@ -666,12 +670,11 @@ export default {
     .more-item {
       position: relative;
       padding: 15px 20px 0;
-      color: #606c66;
+      color: @hoverColor;
       background: #fff;
       text-align: center;
       line-height: 21px;
       font-size: 14px;
-      color: #606c66;
       &::before {
         position: absolute;
         top: 25px;
@@ -774,7 +777,7 @@ export default {
         line-height: 24px;
         margin-bottom: 20px;
         font-size: 14px;
-        color: #606c66;
+        color: @hoverColor;
         .rz-icon {
           font-size: 24px;
         }

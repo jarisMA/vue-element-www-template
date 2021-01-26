@@ -227,7 +227,6 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 
-@baseColor: #81948b;
 .comment-card {
   display: flex;
 
@@ -266,7 +265,7 @@ export default {
           line-height: 21px;
           font-weight: normal;
           font-size: 14px;
-          color: #81948b;
+          color: @baseColor;
         }
       }
       .time-wrapper {
@@ -316,9 +315,15 @@ export default {
           width: 18px;
           height: 18px;
           content: "";
-          background-color: #81948b;
+          background-color: @baseColor;
           mask-repeat: no-repeat;
           mask-size: cover;
+        }
+        &:hover {
+          color: @hoverColor;
+          &::before {
+            background-color: @hoverColor;
+          }
         }
       }
       .report-operate,

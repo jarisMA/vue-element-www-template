@@ -99,7 +99,6 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @duration: 0.2s;
-
 .question-card {
   padding: 24px 20px;
   background: #fff;
@@ -151,7 +150,7 @@ export default {
         line-height: 18px;
         font-size: 12px;
         font-weight: normal;
-        color: #81948b;
+        color: @baseColor;
         &.active {
           color: @primaryColor;
         }
@@ -165,7 +164,7 @@ export default {
         padding-left: 29px;
         line-height: 24px;
         font-size: 14px;
-        color: #81948b;
+        color: @baseColor;
         transition: all @duration;
         cursor: pointer;
         user-select: none;
@@ -177,9 +176,15 @@ export default {
           width: 24px;
           height: 24px;
           content: "";
-          background-color: #81948b;
+          background-color: @baseColor;
           mask-repeat: no-repeat;
           mask-size: cover;
+        }
+        &:hover {
+          color: #606c66;
+          &::before {
+            background-color: #606c66;
+          }
         }
         &.active {
           color: @primaryColor;

@@ -305,7 +305,8 @@ export default {
 <style lang="less" scoped>
 @padding: 20px;
 @duration: 0.3s;
-@baseColor: #81948b;
+@import "~styles/variable";
+
 @keyframes clap {
   0% {
     transform: scale(1);
@@ -345,7 +346,6 @@ export default {
     transform: scale(1);
   }
 }
-@import "~styles/variable";
 .fade-leave-active {
   transition: all 0.5s;
 }
@@ -375,7 +375,7 @@ export default {
         line-height: 24px;
         font-weight: 500;
         font-size: 16px;
-        color: #606c66;
+        color: @hoverColor;
         &.active {
           color: @primaryColor;
         }
@@ -651,10 +651,10 @@ export default {
       }
       &:hover {
         span {
-          color: #606c66;
+          color: @hoverColor;
         }
         &::before {
-          background-color: #606c66;
+          background-color: @hoverColor;
         }
       }
     }
@@ -685,7 +685,7 @@ export default {
       cursor: pointer;
       outline: none;
       &:hover {
-        color: @primaryColor;
+        color: @hoverColor;
       }
     }
   }
@@ -710,7 +710,7 @@ export default {
     margin-bottom: @padding;
     line-height: 21px;
     font-size: 14px;
-    color: #606c66;
+    color: @hoverColor;
   }
   .comment-list {
     border-bottom: 1px solid #efefef;
