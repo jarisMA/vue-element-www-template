@@ -16,7 +16,12 @@
         </p>
       </div>
       <div class="question-images">
-        <the-preview-image width="80px" height="80px" :srcList="images" />
+        <the-preview-image
+          width="80px"
+          height="80px"
+          :srcList="images"
+          :maskClickClose="false"
+        />
       </div>
     </div>
     <div class="card-bottom">

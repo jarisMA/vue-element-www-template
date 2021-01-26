@@ -16,7 +16,7 @@
       <el-form-item class="form-item-wrapper" prop="images">
         <upload-image
           class="upload-image-wrapper"
-          theme="comment"
+          :theme="addForm.images.length > 0 ? 'active_comment' : 'comment'"
           @added="addImage"
         />
         <el-button

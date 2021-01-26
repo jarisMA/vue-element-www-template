@@ -7,8 +7,11 @@
       accept="image/*"
       :before-upload="upload"
     >
-      <div v-if="theme === 'comment'">
-        <icon-svg svg-class="pic-icon" svg-name="pic"></icon-svg>
+      <div v-if="theme === 'comment' || theme === 'active_comment'">
+        <icon-svg
+          :svg-class="['pic-icon', theme === 'active_comment' ? 'active' : '']"
+          svg-name="pic"
+        ></icon-svg>
       </div>
       <div class="add-image" v-else>
         <img src="~images/add.png" />
@@ -119,6 +122,9 @@ export default {
 }
 .pic-icon {
   font-size: 24px;
-  color: @primaryColor;
+  color: #8ea098;
+  &.active {
+    color: @primaryColor;
+  }
 }
 </style>

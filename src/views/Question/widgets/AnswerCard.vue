@@ -639,10 +639,10 @@ export default {
       }
       &:hover {
         span {
-          color: @primaryColor;
+          color: #606c66;
         }
         &::before {
-          background-color: @primaryColor;
+          background-color: #606c66;
         }
       }
     }
@@ -701,6 +701,7 @@ export default {
     color: #606c66;
   }
   .comment-list {
+    border-bottom: 1px solid #efefef;
     .comment-item {
       position: relative;
       padding: 10px 0;

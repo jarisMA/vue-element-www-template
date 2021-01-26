@@ -32,7 +32,10 @@
       </el-form-item>
       <el-form-item class="image-container" prop="images">
         <div class="image-tips">
-          <icon-svg svg-class="pic-icon" svg-name="pic" />
+          <icon-svg
+            :svg-class="['pic-icon', form.images.length > 0 ? 'active' : '']"
+            svg-name="pic"
+          />
           <span class="tips" v-if="form.images.length > 0">
             已选择{{ form.images.length }}张，还可以选择{{
               3 - form.images.length
@@ -40,10 +43,14 @@
           </span>
         </div>
         <ul class="image-list">
-          <li v-for="(item, key) of form.images" :key="item">
+          <li
+            class="image-wrapper"
+            v-for="(item, key) of form.images"
+            :key="item"
+          >
             <img class="uploaded-img" :src="item" />
             <span class="delete-icon-wrapper" @click="deleteImage(key)">
-              <icon-svg svg-class="delete-icon" svg-name="delete" />
+              <icon-svg svg-class="delete-icon" svg-name="delete_2" />
             </span>
           </li>
           <li v-if="form.images.length < 3">
@@ -270,11 +277,9 @@ export default {
         margin-bottom: 13px;
         .pic-icon {
           font-size: 24px;
-          fill: #606c66;
-          stroke: #606c66;
+          color: #8ea098;
           &.active {
-            fill: @primaryColor;
-            stroke: @primaryColor;
+            color: @primaryColor;
           }
         }
         .tips {
@@ -287,7 +292,7 @@ export default {
       }
       .image-list {
         display: flex;
-        li {
+        li.image-wrapper {
           position: relative;
           width: 80px;
           height: 80px;
@@ -300,11 +305,32 @@ export default {
             margin-right: 20px;
           }
           .delete-icon {
+            display: none;
             position: absolute;
             top: 0;
             right: 0;
             font-size: 22px;
             cursor: pointer;
+            color: #fff;
+            opacity: 0.5;
+            z-index: 2;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+          &:hover {
+            &::after {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              content: "";
+              background: rgba(0, 0, 0, 0.3);
+            }
+            .delete-icon {
+              display: inline-block;
+            }
           }
         }
       }

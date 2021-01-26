@@ -824,5 +824,9 @@ export default {
   .delete-tip {
     color: #d40000;
   }
+  .el-dropdown-menu__item:not(.is-disabled):hover,
+  .el-dropdown-menu__item:focus {
+    background-color: #fafafa;
+  }
 }
 </style>

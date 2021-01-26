@@ -79,7 +79,13 @@
         </el-form-item>
         <el-form-item class="image-container" prop="images">
           <div class="image-tips">
-            <icon-svg svg-class="pic-icon" svg-name="pic" />
+            <icon-svg
+              :svg-class="[
+                'pic-icon',
+                addForm.images.length > 0 ? 'active' : ''
+              ]"
+              svg-name="pic"
+            />
             <span class="tips" v-if="addForm.images.length > 0">
               已选择{{ addForm.images.length }}张，还可以选择{{
                 3 - addForm.images.length
@@ -457,11 +463,9 @@ export default {
         margin-bottom: 13px;
         .pic-icon {
           font-size: 24px;
-          fill: #606c66;
-          stroke: #606c66;
+          color: #8ea098;
           &.active {
-            fill: @primaryColor;
-            stroke: @primaryColor;
+            color: @primaryColor;
           }
         }
         .tips {
