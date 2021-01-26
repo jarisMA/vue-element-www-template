@@ -2,6 +2,7 @@ import axios from "axios";
 import { Message } from "element-ui";
 import cookies from "js-cookie";
 import Store from "@/store/index.js";
+import { goRoute } from "utils/routes";
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
@@ -57,6 +58,11 @@ const successRes = res => {
   switch (true) {
     case res.data.error_code === 0:
       return res.data.data;
+    case res.data.error_code === 404:
+      goRoute({
+        name: "NotFound"
+      });
+      return Promise.reject(res.data);
     default:
       // this.$notice({
       //   type: 'danger',

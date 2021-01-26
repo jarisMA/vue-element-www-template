@@ -2,6 +2,7 @@ import routesPlan from "./routesPlan";
 import routesTerm from "./routesTerm";
 import routesBible from "./routesBible";
 import routesQuestion from "./routesQuestion";
+import routesError from "./routesError";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -39,7 +40,8 @@ const routes = [
       ...routesPlan,
       ...routesTerm,
       ...routesBible,
-      ...routesQuestion
+      ...routesQuestion,
+      ...routesError
     ]
   },
   {
