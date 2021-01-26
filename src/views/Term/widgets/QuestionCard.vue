@@ -1,5 +1,5 @@
 <template>
-  <div class="question-card" @click="goQuestionDetail(question.id)">
+  <div class="question-card" @click.prevent="goQuestionDetail(question.id)">
     <div class="card-top">
       <label class="question-channel">
         <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
@@ -20,7 +20,7 @@
           width="80px"
           height="80px"
           :srcList="images"
-          :maskClickClose="false"
+          @click.native.stop
         />
       </div>
     </div>

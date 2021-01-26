@@ -34,21 +34,19 @@ export default {
     height: {
       type: String,
       default: "100px"
-    },
-    maskClickClose: {
-      type: Boolean,
-      default: true
     }
   },
+  mounted() {
+    window.addEventListener("click", this.handleClickItem, true);
+  },
+  destroyed() {
+    window.removeEventListener("click", this.handleClickItem, true);
+  },
   methods: {
-    handleClickItem() {
-      if (this.maskClickClose) {
-        document.body.onclick = e => {
-          const target = e.target;
-          if (target.className === "el-image-viewer__mask") {
-            target.parentNode.children[1].click();
-          }
-        };
+    handleClickItem(e) {
+      const target = e.target;
+      if (target.className === "el-image-viewer__mask") {
+        target.parentNode.children[1].click();
       }
     }
   }
