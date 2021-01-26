@@ -1,5 +1,5 @@
 <template>
-  <div class="question-card" @click.prevent="goQuestionDetail(question.id)">
+  <div class="question-card" @click.prevent="goDetail(question.id)">
     <div class="card-top">
       <label class="question-channel">
         <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
@@ -85,6 +85,9 @@ export default {
   },
   methods: {
     goQuestionDetail,
+    goDetail(id) {
+      this.$emit("detail", id);
+    },
     handleLikeClick() {
       if (this.question.is_like) {
         this.$emit("unlike");

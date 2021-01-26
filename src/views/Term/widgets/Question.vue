@@ -25,6 +25,7 @@
               :question="item"
               @like="addLike(item.id, key)"
               @unlike="deleteLike(item.id, key)"
+              @detail="goDetail"
             />
           </li>
         </ul>
@@ -135,6 +136,15 @@
         </el-form-item>
       </el-form>
     </el-dialog>
+    <el-drawer
+      :visible.sync="drawer"
+      size="1000px"
+      direction="rtl"
+      custom-class="question-drawer"
+      ref="drawer"
+    >
+      <question-detail :id="questionId" @backTop="drawerBackTop" />
+    </el-drawer>
   </div>
 </template>
 
@@ -144,6 +154,7 @@ import UploadImage from "components/UploadImage";
 import QuestionCard from "./QuestionCard";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
+import QuestionDetail from "@/views/Question/Detail";
 
 import { mapState } from "vuex";
 import questionService from "service/question";
@@ -155,7 +166,8 @@ export default {
     UploadImage,
     QuestionCard,
     Pagination,
-    TheEmpty
+    TheEmpty,
+    QuestionDetail
   },
   data() {
     return {
@@ -176,7 +188,9 @@ export default {
         channel_id: null
       },
       questions: [],
-      liking: false
+      liking: false,
+      drawer: false,
+      questionId: null
     };
   },
   computed: {
@@ -216,6 +230,10 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    goDetail(id) {
+      this.drawer = true;
+      this.questionId = id;
     },
     addQuestion() {
       const { title, content, images, channel_id } = this.addForm;
@@ -318,6 +336,14 @@ export default {
             this.liking = false;
           });
       }
+    },
+    drawerBackTop() {
+      const drawer = this.$refs["drawer"].$el.children[0].children[0]
+        .children[1];
+      drawer.scrollTo({
+        top: 0,
+        behaviour: "smooth"
+      });
     }
   }
 };
@@ -604,6 +630,18 @@ export default {
         content: "";
       }
     }
+  }
+}
+.question-drawer {
+  background: #fafafa !important;
+  outline: unset;
+  /deep/ .el-drawer__header {
+    height: 60px;
+    padding: 20px;
+    margin: 0;
+  }
+  /deep/.el-drawer__body {
+    overflow: auto;
   }
 }
 </style>

@@ -55,7 +55,7 @@ export default {
 
 <style lang="less" scoped>
 .the-preview-image {
-  display: flex;
+  display: inline-flex;
   .preview-image-wrapper {
     width: 100px;
     height: 100px;

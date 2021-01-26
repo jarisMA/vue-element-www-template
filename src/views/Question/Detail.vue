@@ -163,36 +163,33 @@
             </div>
           </div>
         </div>
-        <div class="question-main-right">
+        <!-- <div class="question-main-right">
           <div class="sticky-wrapper">
             <div class="question-card">
               <label class="question-channel">
-                <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
+                <icon-svg svg-class="rz-icon"
+                          svg-name="rz"></icon-svg>
                 {{ question.channel.name }}
               </label>
               <h3 class="question-title">
                 {{ question.title }}
               </h3>
-              <el-button
-                v-if="authAnswer"
-                class="add-btn"
-                type="primary"
-                @click="editAnswer"
-                >编辑回答</el-button
-              >
-              <el-button
-                v-else
-                class="add-btn"
-                type="primary"
-                @click="startAnswer"
-                >写回答</el-button
-              >
+              <el-button v-if="authAnswer"
+                         class="add-btn"
+                         type="primary"
+                         @click="editAnswer">编辑回答</el-button>
+              <el-button v-else
+                         class="add-btn"
+                         type="primary"
+                         @click="startAnswer">写回答</el-button>
             </div>
-            <div class="back-top" @click="backTop" v-show="showBackTop">
+            <div class="back-top"
+                 @click="backTop"
+                 v-show="showBackTop">
               <span>回到顶部</span>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <question-edit
@@ -222,9 +219,14 @@ export default {
     Pagination,
     QuestionEdit
   },
+  props: {
+    id: {
+      type: Number,
+      required: true
+    }
+  },
   data() {
     return {
-      id: null,
       loading: true,
       answerVisible: false,
       question: {
@@ -251,15 +253,19 @@ export default {
   computed: {
     ...mapState(["userInfo"])
   },
+  watch: {
+    id() {
+      this.getData();
+    }
+  },
   created() {
-    this.id = this.$route.params.id;
     this.getData();
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
+    // window.addEventListener("scroll", this.handleScroll);
   },
   destroyed() {
-    window.removeEventListener("scroll", this.handleScroll);
+    // window.removeEventListener("scroll", this.handleScroll);
   },
   methods: {
     getData() {
@@ -393,7 +399,7 @@ export default {
         .deleteQuestion(this.id)
         .then(() => {
           this.$notice("删除问题成功");
-          this.$router.back();
+          this.$emit("close");
         })
         .finally(() => {
           this.loading = false;
@@ -406,10 +412,7 @@ export default {
       });
     },
     backTop() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
+      this.$emit("backTop");
     },
     larger() {
       this.largerRichText = true;
@@ -568,7 +571,7 @@ export default {
 .question-main {
   display: flex;
   .question-main-left {
-    width: 770px;
+    width: 100%;
     .rich-text-wrapper {
       margin-bottom: 20px;
       background: #fff;
