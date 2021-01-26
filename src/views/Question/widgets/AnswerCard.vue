@@ -103,8 +103,9 @@
               :commentData="item"
               :answerId="answer.id"
               @commented="initDom"
-              @initDom="initDom"
-              @deleted="deletedCommentSucc(key)"
+              @added="addedComment"
+              @deleted="count => deletedCommentSucc(key, count)"
+              @deletedSecondary="deletedSecondaryComment"
             />
           </li>
         </ul>
@@ -212,18 +213,26 @@ export default {
       });
     },
     commented(val) {
-      this.updateCommentCount(1);
       this.answer.comments.push(val);
+      this.updateCommentCount(1);
       this.initDom();
+    },
+    // 添加评论
+    addedComment() {
+      this.updateCommentCount(1);
     },
     updateCommentCount(count) {
       this.answer.comment_count += count;
     },
     // 删除第一级评论
-    deletedCommentSucc(key) {
-      this.updateCommentCount(-1);
+    deletedCommentSucc(key, count) {
+      this.updateCommentCount(-count);
       this.answer.comments.splice(key, 1);
       this.initDom();
+    },
+    // 删除第二级评论
+    deletedSecondaryComment() {
+      this.updateCommentCount(-1);
     },
     startClap() {
       if (!this.claping) {

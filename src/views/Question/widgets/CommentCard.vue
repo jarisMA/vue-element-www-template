@@ -193,21 +193,21 @@ export default {
           this.comment.children = [val];
         }
       }
-
-      this.$emit("initDom");
+      this.$emit("added");
     },
     deleteComment() {
       this.loading = true;
       questionService
         .deleteComment(this.comment.id)
-        .then(() => {
-          this.$emit("deleted");
+        .then(res => {
+          this.$emit("deleted", res.count);
         })
         .finally(() => {
           this.loading = false;
         });
     },
     deletedCommentSucc(key) {
+      this.$emit("deletedSecondary");
       this.comment.children.splice(key, 1);
       this.comment = JSON.parse(JSON.stringify(this.comment));
     },
@@ -217,8 +217,8 @@ export default {
         title: "等待开放..."
       });
     },
-    initDom() {
-      this.$emit("initDom");
+    added() {
+      this.$emit("added");
     }
   }
 };
