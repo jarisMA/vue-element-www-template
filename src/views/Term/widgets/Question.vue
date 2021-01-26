@@ -325,6 +325,7 @@ export default {
 @import "~styles/variable";
 @baseColor: #8ea098;
 .question-wrapper {
+  min-height: calc(100vh - 528px);
   padding: 0 10px;
   .rz-icon {
     font-size: 24px;
