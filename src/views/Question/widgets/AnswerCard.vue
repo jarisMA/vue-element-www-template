@@ -157,7 +157,8 @@ export default {
       claping: false,
       answer: this.answerData || {
         user: {}
-      }
+      },
+      observer: null
     };
   },
   watch: {
@@ -176,9 +177,18 @@ export default {
   mounted() {
     this.initDom();
     window.addEventListener("mouseup", this.handleMouseUp);
+    let element = this.$refs["card"];
+    this.observer = new ResizeObserver(() => {
+      this.initDom();
+    });
+    this.observer.observe(element);
   },
   destroyed() {
     window.removeEventListener("mouseup", this.handleMouseUp);
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
+    }
   },
   methods: {
     deleteAnswer() {
