@@ -2,9 +2,23 @@
   <div>
     <detail-list v-if="depth < 2" :list="menus" @showDetail="showDetail" />
     <ul v-else class="bible-list" v-for="menu of menus" :key="menu.id">
-      <label class="bible-list-name" :id="'menu-' + menu.id">{{
-        menu.name
-      }}</label>
+      <label
+        :class="[
+          'bible-list-name',
+          activeSubMenu.id === menu.id ? 'active' : ''
+        ]"
+        :id="'menu-' + menu.id"
+        :style="{ color: activeSubMenu.id === menu.id ? color : '' }"
+      >
+        {{ menu.name }}
+        <span
+          class="underline"
+          :style="{
+            backgroundColor: activeSubMenu.id === menu.id ? color : ''
+          }"
+        >
+        </span>
+      </label>
       <detail-list
         v-if="!menu.children || menu.children.length < 1"
         :list="[menu]"
@@ -17,9 +31,22 @@
       />
       <ul class="bible-sublist" v-else>
         <li v-for="submenu of menu.children" :key="submenu.id">
-          <label class="bible-sublist-name" :id="'menu-' + submenu.id">{{
-            submenu.name
-          }}</label>
+          <label
+            :class="[
+              'bible-sublist-name',
+              activeSubMenu.id === submenu.id ? 'active' : ''
+            ]"
+            :id="'menu-' + submenu.id"
+            :style="{ color: activeSubMenu.id === submenu.id ? color : '' }"
+          >
+            {{ submenu.name }}
+            <span
+              class="underline"
+              :style="{
+                backgroundColor: activeSubMenu.id === submenu.id ? color : ''
+              }"
+            ></span>
+          </label>
           <detail-list :list="submenu.children" @showDetail="showDetail" />
         </li>
       </ul>
@@ -45,6 +72,14 @@ export default {
     depth: {
       type: Number,
       required: true
+    },
+    activeSubMenu: {
+      type: Object,
+      required: true
+    },
+    color: {
+      type: String,
+      default: ""
     }
   },
   methods: {
@@ -56,6 +91,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 .bible-list {
   .bible-list-name {
     line-height: 50px;
@@ -71,6 +108,26 @@ export default {
       font-size: 14px;
       font-weight: 400;
       color: #333333;
+    }
+  }
+  .bible-list-name,
+  .bible-sublist-name {
+    position: relative;
+    .underline {
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      display: inline-block;
+      width: 0;
+      height: 2px;
+      background: @primaryColor;
+      transition: all 0.2s;
+    }
+    &.active {
+      color: @primaryColor;
+      .underline {
+        width: 100%;
+      }
     }
   }
 }
