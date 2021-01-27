@@ -35,6 +35,8 @@
           <div :class="['bible-content', depth < 2 ? 'more' : '']">
             <detail-content
               :menus="menus"
+              :activeSubMenu="activeSubMenu"
+              :color="color"
               :depth="depth"
               @showDetail="showDetail"
             />
@@ -269,7 +271,7 @@ export default {
   width: 100%;
   height: 76px;
   background: @primaryColor;
-  z-index: 1;
+  z-index: 2;
   .container-1200 {
     display: flex;
   }
