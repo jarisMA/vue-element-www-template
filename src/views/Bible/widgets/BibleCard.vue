@@ -4,19 +4,33 @@
     @click="showDetail(bible)"
   >
     <div class="bible-card-top">
-      <swiper ref="mySwiper" v-if="images.length > 1" :options="swiperOptions">
-        <swiper-slide v-for="(image, key) of images" :key="key">
-          <the-loading-image
-            :width="260"
-            :height="260"
-            :key="key"
-            :url="image"
-          />
-        </swiper-slide>
-        <div class="swiper-pagination" slot="pagination"></div>
-        <div class="bible-cover-prev" @click.stop slot="button-prev"></div>
-        <div class="bible-cover-next" @click.stop slot="button-next"></div>
-      </swiper>
+      <div class="swiper-wrapper" v-if="images.length > 1">
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide v-for="(image, key) of images" :key="key">
+            <the-loading-image
+              :width="260"
+              :height="260"
+              :key="key"
+              :url="image"
+            />
+          </swiper-slide>
+          <div
+            :class="['bible-cover-prev', 'bible-prev-' + bible.id]"
+            @click.stop
+            slot="button-prev"
+          ></div>
+          <div
+            :class="['bible-cover-next', 'bible-next-' + bible.id]"
+            @click.stop
+            slot="button-next"
+          ></div>
+        </swiper>
+        <div
+          :class="['swiper-pagination', 'bible-pagination' + bible.id]"
+          slot="pagination"
+        ></div>
+      </div>
+
       <the-loading-image v-else :width="260" :height="260" :url="images[0]" />
     </div>
     <div class="bible-card-bottom">
@@ -47,9 +61,9 @@ export default {
         spaceBetween: 0,
         loop: true,
         loopedSlides: 0,
-        pagination: ".swiper-pagination",
-        nextButton: ".bible-cover-next",
-        prevButton: ".bible-cover-prev"
+        pagination: ".bible-pagination" + this.bible.id,
+        nextButton: ".bible-next-" + this.bible.id,
+        prevButton: ".bible-prev-" + this.bible.id
       }
     };
   },
@@ -89,12 +103,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 .bible-item-card {
   display: flex;
   flex-direction: column;
   width: 280px;
   height: 330px;
   background: #fafafa;
+  &:hover {
+    .bible-cover-prev,
+    .bible-cover-next {
+      display: block !important;
+    }
+    /deep/ .swiper-pagination.swiper-pagination-bullets {
+      display: flex !important;
+    }
+  }
   &.info {
     position: relative;
     cursor: pointer;
@@ -117,25 +141,25 @@ export default {
   .bible-card-top {
     height: 280px;
     padding: 10px;
-    &:hover {
-      .bible-cover-prev,
-      .bible-cover-next {
-        display: block;
-      }
+    .swiper-wrapper {
+      position: relative;
+      width: 100%;
     }
     /deep/ .swiper-pagination.swiper-pagination-bullets {
-      bottom: 0;
-      display: flex;
+      bottom: -10px;
+      left: -10px;
+      display: none;
+      width: calc(100% + 20px);
       .swiper-pagination-bullet {
         flex: 1;
         margin: 0;
         height: 2px;
         border-radius: unset !important;
-        background: #efefef;
-        opacity: unset;
+        background: #b7b7b780;
         border: unset;
         &.swiper-pagination-bullet-active {
-          background: #333333;
+          opacity: 1;
+          background: #333;
         }
       }
     }
@@ -147,18 +171,25 @@ export default {
       width: 24px;
       height: 24px;
       transform: translateY(-50%);
-      background-color: #979797;
-      mask-size: cover;
-      mask-repeat: no-repeat;
       z-index: 1;
+      background-size: cover;
+      background-repeat: no-repeat;
+      border-radius: 50%;
+      cursor: pointer;
     }
     .bible-cover-prev {
       left: 0;
-      mask-image: url("~images/bible/chevron_left.svg");
+      background-image: url("~images/bible/chevron_left.svg");
+      &:hover {
+        background-image: url("~images/bible/chevron_left_active.svg");
+      }
     }
     .bible-cover-next {
       right: 0;
-      mask-image: url("~images/bible/chevron_right.svg");
+      background-image: url("~images/bible/chevron_right.svg");
+      &:hover {
+        background-image: url("~images/bible/chevron_right_active.svg");
+      }
     }
   }
   .bible-card-bottom {
