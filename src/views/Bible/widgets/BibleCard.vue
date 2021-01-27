@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['bible-item-card', isShowDetail(bible) ? 'info' : '']"
+    :class="['bible-item-card', theme, isShowDetail(bible) ? 'info' : '']"
     @click="showDetail(bible)"
   >
     <div class="bible-card-top">
@@ -8,8 +8,8 @@
         <swiper ref="mySwiper" :options="swiperOptions">
           <swiper-slide v-for="(image, key) of images" :key="key">
             <the-loading-image
-              :width="260"
-              :height="260"
+              :width="imageSize"
+              :height="imageSize"
               :key="key"
               :url="image"
             />
@@ -31,7 +31,12 @@
         ></div>
       </div>
 
-      <the-loading-image v-else :width="260" :height="260" :url="images[0]" />
+      <the-loading-image
+        v-else
+        :width="imageSize"
+        :height="imageSize"
+        :url="images[0]"
+      />
     </div>
     <div class="bible-card-bottom">
       {{ bible.name }}
@@ -51,6 +56,10 @@ export default {
     bible: {
       type: Object,
       required: true
+    },
+    theme: {
+      type: String,
+      default: "three"
     }
   },
   data() {
@@ -63,7 +72,8 @@ export default {
         loopedSlides: 0,
         pagination: ".bible-pagination" + this.bible.id,
         nextButton: ".bible-next-" + this.bible.id,
-        prevButton: ".bible-prev-" + this.bible.id
+        prevButton: ".bible-prev-" + this.bible.id,
+        observe: true
       }
     };
   },
@@ -73,6 +83,16 @@ export default {
         this.images = this.getImages(val.cover_url);
       },
       deep: true
+    },
+    theme() {
+      const swiper = this.$refs["mySwiper"];
+      if (swiper) {
+        console.log(swiper);
+        window.swiper = swiper;
+        this.$nextTick(() => {
+          swiper.$swiper.init();
+        });
+      }
     }
   },
   computed: {
@@ -87,6 +107,14 @@ export default {
         }
         return true;
       };
+    },
+    imageSize() {
+      switch (this.theme) {
+        case "two":
+          return 410;
+        default:
+          return 260;
+      }
     }
   },
   methods: {
@@ -202,6 +230,13 @@ export default {
     color: #333333;
     text-shadow: 0px 0px 11px rgba(183, 183, 183, 0.5);
     border-top: 1px solid #b7b7b780;
+  }
+}
+.bible-item-card.two {
+  width: 430px;
+  height: 480px;
+  .bible-card-top {
+    height: 430px;
   }
 }
 </style>

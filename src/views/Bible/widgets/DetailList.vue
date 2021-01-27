@@ -1,7 +1,7 @@
 <template>
-  <ul class="bible-item">
+  <ul :class="['bible-item', theme]">
     <li v-for="item of list" :key="item.id">
-      <bible-card :bible="item" @showDetail="showDetail(item)" />
+      <bible-card :bible="item" :theme="theme" @showDetail="showDetail(item)" />
     </li>
   </ul>
 </template>
@@ -18,6 +18,10 @@ export default {
     list: {
       type: Array,
       required: true
+    },
+    theme: {
+      type: String,
+      default: "three"
     }
   },
   methods: {
@@ -34,9 +38,20 @@ export default {
   flex-wrap: wrap;
   li {
     margin-bottom: 20px;
-    &:nth-child(3n-1) {
-      margin-left: 20px;
-      margin-right: 20px;
+  }
+  &.three {
+    li {
+      &:nth-child(3n-1) {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
+    }
+  }
+  &.two {
+    li {
+      &:nth-child(odd) {
+        margin-right: 20px;
+      }
     }
   }
 }
