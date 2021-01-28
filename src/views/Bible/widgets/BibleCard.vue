@@ -210,14 +210,14 @@ export default {
       left: 0;
       background-image: url("~images/bible/chevron_left.svg");
       &:hover {
-        background-image: url("~images/bible/chevron_left_active.svg");
+        background-image: url("~images/bible/chevron_left_hover.svg");
       }
     }
     .bible-cover-next {
       right: 0;
       background-image: url("~images/bible/chevron_right.svg");
       &:hover {
-        background-image: url("~images/bible/chevron_right_active.svg");
+        background-image: url("~images/bible/chevron_right_hover.svg");
       }
     }
   }
