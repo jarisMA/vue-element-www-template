@@ -1,8 +1,12 @@
 <template>
-  <div
-    :class="['bible-item-card', theme, isShowDetail(bible) ? 'info' : '']"
-    @click="showDetail(bible)"
-  >
+  <div :class="['bible-item-card', theme]">
+    <div
+      class="info-wrapper"
+      v-if="isShowDetail(bible)"
+      @click.stop="showDetail(bible)"
+    >
+      <div class="info"></div>
+    </div>
     <div class="bible-card-top">
       <div class="swiper-wrapper" v-if="images.length > 1">
         <swiper ref="mySwiper" :options="swiperOptions">
@@ -18,12 +22,16 @@
             :class="['bible-cover-prev', 'bible-prev-' + bible.id]"
             @click.stop
             slot="button-prev"
-          ></div>
+          >
+            <div class="btn-icon"></div>
+          </div>
           <div
             :class="['bible-cover-next', 'bible-next-' + bible.id]"
             @click.stop
             slot="button-next"
-          ></div>
+          >
+            <div class="btn-icon"></div>
+          </div>
         </swiper>
         <div
           :class="['swiper-pagination', 'bible-pagination' + bible.id]"
@@ -133,6 +141,7 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 .bible-item-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 280px;
@@ -166,6 +175,25 @@ export default {
       z-index: 1;
     }
   }
+  .info-wrapper {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    .info {
+      width: 20px;
+      height: 20px;
+      background-image: url("~images/bible/warn.svg");
+      background-size: cover;
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+  }
   .bible-card-top {
     height: 280px;
     padding: 10px;
@@ -197,27 +225,40 @@ export default {
       position: absolute;
       display: none;
       top: 50%;
-      width: 24px;
-      height: 24px;
+      width: 30px;
+      height: 30px;
       transform: translateY(-50%);
       z-index: 1;
-      background-size: cover;
-      background-repeat: no-repeat;
-      border-radius: 50%;
-      cursor: pointer;
+      cursor: auto;
+      .btn-icon {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 24px;
+        height: 24px;
+        transform: translate(-50%, -50%);
+        background-size: cover;
+        background-repeat: no-repeat;
+        border-radius: 50%;
+        cursor: pointer;
+      }
     }
     .bible-cover-prev {
       left: 0;
-      background-image: url("~images/bible/chevron_left.svg");
-      &:hover {
-        background-image: url("~images/bible/chevron_left_hover.svg");
+      .btn-icon {
+        background-image: url("~images/bible/chevron_left.svg");
+        &:hover {
+          background-image: url("~images/bible/chevron_left_hover.svg");
+        }
       }
     }
     .bible-cover-next {
       right: 0;
-      background-image: url("~images/bible/chevron_right.svg");
-      &:hover {
-        background-image: url("~images/bible/chevron_right_hover.svg");
+      .btn-icon {
+        background-image: url("~images/bible/chevron_right.svg");
+        &:hover {
+          background-image: url("~images/bible/chevron_right_hover.svg");
+        }
       }
     }
   }
