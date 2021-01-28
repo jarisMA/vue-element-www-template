@@ -33,7 +33,7 @@
             class="loading-img"
             :width="260"
             :height="260"
-            :url="menu.cover_url"
+            :url="(menu.cover_url.split(',') || [])[0]"
           />
         </div>
         <div
@@ -77,7 +77,7 @@
                   <the-loading-image
                     :width="260"
                     :height="260"
-                    :url="item.cover_url"
+                    :url="(item.cover_url.split(',') || [])[0]"
                   />
                 </div>
               </template>
