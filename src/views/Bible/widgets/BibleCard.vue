@@ -176,7 +176,7 @@ export default {
     /deep/ .swiper-pagination.swiper-pagination-bullets {
       bottom: -10px;
       left: -10px;
-      display: none;
+      display: flex;
       width: calc(100% + 20px);
       .swiper-pagination-bullet {
         flex: 1;
@@ -185,6 +185,7 @@ export default {
         border-radius: unset !important;
         background: #b7b7b780;
         border: unset;
+        opacity: unset !important;
         &.swiper-pagination-bullet-active {
           opacity: 1;
           background: #333;
