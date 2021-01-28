@@ -65,10 +65,12 @@
     <ul class="detail-operate">
       <li
         :class="['two-operate', theme === 'two' ? 'active' : '']"
+        :style="{ backgroundColor: theme === 'two' ? color : '' }"
         @click.stop="theme = 'two'"
       ></li>
       <li
         :class="['three-operate', theme === 'three' ? 'active' : '']"
+        :style="{ backgroundColor: theme === 'three' ? color : '' }"
         @click.stop="theme = 'three'"
       ></li>
     </ul>
@@ -173,9 +175,8 @@ export default {
     mask-size: cover;
     background-color: #efefef;
     cursor: pointer;
-    &.active,
     &:hover {
-      background-color: @primaryColor;
+      background-color: #c5c2c2;
     }
   }
   .two-operate {
