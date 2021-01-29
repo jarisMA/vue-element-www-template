@@ -248,7 +248,7 @@ export default {
     filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.25));
     transform-origin: center;
     transition-property: top, left;
-    transition-duration: 2s;
+    transition-duration: 0.2s;
     transition-timing-function: ease;
     cursor: move;
     &:hover {
