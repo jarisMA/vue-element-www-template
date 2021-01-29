@@ -1,22 +1,102 @@
 <template>
   <div class="academy-page">
     <div class="academy-banner" ref="banner">
-      <day-logo-svg class="day-logo-svg" />
-      <docee-svg class="docee-svg" />
-      <dog-svg class="dog-svg" />
-      <dxjxs-svg class="dxjxs-svg" />
-      <dz-svg class="dz-svg" />
-      <gz-svg class="gz-svg" />
-      <hb-svg class="hb-svg" />
-      <jz-svg class="jz-svg" />
-      <ldd-svg class="ldd-svg" />
-      <lsy-svg class="lsy-svg" />
-      <sf-svg class="sf-svg" />
-      <sz-svg class="sz-svg" />
-      <xg-svg class="xg-svg" />
-      <yz-svg class="yz-svg" />
-      <zwj-svg class="zwj-svg" />
-      <zz-svg class="zz-svg" />
+      <day-logo-svg
+        ref="dayLogoSvg"
+        @mousedown="e => mousedown(e, 'dayLogoSvg')"
+        class="day-logo-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <docee-svg
+        ref="doceeSvg"
+        @mousedown="e => mousedown(e, 'doceeSvg')"
+        class="docee-svg"
+        :style="{ zIndex: 3 }"
+      />
+      <dog-svg
+        ref="dogSvg"
+        @mousedown="e => mousedown(e, 'dogSvg')"
+        class="dog-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <dxjxs-svg
+        ref="dxjxsSvg"
+        @mousedown="e => mousedown(e, 'dxjxsSvg')"
+        class="dxjxs-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <dz-svg
+        ref="dzSvg"
+        @mousedown="e => mousedown(e, 'dzSvg')"
+        class="dz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <gz-svg
+        ref="gzSvg"
+        @mousedown="e => mousedown(e, 'gzSvg')"
+        class="gz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <hb-svg
+        ref="hbSvg"
+        @mousedown="e => mousedown(e, 'hbSvg')"
+        class="hb-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <jz-svg
+        ref="jzSvg"
+        @mousedown="e => mousedown(e, 'jzSvg')"
+        class="jz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <ldd-svg
+        ref="lddSvg"
+        @mousedown="e => mousedown(e, 'lddSvg')"
+        class="ldd-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <lsy-svg
+        ref="lsySvg"
+        @mousedown="e => mousedown(e, 'lsySvg')"
+        class="lsy-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <sf-svg
+        ref="sfSvg"
+        @mousedown="e => mousedown(e, 'sfSvg')"
+        class="sf-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <sz-svg
+        ref="szSvg"
+        @mousedown="e => mousedown(e, 'szSvg')"
+        class="sz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <xg-svg
+        ref="xgSvg"
+        @mousedown="e => mousedown(e, 'xgSvg')"
+        class="xg-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <yz-svg
+        ref="yzSvg"
+        @mousedown="e => mousedown(e, 'yzSvg')"
+        class="yz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <zwj-svg
+        ref="zwjSvg"
+        @mousedown="e => mousedown(e, 'zwjSvg')"
+        class="zwj-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <zz-svg
+        ref="zzSvg"
+        @mousedown="e => mousedown(e, 'zzSvg')"
+        class="zz-svg"
+        :style="{ zIndex: 4 }"
+      />
     </div>
   </div>
 </template>
@@ -58,12 +138,97 @@ export default {
     ZwjSvg,
     ZzSvg
   },
+  data() {
+    return {
+      moveDom: null,
+      left: 0,
+      top: 0,
+      startX: 0,
+      startY: 0
+    };
+  },
   mounted() {
-    const timer = setTimeout(() => {
-      const banner = this.$refs["banner"];
-      banner.className = "academy-banner animation";
-      clearTimeout(timer);
-    }, 100);
+    this.$nextTick(() => {
+      const timer = setTimeout(() => {
+        const banner = this.$refs["banner"];
+        banner.className = "academy-banner animation";
+        clearTimeout(timer);
+      }, 100);
+    });
+    window.addEventListener("mouseup", this.mouseup);
+    window.addEventListener("mousemove", this.mousemove);
+  },
+  beforeDestroy() {
+    window.removeEventListener("mouseup", this.mouseup);
+    window.removeEventListener("mousemove", this.mousemove);
+  },
+  methods: {
+    mouseup() {
+      this.moveDom = null;
+    },
+    mousemove(e) {
+      if (this.moveDom) {
+        const banner = this.$refs["banner"];
+        const maxWidth = banner.clientWidth;
+        const maxHeight = banner.clientHeight;
+        let disX = e.clientX - this.startX;
+        let disY = e.clientY - this.startY;
+        const el = this.moveDom;
+        this.getMaxZIndex(el);
+        if (
+          this.left + disX + el.clientWidth > maxWidth ||
+          this.left + disX < 0
+        ) {
+          return;
+        }
+        if (
+          this.top + disY + el.clientHeight > maxHeight ||
+          this.top + disY < 0
+        ) {
+          return;
+        }
+        el.style.left = this.left + disX + "px";
+        el.style.top = this.top + disY + "px";
+        this.getMaxZIndex(el);
+      }
+    },
+    mousedown(e, ref) {
+      this.moveDom = this.$refs[ref].$el;
+      this.left = this.moveDom.offsetLeft;
+      this.top = this.moveDom.offsetTop;
+      this.startX = e.clientX;
+      this.startY = e.clientY;
+      this.getMaxZIndex(this.moveDom);
+    },
+    getMaxZIndex(el, left, top) {
+      let doms = document.querySelectorAll(".academy-banner>div");
+      const minX = left || el.offsetLeft;
+      const minY = top || el.offsetTop;
+      const maxX = minX + el.clientWidth;
+      const maxY = minY + el.clientHeight;
+      let zIndex = el.style.zIndex - 0;
+      doms.forEach(dom => {
+        const dMinX = dom.offsetLeft;
+        const dMinY = dom.offsetTop;
+        const dMaxX = dom.offsetLeft + dom.clientWidth;
+        const dMaxY = dom.offsetTop + dom.clientHeight;
+        if (
+          (dMinX >= minX && dMinX <= maxX && dMinY >= minY && dMinY <= maxY) ||
+          (dMinX >= minX && dMinX <= maxX && dMaxY >= minY && dMaxY <= maxY) ||
+          (dMaxX >= minX && dMaxX <= maxX && dMinY >= minY && dMinY <= maxY) ||
+          (dMaxX >= minX && dMaxX <= maxX && dMaxY >= minY && dMaxY <= maxY) ||
+          (minX >= dMinX && minX <= dMaxX && minY >= dMinY && minY <= dMaxY) ||
+          (minX >= dMinX && minX <= dMaxX && maxY >= dMinY && maxY <= dMaxY) ||
+          (maxX >= dMinX && maxX <= dMaxX && minY >= dMinY && minY <= dMaxY) ||
+          (maxX >= dMinX && maxX <= dMaxX && maxY >= dMinY && maxY <= dMaxY)
+        ) {
+          if (dom.style.zIndex - 0 > zIndex) {
+            zIndex = dom.style.zIndex - 0;
+          }
+        }
+      });
+      el.style.zIndex = zIndex - 0 + 1;
+    }
   }
 };
 </script>
@@ -75,8 +240,8 @@ export default {
   width: 100%;
   height: 830px;
   background: url("~images/academy/xs-bj.svg") repeat;
-  z-index: 1;
-  svg {
+  z-index: 0;
+  & > div {
     position: absolute;
     top: 0;
     left: 0;
@@ -90,57 +255,9 @@ export default {
       transition: transform 0.3s;
       transform: scale(1.05);
     }
-    &.day-logo-svg {
-      z-index: 2;
-    }
-    &.dxjxs-svg {
-      z-index: 1;
-    }
-    &.dz-svg {
-      z-index: 3;
-    }
-    &.dog-svg {
-      z-index: 4;
-    }
-    &.yz-svg {
-      z-index: 5;
-    }
-    &.lsy-svg {
-      z-index: 6;
-    }
-    &.gz-svg {
-      z-index: 7;
-    }
-    &.zz-svg {
-      z-index: 11;
-    }
-    &.ldd-svg {
-      z-index: 9;
-    }
-    &.sf-svg {
-      z-index: 8;
-    }
-    &.docee-svg {
-      z-index: 10;
-    }
-    &.sz-svg {
-      z-index: 12;
-    }
-    &.xg-svg {
-      z-index: 13;
-    }
-    &.jz-svg {
-      z-index: 14;
-    }
-    &.hb-svg {
-      z-index: 15;
-    }
-    &.zwj-svg {
-      z-index: 16;
-    }
   }
   &.animation {
-    svg {
+    & > div {
       &.day-logo-svg {
         top: 537px;
         left: calc(@baseLeft + 791px);
