@@ -3,6 +3,7 @@ import routesTerm from "./routesTerm";
 import routesBible from "./routesBible";
 import routesQuestion from "./routesQuestion";
 import routesError from "./routesError";
+import routesAcademy from "./routesAcademy";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -41,6 +42,7 @@ const routes = [
       ...routesTerm,
       ...routesBible,
       ...routesQuestion,
+      ...routesAcademy,
       ...routesError
     ]
   },
