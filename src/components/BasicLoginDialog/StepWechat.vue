@@ -23,16 +23,17 @@ export default {
   },
   methods: {
     showQrCode() {
+      const appid = process.env.VUE_APP_WECHAT_APPID;
       this.$nextTick(function() {
         new window.WxLogin({
           id: "qrcode",
-          appid: "wx8ad54c65480e5203",
+          appid: appid,
           height: "200px",
           scope: "snsapi_login",
           //self_redirect:true,
           // redirect_uri: "http://www.home-plan.cn/social/callback/wechat",
           redirect_uri:
-            "https://api.home-plan.cn/api/web/oauth/wechat/callback?redirect_uri=" +
+            `${process.env.VUE_APP_HOST}/api/web/oauth/social/wechat/callback?redirect_uri=` +
             window.location.href,
           state: "born2code",
           // href: "https://passport.jiker.vip/css/qrcode.css"
