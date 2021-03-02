@@ -1,17 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="34px" height="34px" viewBox="0 0 34 34" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>搜索icon</title>
-    <g id="页面-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="搜索页面" transform="translate(-1186.000000, -177.000000)">
-            <g id="搜索导航" transform="translate(0.000000, 60.000000)">
-                <g id="搜索框" transform="translate(666.000000, 106.000000)">
-                    <g id="搜索icon" transform="translate(520.000000, 11.000000)">
-                        <rect id="矩形" fill="#D8D8D8" opacity="0" x="0" y="0" width="34" height="34"></rect>
-                        <line x1="22" y1="22" x2="27.4852814" y2="27.4852814" id="直线" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"></line>
-                        <circle id="椭圆形" stroke="#FFFFFF" stroke-width="2" cx="15" cy="15" r="9"></circle>
-                    </g>
-                </g>
-            </g>
-        </g>
-    </g>
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M13.4706 13.3993C14.3439 12.5081 14.8824 11.2875 14.8824 9.94118C14.8824 7.21224 12.6701 5 9.94118 5C7.21224 5 5 7.21224 5 9.94118C5 12.6701 7.21224 14.8824 9.94118 14.8824C11.3238 14.8824 12.5738 14.3145 13.4706 13.3993ZM13.4706 13.3993L19 19" stroke="#666666" stroke-width="2"/>
 </svg>
