@@ -10,19 +10,28 @@
         frameborder="0"
       >
       </iframe>
+      <plan-tool class="plan-tool" :rootCats="(cats[0] || {}).children || []" />
     </div>
   </div>
 </template>
 
 <script>
 import kujialeService from "service/kujiale";
+import commodityService from "service/commodity";
+
 import { goMy } from "utils/routes";
 import { mapMutations, mapState } from "vuex";
+import PlanTool from "./widgets/PlanTool";
+
 export default {
   name: "EditPlan",
+  components: {
+    PlanTool
+  },
   data() {
     return {
-      url: ""
+      url: "",
+      cats: []
     };
   },
   created() {
@@ -48,8 +57,10 @@ export default {
       } else {
         promiseArr.push(kujialeService.iframe(4));
       }
-      Promise.all(promiseArr).then(([res]) => {
+      promiseArr.push(commodityService.cats());
+      Promise.all(promiseArr).then(([res, cats]) => {
         this.url = res.url;
+        this.cats = cats;
         this.listener();
       });
     },
@@ -102,8 +113,22 @@ export default {
   }
 }
 .iframe-wrapper {
+  position: relative;
   width: 100%;
   height: 100%;
+  // background: #805d5d;
+  z-index: 1;
+  .plan-tool {
+    position: absolute;
+    top: 52px;
+    left: 44px;
+    height: calc(100% - 52px - 8px);
+  }
+  .iframe {
+    position: relative;
+    width: 100%;
+    height: 100%;
+  }
 }
 .edit-plan-container {
   position: relative;
@@ -115,11 +140,5 @@ export default {
     color: @primaryColor;
     transform: translate(-50%, -50%);
   }
-}
-.iframe {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  height: 100%;
 }
 </style>

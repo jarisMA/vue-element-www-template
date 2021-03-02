@@ -1,0 +1,19 @@
+import request from "request/axios.js";
+import API from "request/api.js";
+
+const commodityService = {
+  cats: () => {
+    return request.get(API.commodityCats);
+  },
+  cat: id => {
+    return request.get(API.commodityCat(id));
+  },
+  brands: () => {
+    return request.get(API.commodityBrand);
+  },
+  commodities: (params = {}) => {
+    return request.post(API.commodities, params);
+  }
+};
+
+export default commodityService;
