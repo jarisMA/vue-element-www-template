@@ -13,6 +13,9 @@ const commodityService = {
   },
   commodities: (params = {}) => {
     return request.post(API.commodities, params);
+  },
+  attrs: () => {
+    return request.get(API.commodityAttrs);
   }
 };
 

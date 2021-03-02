@@ -51,5 +51,6 @@ export default {
   commodityCats: `${WEB_PREFIX}/commodity/cat`,
   commodityCat: id => `${WEB_PREFIX}/commodity/cat/${id}`,
   commodityBrands: `${WEB_PREFIX}/commodity/brand`,
-  commodities: `${WEB_PREFIX}/commodity`
+  commodities: `${WEB_PREFIX}/commodity`,
+  commodityAttrs: `${WEB_PREFIX}/commodity/attr`
 };
