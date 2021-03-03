@@ -79,59 +79,9 @@
             {{ cat.name }}
           </label>
         </div>
-        <div class="attr-wrapper">
-          <div class="attr-header">
-            <el-tooltip
-              popper-class="tool-label-tip"
-              effect="dark"
-              content="品牌"
-              placement="bottom"
-            >
-              <label class="bgImg brand-icon"></label>
-            </el-tooltip>
-            <el-tooltip
-              popper-class="tool-label-tip"
-              effect="dark"
-              content="价格"
-              placement="bottom"
-            >
-              <label class="bgImg price-icon"></label>
-            </el-tooltip>
-            <el-tooltip
-              popper-class="tool-label-tip"
-              effect="dark"
-              content="尺寸"
-              placement="bottom"
-            >
-              <label class="bgImg size-icon"></label>
-            </el-tooltip>
-            <el-tooltip
-              v-for="attr of attrs"
-              :key="attr.id"
-              popper-class="tool-label-tip"
-              effect="dark"
-              :content="attr.name"
-              placement="bottom"
-            >
-              <label
-                class="bgImg"
-                :style="{ backgroundImage: `url(${attr.default_icon})` }"
-              ></label>
-            </el-tooltip>
-            <el-tooltip
-              popper-class="tool-label-tip"
-              effect="dark"
-              content="其余"
-              placement="bottom"
-            >
-              <label class="bgImg filter-icon"></label>
-            </el-tooltip>
-          </div>
-        </div>
+        <commodity-attr />
         <div class="commodity-wrapper">
           <div class="scroll-section">
-            <!-- <div v-for="item of 10"
-                 :key="item"> -->
             <commodity-card
               v-for="commodity of commodities"
               :key="commodity.id"
@@ -147,11 +97,13 @@
 <script>
 import commodityService from "service/commodity";
 import CommodityCard from "./CommodityCard.vue";
+import CommodityAttr from "./CommodityAttr.vue";
 
 export default {
   name: "PlanTool",
   components: {
-    CommodityCard
+    CommodityCard,
+    CommodityAttr
   },
   props: {
     rootCats: {
@@ -165,7 +117,6 @@ export default {
       activeTabKey: 0,
       activeParentCat: null,
       activeCat: null,
-      attrs: [],
       commodities: []
     };
   },
@@ -177,15 +128,7 @@ export default {
       }
     }
   },
-  created() {
-    this.getAttrs();
-  },
   methods: {
-    getAttrs() {
-      commodityService.attrs().then(res => {
-        this.attrs = res;
-      });
-    },
     getCats(id) {
       commodityService.cat(id).then(res => {
         this.cats = res.children;
@@ -342,60 +285,7 @@ export default {
         }
       }
     }
-    .attr-wrapper {
-      width: 100%;
-      border-top: 1px solid #efefef;
-      border-bottom: 1px solid #efefef;
-      .attr-header {
-        width: 100%;
-        height: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 10px;
-        .bgImg {
-          width: 20px;
-          height: 20px;
-          cursor: pointer;
-        }
-        .brand-icon {
-          background-image: url("~images/commodity/brand-default.png");
-          &.active {
-            background-image: url("~images/commodity/brand-selected.png");
-          }
-          &.focus {
-            background-image: url("~images/commodity/brand-active.png");
-          }
-        }
-        .price-icon {
-          background-image: url("~images/commodity/price-default.png");
-          &.active {
-            background-image: url("~images/commodity/price-selected.png");
-          }
-          &.focus {
-            background-image: url("~images/commodity/price-active.png");
-          }
-        }
-        .size-icon {
-          background-image: url("~images/commodity/size-default.png");
-          &.active {
-            background-image: url("~images/commodity/size-selected.png");
-          }
-          &.focus {
-            background-image: url("~images/commodity/size-active.png");
-          }
-        }
-        .filter-icon {
-          background-image: url("~images/commodity/filter-default.png");
-          &.active {
-            background-image: url("~images/commodity/filter-selected.png");
-          }
-          &.focus {
-            background-image: url("~images/commodity/filter-active.png");
-          }
-        }
-      }
-    }
+
     .commodity-wrapper {
       flex-grow: 1;
       width: 100%;

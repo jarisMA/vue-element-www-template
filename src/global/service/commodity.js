@@ -9,7 +9,7 @@ const commodityService = {
     return request.get(API.commodityCat(id));
   },
   brands: () => {
-    return request.get(API.commodityBrand);
+    return request.get(API.commodityBrands);
   },
   commodities: (params = {}) => {
     return request.post(API.commodities, params);
