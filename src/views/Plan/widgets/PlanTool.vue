@@ -81,16 +81,62 @@
         </div>
         <div class="attr-wrapper">
           <div class="attr-header">
-            <label class="bgImg brand-icon"></label>
-            <label class="bgImg price-icon"></label>
-            <label class="bgImg size-icon"></label>
-            <label
-              class="bgImg"
+            <el-tooltip
+              popper-class="tool-label-tip"
+              effect="dark"
+              content="品牌"
+              placement="bottom"
+            >
+              <label class="bgImg brand-icon"></label>
+            </el-tooltip>
+            <el-tooltip
+              popper-class="tool-label-tip"
+              effect="dark"
+              content="价格"
+              placement="bottom"
+            >
+              <label class="bgImg price-icon"></label>
+            </el-tooltip>
+            <el-tooltip
+              popper-class="tool-label-tip"
+              effect="dark"
+              content="尺寸"
+              placement="bottom"
+            >
+              <label class="bgImg size-icon"></label>
+            </el-tooltip>
+            <el-tooltip
               v-for="attr of attrs"
               :key="attr.id"
-              :style="{ backgroundImage: `url(${attr.default_icon})` }"
-            ></label>
-            <label class="bgImg filter-icon"></label>
+              popper-class="tool-label-tip"
+              effect="dark"
+              :content="attr.name"
+              placement="bottom"
+            >
+              <label
+                class="bgImg"
+                :style="{ backgroundImage: `url(${attr.default_icon})` }"
+              ></label>
+            </el-tooltip>
+            <el-tooltip
+              popper-class="tool-label-tip"
+              effect="dark"
+              content="其余"
+              placement="bottom"
+            >
+              <label class="bgImg filter-icon"></label>
+            </el-tooltip>
+          </div>
+        </div>
+        <div class="commodity-wrapper">
+          <div class="scroll-section">
+            <!-- <div v-for="item of 10"
+                 :key="item"> -->
+            <commodity-card
+              v-for="commodity of commodities"
+              :key="commodity.id"
+              :commodity="commodity"
+            />
           </div>
         </div>
       </div>
@@ -100,9 +146,13 @@
 
 <script>
 import commodityService from "service/commodity";
+import CommodityCard from "./CommodityCard.vue";
 
 export default {
   name: "PlanTool",
+  components: {
+    CommodityCard
+  },
   props: {
     rootCats: {
       type: Array,
@@ -115,12 +165,16 @@ export default {
       activeTabKey: 0,
       activeParentCat: null,
       activeCat: null,
-      attrs: []
+      attrs: [],
+      commodities: []
     };
   },
   watch: {
     activeParentCat(val) {
-      this.getCats(val.id);
+      if (val) {
+        this.getCats(val.id);
+        this.getCommodity();
+      }
     }
   },
   created() {
@@ -136,6 +190,15 @@ export default {
       commodityService.cat(id).then(res => {
         this.cats = res.children;
       });
+    },
+    getCommodity() {
+      commodityService
+        .commodities({
+          parent_cat_id: this.activeParentCat.id
+        })
+        .then(res => {
+          this.commodities = res;
+        });
     }
   }
 };
@@ -152,6 +215,11 @@ export default {
   border-radius: 6px;
   background: #fafafa;
   overflow: hidden;
+  .scroll-wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
   .cat-container {
     width: 100%;
     height: 100%;
@@ -220,6 +288,8 @@ export default {
     }
   }
   .search-container {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     top: 0;
     left: 0;
@@ -326,6 +396,31 @@ export default {
         }
       }
     }
+    .commodity-wrapper {
+      flex-grow: 1;
+      width: 100%;
+      height: 5px;
+      overflow: hidden;
+      .scroll-section {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        padding: 10px 10px 0 10px;
+        width: calc(100% + 14px);
+        height: 100%;
+        overflow-y: scroll;
+      }
+    }
+  }
+}
+</style>
+<style lang="less">
+.tool-label-tip {
+  padding: 2px 4px !important;
+  color: #fff !important;
+  border-radius: 2px !important;
+  &.is-dark {
+    background: #333 !important;
   }
 }
 </style>
