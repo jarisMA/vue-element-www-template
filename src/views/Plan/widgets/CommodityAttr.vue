@@ -83,6 +83,7 @@
         effect="dark"
         content="其余"
         placement="bottom"
+        v-if="moreAttrs.length > 0"
       >
         <div
           :class="[
@@ -402,7 +403,11 @@ export default {
   },
   watch: {
     activeCat(val) {
-      this.getAttrsByCatId(val.id);
+      if (val) {
+        this.getAttrsByCatId(val.id);
+      } else {
+        this.getAttrsByCatId(this.parentCat.id);
+      }
     }
   },
   computed: {
