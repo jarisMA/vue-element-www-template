@@ -293,6 +293,63 @@
             >
           </div>
         </div>
+        <template v-for="attr of attrs">
+          <div
+            class="system-attr-wrapper"
+            :key="attr.id"
+            v-if="attrFocusId === attr.id"
+          >
+            <ul class="value-list">
+              <li
+                :class="[
+                  value.color ? 'value-color' : 'value-item',
+                  valueSelectedId.indexOf(value.id) > -1 ? 'active' : ''
+                ]"
+                v-for="value of attr.children"
+                :key="value.id"
+                @click="
+                  handleAttrValueClick({
+                    type: 'value',
+                    color: attr.color,
+                    value: value
+                  })
+                "
+              >
+                <span
+                  v-if="value.color"
+                  :style="{ backgroundColor: value.color }"
+                ></span
+                >{{ value.name }}
+              </li>
+            </ul>
+          </div>
+        </template>
+        <div class="filter-wrapper" v-if="attrFocusId === -4">
+          <div class="attr-list">
+            <div class="attr-item" v-for="attr of moreAttrs" :key="attr.id">
+              <label class="attr-name">{{ attr.name }}</label>
+              <ul class="value-list">
+                <li
+                  :class="[
+                    'value-item',
+                    valueSelectedId.indexOf(value.id) > -1 ? 'active' : ''
+                  ]"
+                  v-for="value of attr.children"
+                  :key="value.id"
+                  @click="
+                    handleAttrValueClick({
+                      type: 'value',
+                      color: '#9F8164',
+                      value: value
+                    })
+                  "
+                >
+                  {{ value.name }}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -339,8 +396,14 @@ export default {
         max_size_y: null,
         min_size_z: null,
         max_size_z: null
-      }
+      },
+      moreAttrs: []
     };
+  },
+  watch: {
+    activeCat(val) {
+      this.getAttrsByCatId(val.id);
+    }
   },
   computed: {
     recommendBrands() {
@@ -374,11 +437,17 @@ export default {
       return this.values
         .filter(item => item.type === "brand")
         .map(item => item.value.id);
+    },
+    valueSelectedId() {
+      return this.values
+        .filter(item => item.type === "value")
+        .map(item => item.value.id);
     }
   },
   created() {
     this.getAttrs();
     this.getBrands();
+    this.getAttrsByCatId(this.parentCat.id);
   },
   methods: {
     getAttrs() {
@@ -389,6 +458,11 @@ export default {
     getBrands() {
       commodityService.brands().then(res => {
         this.brands = res;
+      });
+    },
+    getAttrsByCatId(catId) {
+      commodityService.catAttrs(catId).then(res => {
+        this.moreAttrs = res;
       });
     },
     handleAttrFocusChange(id) {
@@ -869,6 +943,81 @@ export default {
           .size-input {
             & + .size-input {
               margin-top: 10px;
+            }
+          }
+        }
+      }
+    }
+    .system-attr-wrapper {
+      padding: 15px 10px 0;
+      .value-list {
+        display: flex;
+        flex-wrap: wrap;
+        .value-item {
+          margin-right: 10px;
+          margin-bottom: 15px;
+          padding: 5px;
+          font-size: 12px;
+          color: #111;
+          background: #f4f4f4;
+          cursor: pointer;
+        }
+        .value-color {
+          display: flex;
+          align-items: center;
+          margin-right: 10px;
+          margin-bottom: 15px;
+          font-size: 12px;
+          color: #111;
+          cursor: pointer;
+          span {
+            position: relative;
+            display: inline-block;
+            margin-right: 4px;
+            width: 16px;
+            height: 16px;
+          }
+          &.active {
+            span {
+              &::before {
+                position: absolute;
+                top: -2px;
+                left: -2px;
+                width: 18px;
+                height: 18px;
+                content: "";
+                border: 1px solid #d6d6d6;
+              }
+            }
+          }
+        }
+      }
+    }
+    .filter-wrapper {
+      padding: 15px 10px 0;
+      .attr-list {
+        .attr-name {
+          display: block;
+          margin-bottom: 10px;
+          line-height: 1;
+          font-size: 12px;
+          color: #666666;
+        }
+        .value-list {
+          display: flex;
+          flex-wrap: wrap;
+          .value-item {
+            margin-right: 10px;
+            margin-bottom: 15px;
+            padding: 5px;
+            line-height: 1;
+            font-size: 12px;
+            color: #111;
+            background: #f4f4f4;
+            cursor: pointer;
+            &.active {
+              color: #9f8164;
+              background: #fbf5f0;
             }
           }
         }

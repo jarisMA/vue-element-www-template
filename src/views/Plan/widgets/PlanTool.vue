@@ -207,7 +207,9 @@ export default {
       const sizeXIndex = this.values.findIndex(item => item.type === "size_x");
       const sizeYIndex = this.values.findIndex(item => item.type === "size_y");
       const sizeZIndex = this.values.findIndex(item => item.type === "size_z");
-
+      const valueIds = this.values
+        .filter(item => item.type === "value")
+        .map(item => item.value.id);
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
@@ -231,7 +233,8 @@ export default {
           min_size_z:
             sizeZIndex > -1 ? this.values[sizeZIndex].value.min_size_z : null,
           max_size_z:
-            sizeZIndex > -1 ? this.values[sizeZIndex].value.max_size_z : null
+            sizeZIndex > -1 ? this.values[sizeZIndex].value.max_size_z : null,
+          value_ids: valueIds
         })
         .then(res => {
           this.commodities = res;

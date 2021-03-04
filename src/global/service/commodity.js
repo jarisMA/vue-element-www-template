@@ -16,6 +16,9 @@ const commodityService = {
   },
   attrs: () => {
     return request.get(API.commodityAttrs);
+  },
+  catAttrs: catId => {
+    return request.get(API.commodityCatAttrs(catId));
   }
 };
 
