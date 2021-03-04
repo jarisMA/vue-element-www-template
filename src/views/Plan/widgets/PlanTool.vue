@@ -48,17 +48,49 @@
     >
       <div class="search-container" v-if="activeParentCat">
         <div class="search-header">
-          <div class="cat-name">
+          <template v-if="!isSearch">
+            <div class="cat-name">
+              <label
+                class="back-icon bgImg pointer"
+                @click="handleBack"
+              ></label>
+              <h3>
+                {{ (activeParentCat || {}).name }}
+              </h3>
+            </div>
             <label
-              class="back-icon bgImg pointer"
-              @click="activeParentCat = null"
+              class="search-icon bgImg pointer"
+              @click="isSearch = true"
             ></label>
-            <h3>
-              {{ (activeParentCat || {}).name }}
-            </h3>
-          </div>
-          <label class="search-icon bgImg"></label>
+          </template>
+          <el-input
+            v-else
+            class="name-search"
+            :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
+            prefix-icon="search-icon bgImg"
+            clearable
+            v-model="name"
+            @keyup.enter.native="handleNameInputConfirm"
+            @blur="handleNameInputConfirm"
+          >
+          </el-input>
         </div>
+        <ul class="value-list" v-if="values.length > 0">
+          <li class="reset-wrapper pointer" @click="handleValueReset">
+            <label class="reset-icon bgImg"></label>
+          </li>
+          <li
+            class="value-item"
+            v-for="(item, key) of values"
+            :key="item.value.id"
+          >
+            {{ item.value.name }}
+            <label
+              class="bgImg close-icon pointer"
+              @click="handleValueRemove(key)"
+            ></label>
+          </li>
+        </ul>
         <div class="cat-wrapper">
           <label
             :class="['cat-label', 'pointer', !activeCat && 'active']"
@@ -79,7 +111,7 @@
             {{ cat.name }}
           </label>
         </div>
-        <commodity-attr />
+        <commodity-attr @addValue="handleValueAdd" :values="values" />
         <div class="commodity-wrapper">
           <div class="scroll-section">
             <commodity-card
@@ -113,11 +145,14 @@ export default {
   },
   data() {
     return {
+      isSearch: false,
+      name: null,
       cats: [],
       activeTabKey: 0,
       activeParentCat: null,
       activeCat: null,
-      commodities: []
+      commodities: [],
+      values: []
     };
   },
   watch: {
@@ -126,6 +161,12 @@ export default {
         this.getCats(val.id);
         this.getCommodity();
       }
+    },
+    activeCat() {
+      this.getCommodity();
+    },
+    values() {
+      this.getCommodity();
     }
   },
   methods: {
@@ -135,13 +176,39 @@ export default {
       });
     },
     getCommodity() {
+      const brandIds = this.values
+        .filter(item => item.type === "brand")
+        .map(item => item.value.id);
       commodityService
         .commodities({
-          parent_cat_id: this.activeParentCat.id
+          parent_cat_id: this.activeParentCat.id,
+          cat_id: (this.activeCat && this.activeCat.id) || null,
+          brand_ids: brandIds,
+          name: this.name || null
         })
         .then(res => {
           this.commodities = res;
         });
+    },
+    handleBack() {
+      this.activeParentCat = null;
+      this.values = [];
+    },
+    handleNameInputConfirm() {
+      this.getCommodity();
+      this.isSearch = false;
+    },
+    handleValueAdd(value) {
+      const valueIds = this.values.map(item => item.value.id);
+      if (valueIds.indexOf(value.value.id) < 0) {
+        this.values.push(value);
+      }
+    },
+    handleValueRemove(key) {
+      this.values.splice(key, 1);
+    },
+    handleValueReset() {
+      this.values = [];
     }
   }
 };
@@ -225,6 +292,7 @@ export default {
     }
   }
   .search-container {
+    position: relative;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -259,6 +327,70 @@ export default {
         width: 24px;
         height: 24px;
         background-image: url("~images/common/search.svg");
+      }
+      /deep/ .name-search {
+        width: 100%;
+        .el-input__inner {
+          width: 100%;
+          height: 28px;
+          background: #fafafa;
+          border: unset;
+          border-radius: 2px;
+          &::placeholder {
+            color: #999999;
+          }
+        }
+        .el-input__icon {
+          margin-top: 2px;
+          line-height: 24px;
+          &.search-icon {
+            width: 24px;
+            height: 24px;
+            background: url("~images/common/search.svg");
+          }
+        }
+      }
+    }
+    .value-list {
+      position: absolute;
+      top: 40px;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transform: translateX(100%);
+      height: 200px;
+      li + li {
+        margin-top: 1px;
+      }
+      .reset-wrapper {
+        padding: 8px;
+        background: #fafafa;
+        .reset-icon {
+          width: 24px;
+          height: 24px;
+          background-image: url("~images/common/reset.svg");
+        }
+      }
+      .value-item {
+        position: relative;
+        padding: 5px 8px;
+        color: #14af64;
+        background: #eaf9f2;
+        &:hover {
+          .close-icon {
+            display: block;
+          }
+        }
+        .close-icon {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 10px;
+          height: 10px;
+          background-image: url("~images/common/close.svg");
+          display: none;
+        }
       }
     }
     .cat-wrapper {

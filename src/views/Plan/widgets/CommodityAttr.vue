@@ -106,7 +106,13 @@
             prefix-icon="search-icon bgImg"
             value-key="name"
             v-model="brandName"
-            @select="brand => handleAttrValueClick('brand', brand)"
+            @select="
+              brand =>
+                handleAttrValueClick({
+                  type: 'brand',
+                  value: brand
+                })
+            "
           >
           </el-autocomplete>
           <div class="brand-content">
@@ -114,9 +120,15 @@
               <h4 class="brand-recommend-title">推荐品牌</h4>
               <ul class="brand-list">
                 <li
-                  class="brand-item ellipsis"
+                  class="brand-item ellipsis pointer"
                   v-for="brand of recommendBrands"
                   :key="brand.id"
+                  @click="
+                    handleAttrValueClick({
+                      type: 'brand',
+                      value: brand
+                    })
+                  "
                 >
                   {{ brand.name }}
                 </li>
@@ -132,9 +144,20 @@
                   :id="brand.initial"
                 >
                   <li
-                    class="brand-item ellipsis"
+                    :class="[
+                      'brand-item',
+                      'ellipsis',
+                      'pointer',
+                      brandSelectedId.indexOf(item.id) > -1 ? 'active' : ''
+                    ]"
                     v-for="item of brand.brands"
                     :key="item.id"
+                    @click="
+                      handleAttrValueClick({
+                        type: 'brand',
+                        value: item
+                      })
+                    "
                   >
                     {{ item.name }}
                   </li>
@@ -169,6 +192,12 @@ import { checkCh } from "utils/function";
 
 export default {
   name: "CommodityAttr",
+  props: {
+    values: {
+      type: Array,
+      required: true
+    }
+  },
   data() {
     return {
       attrs: [],
@@ -206,6 +235,11 @@ export default {
           });
         });
       return result;
+    },
+    brandSelectedId() {
+      return this.values
+        .filter(item => item.type === "brand")
+        .map(item => item.value.id);
     }
   },
   created() {
@@ -224,6 +258,7 @@ export default {
       });
     },
     handleAttrFocusChange(id) {
+      this.brandInitial = null;
       if (this.attrFocusId !== id) {
         this.attrFocusId = id;
       } else {
@@ -263,18 +298,17 @@ export default {
         }
       }
     },
-    handleAttrValueClick(type, value) {
-      console.log(type, value);
-      this.$emit("addValue", {
-        type,
-        value
-      });
+    handleAttrValueClick(value) {
+      console.log(value);
+      this.$emit("addValue", value);
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 @recommendBrandColor: #caa74d;
 @brandWidth: 33%;
 
@@ -360,8 +394,9 @@ export default {
   .attr-content {
     position: relative;
     max-height: 467px;
+    overflow: hidden;
     .scroll-section {
-      width: calc(100% + 14px);
+      width: calc(100% + 15px);
       max-height: 467px;
       overflow-y: scroll;
     }
@@ -444,6 +479,7 @@ export default {
         }
 
         .brand-all {
+          padding-bottom: 0;
           .brand-list {
             margin-top: 4px;
             .brand-group {
@@ -456,6 +492,9 @@ export default {
                 line-height: 1;
                 font-size: 12px;
                 color: #666;
+                &.active {
+                  color: @primaryColor;
+                }
               }
             }
           }
