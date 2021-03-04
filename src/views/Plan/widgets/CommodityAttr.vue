@@ -110,6 +110,7 @@
               brand =>
                 handleAttrValueClick({
                   type: 'brand',
+                  color: '#14AF64',
                   value: brand
                 })
             "
@@ -155,6 +156,7 @@
                     @click="
                       handleAttrValueClick({
                         type: 'brand',
+                        color: '#14AF64',
                         value: item
                       })
                     "
@@ -181,6 +183,52 @@
             </li>
           </ul>
         </div>
+        <div class="price-wrapper" v-if="attrFocusId === -2">
+          <div class="price-content">
+            <ul class="price-list">
+              <li class="price-item" @click="handleSetPrice(1000, 9999)">
+                千元档
+              </li>
+              <li class="price-item" @click="handleSetPrice(10000, 99999)">
+                万元档
+              </li>
+            </ul>
+            <div class="price-input-wrapper">
+              <div class="price-input">
+                <el-input
+                  v-model="form.min_price"
+                  placeholder="最低价"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+                <label class="border"></label>
+                <el-input
+                  v-model="form.max_price"
+                  placeholder="最高价"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+              </div>
+              <div class="price-order">
+                <el-select v-model="form.price_sort" placeholder="请选择">
+                  <el-option
+                    v-for="item in price_options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+          </div>
+          <div class="operate-wrapper">
+            <label class="reset-btn" @click="handleReset('price')">重置</label>
+            <label class="confirm-btn" @click="handleConfirm('price')"
+              >确认</label
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -189,7 +237,11 @@
 <script>
 import commodityService from "service/commodity";
 import { checkCh } from "utils/function";
-
+const price_options = [
+  { value: 0, label: "默认排序" },
+  { value: 1, label: "价格升序" },
+  { value: -1, label: "价格降序" }
+];
 export default {
   name: "CommodityAttr",
   props: {
@@ -200,12 +252,18 @@ export default {
   },
   data() {
     return {
+      price_options,
       attrs: [],
       attrFocusId: 0,
       brands: [],
       brandName: "",
       brandInitial: null,
-      handleScrollFlag: true
+      handleScrollFlag: true,
+      form: {
+        min_price: null,
+        max_price: null,
+        price_sort: 0
+      }
     };
   },
   computed: {
@@ -299,8 +357,46 @@ export default {
       }
     },
     handleAttrValueClick(value) {
-      console.log(value);
       this.$emit("addValue", value);
+    },
+    handleSetPrice(min, max) {
+      this.form.min_price = min + "";
+      this.form.max_price = max + "";
+    },
+    handleReset(type) {
+      switch (type) {
+        case "price":
+          this.form.min_price = null;
+          this.form.max_price = null;
+          this.form.price_sort = 0;
+          break;
+        case "size":
+          break;
+        default:
+          break;
+      }
+      this.$emit("reset", type);
+    },
+    handleConfirm(type) {
+      switch (type) {
+        case "price": {
+          const { min_price, max_price, price_sort } = this.form;
+          this.handleAttrValueClick({
+            type,
+            color: "#5BCAB5",
+            value: {
+              min_price: (min_price || "").replace(/\D/g, ""),
+              max_price: (max_price || "").replace(/\D/g, ""),
+              price_sort
+            }
+          });
+          break;
+        }
+        case "size":
+          break;
+        default:
+          break;
+      }
     }
   }
 };
@@ -521,6 +617,120 @@ export default {
             background: #14af64;
           }
         }
+      }
+    }
+    .price-wrapper {
+      .price-content {
+        padding: 15px 10px;
+      }
+      .price-list {
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 15px;
+        .price-item {
+          padding: 5px;
+          font-size: 12px;
+          line-height: 1;
+          color: #111;
+          background: #f4f4f4;
+          cursor: pointer;
+          & + .price-item {
+            margin-left: 10px;
+          }
+        }
+      }
+      .price-input-wrapper {
+        display: flex;
+        align-items: center;
+        .price-input {
+          flex: 1;
+          width: 5px;
+          margin-right: 10px;
+          display: flex;
+          align-items: center;
+          border: 1px solid #efefef;
+          background: #fafafa;
+          .border {
+            display: inline-block;
+            width: 8px;
+            height: 1px;
+            background: #666;
+          }
+          /deep/.el-input {
+            flex: 1;
+            line-height: 27px;
+            .el-input__inner {
+              height: 27px;
+              line-height: 27px;
+              border: unset;
+              background: #fafafa;
+              text-align: center;
+              &::placeholder {
+                color: #999;
+              }
+            }
+          }
+        }
+        .price-order {
+          width: 74px;
+          /deep/.el-select {
+            position: relative;
+            &::before,
+            &::after {
+              position: absolute;
+              left: 7px;
+              width: 0px;
+              height: 0px;
+              border-left: 4px solid transparent;
+              border-right: 5px solid transparent;
+              font-size: 0px;
+              line-height: 0px;
+              content: "";
+              z-index: 1;
+            }
+            &::before {
+              top: 8px;
+              border-bottom: 4px solid #cccccc;
+            }
+            &::after {
+              bottom: 8px;
+              border-top: 4px solid #cccccc;
+            }
+            .el-input__inner {
+              padding: 0 5px 0 20px;
+              height: 27px;
+              line-height: 27px;
+              font-size: 12px;
+              color: #666666;
+              border-color: #efefef;
+            }
+            .el-input__suffix {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+    .operate-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 34px;
+      background: #fff;
+      border-top: 1px solid #efefef;
+      label {
+        flex: 1;
+        display: block;
+        font-size: 12px;
+        text-align: center;
+        cursor: pointer;
+      }
+      .reset-btn {
+        color: #666;
+        border-right: 1px solid #efefef;
+      }
+      .confirm-btn {
+        color: @primaryColor;
       }
     }
   }

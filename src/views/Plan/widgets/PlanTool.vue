@@ -83,8 +83,15 @@
             class="value-item"
             v-for="(item, key) of values"
             :key="item.value.id"
+            :style="{ color: item.color }"
           >
-            {{ item.value.name }}
+            {{
+              item.type === "price"
+                ? `${item.value.min_price ? item.value.min_price : "∞"}-${
+                    item.value.max_price ? item.value.max_price : "∞"
+                  }元`
+                : item.value.name
+            }}
             <label
               class="bgImg close-icon pointer"
               @click="handleValueRemove(key)"
@@ -179,12 +186,19 @@ export default {
       const brandIds = this.values
         .filter(item => item.type === "brand")
         .map(item => item.value.id);
+      const priceIndex = this.values.findIndex(item => item.type === "price");
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
           cat_id: (this.activeCat && this.activeCat.id) || null,
           brand_ids: brandIds,
-          name: this.name || null
+          name: this.name || null,
+          min_price:
+            priceIndex > -1 ? this.values[priceIndex].value.min_price : null,
+          max_price:
+            priceIndex > -1 ? this.values[priceIndex].value.max_price : null,
+          price_sort:
+            priceIndex > -1 ? this.values[priceIndex].value.price_sort : null
         })
         .then(res => {
           this.commodities = res;
@@ -199,8 +213,16 @@ export default {
       this.isSearch = false;
     },
     handleValueAdd(value) {
-      const valueIds = this.values.map(item => item.value.id);
-      if (valueIds.indexOf(value.value.id) < 0) {
+      const valueIds = this.values
+        .filter(item => item.value.id)
+        .map(item => item.value.id);
+      if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
+        this.values.push(value);
+      } else if (["price", "size"].indexOf(value.type) > -1) {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
         this.values.push(value);
       }
     },
