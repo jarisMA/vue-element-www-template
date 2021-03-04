@@ -194,7 +194,7 @@
               </li>
             </ul>
             <div class="price-input-wrapper">
-              <div class="price-input">
+              <div class="price-input number-input">
                 <el-input
                   v-model="form.min_price"
                   placeholder="最低价"
@@ -229,6 +229,70 @@
             >
           </div>
         </div>
+        <div class="size-wrapper" v-if="attrFocusId === -3">
+          <div class="size-content">
+            <img
+              :src="
+                activeCat
+                  ? activeCat.size_legend_url
+                  : parentCat.size_legend_url
+              "
+            />
+            <div class="size-input-wrapper">
+              <div class="number-input size-input">
+                <el-input
+                  v-model="form.min_size_x"
+                  placeholder="a"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+                <label class="border"></label>
+                <el-input
+                  v-model="form.max_size_x"
+                  placeholder="a"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+              </div>
+              <div class="number-input size-input">
+                <el-input
+                  v-model="form.min_size_y"
+                  placeholder="b"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+                <label class="border"></label>
+                <el-input
+                  v-model="form.max_size_y"
+                  placeholder="b"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+              </div>
+              <div class="number-input size-input">
+                <el-input
+                  v-model="form.min_size_z"
+                  placeholder="c"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+                <label class="border"></label>
+                <el-input
+                  v-model="form.max_size_z"
+                  placeholder="c"
+                  onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  :controls="false"
+                ></el-input>
+              </div>
+            </div>
+          </div>
+          <div class="operate-wrapper">
+            <label class="reset-btn" @click="handleReset('size')">重置</label>
+            <label class="confirm-btn" @click="handleConfirm('size')"
+              >确认</label
+            >
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -248,6 +312,12 @@ export default {
     values: {
       type: Array,
       required: true
+    },
+    parentCat: {
+      type: Object
+    },
+    activeCat: {
+      type: Object
     }
   },
   data() {
@@ -262,7 +332,13 @@ export default {
       form: {
         min_price: null,
         max_price: null,
-        price_sort: 0
+        price_sort: 0,
+        min_size_x: null,
+        max_size_x: null,
+        min_size_y: null,
+        max_size_y: null,
+        min_size_z: null,
+        max_size_z: null
       }
     };
   },
@@ -371,6 +447,12 @@ export default {
           this.form.price_sort = 0;
           break;
         case "size":
+          this.form.min_size_x = null;
+          this.form.max_size_x = null;
+          this.form.min_size_y = null;
+          this.form.max_size_y = null;
+          this.form.min_size_z = null;
+          this.form.max_size_z = null;
           break;
         default:
           break;
@@ -382,7 +464,7 @@ export default {
         case "price": {
           const { min_price, max_price, price_sort } = this.form;
           this.handleAttrValueClick({
-            type,
+            type: "price",
             color: "#5BCAB5",
             value: {
               min_price: (min_price || "").replace(/\D/g, ""),
@@ -392,8 +474,41 @@ export default {
           });
           break;
         }
-        case "size":
+        case "size": {
+          const {
+            min_size_x,
+            max_size_x,
+            min_size_y,
+            max_size_y,
+            min_size_z,
+            max_size_z
+          } = this.form;
+          this.handleAttrValueClick({
+            type: "size_x",
+            color: "#F17851",
+            value: {
+              min_size_x: (min_size_x || "").replace(/\D/g, ""),
+              max_size_x: (max_size_x || "").replace(/\D/g, "")
+            }
+          });
+          this.handleAttrValueClick({
+            type: "size_y",
+            color: "#F17851",
+            value: {
+              min_size_y: (min_size_y || "").replace(/\D/g, ""),
+              max_size_y: (max_size_y || "").replace(/\D/g, "")
+            }
+          });
+          this.handleAttrValueClick({
+            type: "size_z",
+            color: "#F17851",
+            value: {
+              min_size_z: (min_size_z || "").replace(/\D/g, ""),
+              max_size_z: (max_size_z || "").replace(/\D/g, "")
+            }
+          });
           break;
+        }
         default:
           break;
       }
@@ -646,30 +761,6 @@ export default {
           flex: 1;
           width: 5px;
           margin-right: 10px;
-          display: flex;
-          align-items: center;
-          border: 1px solid #efefef;
-          background: #fafafa;
-          .border {
-            display: inline-block;
-            width: 8px;
-            height: 1px;
-            background: #666;
-          }
-          /deep/.el-input {
-            flex: 1;
-            line-height: 27px;
-            .el-input__inner {
-              height: 27px;
-              line-height: 27px;
-              border: unset;
-              background: #fafafa;
-              text-align: center;
-              &::placeholder {
-                color: #999;
-              }
-            }
-          }
         }
         .price-order {
           width: 74px;
@@ -711,6 +802,32 @@ export default {
         }
       }
     }
+    .number-input {
+      display: flex;
+      align-items: center;
+      border: 1px solid #efefef;
+      background: #fafafa;
+      .border {
+        display: inline-block;
+        width: 8px;
+        height: 1px;
+        background: #666;
+      }
+      /deep/.el-input {
+        flex: 1;
+        line-height: 27px;
+        .el-input__inner {
+          height: 27px;
+          line-height: 27px;
+          border: unset;
+          background: #fafafa;
+          text-align: center;
+          &::placeholder {
+            color: #999;
+          }
+        }
+      }
+    }
     .operate-wrapper {
       display: flex;
       align-items: center;
@@ -731,6 +848,30 @@ export default {
       }
       .confirm-btn {
         color: @primaryColor;
+      }
+    }
+    .size-wrapper {
+      width: 100%;
+      .size-content {
+        width: 100%;
+        padding: 15px 10px;
+        display: flex;
+        align-items: center;
+        img {
+          display: inline-block;
+          width: 95px;
+          height: 85px;
+          margin-right: 15px;
+        }
+        .size-input-wrapper {
+          flex: 1;
+          width: 5px;
+          .size-input {
+            & + .size-input {
+              margin-top: 10px;
+            }
+          }
+        }
       }
     }
   }

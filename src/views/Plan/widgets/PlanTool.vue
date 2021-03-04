@@ -90,6 +90,18 @@
                 ? `${item.value.min_price ? item.value.min_price : "∞"}-${
                     item.value.max_price ? item.value.max_price : "∞"
                   }元`
+                : item.type === "size_x"
+                ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
+                    item.value.max_size_x ? item.value.max_size_x : "∞"
+                  }mm`
+                : item.type === "size_y"
+                ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
+                    item.value.max_size_y ? item.value.max_size_y : "∞"
+                  }mm`
+                : item.type === "size_z"
+                ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
+                    item.value.max_size_z ? item.value.max_size_z : "∞"
+                  }mm`
                 : item.value.name
             }}
             <label
@@ -118,7 +130,12 @@
             {{ cat.name }}
           </label>
         </div>
-        <commodity-attr @addValue="handleValueAdd" :values="values" />
+        <commodity-attr
+          @addValue="handleValueAdd"
+          :values="values"
+          :parentCat="activeParentCat"
+          :activeCat="activeCat"
+        />
         <div class="commodity-wrapper">
           <div class="scroll-section">
             <commodity-card
@@ -187,6 +204,10 @@ export default {
         .filter(item => item.type === "brand")
         .map(item => item.value.id);
       const priceIndex = this.values.findIndex(item => item.type === "price");
+      const sizeXIndex = this.values.findIndex(item => item.type === "size_x");
+      const sizeYIndex = this.values.findIndex(item => item.type === "size_y");
+      const sizeZIndex = this.values.findIndex(item => item.type === "size_z");
+
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
@@ -198,7 +219,19 @@ export default {
           max_price:
             priceIndex > -1 ? this.values[priceIndex].value.max_price : null,
           price_sort:
-            priceIndex > -1 ? this.values[priceIndex].value.price_sort : null
+            priceIndex > -1 ? this.values[priceIndex].value.price_sort : null,
+          min_size_x:
+            sizeXIndex > -1 ? this.values[sizeXIndex].value.min_size_x : null,
+          max_size_x:
+            sizeXIndex > -1 ? this.values[sizeXIndex].value.max_size_x : null,
+          min_size_y:
+            sizeYIndex > -1 ? this.values[sizeYIndex].value.min_size_y : null,
+          max_size_y:
+            sizeYIndex > -1 ? this.values[sizeYIndex].value.max_size_y : null,
+          min_size_z:
+            sizeZIndex > -1 ? this.values[sizeZIndex].value.min_size_z : null,
+          max_size_z:
+            sizeZIndex > -1 ? this.values[sizeZIndex].value.max_size_z : null
         })
         .then(res => {
           this.commodities = res;
@@ -218,12 +251,25 @@ export default {
         .map(item => item.value.id);
       if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
         this.values.push(value);
-      } else if (["price", "size"].indexOf(value.type) > -1) {
+      } else if (value.type === "price") {
         const index = this.values.findIndex(item => item.type === value.type);
         if (index > -1) {
           this.values.splice(index, 1);
         }
         this.values.push(value);
+      } else if (["size_x", "size_y", "size_z"].indexOf(value.type) > -1) {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        let flag = false;
+        for (let key in value.value) {
+          if (value.value[key]) {
+            flag = true;
+          }
+          break;
+        }
+        flag && this.values.push(value);
       }
     },
     handleValueRemove(key) {
