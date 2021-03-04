@@ -7,7 +7,16 @@
         content="品牌"
         placement="bottom"
       >
-        <label class="bgImg brand-icon"></label>
+        <div
+          :class="[
+            'bgImg-wrapper',
+            'brand-icon',
+            attrFocusId === -1 ? 'focus' : ''
+          ]"
+          @click="handleAttrFocusChange(-1)"
+        >
+          <label :class="['bgImg', attrFocusId === -1 ? 'focus' : '']"></label>
+        </div>
       </el-tooltip>
       <el-tooltip
         popper-class="tool-label-tip"
@@ -15,7 +24,16 @@
         content="价格"
         placement="bottom"
       >
-        <label class="bgImg price-icon"></label>
+        <div
+          :class="[
+            'bgImg-wrapper',
+            'price-icon',
+            attrFocusId === -2 ? 'focus' : ''
+          ]"
+          @click="handleAttrFocusChange(-2)"
+        >
+          <label :class="['bgImg', attrFocusId === -2 ? 'focus' : '']"></label>
+        </div>
       </el-tooltip>
       <el-tooltip
         popper-class="tool-label-tip"
@@ -23,7 +41,16 @@
         content="尺寸"
         placement="bottom"
       >
-        <label class="bgImg size-icon"></label>
+        <div
+          :class="[
+            'bgImg-wrapper',
+            'size-icon',
+            attrFocusId === -3 ? 'focus' : ''
+          ]"
+          @click="handleAttrFocusChange(-3)"
+        >
+          <label :class="['bgImg', attrFocusId === -3 ? 'focus' : '']"></label>
+        </div>
       </el-tooltip>
       <el-tooltip
         v-for="attr of attrs"
@@ -33,10 +60,23 @@
         :content="attr.name"
         placement="bottom"
       >
-        <label
-          class="bgImg"
-          :style="{ backgroundImage: `url(${attr.default_icon})` }"
-        ></label>
+        <div
+          :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
+          :style="{
+            backgroundColor: attrFocusId === attr.id ? attr.color : null
+          }"
+          @click="handleAttrFocusChange(attr.id)"
+        >
+          <label
+            :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
+            :style="{
+              backgroundImage:
+                attrFocusId === attr.id
+                  ? `url(${attr.focus_icon})`
+                  : `url(${attr.default_icon})`
+            }"
+          ></label>
+        </div>
       </el-tooltip>
       <el-tooltip
         popper-class="tool-label-tip"
@@ -44,18 +84,29 @@
         content="其余"
         placement="bottom"
       >
-        <label class="bgImg filter-icon"></label>
+        <div
+          :class="[
+            'bgImg-wrapper',
+            'filter-icon',
+            attrFocusId === -4 ? 'focus' : ''
+          ]"
+          @click="handleAttrFocusChange(-4)"
+        >
+          <label :class="['bgImg', attrFocusId === -4 ? 'focus' : '']"></label>
+        </div>
       </el-tooltip>
     </div>
     <div class="attr-content">
-      <div class="scroll-section">
-        <div class="brand-wrapper">
+      <div class="scroll-section" ref="scroll" @scroll="handleScroll">
+        <div class="brand-wrapper" v-if="attrFocusId === -1">
           <el-autocomplete
             class="brand-search"
             :fetch-suggestions="brandSearch"
             placeholder="搜索品牌"
             prefix-icon="search-icon bgImg"
+            value-key="name"
             v-model="brandName"
+            @select="brand => handleAttrValueClick('brand', brand)"
           >
           </el-autocomplete>
           <div class="brand-content">
@@ -78,7 +129,7 @@
                   class="brand-group"
                   v-for="(brand, key) of allBrands"
                   :key="key"
-                  :id="key"
+                  :id="brand.initial"
                 >
                   <li
                     class="brand-item ellipsis"
@@ -94,13 +145,14 @@
           <ul class="brand-initial">
             <li
               :class="[
+                'pointer',
                 brand.initial === (brandInitial || allBrands[0].initial)
                   ? 'active'
                   : ''
               ]"
               v-for="(brand, key) of allBrands"
               :key="key"
-              @click="brandInitial = brand.initial"
+              @click="scrollToBrandGroup(brand.initial)"
             >
               <span>{{ brand.initial }}</span>
             </li>
@@ -120,9 +172,11 @@ export default {
   data() {
     return {
       attrs: [],
+      attrFocusId: 0,
       brands: [],
       brandName: "",
-      brandInitial: null
+      brandInitial: null,
+      handleScrollFlag: true
     };
   },
   computed: {
@@ -133,7 +187,6 @@ export default {
       let brands = {},
         result = [];
       this.brands.map(brand => {
-        console.log();
         const initial = checkCh(brand.name)
           .toUpperCase()
           .charAt(0);
@@ -170,13 +223,52 @@ export default {
         this.brands = res;
       });
     },
+    handleAttrFocusChange(id) {
+      if (this.attrFocusId !== id) {
+        this.attrFocusId = id;
+      } else {
+        this.attrFocusId = null;
+      }
+    },
     brandSearch(q, callback) {
-      console.log(q);
-      callback([
-        {
-          value: 1
+      if (q) {
+        const result = this.brands.filter(item => item.name.indexOf(q) >= 0);
+        console.log(result);
+        callback(result);
+      } else {
+        callback([]);
+      }
+    },
+    scrollToBrandGroup(initial) {
+      this.brandInitial = initial;
+      const dom = this.$refs["scroll"];
+      this.handleScrollFlag = false;
+      dom.scrollTo({
+        top: document.getElementById(initial).offsetTop - 14,
+        behaviour: "smooth"
+      });
+      this.handleScrollFlag = true;
+    },
+    handleScroll(e) {
+      if (this.handleScrollFlag && this.attrFocusId === -1) {
+        const brands = this.allBrands;
+        for (let i = brands.length - 1; i >= 0; i--) {
+          const initial = brands[i].initial;
+          if (
+            document.getElementById(initial).offsetTop - 14 >=
+            e.target.scrollTop
+          ) {
+            this.brandInitial = initial;
+          }
         }
-      ]);
+      }
+    },
+    handleAttrValueClick(type, value) {
+      console.log(type, value);
+      this.$emit("addValue", {
+        type,
+        value
+      });
     }
   }
 };
@@ -196,46 +288,72 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 10px;
+    background: #fdfdfd;
+    .bgImg-wrapper {
+      flex: 1;
+      padding: 5px 12px;
+      cursor: pointer;
+      outline: unset;
+    }
     .bgImg {
       width: 20px;
       height: 20px;
       cursor: pointer;
     }
     .brand-icon {
-      background-image: url("~images/commodity/brand-default.png");
-      &.active {
-        background-image: url("~images/commodity/brand-selected.png");
+      .bgImg {
+        background-image: url("~images/commodity/brand-default.png");
+        &.active {
+          background-image: url("~images/commodity/brand-active.png");
+        }
+        &.focus {
+          background-image: url("~images/commodity/brand-selected.png");
+        }
       }
       &.focus {
-        background-image: url("~images/commodity/brand-active.png");
+        background-color: #eaf9f2;
       }
     }
     .price-icon {
-      background-image: url("~images/commodity/price-default.png");
-      &.active {
-        background-image: url("~images/commodity/price-selected.png");
+      .bgImg {
+        background-image: url("~images/commodity/price-default.png");
+        &.active {
+          background-image: url("~images/commodity/price-active.png");
+        }
+        &.focus {
+          background-image: url("~images/commodity/price-selected.png");
+        }
       }
       &.focus {
-        background-image: url("~images/commodity/price-active.png");
+        background-color: #ebfaf7;
       }
     }
     .size-icon {
-      background-image: url("~images/commodity/size-default.png");
-      &.active {
-        background-image: url("~images/commodity/size-selected.png");
+      .bgImg {
+        background-image: url("~images/commodity/size-default.png");
+        &.active {
+          background-image: url("~images/commodity/size-active.png");
+        }
+        &.focus {
+          background-image: url("~images/commodity/size-selected.png");
+        }
       }
       &.focus {
-        background-image: url("~images/commodity/size-active.png");
+        background-color: #fcf2ef;
       }
     }
     .filter-icon {
-      background-image: url("~images/commodity/filter-default.png");
-      &.active {
-        background-image: url("~images/commodity/filter-selected.png");
+      .bgImg {
+        background-image: url("~images/commodity/filter-default.png");
+        &.active {
+          background-image: url("~images/commodity/filter-active.png");
+        }
+        &.focus {
+          background-image: url("~images/commodity/filter-selected.png");
+        }
       }
       &.focus {
-        background-image: url("~images/commodity/filter-active.png");
+        background-color: #fbf5f0;
       }
     }
   }
@@ -243,12 +361,12 @@ export default {
     position: relative;
     max-height: 467px;
     .scroll-section {
-      padding: 15px 10px;
       width: calc(100% + 14px);
       max-height: 467px;
       overflow-y: scroll;
     }
     .brand-wrapper {
+      padding: 15px 10px;
       /deep/ .brand-search {
         width: 100%;
         .el-input__inner {
@@ -273,7 +391,6 @@ export default {
       .brand-content {
         .brand-recommend,
         .brand-all {
-          position: relative;
           padding: 15px 0 10px 0;
           margin-right: 15px;
         }
@@ -348,6 +465,8 @@ export default {
         position: absolute;
         top: 50%;
         right: 10px;
+        display: flex;
+        flex-direction: column;
         width: 14px;
         transform: translateY(-50%);
         li {

@@ -157,12 +157,6 @@ export default {
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
   background: #fafafa;
-  overflow: hidden;
-  .scroll-wrapper {
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-  }
   .cat-container {
     width: 100%;
     height: 100%;
