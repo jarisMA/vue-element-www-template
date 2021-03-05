@@ -1,114 +1,139 @@
 <template>
-  <div class="tool-container">
+  <div class="tool-container" ref="tool">
     <div class="tool-wrapper">
       <div class="cat-container">
         <div class="cat-top-wrapper">
           <ul class="tab-list">
-            <li class="tab-item pointer"
-                v-for="(tab, key) of rootCats"
-                :key="tab.id"
-                :class="{ active: key === activeTabKey }"
-                @click="activeTabKey = key">
-              <label class="tab-cover-img pointer"
-                     :style="{
+            <li
+              class="tab-item pointer"
+              v-for="(tab, key) of rootCats"
+              :key="tab.id"
+              :class="{ active: key === activeTabKey }"
+              @click="activeTabKey = key"
+            >
+              <label
+                class="tab-cover-img pointer"
+                :style="{
                   backgroundImage:
                     key === activeTabKey
                       ? `url(${tab.active_cover_url})`
                       : `url(${tab.cover_url})`
-                }"></label>
+                }"
+              ></label>
               {{ tab.name }}
             </li>
           </ul>
         </div>
         <div class="cat-bottom-wrapper">
-          <ul class="cat-list"
-              v-if="(rootCats[activeTabKey] || {}).children">
-            <li class="cat-item pointer"
-                v-for="cat of rootCats[activeTabKey].children"
-                :key="cat.id"
-                @click="activeParentCat = cat">
+          <ul class="cat-list" v-if="(rootCats[activeTabKey] || {}).children">
+            <li
+              class="cat-item pointer"
+              v-for="cat of rootCats[activeTabKey].children"
+              :key="cat.id"
+              @click="activeParentCat = cat"
+            >
               <label class="cat-name pointer">
                 {{ cat.name }}
               </label>
-              <label class="cat-cover-img pointer"
-                     :style="{ backgroundImage: `url(${cat.cover_url})` }"></label>
+              <label
+                class="cat-cover-img pointer"
+                :style="{ backgroundImage: `url(${cat.cover_url})` }"
+              ></label>
             </li>
           </ul>
         </div>
       </div>
-      <transition enter-active-class="animated slideInRight"
-                  leave-active-class="animated slideOutRight">
-        <div class="search-container"
-             v-if="activeParentCat">
+      <transition
+        enter-active-class="animated slideInRight"
+        leave-active-class="animated slideOutRight"
+      >
+        <div class="search-container" v-if="activeParentCat">
           <div class="search-header">
             <template v-if="!isSearch">
               <div class="cat-name">
-                <label class="back-icon bgImg pointer"
-                       @click="handleBack"></label>
+                <label
+                  class="back-icon bgImg pointer"
+                  @click="handleBack"
+                ></label>
                 <h3>
                   {{ (activeParentCat || {}).name }}
                 </h3>
               </div>
-              <label class="search-icon bgImg pointer"
-                     @click="isSearch = true"></label>
+              <label
+                class="search-icon bgImg pointer"
+                @click="isSearch = true"
+              ></label>
             </template>
-            <el-input v-else
-                      class="name-search"
-                      :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
-                      prefix-icon="search-icon bgImg"
-                      clearable
-                      v-model="name"
-                      @keyup.enter.native="handleNameInputConfirm"
-                      @blur="handleNameInputConfirm">
+            <el-input
+              v-else
+              class="name-search"
+              :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
+              prefix-icon="search-icon bgImg"
+              clearable
+              v-model="name"
+              @keyup.enter.native="handleNameInputConfirm"
+              @blur="handleNameInputConfirm"
+            >
             </el-input>
           </div>
           <div class="cat-wrapper">
-            <label :class="['cat-label', 'pointer', !activeCat && 'active']"
-                   @click="activeCat = null">
+            <label
+              :class="['cat-label', 'pointer', !activeCat && 'active']"
+              @click="activeCat = null"
+            >
               全部
             </label>
-            <label :class="[
+            <label
+              :class="[
                 'cat-label',
                 'pointer',
                 activeCat && activeCat.id === cat.id ? 'active' : ''
               ]"
-                   v-for="cat of cats"
-                   :key="cat.id"
-                   @click="activeCat = cat">
+              v-for="cat of cats"
+              :key="cat.id"
+              @click="activeCat = cat"
+            >
               {{ cat.name }}
             </label>
           </div>
-          <commodity-attr @addValue="handleValueAdd"
-                          :values="values"
-                          :parentCat="activeParentCat"
-                          :activeCat="activeCat" />
+          <commodity-attr
+            @addValue="handleValueAdd"
+            :values="values"
+            :parentCat="activeParentCat"
+            :activeCat="activeCat"
+          />
           <div class="commodity-wrapper">
             <div class="scroll-section">
-              <commodity-card v-for="commodity of commodities"
-                              :key="commodity.id"
-                              :commodity="commodity"
-                              :values="values"
-                              @detail="handleCommodityDetail(commodity)"
-                              @showSkus="handleShowSkus"
-                              @addModel="handleAddModel" />
+              <div class="commodity-list">
+                <commodity-card
+                  v-for="commodity of commodities"
+                  :key="commodity.id"
+                  :commodity="commodity"
+                  :values="values"
+                  @detail="handleCommodityDetail(commodity)"
+                  @clearTimer="handleCommodityDetail(commodity, false)"
+                  @showSkus="skus => handleShowSkus(commodity.id, skus)"
+                  @addModel="handleAddModel"
+                />
+              </div>
             </div>
           </div>
         </div>
       </transition>
     </div>
-    <ul class="value-list"
-        v-if="values.length > 0">
-      <li class="reset-wrapper pointer"
-          @click="handleValueReset">
+    <ul class="value-list" v-if="values.length > 0">
+      <li class="reset-wrapper pointer" @click="handleValueReset">
         <label class="reset-icon bgImg"></label>
       </li>
-      <li class="value-item"
-          v-for="(item, key) of values"
-          :key="item.value.id"
-          :style="{
+      <li
+        class="value-item"
+        v-for="(item, key) of values"
+        :key="item.value.id"
+        :style="{
           color: item.color,
           backgroundColor: hex2Rgba(item.color, 0.1)
-        }">
+        }"
+      >
         {{
           item.type === "price"
             ? `${item.value.min_price ? item.value.min_price : "∞"}-${
@@ -128,56 +153,67 @@
               }mm`
             : item.value.name
         }}
-        <label class="bgImg close-icon pointer"
-               @click="handleValueRemove(key)"></label>
+        <label
+          class="bgImg close-icon pointer"
+          @click="handleValueRemove(key)"
+        ></label>
       </li>
     </ul>
-    <div class="commodity-detail-card"
-         v-if="activeCommodity">
+    <div
+      class="commodity-detail-card"
+      ref="commodityDetail"
+      v-if="activeCommodity"
+      :style="{ top: offsetTop + 'px' }"
+      @mouseover="detailTimer && clearTimeout(detailTimer)"
+      @mouseout="handleCommodityDetail(activeCommodity)"
+    >
       <div class="card-top">
-        <div class="swiper-wrapper"
-             v-if="activeCommodity.images.length > 1">
-          <swiper ref="mySwiper"
-                  :options="swiperOptions">
-            <swiper-slide v-for="(image, key) of activeCommodity.images"
-                          :key="key">
-              <the-loading-image :width="200"
-                                 :height="200"
-                                 :key="key"
-                                 :url="image" />
+        <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide
+              v-for="(image, key) of activeCommodity.images"
+              :key="key"
+            >
+              <the-loading-image
+                :width="200"
+                :height="200"
+                :key="key"
+                :url="image"
+              />
             </swiper-slide>
-            <div :class="['card-img-prev']"
-                 @click.stop
-                 slot="button-prev">
+            <div :class="['card-img-prev']" @click.stop slot="button-prev">
               <div class="btn-icon"></div>
             </div>
-            <div :class="['card-img-next']"
-                 @click.stop
-                 slot="button-next">
+            <div :class="['card-img-next']" @click.stop slot="button-next">
               <div class="btn-icon"></div>
             </div>
           </swiper>
         </div>
 
-        <the-loading-image v-else
-                           :width="200"
-                           :height="200"
-                           :url="activeCommodity.images[0]" />
+        <the-loading-image
+          v-else
+          :width="200"
+          :height="200"
+          :url="activeCommodity.images[0]"
+        />
       </div>
       <div class="card-bottom">
         <h4 class="card-name">{{ activeCommodity.name }}</h4>
-        <label class="card-brand"
-               v-if="activeCommodity.brand_name">{{
+        <label class="card-brand" v-if="activeCommodity.brand_name">{{
           activeCommodity.brand_name
         }}</label>
-        <span class="card-price">参考价 ¥{{ activeCommodity.unit_price }}
+        <span class="card-price"
+          >参考价 ¥{{ activeCommodity.unit_price }}
         </span>
       </div>
     </div>
-    <commodity-sku-list class="sku-list-wrapper"
-                        :skus="activeSkus"
-                        v-if="activeSkus"
-                        @addModel="handleAddModel" />
+    <commodity-sku-list
+      class="sku-list-wrapper"
+      :style="{ top: offsetTop + 'px' }"
+      :skus="activeSkus"
+      v-if="activeSkus"
+      @addModel="handleAddModel"
+    />
   </div>
 </template>
 
@@ -203,7 +239,7 @@ export default {
       required: true
     }
   },
-  data () {
+  data() {
     return {
       isSearch: false,
       name: null,
@@ -223,31 +259,33 @@ export default {
         prevButton: ".card-img-prev",
         observe: true
       },
-      activeSkus: null
+      activeSkus: null,
+      detailTimer: null,
+      offsetTop: 0
     };
   },
   watch: {
-    activeParentCat (val) {
+    activeParentCat(val) {
       if (val) {
         this.getCats(val.id);
         this.getCommodity();
       }
     },
-    activeCat () {
+    activeCat() {
       this.getCommodity();
     },
-    values () {
+    values() {
       this.getCommodity();
     }
   },
   methods: {
     hex2Rgba,
-    getCats (id) {
+    getCats(id) {
       commodityService.cat(id).then(res => {
         this.cats = res.children;
       });
     },
-    getCommodity () {
+    getCommodity() {
       this.activeCommodity = null;
       this.activeSkus = null;
       const brandIds = this.values
@@ -290,17 +328,17 @@ export default {
           this.commodities = res;
         });
     },
-    handleBack () {
+    handleBack() {
       this.activeParentCat = null;
       this.values = [];
       this.activeCommodity = null;
       this.activeSkus = null;
     },
-    handleNameInputConfirm () {
+    handleNameInputConfirm() {
       this.getCommodity();
       this.isSearch = false;
     },
-    handleValueAdd (value) {
+    handleValueAdd(value) {
       const valueIds = this.values
         .filter(item => item.value.id)
         .map(item => item.value.id);
@@ -327,27 +365,62 @@ export default {
         flag && this.values.push(value);
       }
     },
-    handleValueRemove (key) {
+    handleValueRemove(key) {
       this.values.splice(key, 1);
     },
-    handleValueReset () {
+    handleValueReset() {
       this.values = [];
     },
-    handleCommodityDetail (data) {
+    handleCommodityDetail(data, flag = true) {
+      if (this.detailTimer) {
+        clearTimeout(this.detailTimer);
+        this.detailTimer = null;
+      }
       this.activeSkus = null;
       data.images =
         data.images instanceof Array
           ? data.images
           : data.images
-            ? (data.images || "").split(",")
-            : [];
+          ? (data.images || "").split(",")
+          : [];
+      const offsetTop = document.getElementById(`commodity-${data.id}`)
+        .offsetTop;
+      const height = 280;
+      if (offsetTop + height > this.$refs["tool"].clientHeight) {
+        this.offsetTop =
+          offsetTop + (this.$refs["tool"].clientHeight - (offsetTop + height));
+      } else {
+        this.offsetTop = offsetTop;
+      }
       this.activeCommodity = data;
+      if (flag) {
+        this.detailTimer = setTimeout(() => {
+          this.activeCommodity = null;
+          clearTimeout(this.detailTimer);
+          this.detailTimer = null;
+        }, 2000);
+      }
     },
-    handleShowSkus (skus) {
+    clearTimeout(timer) {
+      clearTimeout(timer);
+    },
+    handleShowSkus(id, skus) {
       this.activeCommodity = null;
+      const offsetTop = document.getElementById(`commodity-${id}`).offsetTop;
+      const height = Math.min(
+        skus.length * 145 + (skus.length - 1) * 10 + 10,
+        424
+      );
+      if (offsetTop + height > this.$refs["tool"].clientHeight) {
+        this.offsetTop =
+          offsetTop + (this.$refs["tool"].clientHeight - (offsetTop + height));
+      } else {
+        this.offsetTop = offsetTop;
+      }
+
       this.activeSkus = skus;
     },
-    handleAddModel (goodId) {
+    handleAddModel(goodId) {
       this.$emit("addModel", goodId);
     }
   }
@@ -522,13 +595,16 @@ export default {
       height: 5px;
       overflow: hidden;
       .scroll-section {
-        display: flex;
-        justify-content: space-between;
-        flex-wrap: wrap;
         padding: 10px 10px 0 10px;
         width: calc(100% + 15px);
         height: 100%;
         overflow-y: scroll;
+        .commodity-list {
+          display: flex;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          width: 100%;
+        }
       }
     }
   }
@@ -591,7 +667,7 @@ export default {
     width: 200px;
     background: #fff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
-    transform: translate(100%, -50%);
+    transform: translate(100%, 0);
     &:hover {
       .card-img-prev,
       .card-img-next {
@@ -616,7 +692,7 @@ export default {
         transform: translateY(-50%);
         z-index: 1;
         background: #0000000d;
-        cursor: auto;
+        cursor: pointer;
         .btn-icon {
           position: absolute;
           top: 50%;
@@ -679,7 +755,7 @@ export default {
     right: -1px;
     background: #fff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
-    transform: translate(100%, -50%);
+    transform: translate(100%, 0%);
   }
 }
 </style>

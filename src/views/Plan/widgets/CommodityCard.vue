@@ -1,11 +1,20 @@
 <template>
-  <div class="commodity-card" @click.prevent="handleAddModel">
+  <div
+    class="commodity-card"
+    @click.prevent="handleAddModel"
+    :id="`commodity-${commodity.id}`"
+  >
     <label
       class="bgImg multi-icon"
       v-if="commodity.skus.length > 1"
       @click.stop="handleSkusClick"
     ></label>
-    <label class="bgImg info-icon" @click.stop="handleDetailClick"></label>
+    <label
+      class="bgImg info-icon"
+      @click.stop="handleDetailClick"
+      @mouseover="handleClearTimer"
+      @mouseout="handleDetailClick"
+    ></label>
     <the-loading-image
       :width="145"
       :height="145"
@@ -41,6 +50,9 @@ export default {
     },
     handleAddModel() {
       this.$emit("addModel", this.commodity.skus[0].kjl_sku_id);
+    },
+    handleClearTimer() {
+      this.$emit("clearTimer");
     }
   }
 };
