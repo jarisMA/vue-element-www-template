@@ -145,7 +145,52 @@
               v-for="commodity of commodities"
               :key="commodity.id"
               :commodity="commodity"
+              @detail="handleCommodityDetail(commodity)"
             />
+          </div>
+        </div>
+        <div class="commodity-detail-card" v-if="activeCommodity">
+          <div class="card-top">
+            <div
+              class="swiper-wrapper"
+              v-if="activeCommodity.images.length > 1"
+            >
+              <swiper ref="mySwiper" :options="swiperOptions">
+                <swiper-slide
+                  v-for="(image, key) of activeCommodity.images"
+                  :key="key"
+                >
+                  <the-loading-image
+                    :width="200"
+                    :height="200"
+                    :key="key"
+                    :url="image"
+                  />
+                </swiper-slide>
+                <div :class="['card-img-prev']" @click.stop slot="button-prev">
+                  <div class="btn-icon"></div>
+                </div>
+                <div :class="['card-img-next']" @click.stop slot="button-next">
+                  <div class="btn-icon"></div>
+                </div>
+              </swiper>
+            </div>
+
+            <the-loading-image
+              v-else
+              :width="200"
+              :height="200"
+              :url="activeCommodity.images[0]"
+            />
+          </div>
+          <div class="card-bottom">
+            <h4 class="card-name">{{ activeCommodity.name }}</h4>
+            <label class="card-brand" v-if="activeCommodity.brand_name">{{
+              activeCommodity.brand_name
+            }}</label>
+            <span class="card-price"
+              >参考价 ¥{{ activeCommodity.unit_price }}
+            </span>
           </div>
         </div>
       </div>
@@ -158,12 +203,14 @@ import commodityService from "service/commodity";
 import CommodityCard from "./CommodityCard.vue";
 import CommodityAttr from "./CommodityAttr.vue";
 import { hex2Rgba } from "utils/function";
+import TheLoadingImage from "components/TheLoadingImage.vue";
 
 export default {
   name: "PlanTool",
   components: {
     CommodityCard,
-    CommodityAttr
+    CommodityAttr,
+    TheLoadingImage
   },
   props: {
     rootCats: {
@@ -180,7 +227,17 @@ export default {
       activeParentCat: null,
       activeCat: null,
       commodities: [],
-      values: []
+      values: [],
+      activeCommodity: null,
+      swiperOptions: {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
+        loopedSlides: 0,
+        nextButton: ".card-img-next",
+        prevButton: ".card-img-prev",
+        observe: true
+      }
     };
   },
   watch: {
@@ -205,6 +262,7 @@ export default {
       });
     },
     getCommodity() {
+      this.activeCommodity = null;
       const brandIds = this.values
         .filter(item => item.type === "brand")
         .map(item => item.value.id);
@@ -248,6 +306,7 @@ export default {
     handleBack() {
       this.activeParentCat = null;
       this.values = [];
+      this.activeCommodity = null;
     },
     handleNameInputConfirm() {
       this.getCommodity();
@@ -285,6 +344,15 @@ export default {
     },
     handleValueReset() {
       this.values = [];
+    },
+    handleCommodityDetail(data) {
+      data.images =
+        data.images instanceof Array
+          ? data.images
+          : data.images
+          ? (data.images || "").split(",")
+          : [];
+      this.activeCommodity = data;
     }
   }
 };
@@ -501,6 +569,96 @@ export default {
         width: calc(100% + 14px);
         height: 100%;
         overflow-y: scroll;
+      }
+    }
+
+    .commodity-detail-card {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 200px;
+      background: #fff;
+      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+      transform: translate(100%, -50%);
+      &:hover {
+        .card-img-prev,
+        .card-img-next {
+          display: block !important;
+        }
+      }
+      .card-top {
+        width: 100%;
+        height: 200px;
+        background: #fafafa;
+        .swiper-wrapper {
+          position: relative;
+          width: 100%;
+        }
+        .card-img-prev,
+        .card-img-next {
+          position: absolute;
+          display: none;
+          top: 50%;
+          width: 10px;
+          height: 30px;
+          transform: translateY(-50%);
+          z-index: 1;
+          background: #0000000d;
+          cursor: auto;
+          .btn-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 4px;
+            height: 8px;
+            transform: translate(-50%, -50%);
+            background-size: cover;
+            background-repeat: no-repeat;
+            cursor: pointer;
+          }
+        }
+        .card-img-prev {
+          left: 0;
+          .btn-icon {
+            background-image: url("~images/common/left.svg");
+            opacity: 0.5;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+        .card-img-next {
+          right: 0;
+          .btn-icon {
+            background-image: url("~images/common/right.svg");
+            opacity: 0.5;
+            &:hover {
+              opacity: 0.8;
+            }
+          }
+        }
+      }
+      .card-bottom {
+        width: 100%;
+        padding: 10px;
+        .card-name {
+          width: 100%;
+          line-height: 22px;
+          font-weight: 600;
+          font-size: 16px;
+          color: #111111;
+        }
+        .card-brand {
+          display: block;
+          line-height: 17px;
+          font-size: 12px;
+          color: #111111;
+        }
+        .card-price {
+          line-height: 17px;
+          font-size: 12px;
+          color: #666666;
+        }
       }
     }
   }

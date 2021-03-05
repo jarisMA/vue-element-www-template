@@ -1,7 +1,7 @@
 <template>
   <div class="commodity-card">
     <label class="bgImg multi-icon" v-if="commodity.skus.length > 1"></label>
-    <label class="bgImg info-icon"></label>
+    <label class="bgImg info-icon" @click="handleDetailClick"></label>
     <the-loading-image
       :width="145"
       :height="145"
@@ -26,6 +26,11 @@ export default {
     commodity: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    handleDetailClick() {
+      this.$emit("detail");
     }
   }
 };
