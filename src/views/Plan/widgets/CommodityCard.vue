@@ -1,7 +1,11 @@
 <template>
   <div
-    class="commodity-card"
+    :class="['commodity-card', columns > 4 ? 'multi' : '']"
     @click.prevent="handleAddModel"
+    :style="{
+      width: columns > 4 ? '93px' : '',
+      height: columns > 4 ? '93px' : ''
+    }"
     :id="`commodity-${commodity.id}`"
   >
     <label
@@ -16,12 +20,12 @@
       @mouseout="handleDetailClick"
     ></label>
     <the-loading-image
-      :width="145"
-      :height="145"
+      :width="columns > 4 ? 93 : 145"
+      :height="columns > 4 ? 93 : 145"
       :url="commodity.skus[0].img_id"
     />
     <label class="price-label">¥{{ commodity.skus[0].unit_price }}</label>
-    <div class="size-wrapper">
+    <div class="size-wrapper" v-if="columns <= 4">
       {{
         `${commodity.skus[0].size_x}*${commodity.skus[0].size_y}*${commodity.skus[0].size_z}(mm)`
       }}
@@ -39,6 +43,10 @@ export default {
     commodity: {
       type: Object,
       required: true
+    },
+    columns: {
+      type: Number,
+      default: 2
     }
   },
   methods: {
@@ -75,6 +83,13 @@ export default {
     }
     .bgImg {
       display: inline-block;
+    }
+  }
+  &.multi {
+    &:hover {
+      .price-label {
+        bottom: 7px;
+      }
     }
   }
   .bgImg {

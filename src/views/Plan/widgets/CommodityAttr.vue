@@ -1,156 +1,180 @@
 <template>
   <div class="attr-wrapper">
     <div class="attr-header">
-      <el-tooltip
-        popper-class="tool-label-tip"
-        effect="dark"
-        content="品牌"
-        placement="bottom"
-      >
-        <div
-          :class="[
-            'bgImg-wrapper',
-            'brand-icon',
-            attrFocusId === -1
-              ? 'focus'
-              : brandSelectedId.length > 0
-              ? 'active'
-              : ''
-          ]"
-          @click="handleAttrFocusChange(-1)"
+      <div class="attr-list">
+        <el-tooltip
+          popper-class="tool-label-tip"
+          effect="dark"
+          content="品牌"
+          :open-delay="tipsDelay"
+          placement="bottom"
         >
-          <label
+          <div
             :class="[
-              'bgImg',
+              'bgImg-wrapper',
+              'brand-icon',
               attrFocusId === -1
                 ? 'focus'
                 : brandSelectedId.length > 0
                 ? 'active'
                 : ''
             ]"
-          ></label>
-        </div>
-      </el-tooltip>
-      <el-tooltip
-        popper-class="tool-label-tip"
-        effect="dark"
-        content="价格"
-        placement="bottom"
-      >
-        <div
-          :class="[
-            'bgImg-wrapper',
-            'price-icon',
-            attrFocusId === -2
-              ? 'focus'
-              : hasValueSelectByAttr(-2)
-              ? 'active'
-              : ''
-          ]"
-          @click="handleAttrFocusChange(-2)"
+            @click="handleAttrFocusChange(-1)"
+          >
+            <label
+              :class="[
+                'bgImg',
+                attrFocusId === -1
+                  ? 'focus'
+                  : brandSelectedId.length > 0
+                  ? 'active'
+                  : ''
+              ]"
+            ></label>
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          popper-class="tool-label-tip"
+          effect="dark"
+          content="价格"
+          :open-delay="tipsDelay"
+          placement="bottom"
         >
-          <label
+          <div
             :class="[
-              'bgImg',
+              'bgImg-wrapper',
+              'price-icon',
               attrFocusId === -2
                 ? 'focus'
                 : hasValueSelectByAttr(-2)
                 ? 'active'
                 : ''
             ]"
-          ></label>
-        </div>
-      </el-tooltip>
-      <el-tooltip
-        popper-class="tool-label-tip"
-        effect="dark"
-        content="尺寸"
-        placement="bottom"
-      >
-        <div
-          :class="[
-            'bgImg-wrapper',
-            'size-icon',
-            attrFocusId === -3
-              ? 'focus'
-              : hasValueSelectByAttr(-3)
-              ? 'active'
-              : ''
-          ]"
-          @click="handleAttrFocusChange(-3)"
+            @click="handleAttrFocusChange(-2)"
+          >
+            <label
+              :class="[
+                'bgImg',
+                attrFocusId === -2
+                  ? 'focus'
+                  : hasValueSelectByAttr(-2)
+                  ? 'active'
+                  : ''
+              ]"
+            ></label>
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          popper-class="tool-label-tip"
+          effect="dark"
+          content="尺寸"
+          :open-delay="tipsDelay"
+          placement="bottom"
         >
-          <label
+          <div
             :class="[
-              'bgImg',
+              'bgImg-wrapper',
+              'size-icon',
               attrFocusId === -3
                 ? 'focus'
                 : hasValueSelectByAttr(-3)
                 ? 'active'
                 : ''
             ]"
-          ></label>
-        </div>
-      </el-tooltip>
-      <el-tooltip
-        v-for="attr of attrs"
-        :key="attr.id"
-        popper-class="tool-label-tip"
-        effect="dark"
-        :content="attr.name"
-        placement="bottom"
-      >
-        <div
-          :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
-          :style="{
-            backgroundColor:
-              attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null
-          }"
-          @click="handleAttrFocusChange(attr.id)"
+            @click="handleAttrFocusChange(-3)"
+          >
+            <label
+              :class="[
+                'bgImg',
+                attrFocusId === -3
+                  ? 'focus'
+                  : hasValueSelectByAttr(-3)
+                  ? 'active'
+                  : ''
+              ]"
+            ></label>
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          v-for="attr of attrs"
+          :key="attr.id"
+          popper-class="tool-label-tip"
+          effect="dark"
+          :open-delay="tipsDelay"
+          :content="attr.name"
+          placement="bottom"
         >
-          <label
-            :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
+          <div
+            :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
             :style="{
-              backgroundImage:
-                attrFocusId === attr.id
-                  ? `url(${attr.focus_icon})`
-                  : hasValueSelectByAttr(attr.id)
-                  ? `url(${attr.active_icon})`
-                  : `url(${attr.default_icon})`
+              backgroundColor:
+                attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null
             }"
-          ></label>
-        </div>
-      </el-tooltip>
-      <el-tooltip
-        popper-class="tool-label-tip"
-        effect="dark"
-        content="其余"
-        placement="bottom"
-        v-if="moreAttrs.length > 0"
-      >
-        <div
-          :class="[
-            'bgImg-wrapper',
-            'filter-icon',
-            attrFocusId === -4
-              ? 'focus'
-              : hasValueSelectByAttr(-4)
-              ? 'active'
-              : ''
-          ]"
-          @click="handleAttrFocusChange(-4)"
+            @click="handleAttrFocusChange(attr.id)"
+          >
+            <label
+              :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
+              :style="{
+                backgroundImage:
+                  attrFocusId === attr.id
+                    ? `url(${attr.focus_icon})`
+                    : hasValueSelectByAttr(attr.id)
+                    ? `url(${attr.active_icon})`
+                    : `url(${attr.default_icon})`
+              }"
+            ></label>
+          </div>
+        </el-tooltip>
+        <el-tooltip
+          popper-class="tool-label-tip"
+          effect="dark"
+          content="其余"
+          :open-delay="tipsDelay"
+          placement="bottom"
+          :disabled="!(moreAttrs.length > 0)"
         >
-          <label
+          <div
             :class="[
-              'bgImg',
+              'bgImg-wrapper',
+              'filter-icon',
               attrFocusId === -4
                 ? 'focus'
                 : hasValueSelectByAttr(-4)
                 ? 'active'
                 : ''
             ]"
-          ></label>
-        </div>
-      </el-tooltip>
+            :style="{
+              cursor: moreAttrs.length > 0 ? 'pointer' : 'not-allowed'
+            }"
+            @click="moreAttrs.length > 0 ? handleAttrFocusChange(-4) : ''"
+          >
+            <label
+              :class="[
+                'bgImg',
+                attrFocusId === -4
+                  ? 'focus'
+                  : hasValueSelectByAttr(-4)
+                  ? 'active'
+                  : ''
+              ]"
+              :style="{
+                cursor: moreAttrs.length > 0 ? 'pointer' : 'not-allowed'
+              }"
+            ></label>
+          </div>
+        </el-tooltip>
+      </div>
+      <div class="columns-wrapper" v-if="columns > 2">
+        <label
+          :class="[
+            'column-icon',
+            'pointer',
+            'bgImg',
+            columns > 4 ? 'four' : 'multi'
+          ]"
+          @click="handleColumnChange"
+        ></label>
+      </div>
     </div>
     <div class="attr-content">
       <div class="scroll-section" ref="scroll" @scroll="handleScroll">
@@ -445,10 +469,15 @@ export default {
     },
     activeCat: {
       type: Object
+    },
+    columns: {
+      type: Number,
+      default: 2
     }
   },
   data() {
     return {
+      tipsDelay: 1000,
       price_options,
       attrs: [],
       attrFocusId: 0,
@@ -671,6 +700,9 @@ export default {
         default:
           break;
       }
+    },
+    handleColumnChange() {
+      this.$emit("columnChange", this.columns > 4 ? 4 : 6);
     }
   }
 };
@@ -693,6 +725,13 @@ export default {
     align-items: center;
     justify-content: space-between;
     background: #fdfdfd;
+    .attr-list {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 320px;
+      height: 100%;
+    }
     .bgImg-wrapper {
       flex: 1;
       display: flex;
@@ -761,6 +800,22 @@ export default {
       }
       &.focus {
         background-color: #fbf5f0;
+      }
+    }
+    .columns-wrapper {
+      padding: 0 10px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      .column-icon {
+        width: 24px;
+        height: 24px;
+        &.multi {
+          background-image: url("~images/commodity/multi-columns.svg");
+        }
+        &.four {
+          background-image: url("~images/commodity/2-columns.svg");
+        }
       }
     }
   }

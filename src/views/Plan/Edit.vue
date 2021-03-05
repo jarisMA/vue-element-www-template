@@ -2,14 +2,14 @@
   <div :class="['edit-plan-container', headerUnfold ? 'unfold' : '']">
     <i class="el-icon-loading"></i>
     <div class="iframe-wrapper">
-      <iframe
+      <!-- <iframe
         ref="iframe"
         class="iframe"
         :src="url"
         width="100%"
         frameborder="0"
       >
-      </iframe>
+      </iframe> -->
       <plan-tool
         v-if="!loading"
         class="plan-tool"
@@ -37,7 +37,7 @@ export default {
     return {
       url: "",
       cats: [],
-      loading: true
+      loading: false
     };
   },
   created() {

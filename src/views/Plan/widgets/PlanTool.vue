@@ -1,5 +1,9 @@
 <template>
-  <div class="tool-container" ref="tool">
+  <div
+    class="tool-container"
+    ref="tool"
+    :style="{ width: columns >= 4 ? '630px' : '' }"
+  >
     <div class="tool-wrapper">
       <div class="cat-container">
         <div class="cat-top-wrapper">
@@ -97,10 +101,12 @@
             </label>
           </div>
           <commodity-attr
-            @addValue="handleValueAdd"
             :values="values"
             :parentCat="activeParentCat"
             :activeCat="activeCat"
+            :columns="columns"
+            @addValue="handleValueAdd"
+            @columnChange="handleColumnChange"
           />
           <div class="commodity-wrapper">
             <div class="scroll-section">
@@ -110,6 +116,7 @@
                   :key="commodity.id"
                   :commodity="commodity"
                   :values="values"
+                  :columns="columns"
                   @detail="handleCommodityDetail(commodity)"
                   @clearTimer="handleCommodityDetail(commodity, false)"
                   @showSkus="skus => handleShowSkus(commodity.id, skus)"
@@ -118,6 +125,10 @@
               </div>
             </div>
           </div>
+          <label
+            :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
+            @click="columns > 2 ? (columns = 2) : (columns = 4)"
+          ></label>
         </div>
       </transition>
     </div>
@@ -261,7 +272,8 @@ export default {
       },
       activeSkus: null,
       detailTimer: null,
-      offsetTop: 0
+      offsetTop: 0,
+      columns: 2
     };
   },
   watch: {
@@ -333,6 +345,7 @@ export default {
       this.values = [];
       this.activeCommodity = null;
       this.activeSkus = null;
+      this.columns = 2;
     },
     handleNameInputConfirm() {
       this.getCommodity();
@@ -422,6 +435,9 @@ export default {
     },
     handleAddModel(goodId) {
       this.$emit("addModel", goodId);
+    },
+    handleColumnChange(column) {
+      this.columns = column;
     }
   }
 };
@@ -429,7 +445,7 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-
+@transitionDuration: 0.02s;
 .tool-container {
   position: relative;
   width: 320px;
@@ -437,6 +453,7 @@ export default {
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
   background: #fafafa;
+  transition: width @transitionDuration;
   .tool-wrapper {
     position: relative;
     width: 100%;
@@ -595,15 +612,46 @@ export default {
       height: 5px;
       overflow: hidden;
       .scroll-section {
-        padding: 10px 10px 0 10px;
+        padding: 5px;
         width: calc(100% + 15px);
         height: 100%;
         overflow-y: scroll;
         .commodity-list {
           display: flex;
-          justify-content: space-between;
+          justify-content: flex-start;
           flex-wrap: wrap;
           width: 100%;
+          & > div {
+            margin: 5px;
+          }
+        }
+      }
+    }
+    .unfold-icon {
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 8px;
+      height: 30px;
+      background: rgba(0, 0, 0, 0.05);
+      transform: translateY(-50%);
+      cursor: pointer;
+      &::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 6px;
+        height: 6px;
+        background-image: url("~images/commodity/unfold.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        content: "";
+        transform: translate(-50%, -50%);
+        transition: transform @transitionDuration;
+      }
+      &.fold-icon {
+        &::after {
+          transform: translate(-50%, -50%) rotate(180deg);
         }
       }
     }
