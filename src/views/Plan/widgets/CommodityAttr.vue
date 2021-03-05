@@ -11,11 +11,24 @@
           :class="[
             'bgImg-wrapper',
             'brand-icon',
-            attrFocusId === -1 ? 'focus' : ''
+            attrFocusId === -1
+              ? 'focus'
+              : brandSelectedId.length > 0
+              ? 'active'
+              : ''
           ]"
           @click="handleAttrFocusChange(-1)"
         >
-          <label :class="['bgImg', attrFocusId === -1 ? 'focus' : '']"></label>
+          <label
+            :class="[
+              'bgImg',
+              attrFocusId === -1
+                ? 'focus'
+                : brandSelectedId.length > 0
+                ? 'active'
+                : ''
+            ]"
+          ></label>
         </div>
       </el-tooltip>
       <el-tooltip
@@ -28,11 +41,24 @@
           :class="[
             'bgImg-wrapper',
             'price-icon',
-            attrFocusId === -2 ? 'focus' : ''
+            attrFocusId === -2
+              ? 'focus'
+              : hasValueSelectByAttr(-2)
+              ? 'active'
+              : ''
           ]"
           @click="handleAttrFocusChange(-2)"
         >
-          <label :class="['bgImg', attrFocusId === -2 ? 'focus' : '']"></label>
+          <label
+            :class="[
+              'bgImg',
+              attrFocusId === -2
+                ? 'focus'
+                : hasValueSelectByAttr(-2)
+                ? 'active'
+                : ''
+            ]"
+          ></label>
         </div>
       </el-tooltip>
       <el-tooltip
@@ -45,11 +71,24 @@
           :class="[
             'bgImg-wrapper',
             'size-icon',
-            attrFocusId === -3 ? 'focus' : ''
+            attrFocusId === -3
+              ? 'focus'
+              : hasValueSelectByAttr(-3)
+              ? 'active'
+              : ''
           ]"
           @click="handleAttrFocusChange(-3)"
         >
-          <label :class="['bgImg', attrFocusId === -3 ? 'focus' : '']"></label>
+          <label
+            :class="[
+              'bgImg',
+              attrFocusId === -3
+                ? 'focus'
+                : hasValueSelectByAttr(-3)
+                ? 'active'
+                : ''
+            ]"
+          ></label>
         </div>
       </el-tooltip>
       <el-tooltip
@@ -63,7 +102,8 @@
         <div
           :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
           :style="{
-            backgroundColor: attrFocusId === attr.id ? attr.color : null
+            backgroundColor:
+              attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null
           }"
           @click="handleAttrFocusChange(attr.id)"
         >
@@ -73,6 +113,8 @@
               backgroundImage:
                 attrFocusId === attr.id
                   ? `url(${attr.focus_icon})`
+                  : hasValueSelectByAttr(attr.id)
+                  ? `url(${attr.active_icon})`
                   : `url(${attr.default_icon})`
             }"
           ></label>
@@ -89,11 +131,24 @@
           :class="[
             'bgImg-wrapper',
             'filter-icon',
-            attrFocusId === -4 ? 'focus' : ''
+            attrFocusId === -4
+              ? 'focus'
+              : hasValueSelectByAttr(-4)
+              ? 'active'
+              : ''
           ]"
           @click="handleAttrFocusChange(-4)"
         >
-          <label :class="['bgImg', attrFocusId === -4 ? 'focus' : '']"></label>
+          <label
+            :class="[
+              'bgImg',
+              attrFocusId === -4
+                ? 'focus'
+                : hasValueSelectByAttr(-4)
+                ? 'active'
+                : ''
+            ]"
+          ></label>
         </div>
       </el-tooltip>
     </div>
@@ -111,6 +166,7 @@
               brand =>
                 handleAttrValueClick({
                   type: 'brand',
+                  attrId: -1,
                   color: '#14AF64',
                   value: brand
                 })
@@ -128,6 +184,8 @@
                   @click="
                     handleAttrValueClick({
                       type: 'brand',
+                      attrId: -1,
+                      color: '#14AF64',
                       value: brand
                     })
                   "
@@ -157,6 +215,7 @@
                     @click="
                       handleAttrValueClick({
                         type: 'brand',
+                        attrId: -1,
                         color: '#14AF64',
                         value: item
                       })
@@ -306,11 +365,20 @@
                   value.color ? 'value-color' : 'value-item',
                   valueSelectedId.indexOf(value.id) > -1 ? 'active' : ''
                 ]"
+                :style="{
+                  backgroundColor:
+                    valueSelectedId.indexOf(value.id) > -1
+                      ? hex2Rgba(attr.color, 0.1)
+                      : '',
+                  color:
+                    valueSelectedId.indexOf(value.id) > -1 ? attr.color : ''
+                }"
                 v-for="value of attr.children"
                 :key="value.id"
                 @click="
                   handleAttrValueClick({
                     type: 'value',
+                    attrId: attr.id,
                     color: attr.color,
                     value: value
                   })
@@ -340,6 +408,7 @@
                   @click="
                     handleAttrValueClick({
                       type: 'value',
+                      attrId: -4,
                       color: '#9F8164',
                       value: value
                     })
@@ -358,7 +427,7 @@
 
 <script>
 import commodityService from "service/commodity";
-import { checkCh } from "utils/function";
+import { checkCh, hex2Rgba } from "utils/function";
 const price_options = [
   { value: 0, label: "默认排序" },
   { value: 1, label: "价格升序" },
@@ -447,6 +516,12 @@ export default {
       return this.values
         .filter(item => item.type === "value")
         .map(item => item.value.id);
+    },
+    // 可用来判断属性是否有进行选择筛选
+    hasValueSelectByAttr() {
+      return id => {
+        return this.values.filter(item => item.attrId === id).length > 0;
+      };
     }
   },
   created() {
@@ -455,6 +530,7 @@ export default {
     this.getAttrsByCatId(this.parentCat.id);
   },
   methods: {
+    hex2Rgba,
     getAttrs() {
       commodityService.attrs().then(res => {
         this.attrs = res;
@@ -545,6 +621,7 @@ export default {
           this.handleAttrValueClick({
             type: "price",
             color: "#5BCAB5",
+            attrId: -2,
             value: {
               min_price: (min_price || "").replace(/\D/g, ""),
               max_price: (max_price || "").replace(/\D/g, ""),
@@ -565,6 +642,7 @@ export default {
           this.handleAttrValueClick({
             type: "size_x",
             color: "#F17851",
+            attrId: -3,
             value: {
               min_size_x: (min_size_x || "").replace(/\D/g, ""),
               max_size_x: (max_size_x || "").replace(/\D/g, "")
@@ -573,6 +651,7 @@ export default {
           this.handleAttrValueClick({
             type: "size_y",
             color: "#F17851",
+            attrId: -3,
             value: {
               min_size_y: (min_size_y || "").replace(/\D/g, ""),
               max_size_y: (max_size_y || "").replace(/\D/g, "")
@@ -581,6 +660,7 @@ export default {
           this.handleAttrValueClick({
             type: "size_z",
             color: "#F17851",
+            attrId: -3,
             value: {
               min_size_z: (min_size_z || "").replace(/\D/g, ""),
               max_size_z: (max_size_z || "").replace(/\D/g, "")
@@ -615,7 +695,10 @@ export default {
     background: #fdfdfd;
     .bgImg-wrapper {
       flex: 1;
-      padding: 5px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
       cursor: pointer;
       outline: unset;
     }
@@ -973,7 +1056,8 @@ export default {
           margin-right: 10px;
           margin-bottom: 15px;
           font-size: 12px;
-          color: #111;
+          color: #111 !important;
+          background: transparent !important;
           cursor: pointer;
           span {
             position: relative;

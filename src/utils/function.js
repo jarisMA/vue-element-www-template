@@ -20,6 +20,19 @@ export const sizeFormat = (size, decimal = 2) => {
   }
 };
 
+// 颜色格式 hex 转 rgba
+export const hex2Rgba = (bgColor, alpha = 1) => {
+  let color = bgColor.slice(1); // 去掉'#'号
+  let rgba = [
+    parseInt("0x" + color.slice(0, 2)),
+    parseInt("0x" + color.slice(2, 4)),
+    parseInt("0x" + color.slice(4, 6)),
+    alpha
+  ];
+  return "rgba(" + rgba.toString() + ")";
+};
+
+// 获取字符串拼音
 export const getPy = str => {
   if (typeof str != "string") {
     throw new Error(-1, "函数getPy需要字符串类型参数!");
@@ -35,6 +48,7 @@ export const getPy = str => {
   return mkRslt(arrResult);
 };
 
+// 获取字符串首字母
 export const checkCh = ch => {
   var uni = ch.charCodeAt(0);
   //如果不在汉字处理范围之内,返回原字符,也可以调用自己的处理函数

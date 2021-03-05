@@ -83,7 +83,10 @@
             class="value-item"
             v-for="(item, key) of values"
             :key="item.value.id"
-            :style="{ color: item.color }"
+            :style="{
+              color: item.color,
+              backgroundColor: hex2Rgba(item.color, 0.1)
+            }"
           >
             {{
               item.type === "price"
@@ -154,6 +157,7 @@
 import commodityService from "service/commodity";
 import CommodityCard from "./CommodityCard.vue";
 import CommodityAttr from "./CommodityAttr.vue";
+import { hex2Rgba } from "utils/function";
 
 export default {
   name: "PlanTool",
@@ -194,6 +198,7 @@ export default {
     }
   },
   methods: {
+    hex2Rgba,
     getCats(id) {
       commodityService.cat(id).then(res => {
         this.cats = res.children;
@@ -447,7 +452,7 @@ export default {
         position: relative;
         padding: 5px 8px;
         color: #14af64;
-        background: #eaf9f2;
+        background-color: #eaf9f2;
         &:hover {
           .close-icon {
             display: block;
