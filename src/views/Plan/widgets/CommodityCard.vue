@@ -1,7 +1,11 @@
 <template>
-  <div class="commodity-card">
-    <label class="bgImg multi-icon" v-if="commodity.skus.length > 1"></label>
-    <label class="bgImg info-icon" @click="handleDetailClick"></label>
+  <div class="commodity-card" @click.prevent="handleAddModel">
+    <label
+      class="bgImg multi-icon"
+      v-if="commodity.skus.length > 1"
+      @click.stop="handleSkusClick"
+    ></label>
+    <label class="bgImg info-icon" @click.stop="handleDetailClick"></label>
     <the-loading-image
       :width="145"
       :height="145"
@@ -31,6 +35,12 @@ export default {
   methods: {
     handleDetailClick() {
       this.$emit("detail");
+    },
+    handleSkusClick() {
+      this.$emit("showSkus", this.commodity.skus);
+    },
+    handleAddModel() {
+      this.$emit("addModel", this.commodity.skus[0].kjl_sku_id);
     }
   }
 };

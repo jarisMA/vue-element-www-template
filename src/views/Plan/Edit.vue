@@ -2,15 +2,20 @@
   <div :class="['edit-plan-container', headerUnfold ? 'unfold' : '']">
     <i class="el-icon-loading"></i>
     <div class="iframe-wrapper">
-      <!-- <iframe
+      <iframe
         ref="iframe"
         class="iframe"
         :src="url"
         width="100%"
         frameborder="0"
       >
-      </iframe> -->
-      <plan-tool class="plan-tool" :rootCats="(cats[0] || {}).children || []" />
+      </iframe>
+      <plan-tool
+        v-if="!loading"
+        class="plan-tool"
+        :rootCats="(cats[0] || {}).children || []"
+        @addModel="addModel"
+      />
     </div>
   </div>
 </template>
@@ -31,7 +36,8 @@ export default {
   data() {
     return {
       url: "",
-      cats: []
+      cats: [],
+      loading: true
     };
   },
   created() {
@@ -77,8 +83,10 @@ export default {
             const data =
               (ev.data && typeof ev.data !== "object" && JSON.parse(ev.data)) ||
               null;
-            // if (data && data.action === "kjl_loaded") { // 监听是否加载完成
-            // }
+            if (data && data.action === "kjl_loaded") {
+              // 监听是否加载完成
+              this.loading = false;
+            }
             if (data && data.action === "kjl_completed") {
               // 监听是否点击退出按钮
               this.exit();
@@ -94,6 +102,23 @@ export default {
     },
     exit() {
       goMy();
+    },
+    addModel(goodId = "3FO4KNKLFGEH") {
+      const iframe = this.$refs["iframe"];
+      iframe.contentWindow.postMessage(
+        {
+          type: "third_add_model",
+          data: {
+            mode: "drag_add",
+            list: [
+              {
+                obsBrandGoodId: goodId
+              }
+            ]
+          }
+        },
+        "*"
+      );
     }
   }
 };

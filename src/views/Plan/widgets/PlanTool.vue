@@ -1,200 +1,183 @@
 <template>
   <div class="tool-container">
-    <div class="cat-container">
-      <div class="cat-top-wrapper">
-        <ul class="tab-list">
-          <li
-            class="tab-item pointer"
-            v-for="(tab, key) of rootCats"
-            :key="tab.id"
-            :class="{ active: key === activeTabKey }"
-            @click="activeTabKey = key"
-          >
-            <label
-              class="tab-cover-img pointer"
-              :style="{
-                backgroundImage:
-                  key === activeTabKey
-                    ? `url(${tab.active_cover_url})`
-                    : `url(${tab.cover_url})`
-              }"
-            ></label>
-            {{ tab.name }}
-          </li>
-        </ul>
+    <div class="tool-wrapper">
+      <div class="cat-container">
+        <div class="cat-top-wrapper">
+          <ul class="tab-list">
+            <li class="tab-item pointer"
+                v-for="(tab, key) of rootCats"
+                :key="tab.id"
+                :class="{ active: key === activeTabKey }"
+                @click="activeTabKey = key">
+              <label class="tab-cover-img pointer"
+                     :style="{
+                  backgroundImage:
+                    key === activeTabKey
+                      ? `url(${tab.active_cover_url})`
+                      : `url(${tab.cover_url})`
+                }"></label>
+              {{ tab.name }}
+            </li>
+          </ul>
+        </div>
+        <div class="cat-bottom-wrapper">
+          <ul class="cat-list"
+              v-if="(rootCats[activeTabKey] || {}).children">
+            <li class="cat-item pointer"
+                v-for="cat of rootCats[activeTabKey].children"
+                :key="cat.id"
+                @click="activeParentCat = cat">
+              <label class="cat-name pointer">
+                {{ cat.name }}
+              </label>
+              <label class="cat-cover-img pointer"
+                     :style="{ backgroundImage: `url(${cat.cover_url})` }"></label>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="cat-bottom-wrapper">
-        <ul class="cat-list" v-if="(rootCats[activeTabKey] || {}).children">
-          <li
-            class="cat-item pointer"
-            v-for="cat of rootCats[activeTabKey].children"
-            :key="cat.id"
-            @click="activeParentCat = cat"
-          >
-            <label class="cat-name pointer">
+      <transition enter-active-class="animated slideInRight"
+                  leave-active-class="animated slideOutRight">
+        <div class="search-container"
+             v-if="activeParentCat">
+          <div class="search-header">
+            <template v-if="!isSearch">
+              <div class="cat-name">
+                <label class="back-icon bgImg pointer"
+                       @click="handleBack"></label>
+                <h3>
+                  {{ (activeParentCat || {}).name }}
+                </h3>
+              </div>
+              <label class="search-icon bgImg pointer"
+                     @click="isSearch = true"></label>
+            </template>
+            <el-input v-else
+                      class="name-search"
+                      :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
+                      prefix-icon="search-icon bgImg"
+                      clearable
+                      v-model="name"
+                      @keyup.enter.native="handleNameInputConfirm"
+                      @blur="handleNameInputConfirm">
+            </el-input>
+          </div>
+          <div class="cat-wrapper">
+            <label :class="['cat-label', 'pointer', !activeCat && 'active']"
+                   @click="activeCat = null">
+              全部
+            </label>
+            <label :class="[
+                'cat-label',
+                'pointer',
+                activeCat && activeCat.id === cat.id ? 'active' : ''
+              ]"
+                   v-for="cat of cats"
+                   :key="cat.id"
+                   @click="activeCat = cat">
               {{ cat.name }}
             </label>
-            <label
-              class="cat-cover-img pointer"
-              :style="{ backgroundImage: `url(${cat.cover_url})` }"
-            ></label>
-          </li>
-        </ul>
+          </div>
+          <commodity-attr @addValue="handleValueAdd"
+                          :values="values"
+                          :parentCat="activeParentCat"
+                          :activeCat="activeCat" />
+          <div class="commodity-wrapper">
+            <div class="scroll-section">
+              <commodity-card v-for="commodity of commodities"
+                              :key="commodity.id"
+                              :commodity="commodity"
+                              :values="values"
+                              @detail="handleCommodityDetail(commodity)"
+                              @showSkus="handleShowSkus"
+                              @addModel="handleAddModel" />
+            </div>
+          </div>
+        </div>
+      </transition>
+    </div>
+    <ul class="value-list"
+        v-if="values.length > 0">
+      <li class="reset-wrapper pointer"
+          @click="handleValueReset">
+        <label class="reset-icon bgImg"></label>
+      </li>
+      <li class="value-item"
+          v-for="(item, key) of values"
+          :key="item.value.id"
+          :style="{
+          color: item.color,
+          backgroundColor: hex2Rgba(item.color, 0.1)
+        }">
+        {{
+          item.type === "price"
+            ? `${item.value.min_price ? item.value.min_price : "∞"}-${
+                item.value.max_price ? item.value.max_price : "∞"
+              }元`
+            : item.type === "size_x"
+            ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
+                item.value.max_size_x ? item.value.max_size_x : "∞"
+              }mm`
+            : item.type === "size_y"
+            ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
+                item.value.max_size_y ? item.value.max_size_y : "∞"
+              }mm`
+            : item.type === "size_z"
+            ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
+                item.value.max_size_z ? item.value.max_size_z : "∞"
+              }mm`
+            : item.value.name
+        }}
+        <label class="bgImg close-icon pointer"
+               @click="handleValueRemove(key)"></label>
+      </li>
+    </ul>
+    <div class="commodity-detail-card"
+         v-if="activeCommodity">
+      <div class="card-top">
+        <div class="swiper-wrapper"
+             v-if="activeCommodity.images.length > 1">
+          <swiper ref="mySwiper"
+                  :options="swiperOptions">
+            <swiper-slide v-for="(image, key) of activeCommodity.images"
+                          :key="key">
+              <the-loading-image :width="200"
+                                 :height="200"
+                                 :key="key"
+                                 :url="image" />
+            </swiper-slide>
+            <div :class="['card-img-prev']"
+                 @click.stop
+                 slot="button-prev">
+              <div class="btn-icon"></div>
+            </div>
+            <div :class="['card-img-next']"
+                 @click.stop
+                 slot="button-next">
+              <div class="btn-icon"></div>
+            </div>
+          </swiper>
+        </div>
+
+        <the-loading-image v-else
+                           :width="200"
+                           :height="200"
+                           :url="activeCommodity.images[0]" />
+      </div>
+      <div class="card-bottom">
+        <h4 class="card-name">{{ activeCommodity.name }}</h4>
+        <label class="card-brand"
+               v-if="activeCommodity.brand_name">{{
+          activeCommodity.brand_name
+        }}</label>
+        <span class="card-price">参考价 ¥{{ activeCommodity.unit_price }}
+        </span>
       </div>
     </div>
-    <transition
-      enter-active-class="animated slideInRight"
-      leave-active-class="animated slideOutRight"
-    >
-      <div class="search-container" v-if="activeParentCat">
-        <div class="search-header">
-          <template v-if="!isSearch">
-            <div class="cat-name">
-              <label
-                class="back-icon bgImg pointer"
-                @click="handleBack"
-              ></label>
-              <h3>
-                {{ (activeParentCat || {}).name }}
-              </h3>
-            </div>
-            <label
-              class="search-icon bgImg pointer"
-              @click="isSearch = true"
-            ></label>
-          </template>
-          <el-input
-            v-else
-            class="name-search"
-            :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
-            prefix-icon="search-icon bgImg"
-            clearable
-            v-model="name"
-            @keyup.enter.native="handleNameInputConfirm"
-            @blur="handleNameInputConfirm"
-          >
-          </el-input>
-        </div>
-        <ul class="value-list" v-if="values.length > 0">
-          <li class="reset-wrapper pointer" @click="handleValueReset">
-            <label class="reset-icon bgImg"></label>
-          </li>
-          <li
-            class="value-item"
-            v-for="(item, key) of values"
-            :key="item.value.id"
-            :style="{
-              color: item.color,
-              backgroundColor: hex2Rgba(item.color, 0.1)
-            }"
-          >
-            {{
-              item.type === "price"
-                ? `${item.value.min_price ? item.value.min_price : "∞"}-${
-                    item.value.max_price ? item.value.max_price : "∞"
-                  }元`
-                : item.type === "size_x"
-                ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
-                    item.value.max_size_x ? item.value.max_size_x : "∞"
-                  }mm`
-                : item.type === "size_y"
-                ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
-                    item.value.max_size_y ? item.value.max_size_y : "∞"
-                  }mm`
-                : item.type === "size_z"
-                ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
-                    item.value.max_size_z ? item.value.max_size_z : "∞"
-                  }mm`
-                : item.value.name
-            }}
-            <label
-              class="bgImg close-icon pointer"
-              @click="handleValueRemove(key)"
-            ></label>
-          </li>
-        </ul>
-        <div class="cat-wrapper">
-          <label
-            :class="['cat-label', 'pointer', !activeCat && 'active']"
-            @click="activeCat = null"
-          >
-            全部
-          </label>
-          <label
-            :class="[
-              'cat-label',
-              'pointer',
-              activeCat && activeCat.id === cat.id ? 'active' : ''
-            ]"
-            v-for="cat of cats"
-            :key="cat.id"
-            @click="activeCat = cat"
-          >
-            {{ cat.name }}
-          </label>
-        </div>
-        <commodity-attr
-          @addValue="handleValueAdd"
-          :values="values"
-          :parentCat="activeParentCat"
-          :activeCat="activeCat"
-        />
-        <div class="commodity-wrapper">
-          <div class="scroll-section">
-            <commodity-card
-              v-for="commodity of commodities"
-              :key="commodity.id"
-              :commodity="commodity"
-              @detail="handleCommodityDetail(commodity)"
-            />
-          </div>
-        </div>
-        <div class="commodity-detail-card" v-if="activeCommodity">
-          <div class="card-top">
-            <div
-              class="swiper-wrapper"
-              v-if="activeCommodity.images.length > 1"
-            >
-              <swiper ref="mySwiper" :options="swiperOptions">
-                <swiper-slide
-                  v-for="(image, key) of activeCommodity.images"
-                  :key="key"
-                >
-                  <the-loading-image
-                    :width="200"
-                    :height="200"
-                    :key="key"
-                    :url="image"
-                  />
-                </swiper-slide>
-                <div :class="['card-img-prev']" @click.stop slot="button-prev">
-                  <div class="btn-icon"></div>
-                </div>
-                <div :class="['card-img-next']" @click.stop slot="button-next">
-                  <div class="btn-icon"></div>
-                </div>
-              </swiper>
-            </div>
-
-            <the-loading-image
-              v-else
-              :width="200"
-              :height="200"
-              :url="activeCommodity.images[0]"
-            />
-          </div>
-          <div class="card-bottom">
-            <h4 class="card-name">{{ activeCommodity.name }}</h4>
-            <label class="card-brand" v-if="activeCommodity.brand_name">{{
-              activeCommodity.brand_name
-            }}</label>
-            <span class="card-price"
-              >参考价 ¥{{ activeCommodity.unit_price }}
-            </span>
-          </div>
-        </div>
-      </div>
-    </transition>
+    <commodity-sku-list class="sku-list-wrapper"
+                        :skus="activeSkus"
+                        v-if="activeSkus"
+                        @addModel="handleAddModel" />
   </div>
 </template>
 
@@ -204,13 +187,15 @@ import CommodityCard from "./CommodityCard.vue";
 import CommodityAttr from "./CommodityAttr.vue";
 import { hex2Rgba } from "utils/function";
 import TheLoadingImage from "components/TheLoadingImage.vue";
+import CommoditySkuList from "./CommoditySkuList.vue";
 
 export default {
   name: "PlanTool",
   components: {
     CommodityCard,
     CommodityAttr,
-    TheLoadingImage
+    TheLoadingImage,
+    CommoditySkuList
   },
   props: {
     rootCats: {
@@ -218,7 +203,7 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       isSearch: false,
       name: null,
@@ -237,32 +222,34 @@ export default {
         nextButton: ".card-img-next",
         prevButton: ".card-img-prev",
         observe: true
-      }
+      },
+      activeSkus: null
     };
   },
   watch: {
-    activeParentCat(val) {
+    activeParentCat (val) {
       if (val) {
         this.getCats(val.id);
         this.getCommodity();
       }
     },
-    activeCat() {
+    activeCat () {
       this.getCommodity();
     },
-    values() {
+    values () {
       this.getCommodity();
     }
   },
   methods: {
     hex2Rgba,
-    getCats(id) {
+    getCats (id) {
       commodityService.cat(id).then(res => {
         this.cats = res.children;
       });
     },
-    getCommodity() {
+    getCommodity () {
       this.activeCommodity = null;
+      this.activeSkus = null;
       const brandIds = this.values
         .filter(item => item.type === "brand")
         .map(item => item.value.id);
@@ -303,16 +290,17 @@ export default {
           this.commodities = res;
         });
     },
-    handleBack() {
+    handleBack () {
       this.activeParentCat = null;
       this.values = [];
       this.activeCommodity = null;
+      this.activeSkus = null;
     },
-    handleNameInputConfirm() {
+    handleNameInputConfirm () {
       this.getCommodity();
       this.isSearch = false;
     },
-    handleValueAdd(value) {
+    handleValueAdd (value) {
       const valueIds = this.values
         .filter(item => item.value.id)
         .map(item => item.value.id);
@@ -339,20 +327,28 @@ export default {
         flag && this.values.push(value);
       }
     },
-    handleValueRemove(key) {
+    handleValueRemove (key) {
       this.values.splice(key, 1);
     },
-    handleValueReset() {
+    handleValueReset () {
       this.values = [];
     },
-    handleCommodityDetail(data) {
+    handleCommodityDetail (data) {
+      this.activeSkus = null;
       data.images =
         data.images instanceof Array
           ? data.images
           : data.images
-          ? (data.images || "").split(",")
-          : [];
+            ? (data.images || "").split(",")
+            : [];
       this.activeCommodity = data;
+    },
+    handleShowSkus (skus) {
+      this.activeCommodity = null;
+      this.activeSkus = skus;
+    },
+    handleAddModel (goodId) {
+      this.$emit("addModel", goodId);
     }
   }
 };
@@ -368,6 +364,12 @@ export default {
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
   background: #fafafa;
+  .tool-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
   .cat-container {
     width: 100%;
     height: 100%;
@@ -495,48 +497,6 @@ export default {
         }
       }
     }
-    .value-list {
-      position: absolute;
-      top: 40px;
-      right: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      transform: translateX(100%);
-      height: 200px;
-      li + li {
-        margin-top: 1px;
-      }
-      .reset-wrapper {
-        padding: 8px;
-        background: #fafafa;
-        .reset-icon {
-          width: 24px;
-          height: 24px;
-          background-image: url("~images/common/reset.svg");
-        }
-      }
-      .value-item {
-        position: relative;
-        padding: 5px 8px;
-        color: #14af64;
-        background-color: #eaf9f2;
-        &:hover {
-          .close-icon {
-            display: block;
-          }
-        }
-        .close-icon {
-          position: absolute;
-          top: 0;
-          right: 0;
-          width: 10px;
-          height: 10px;
-          background-image: url("~images/common/close.svg");
-          display: none;
-        }
-      }
-    }
     .cat-wrapper {
       padding: 0 10px 10px;
       .cat-label {
@@ -566,101 +526,160 @@ export default {
         justify-content: space-between;
         flex-wrap: wrap;
         padding: 10px 10px 0 10px;
-        width: calc(100% + 14px);
+        width: calc(100% + 15px);
         height: 100%;
         overflow-y: scroll;
       }
     }
-
-    .commodity-detail-card {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      width: 200px;
-      background: #fff;
-      box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
-      transform: translate(100%, -50%);
+  }
+  .value-list {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transform: translateX(100%);
+    height: 200px;
+    li + li {
+      margin-top: 1px;
+    }
+    .reset-wrapper {
+      padding: 8px;
+      background: #fafafa;
+      .reset-icon {
+        width: 24px;
+        height: 24px;
+        background-image: url("~images/common/reset.svg");
+      }
+    }
+    .value-item {
+      position: relative;
+      padding: 5px 8px;
+      color: #14af64;
+      background-color: #eaf9f2;
+      &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background: #fff;
+        z-index: -1;
+      }
       &:hover {
-        .card-img-prev,
-        .card-img-next {
-          display: block !important;
-        }
-      }
-      .card-top {
-        width: 100%;
-        height: 200px;
-        background: #fafafa;
-        .swiper-wrapper {
-          position: relative;
-          width: 100%;
-        }
-        .card-img-prev,
-        .card-img-next {
-          position: absolute;
-          display: none;
-          top: 50%;
-          width: 10px;
-          height: 30px;
-          transform: translateY(-50%);
-          z-index: 1;
-          background: #0000000d;
-          cursor: auto;
-          .btn-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 4px;
-            height: 8px;
-            transform: translate(-50%, -50%);
-            background-size: cover;
-            background-repeat: no-repeat;
-            cursor: pointer;
-          }
-        }
-        .card-img-prev {
-          left: 0;
-          .btn-icon {
-            background-image: url("~images/common/left.svg");
-            opacity: 0.5;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-        .card-img-next {
-          right: 0;
-          .btn-icon {
-            background-image: url("~images/common/right.svg");
-            opacity: 0.5;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-        }
-      }
-      .card-bottom {
-        width: 100%;
-        padding: 10px;
-        .card-name {
-          width: 100%;
-          line-height: 22px;
-          font-weight: 600;
-          font-size: 16px;
-          color: #111111;
-        }
-        .card-brand {
+        .close-icon {
           display: block;
-          line-height: 17px;
-          font-size: 12px;
-          color: #111111;
         }
-        .card-price {
-          line-height: 17px;
-          font-size: 12px;
-          color: #666666;
+      }
+      .close-icon {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 10px;
+        height: 10px;
+        background-image: url("~images/common/close.svg");
+        display: none;
+      }
+    }
+  }
+  .commodity-detail-card {
+    position: absolute;
+    top: 50%;
+    right: -1px;
+    width: 200px;
+    background: #fff;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    transform: translate(100%, -50%);
+    &:hover {
+      .card-img-prev,
+      .card-img-next {
+        display: block !important;
+      }
+    }
+    .card-top {
+      width: 100%;
+      height: 200px;
+      background: #fafafa;
+      .swiper-wrapper {
+        position: relative;
+        width: 100%;
+      }
+      .card-img-prev,
+      .card-img-next {
+        position: absolute;
+        display: none;
+        top: 50%;
+        width: 10px;
+        height: 30px;
+        transform: translateY(-50%);
+        z-index: 1;
+        background: #0000000d;
+        cursor: auto;
+        .btn-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 4px;
+          height: 8px;
+          transform: translate(-50%, -50%);
+          background-size: cover;
+          background-repeat: no-repeat;
+          cursor: pointer;
+        }
+      }
+      .card-img-prev {
+        left: 0;
+        .btn-icon {
+          background-image: url("~images/common/left.svg");
+          opacity: 0.5;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+      .card-img-next {
+        right: 0;
+        .btn-icon {
+          background-image: url("~images/common/right.svg");
+          opacity: 0.5;
+          &:hover {
+            opacity: 0.8;
+          }
         }
       }
     }
+    .card-bottom {
+      width: 100%;
+      padding: 10px;
+      .card-name {
+        width: 100%;
+        line-height: 22px;
+        font-weight: 600;
+        font-size: 16px;
+        color: #111111;
+      }
+      .card-brand {
+        display: block;
+        line-height: 17px;
+        font-size: 12px;
+        color: #111111;
+      }
+      .card-price {
+        line-height: 17px;
+        font-size: 12px;
+        color: #666666;
+      }
+    }
+  }
+  .sku-list-wrapper {
+    position: absolute;
+    top: 50%;
+    right: -1px;
+    background: #fff;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.1);
+    transform: translate(100%, -50%);
   }
 }
 </style>
