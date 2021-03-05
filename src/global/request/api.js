@@ -21,6 +21,8 @@ export default {
     `${WEB_PREFIX}/kujiale/design/${designId}/basic`,
   kujialeCopyDesign: designId =>
     `${WEB_PREFIX}/kujiale/design/${designId}/copy`,
+  kujialeListingBrief: listingId =>
+    `${WEB_PREFIX}/kujiale/listing/${listingId}/brief`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
   campTerms: `${WEB_PREFIX}/camp/terms`,

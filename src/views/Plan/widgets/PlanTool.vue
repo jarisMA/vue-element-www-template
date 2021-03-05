@@ -129,6 +129,10 @@
             :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
             @click="columns > 2 ? (columns = 2) : (columns = 4)"
           ></label>
+          <div class="total-wrapper">
+            <label class="price">¥{{ totalPrice }}</label>
+            <div class="operate-wrapper"></div>
+          </div>
         </div>
       </transition>
     </div>
@@ -230,6 +234,7 @@
 
 <script>
 import commodityService from "service/commodity";
+import kujialeService from "service/kujiale";
 import CommodityCard from "./CommodityCard.vue";
 import CommodityAttr from "./CommodityAttr.vue";
 import { hex2Rgba } from "utils/function";
@@ -248,6 +253,9 @@ export default {
     rootCats: {
       type: Array,
       required: true
+    },
+    listingId: {
+      type: String
     }
   },
   data() {
@@ -273,7 +281,8 @@ export default {
       activeSkus: null,
       detailTimer: null,
       offsetTop: 0,
-      columns: 2
+      columns: 2,
+      listingBrief: null
     };
   },
   watch: {
@@ -289,6 +298,25 @@ export default {
     values() {
       this.getCommodity();
     }
+  },
+  computed: {
+    totalPrice() {
+      if (!this.listingBrief) {
+        return 0;
+      }
+      const skus = this.listingBrief.skus;
+      const goods = this.listingBrief.goods;
+      let total = 0;
+      goods.map(good => {
+        const sku = skus.find(sku => sku.kjl_sku_id === good.brandGoodId);
+        good.sku = sku;
+        total += sku.unit_price * good.number;
+      });
+      return total;
+    }
+  },
+  created() {
+    this.getListingBrief();
   },
   methods: {
     hex2Rgba,
@@ -339,6 +367,13 @@ export default {
         .then(res => {
           this.commodities = res;
         });
+    },
+    getListingBrief() {
+      if (this.listingId) {
+        kujialeService.listingBrief(this.listingId).then(res => {
+          this.listingBrief = res;
+        });
+      }
     },
     handleBack() {
       this.activeParentCat = null;
@@ -411,7 +446,7 @@ export default {
           this.activeCommodity = null;
           clearTimeout(this.detailTimer);
           this.detailTimer = null;
-        }, 2000);
+        }, 500);
       }
     },
     clearTimeout(timer) {
@@ -653,6 +688,21 @@ export default {
         &::after {
           transform: translate(-50%, -50%) rotate(180deg);
         }
+      }
+    }
+    .total-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0px 10px;
+      width: 100%;
+      height: 48px;
+      background: @primaryColor;
+      .price {
+        line-height: 30px;
+        font-weight: 600;
+        font-size: 30px;
+        color: #fff;
       }
     }
   }
