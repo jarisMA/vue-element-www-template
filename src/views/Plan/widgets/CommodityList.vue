@@ -1,5 +1,5 @@
 <template>
-  <div class="list-wrapper">
+  <div :class="['list-wrapper', full_screen ? 'full_screen' : '']">
     <div class="brief" v-if="!full_screen">
       <div class="list-header">
         <label class="price" v-if="!up">¥{{ totalPrice }}</label>
@@ -62,7 +62,117 @@
       </div>
     </div>
     <div :class="['full', headerUnfold ? 'unfold' : '']" v-else>
-      <div class="container-1200"></div>
+      <div class="container-1200">
+        <div class="list-content">
+          <h3 class="list-title">
+            已选商品清单
+            <label
+              class="full_screen-icon bgImg"
+              @click="toggleFullScreen"
+            ></label>
+          </h3>
+          <div class="plan-desc">
+            <label class="plan-name">
+              方案名称 <span>{{ `方案` }}</span>
+            </label>
+            <label class="plan-aulabelor">
+              设计师 <span>{{ userInfo.nickname }}</span>
+            </label>
+            <label class="plan-type">
+              房型信息 <span class="plan-spec">{{ 50 }}㎡</span>|<span>{{
+                "0室1厅0卫0厨"
+              }}</span>
+            </label>
+          </div>
+          <div class="list-desc">
+            <div
+              class="list-section"
+              v-for="(item, key) of listing.list"
+              :key="key"
+            >
+              <h3 class="list-spec">
+                {{ item.typeName }}
+              </h3>
+              <ul class="table">
+                <li class="table-header">
+                  <label class="order-label">序号</label>
+                  <label class="img-label">产品图</label>
+                  <label class="name-label">产品名称</label>
+                  <label class="brand-label">品牌</label>
+                  <label class="size-label">尺寸(mm)</label>
+                  <label class="unit-label">单位</label>
+                  <label class="number-label">数量</label>
+                  <label class="code-label">SKU编码</label>
+                  <label class="amount-label">返现/个</label>
+                  <label class="price-label">单价</label>
+                  <label class="total-label">总价</label>
+                  <label class="link-label">购买</label>
+                  <label class="remark-label">通用备注</label>
+                </li>
+                <li
+                  class="table-tr"
+                  v-for="(good, gid) of item.softOutfits"
+                  :key="good.brandGoodId"
+                >
+                  <label class="order-label">{{
+                    `${key + 1}-${gid + 1}`
+                  }}</label>
+                  <label class="img-label">
+                    <the-loading-image
+                      :width="50"
+                      :height="50"
+                      :url="good.sku.img_id"
+                    />
+                  </label>
+                  <label class="name-label">{{ good.sku.name }}</label>
+                  <label class="brand-label">{{
+                    good.sku.brand_name || "斗西"
+                  }}</label>
+                  <label class="size-label">{{
+                    `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
+                  }}</label>
+                  <label class="unit-label">{{ good.unit }}</label>
+                  <label class="number-label">{{ good.number }}</label>
+                  <label class="code-label">{{
+                    good.sku.product_number
+                  }}</label>
+                  <label class="amount-label">{{
+                    good.sku.cashback_amount
+                  }}</label>
+                  <label class="price-label">{{ good.sku.unit_price }}</label>
+                  <label class="total-label"
+                    >¥{{
+                      (good.sku.unit_price * good.number).toFixed(2)
+                    }}</label
+                  >
+                  <label class="link-label">{{
+                    good.sku.tb_purchase_url
+                  }}</label>
+                  <label class="remark-label">{{ good.sku.remark }}</label>
+                </li>
+              </ul>
+              <div class="section-footer">
+                <label class="number">
+                  {{ number(item.softOutfits) }}件商品
+                </label>
+                <label class="total">
+                  小计：¥{{ price(item.softOutfits) }}
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="list-footer">
+        <div class="footer-content">
+          <label class="price"> ¥{{ totalPrice }} </label>
+          当前总价
+          <label class="number"> 共{{ totalNumber }}件商品 </label>
+        </div>
+        <div class="footer-operate">
+          <label class="export-icon bgImg"></label>导出PDF
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -89,7 +199,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(["headerUnfold"]),
+    ...mapState(["headerUnfold", "userInfo"]),
     listing() {
       const res = JSON.parse(JSON.stringify(this.listingBrief));
       const list = res.list;
@@ -107,6 +217,25 @@ export default {
       });
       return res;
     },
+
+    number() {
+      return arr => {
+        let count = 0;
+        arr.map(item => {
+          count += item.number;
+        });
+        return count;
+      };
+    },
+    price() {
+      return arr => {
+        let price = 0;
+        arr.map(item => {
+          price += item.number * item.sku.unit_price;
+        });
+        return price.toFixed(2);
+      };
+    },
     totalPrice() {
       const goods = this.listing.goods;
       let total = 0;
@@ -114,6 +243,14 @@ export default {
         total += good.sku.unit_price * good.number;
       });
       return total.toFixed(2);
+    },
+    totalNumber() {
+      const goods = this.listing.goods;
+      let total = 0;
+      goods.map(good => {
+        total += good.number;
+      });
+      return total;
     }
   },
   methods: {
@@ -133,6 +270,9 @@ export default {
 .list-wrapper {
   width: 100%;
   height: 100%;
+  &.full_screen {
+    transform: unset !important;
+  }
   .brief {
     display: flex;
     flex-direction: column;
@@ -268,22 +408,209 @@ export default {
     }
   }
   .full {
-    position: fixed !important;
-    top: 14px !important;
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 100%;
-    height: calc(100vh - 14px);
-    background: #e5e5e5;
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    background: #fff;
     z-index: 20;
+    transition: all 0.5s;
     &.unfold {
-      top: 52px !important;
-      height: calc(100vh - 52px);
+      padding-top: 52px;
     }
-    width: 100%;
-    height: 100%;
     .container-1200 {
-      height: 100%;
-      background: red;
+      flex: 1;
+      height: 5px;
+      .list-content {
+        flex: 1;
+        padding: 60px 0;
+        .list-title {
+          margin-bottom: 30px;
+          line-height: 1;
+          font-weight: 600;
+          font-size: 24px;
+          color: #111111;
+          .full_screen-icon {
+            width: 24px;
+            height: 24px;
+            background-image: url("~images/commodity/zoom_out.svg");
+            cursor: pointer;
+          }
+        }
+        .plan-desc {
+          padding-bottom: 12px;
+          border-bottom: 1px solid #eeeeee;
+          label {
+            line-height: 1;
+            font-size: 12px;
+            color: #666666;
+            span {
+              display: inline-block;
+              margin-left: 10px;
+              color: #000;
+              &.plan-spec {
+                margin-right: 10px;
+              }
+            }
+          }
+        }
+        .list-desc {
+          .list-section {
+            margin-top: 20px;
+            .list-spec {
+              margin-bottom: 10px;
+              line-height: 1;
+              font-weight: 600;
+              font-size: 14px;
+              color: #111111;
+            }
+            .table {
+              width: 100%;
+              border-collapse: collapse;
+              border-bottom: 1px solid #eee;
+              .table-header {
+                display: flex;
+                border-top: 1px solid #eeeeee;
+                border-bottom: 1px solid #eeeeee;
+                label {
+                  display: inline-block;
+                  text-align: left;
+                  line-height: 1;
+                  font-weight: normal !important;
+                  font-size: 12px;
+                  color: #666666 !important;
+                  padding: 10px 0;
+                  & + label {
+                    margin-left: 10px;
+                  }
+                }
+              }
+              .table-tr {
+                display: flex;
+                align-items: center;
+                padding: 10px 0;
+                label {
+                  line-height: 21px;
+                  font-size: 12px;
+                  color: #111;
+                  & + label {
+                    margin-left: 10px;
+                  }
+                }
+              }
+              label {
+                &.order-label {
+                  width: 32px;
+                  color: #666666;
+                }
+                &.img-label {
+                  width: 50px;
+                }
+                &.name-label {
+                  flex: 1;
+                  width: 5px;
+                  font-weight: 600;
+                }
+                &.brand-label {
+                  width: 84px;
+                }
+                &.size-label {
+                  width: 110px;
+                }
+                &.unit-label {
+                  width: 24px;
+                }
+                &.number-label {
+                  width: 24px;
+                }
+                &.code-label {
+                  width: 110px;
+                }
+                &.amount-label {
+                  width: 80px;
+                }
+                &.price-label {
+                  width: 80px;
+                }
+                &.total-label {
+                  width: 80px;
+                  font-weight: 600;
+                  color: @primaryColor;
+                }
+                &.link-label {
+                  width: 24px;
+                }
+                &.remark-label {
+                  width: 175px;
+                }
+              }
+            }
+            .section-footer {
+              margin-top: 12px;
+              text-align: right;
+              .number {
+                line-height: 16px;
+                font-size: 12px;
+                color: #111;
+              }
+              .total {
+                display: inline-block;
+                margin-left: 20px;
+                line-height: 1;
+                font-weight: 600;
+                font-size: 16px;
+                color: @primaryColor;
+              }
+            }
+          }
+        }
+      }
+    }
+    .list-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 48px;
+      background: @primaryColor;
+      .footer-content {
+        display: flex;
+        align-items: center;
+        padding-left: 20px;
+        height: 30px;
+        font-size: 12px;
+        line-height: 12px;
+        color: #ffffff;
+        .price {
+          display: inline-block;
+          margin-right: 10px;
+          font-weight: 600;
+          font-size: 30px;
+        }
+        .number {
+          display: inline-block;
+          margin-left: 10px;
+        }
+      }
+      .footer-operate {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 118px;
+        height: 100%;
+        font-size: 12px;
+        color: #fff;
+        background: #6764ff;
+        cursor: pointer;
+        .export-icon {
+          width: 24px;
+          height: 24px;
+          background-image: url("~images/commodity/export.svg");
+        }
+      }
     }
   }
 }
