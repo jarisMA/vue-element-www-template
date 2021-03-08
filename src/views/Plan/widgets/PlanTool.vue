@@ -129,10 +129,12 @@
             :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
             @click="columns > 2 ? (columns = 2) : (columns = 4)"
           ></label>
-          <div class="total-wrapper">
-            <label class="price">¥{{ totalPrice }}</label>
-            <div class="operate-wrapper"></div>
-          </div>
+          <commodity-list
+            :class="['commodity-list-wrapper', isListUp ? 'show' : '']"
+            :up.sync="isListUp"
+            :full_screen.sync="isListFullScreen"
+            :listingBrief="listingBrief"
+          />
         </div>
       </transition>
     </div>
@@ -240,6 +242,7 @@ import CommodityAttr from "./CommodityAttr.vue";
 import { hex2Rgba } from "utils/function";
 import TheLoadingImage from "components/TheLoadingImage.vue";
 import CommoditySkuList from "./CommoditySkuList.vue";
+import CommodityList from "./CommodityList.vue";
 
 export default {
   name: "PlanTool",
@@ -247,7 +250,8 @@ export default {
     CommodityCard,
     CommodityAttr,
     TheLoadingImage,
-    CommoditySkuList
+    CommoditySkuList,
+    CommodityList
   },
   props: {
     rootCats: {
@@ -282,7 +286,14 @@ export default {
       detailTimer: null,
       offsetTop: 0,
       columns: 2,
-      listingBrief: null
+      listingBrief: {
+        list: [],
+        goods: [],
+        skus: []
+      },
+      isListUp: false,
+      isListFullScreen: false,
+      listTimer: null
     };
   },
   watch: {
@@ -297,22 +308,6 @@ export default {
     },
     values() {
       this.getCommodity();
-    }
-  },
-  computed: {
-    totalPrice() {
-      if (!this.listingBrief) {
-        return 0;
-      }
-      const skus = this.listingBrief.skus;
-      const goods = this.listingBrief.goods;
-      let total = 0;
-      goods.map(good => {
-        const sku = skus.find(sku => sku.kjl_sku_id === good.brandGoodId);
-        good.sku = sku;
-        total += sku.unit_price * good.number;
-      });
-      return total;
     }
   },
   created() {
@@ -470,6 +465,14 @@ export default {
     },
     handleAddModel(goodId) {
       this.$emit("addModel", goodId);
+      if (this.listTimer) {
+        clearTimeout(this.listTimer);
+        this.listTimer = null;
+      }
+      this.listTimer = setTimeout(() => {
+        this.getListingBrief();
+        this.listTimer = null;
+      }, 1000);
     },
     handleColumnChange(column) {
       this.columns = column;
@@ -690,19 +693,14 @@ export default {
         }
       }
     }
-    .total-wrapper {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 10px;
-      width: 100%;
-      height: 48px;
-      background: @primaryColor;
-      .price {
-        line-height: 30px;
-        font-weight: 600;
-        font-size: 30px;
-        color: #fff;
+    .commodity-list-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      // transform: translateY(calc(100% - 48px));
+      transition: transform @transitionDuration * 10;
+      &.show {
+        transform: translateY(0);
       }
     }
   }
