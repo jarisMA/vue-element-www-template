@@ -697,7 +697,7 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
-      // transform: translateY(calc(100% - 48px));
+      transform: translateY(calc(100% - 48px));
       transition: transform @transitionDuration * 10;
       &.show {
         transform: translateY(0);

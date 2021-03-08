@@ -1,11 +1,5 @@
 <template>
-  <div
-    :class="[
-      'list-wrapper',
-      full_screen ? 'fixed' : '',
-      headerUnfold ? 'unfold' : ''
-    ]"
-  >
+  <div class="list-wrapper">
     <div class="brief" v-if="!full_screen">
       <div class="list-header">
         <label class="price" v-if="!up">¥{{ totalPrice }}</label>
@@ -67,7 +61,7 @@
         <label class="price">¥{{ totalPrice }}</label>
       </div>
     </div>
-    <div class="full" v-else>
+    <div :class="['full', headerUnfold ? 'unfold' : '']" v-else>
       <div class="container-1200"></div>
     </div>
   </div>
@@ -139,21 +133,6 @@ export default {
 .list-wrapper {
   width: 100%;
   height: 100%;
-  &.fixed {
-    position: fixed !important;
-    top: 14px !important;
-    left: 0;
-    width: 100%;
-    height: calc(100vh - 14px);
-    background: #e5e5e5;
-    transform: unset !important;
-    z-index: 20;
-    // transition: all 0.5s ease;
-    &.unfold {
-      top: 52px !important;
-      height: calc(100vh - 52px);
-    }
-  }
   .brief {
     display: flex;
     flex-direction: column;
@@ -289,6 +268,17 @@ export default {
     }
   }
   .full {
+    position: fixed !important;
+    top: 14px !important;
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 14px);
+    background: #e5e5e5;
+    z-index: 20;
+    &.unfold {
+      top: 52px !important;
+      height: calc(100vh - 52px);
+    }
     width: 100%;
     height: 100%;
     .container-1200 {

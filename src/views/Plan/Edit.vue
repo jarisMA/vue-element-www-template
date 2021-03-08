@@ -2,14 +2,12 @@
   <div :class="['edit-plan-container', headerUnfold ? 'unfold' : '']">
     <i class="el-icon-loading"></i>
     <div class="iframe-wrapper">
-      <iframe
-        ref="iframe"
-        class="iframe"
-        :src="url"
-        width="100%"
-        frameborder="0"
-      >
-      </iframe>
+      <!-- <iframe ref="iframe"
+              class="iframe"
+              :src="url"
+              width="100%"
+              frameborder="0">
+      </iframe> -->
       <plan-tool
         v-if="!loading"
         class="plan-tool"
@@ -71,6 +69,7 @@ export default {
         this.listingId = res.listing_id;
         this.cats = cats;
         this.listener();
+        this.loading = false;
       });
     },
     listener() {
