@@ -604,6 +604,18 @@ export default {
       }
     }
   }
+  /deep/ .question-drawer {
+    background: #fafafa !important;
+    outline: unset;
+    .el-drawer__header {
+      height: 60px;
+      padding: 20px;
+      margin: 0;
+    }
+    .el-drawer__body {
+      overflow: auto;
+    }
+  }
 }
 .empty-container {
   display: flex;
@@ -646,18 +658,6 @@ export default {
         content: "";
       }
     }
-  }
-}
-.question-drawer {
-  background: #fafafa !important;
-  outline: unset;
-  /deep/ .el-drawer__header {
-    height: 60px;
-    padding: 20px;
-    margin: 0;
-  }
-  /deep/.el-drawer__body {
-    overflow: auto;
   }
 }
 </style>
