@@ -259,6 +259,12 @@ export default {
         this.drawer = true;
         this.questionIndex = index;
         this.questionId = this.questions[index].id;
+        const dom = document.querySelector(".question-drawer .el-drawer__body");
+        if (dom) {
+          this.$nextTick(() => {
+            dom.scrollTo(0, 0);
+          });
+        }
       }
     },
     addQuestion() {
