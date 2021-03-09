@@ -263,6 +263,12 @@ export default {
       this.isEditAnswer = false;
       this.authAnswer = null;
       this.authAnswerVisible = true;
+      this.question = {
+        channel: {},
+        images: [],
+        user: {}
+      };
+      this.answers = [];
       this.getData();
     },
     question: {
