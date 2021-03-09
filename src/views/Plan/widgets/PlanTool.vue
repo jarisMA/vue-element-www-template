@@ -2,7 +2,7 @@
   <div
     class="tool-container"
     ref="tool"
-    :style="{ width: columns >= 4 ? '630px' : '' }"
+    :style="{ width: columns >= 4 ? '650px' : '' }"
   >
     <div class="tool-wrapper">
       <div class="cat-container">
@@ -469,7 +469,7 @@ export default {
 @transitionDuration: 0.02s;
 .tool-container {
   position: relative;
-  width: 320px;
+  width: 340px;
   height: 100%;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
@@ -634,7 +634,7 @@ export default {
       height: 5px;
       overflow: hidden;
       .scroll-section {
-        padding: 5px;
+        padding: 5px 15px;
         width: calc(100% + 15px);
         height: 100%;
         overflow-y: scroll;
@@ -662,7 +662,7 @@ export default {
         position: absolute;
         top: 50%;
         left: 50%;
-        width: 6px;
+        width: 3px;
         height: 6px;
         background-image: url("~images/commodity/unfold.svg");
         background-repeat: no-repeat;

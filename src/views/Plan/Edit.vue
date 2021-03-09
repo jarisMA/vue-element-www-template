@@ -10,7 +10,20 @@
         frameborder="0"
       >
       </iframe>
-      <template v-show="!loading && showTool">
+      <template v-if="!loading && showTool">
+        <transition
+          enter-active-class="animated slideInLeft"
+          leave-active-class="animated slideOutLeft"
+        >
+          <plan-tool
+            v-show="toolActive"
+            class="plan-tool"
+            :listingId="listingId"
+            :rootCats="(cats[0] || {}).children || []"
+            :listingBrief="listingBrief"
+            @addModel="addModel"
+          />
+        </transition>
         <div class="toolbar-mask" v-if="toolActive"></div>
         <div class="toolbar">
           <div
@@ -20,14 +33,6 @@
             <label class="tool-icon"></label>
           </div>
         </div>
-        <plan-tool
-          v-show="toolActive"
-          class="plan-tool"
-          :listingId="listingId"
-          :rootCats="(cats[0] || {}).children || []"
-          :listingBrief="listingBrief"
-          @addModel="addModel"
-        />
       </template>
     </div>
   </div>

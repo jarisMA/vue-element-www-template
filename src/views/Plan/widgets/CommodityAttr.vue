@@ -729,7 +729,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 320px;
+      width: 340px;
       height: 100%;
     }
     .bgImg-wrapper {
