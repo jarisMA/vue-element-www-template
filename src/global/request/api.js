@@ -17,12 +17,12 @@ export default {
   kujialeIframe: dest => `${WEB_PREFIX}/kujiale/${dest}/iframe`,
   kujialeDesignList: `${WEB_PREFIX}/kujiale/design/list`,
   kujialeDeleteDesign: `${WEB_PREFIX}/kujiale/design/deletion`,
-  kujialeUpdateDesignName: designId =>
-    `${WEB_PREFIX}/kujiale/design/${designId}/basic`,
   kujialeCopyDesign: designId =>
     `${WEB_PREFIX}/kujiale/design/${designId}/copy`,
   kujialeListingBrief: listingId =>
     `${WEB_PREFIX}/kujiale/listing/${listingId}/brief`,
+  kujialeDesignBasic: designId =>
+    `${WEB_PREFIX}/kujiale/design/${designId}/basic`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
   campTerms: `${WEB_PREFIX}/camp/terms`,

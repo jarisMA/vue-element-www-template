@@ -73,15 +73,16 @@
           </h3>
           <div class="plan-desc">
             <label class="plan-name">
-              方案名称 <span>{{ `方案` }}</span>
+              方案名称 <span>{{ design.name || "-" }}</span>
             </label>
             <label class="plan-aulabelor">
               设计师 <span>{{ userInfo.nickname }}</span>
             </label>
             <label class="plan-type">
-              房型信息 <span class="plan-spec">{{ 50 }}㎡</span>|<span>{{
-                "0室1厅0卫0厨"
-              }}</span>
+              房型信息
+              <span class="plan-spec">{{ design.srcArea || "-" }}㎡</span>|<span
+                >{{ design.specName || "-" }}</span
+              >
             </label>
           </div>
           <div class="list-desc">
@@ -180,6 +181,7 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import { mapState } from "vuex";
+import kujialeService from "service/kujiale";
 
 export default {
   name: "CommodityList",
@@ -197,6 +199,15 @@ export default {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      design: {
+        name: "",
+        specName: "",
+        srcArea: ""
+      }
+    };
   },
   computed: {
     ...mapState(["headerUnfold", "userInfo"]),
@@ -217,7 +228,6 @@ export default {
       });
       return res;
     },
-
     number() {
       return arr => {
         let count = 0;
@@ -253,7 +263,15 @@ export default {
       return total;
     }
   },
+  created() {
+    this.getDesignBasic();
+  },
   methods: {
+    getDesignBasic() {
+      kujialeService.designBasic(this.$route.params.designId).then(res => {
+        this.design = res;
+      });
+    },
     toggleUp() {
       this.$emit("update:up", !this.up);
     },

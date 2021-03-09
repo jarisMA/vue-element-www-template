@@ -20,9 +20,13 @@ const KujialeService = {
   deleteDesign: params => {
     return request.post(API.kujialeDeleteDesign, params);
   },
-  updateDesignName: (designId, params) => {
-    return request.post(API.kujialeUpdateDesignName(designId), params);
+  designBasic: designId => {
+    return request.get(API.kujialeDesignBasic(designId));
   },
+  updateDesignName: (designId, params) => {
+    return request.post(API.kujialeDesignBasic(designId), params);
+  },
+
   copyDesign: (designId, params) => {
     return request.post(API.kujialeCopyDesign(designId), params);
   },
