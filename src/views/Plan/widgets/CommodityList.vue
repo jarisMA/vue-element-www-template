@@ -127,7 +127,7 @@
                   </label>
                   <label class="name-label">{{ good.sku.name }}</label>
                   <label class="brand-label">{{
-                    good.sku.brand_name || "斗西"
+                    (good.sku.brand && good.sku.brand.name) || "-"
                   }}</label>
                   <label class="size-label">{{
                     `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
@@ -181,7 +181,7 @@
           <label class="number"> 共{{ totalNumber }}件商品 </label>
         </div>
         <div class="footer-operate">
-          <label class="export-icon bgImg"></label>导出PDF
+          <label class="export-icon bgImg"></label>导出Excel
         </div>
       </div>
     </div>
