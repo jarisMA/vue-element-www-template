@@ -137,10 +137,10 @@
                   <label class="code-label">{{
                     good.sku.product_number
                   }}</label>
-                  <label class="amount-label">{{
-                    good.sku.cashback_amount
-                  }}</label>
-                  <label class="price-label">{{ good.sku.unit_price }}</label>
+                  <label class="amount-label"
+                    >¥{{ good.sku.cashback_amount }}</label
+                  >
+                  <label class="price-label">¥{{ good.sku.unit_price }}</label>
                   <label class="total-label"
                     >¥{{
                       (good.sku.unit_price * good.number).toFixed(2)
@@ -159,7 +159,9 @@
                   >
                     {{ good.sku.tb_purchase_url ? "" : "-" }}
                   </label>
-                  <label class="remark-label">{{ good.sku.remark }}</label>
+                  <label class="remark-label">{{
+                    good.sku.remark || "-"
+                  }}</label>
                 </li>
               </ul>
               <div class="section-footer">
@@ -180,7 +182,7 @@
           当前总价
           <label class="number"> 共{{ totalNumber }}件商品 </label>
         </div>
-        <div class="footer-operate">
+        <div class="footer-operate" @click="download">
           <label class="export-icon bgImg"></label>导出Excel
         </div>
       </div>
@@ -288,6 +290,100 @@ export default {
     },
     toggleFullScreen() {
       this.$emit("update:full_screen", !this.full_screen);
+    },
+    download() {
+      // 列标题
+      let str = `<tr>
+                  <td colspan="13">
+                    <label>方案名称: ${this.design.name}</label><br />
+                    <label>设计师: ${this.userInfo.nickname}</label><br />
+                    <label>
+                      房型信息: ${this.design.srcArea || "-"}㎡ | ${this.design
+        .specName || "-"}
+                    </label>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="13"></td>
+                </tr>
+                <tr>
+                  <td>区域</td>
+                  <td>产品图</td>
+                  <td>产品名称</td>
+                  <td>品牌</td>
+                  <td>尺寸(mm)</td>
+                  <td>单位</td>
+                  <td>数量</td>
+                  <td>SKU编码</td>
+                  <td>返现/个</td>
+                  <td>单价</td>
+                  <td>购买</td>
+                  <td>通用备注</td>
+                  <td>总价</td>
+                </tr>`;
+      // 循环遍历，每行加入tr标签，每个单元格加td标签
+      this.listing.list.map(list => {
+        list.softOutfits.map(good => {
+          str += `<tr>
+                    <td>${list.typeName}\t</td>
+                    <td align="center">
+                      <img height="20" src="${good.sku.img_id}" />\t
+                    </td>
+                    <td>${good.sku.name}\t</td>
+                    <td>${(good.sku.brand && good.sku.brand.name) || "-"}\t</td>
+                    <td>
+                      ${`${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
+                        .sku.size_z || 0}`}\t
+                    </td>
+                    <td>${good.unit}\t</td>
+                    <td>${good.number}\t</td>
+                    <td>${good.sku.product_number || "-"}\t</td>
+                    <td>¥${good.sku.cashback_amount + ""}\t</td>
+                    <td>¥${good.sku.unit_price + ""}\t</td>
+                    <td>
+                      ${
+                        good.sku.tb_purchase_url
+                          ? `<a href='${good.sku.tb_purchase_url}'>
+                        ${good.sku.tb_purchase_url}
+                        </a>`
+                          : "-"
+                      }\t
+                    </td>
+                    <td>${good.sku.remark || "-"}\t</td>
+                    <td>
+                      ¥${(good.sku.unit_price * good.number).toFixed(2)}\t
+                    </td>
+                  </tr>`;
+        });
+      });
+      str += `<tr>
+                <td colspan="13" align="right">
+                  总价: ¥${this.totalPrice}
+                </td>
+              </tr>`;
+      // Worksheet名
+      const worksheet = "Sheet1";
+      const uri = "data:application/vnd.ms-excel;base64,";
+
+      // 下载的表格模板数据
+      const template = `<html xmlns:o="urn:schemas-microsoft-com:office:office" 
+        xmlns:x="urn:schemas-microsoft-com:office:excel" 
+        xmlns="http://www.w3.org/TR/REC-html40">
+        <head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+        <x:Name>${worksheet}</x:Name>
+        <x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet>
+        </x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+        </head><body><table>${str}</table></body></html>`;
+      // 下载模板
+      const eleLink = document.createElement("a");
+      eleLink.download = this.design.name + "-清单";
+      eleLink.style.display = "none";
+      eleLink.href = uri + window.btoa(unescape(encodeURIComponent(template)));
+      eleLink.target = "_new";
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      document.body.removeChild(eleLink);
+      window.URL.revokeObjectURL(eleLink.href);
     }
   }
 };
