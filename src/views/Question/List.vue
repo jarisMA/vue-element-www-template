@@ -1,7 +1,7 @@
 <template>
   <div class="question-wrapper">
     <div class="container-1200">
-      <div class="operate-container">
+      <div class="operate-container" v-if="userInfo">
         <ul class="filter-container">
           <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
             全部
@@ -10,11 +10,7 @@
             只看我的
           </li>
         </ul>
-        <el-button
-          v-if="userInfo"
-          class="add-btn"
-          type="primary"
-          @click="addVisible = true"
+        <el-button class="add-btn" type="primary" @click="addVisible = true"
           >我要提问</el-button
         >
       </div>
