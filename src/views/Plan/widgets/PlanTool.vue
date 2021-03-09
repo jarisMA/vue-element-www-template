@@ -475,6 +475,7 @@ export default {
   border-radius: 6px;
   background: #fafafa;
   transition: width @transitionDuration;
+  user-select: none;
   .tool-wrapper {
     position: relative;
     width: 100%;
