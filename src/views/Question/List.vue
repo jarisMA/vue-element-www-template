@@ -67,6 +67,7 @@
         <el-form-item class="title-container" prop="title">
           <the-avatar :size="40" :url="userInfo.avatar_url" />
           <el-input
+            ref="titleInput"
             type="textarea"
             v-model.trim="addForm.title"
             resize="none"
@@ -205,6 +206,15 @@ export default {
       questionId: null,
       questionIndex: null
     };
+  },
+  watch: {
+    addVisible(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs["titleInput"].focus();
+        });
+      }
+    }
   },
   computed: {
     ...mapState(["userInfo"])
