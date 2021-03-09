@@ -158,6 +158,7 @@
         :id="questionId"
         @backTop="drawerBackTop"
         @update="updateQuestion"
+        @deleted="deleteQuestion"
       />
     </el-drawer>
   </div>
@@ -369,6 +370,10 @@ export default {
         ...data,
         images: data.images.join(",")
       });
+    },
+    deleteQuestion() {
+      this.questions.splice(this.questionIndex, 1);
+      this.drawer = false;
     }
   }
 };

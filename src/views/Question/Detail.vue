@@ -414,7 +414,7 @@ export default {
         .deleteQuestion(this.id)
         .then(() => {
           this.$notice("删除问题成功");
-          this.$emit("close");
+          this.$emit("deleted");
         })
         .finally(() => {
           this.loading = false;
