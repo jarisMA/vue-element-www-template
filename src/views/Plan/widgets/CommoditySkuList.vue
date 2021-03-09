@@ -1,5 +1,6 @@
 <template>
   <div class="sku-list-wrapper">
+    <label class="delete-icon bgImg" @click="handleCloseClick"></label>
     <div class="scroll-wrapper">
       <ul class="sku-list">
         <li
@@ -31,20 +32,31 @@ export default {
   methods: {
     handleAddModel(goodId) {
       this.$emit("addModel", goodId);
+    },
+    handleCloseClick() {
+      this.$emit("update:skus", null);
     }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@maxHeight: 424px;
 .sku-list-wrapper {
   width: 155px;
-  max-height: 424px;
+  padding: 0 0 5px;
+  max-height: @maxHeight;
   overflow: hidden;
+  .delete-icon {
+    width: 24px;
+    height: 24px;
+    background-image: url("~images/common/delete.svg");
+    cursor: pointer;
+  }
   .scroll-wrapper {
-    padding: 5px;
+    padding: 0 5px;
     width: calc(100% + 15px);
-    max-height: 424px;
+    max-height: calc(@maxHeight - 24px);
     overflow-y: scroll;
     .sku-list {
       display: flex;

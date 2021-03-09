@@ -227,7 +227,7 @@
     <commodity-sku-list
       class="sku-list-wrapper"
       :style="{ top: offsetTop + 'px' }"
-      :skus="activeSkus"
+      :skus.sync="activeSkus"
       v-if="activeSkus"
       @addModel="handleAddModel"
     />
