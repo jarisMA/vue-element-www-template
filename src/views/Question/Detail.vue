@@ -291,6 +291,7 @@ export default {
           page_size: this.pagination.size
         })
       ];
+      this.loading = true;
       Promise.all(promiseArr)
         .then(([res, answers]) => {
           const { question, auth_answer } = res;
