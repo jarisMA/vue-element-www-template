@@ -1,56 +1,67 @@
 <template>
   <div class="question-wrapper">
-    <div class="operate-container">
-      <ul class="filter-container">
-        <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
-          全部
-        </li>
-        <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
-          只看我的
-        </li>
-      </ul>
-      <el-button class="add-btn" type="primary" @click="addVisible = true"
-        >我要提问</el-button
-      >
-    </div>
-    <div class="question-container" v-loading="loading">
-      <template v-if="questions.length > 0">
-        <ul class="question-list">
-          <li
-            class="question-item"
-            v-for="(item, key) of questions"
-            :key="item.id"
-          >
-            <question-card
-              :question="item"
-              @like="addLike(item.id, key)"
-              @unlike="deleteLike(item.id, key)"
-              @detail="goDetail"
-            />
+    <div class="container-1200">
+      <div class="operate-container">
+        <ul class="filter-container">
+          <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
+            全部
+          </li>
+          <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
+            只看我的
           </li>
         </ul>
-        <pagination
-          :pageSize="pagination.size"
-          :current-page="pagination.page"
-          :total="pagination.total"
-          @change-page="getData"
-        />
-        <div class="question-more">
-          <p>没有想了解的内容？</p>
-          <p>
-            你还可以
-            <span class="primary" @click="addVisible = true">去提问</span>
-          </p>
-        </div>
-      </template>
-      <div v-else-if="!loading" class="empty-container">
-        <the-empty noText="还没有人提出过问题" />
-        <el-button class="add-btn" type="primary" @click="addVisible = true"
+        <el-button
+          v-if="userInfo"
+          class="add-btn"
+          type="primary"
+          @click="addVisible = true"
           >我要提问</el-button
         >
       </div>
+      <div class="question-container" v-loading="loading">
+        <template v-if="questions.length > 0">
+          <ul class="question-list">
+            <li
+              class="question-item"
+              v-for="(item, key) of questions"
+              :key="item.id"
+            >
+              <question-card
+                :question="item"
+                @like="addLike(item.id, key)"
+                @unlike="deleteLike(item.id, key)"
+                @detail="goDetail"
+              />
+            </li>
+          </ul>
+          <pagination
+            :pageSize="pagination.size"
+            :current-page="pagination.page"
+            :total="pagination.total"
+            @change-page="getData"
+          />
+          <div class="question-more" v-if="userInfo">
+            <p>没有想了解的内容？</p>
+            <p>
+              你还可以
+              <span class="primary" @click="addVisible = true">去提问</span>
+            </p>
+          </div>
+        </template>
+        <div v-else-if="!loading" class="empty-container">
+          <the-empty noText="还没有人提出过问题" />
+          <el-button
+            v-if="userInfo"
+            class="add-btn"
+            type="primary"
+            @click="addVisible = true"
+            >我要提问</el-button
+          >
+        </div>
+      </div>
     </div>
     <el-dialog
+      v-if="userInfo"
       class="add-dialog"
       :visible.sync="addVisible"
       width="580px"
@@ -151,7 +162,7 @@
 <script>
 import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
-import QuestionCard from "./QuestionCard";
+import QuestionCard from "./widgets/QuestionCard";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
 import QuestionDetail from "@/views/Question/Detail";
@@ -232,8 +243,10 @@ export default {
         });
     },
     goDetail(id) {
-      this.drawer = true;
-      this.questionId = id;
+      if (this.userInfo) {
+        this.drawer = true;
+        this.questionId = id;
+      }
     },
     addQuestion() {
       const { title, content, images, channel_id } = this.addForm;
@@ -354,6 +367,9 @@ export default {
 @baseColor: #8ea098;
 .question-wrapper {
   padding: 0 10px;
+  .container-1200 {
+    margin-top: 20px;
+  }
   .question-container {
     min-height: calc(100vh - 528px - 50px);
   }

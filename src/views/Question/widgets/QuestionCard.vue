@@ -30,7 +30,7 @@
         <span
           :class="[
             'user-name',
-            userInfo.id === question.user.id ? 'active' : ''
+            userInfo && userInfo.id === question.user.id ? 'active' : ''
           ]"
           >{{ question.user.nickname }}</span
         >
@@ -38,7 +38,7 @@
       <ul class="question-status">
         <li
           :class="['like-status', question.is_like ? 'active' : '']"
-          @click.stop="handleLikeClick"
+          @click.stop="userInfo ? handleLikeClick : ''"
         >
           好问题
           <span class="status-count">{{ question.like_count }}</span>

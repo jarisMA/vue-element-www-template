@@ -8,7 +8,7 @@
             <span
               :class="[
                 'user-name',
-                userInfo.id === answer.user.id ? 'active' : ''
+                userInfo && userInfo.id === answer.user.id ? 'active' : ''
               ]"
               >{{ answer.user.nickname }}</span
             >
@@ -71,7 +71,7 @@
           class="dropdown-wrapper"
           placement="top-end"
           trigger="click"
-          v-if="userInfo.id === answer.user.id"
+          v-if="userInfo && userInfo.id === answer.user.id"
         >
           <i class="el-icon-more"></i>
           <el-dropdown-menu slot="dropdown" class="question-dropdown">

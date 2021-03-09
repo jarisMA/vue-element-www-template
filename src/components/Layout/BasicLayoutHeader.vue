@@ -40,6 +40,15 @@
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
           >
+          <span
+            :class="[
+              'header-nav-item',
+              'Question',
+              ['Question'].indexOf($route.name) > -1 ? 'active' : ''
+            ]"
+            @click="(visible || theme !== 'primary') && goQuestion()"
+            >五斗柜互助</span
+          >
         </nav>
       </div>
       <transition
@@ -99,7 +108,7 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import { goHome, goMy, goProfile, goBible } from "utils/routes";
+import { goHome, goMy, goProfile, goBible, goQuestion } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
 export default {
@@ -131,6 +140,7 @@ export default {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
     goBible,
+    goQuestion,
     goHome() {
       if (this.theme === "primary") {
         return;
@@ -246,6 +256,17 @@ export default {
           width: 30px;
           height: 24px;
           background: url("~images/link_logo-3.svg") no-repeat center;
+          vertical-align: middle;
+          margin-right: 4px;
+        }
+      }
+      .Question {
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 30px;
+          height: 24px;
+          background: url("~images/header/wdghz2.svg") no-repeat center;
           vertical-align: middle;
           margin-right: 4px;
         }

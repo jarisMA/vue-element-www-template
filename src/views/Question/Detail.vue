@@ -25,7 +25,7 @@
             />
           </div>
         </div>
-        <div class="detail-bottom">
+        <div class="detail-bottom" v-if="userInfo">
           <el-button
             v-if="authAnswer"
             class="add-btn"
@@ -95,8 +95,10 @@
               {{ question.title }}
             </h3>
             <answer-rich-text
+              v-if="userInfo"
               class="answer-rich-text"
               ref="answerRichText"
+              :id="id"
               :isEdit="isEditAnswer"
               :answer="authAnswer"
               @submited="addAnswerSucc"
@@ -193,6 +195,7 @@
       </div>
     </div>
     <question-edit
+      v-if="userInfo"
       :visible.sync="isEdit"
       :question="question"
       @update="updateQuestion"
@@ -255,6 +258,11 @@ export default {
   },
   watch: {
     id() {
+      this.answerVisible = false;
+      this.isEdit = false;
+      this.isEditAnswer = false;
+      this.authAnswer = null;
+      this.authAnswerVisible = true;
       this.getData();
     }
   },
