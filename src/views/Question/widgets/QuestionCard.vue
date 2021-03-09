@@ -1,5 +1,8 @@
 <template>
-  <div class="question-card" @click.prevent="goDetail(question.id)">
+  <div
+    :class="['question-card', !userInfo ? 'auto' : '']"
+    @click.prevent="goDetail(question.id)"
+  >
     <div class="card-top">
       <label class="question-channel">
         <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
@@ -37,13 +40,17 @@
       </div>
       <ul class="question-status">
         <li
-          :class="['like-status', question.is_like ? 'active' : '']"
-          @click.stop="userInfo ? handleLikeClick : ''"
+          :class="[
+            'like-status',
+            !userInfo ? 'auto' : '',
+            question.is_like ? 'active' : ''
+          ]"
+          @click.stop="userInfo ? handleLikeClick() : ''"
         >
           好问题
           <span class="status-count">{{ question.like_count }}</span>
         </li>
-        <li class="comment-status">
+        <li :class="['comment-status', !userInfo ? 'auto' : '']">
           <span class="status-count">{{ question.answer_count }}</span
           >条回答
         </li>
@@ -106,6 +113,9 @@ export default {
   padding: 24px 20px;
   background: #fff;
   cursor: pointer;
+  &.auto {
+    cursor: auto;
+  }
   .card-top {
     .question-channel {
       line-height: 24px;
@@ -172,6 +182,9 @@ export default {
         cursor: pointer;
         user-select: none;
         position: relative;
+        &.auto {
+          cursor: auto;
+        }
         &::before {
           position: absolute;
           top: 0;
@@ -183,10 +196,12 @@ export default {
           mask-repeat: no-repeat;
           mask-size: cover;
         }
-        &:hover {
-          color: #606c66;
-          &::before {
-            background-color: #606c66;
+        &:not(.auto) {
+          &:hover {
+            color: #606c66;
+            &::before {
+              background-color: #606c66;
+            }
           }
         }
         &.active {

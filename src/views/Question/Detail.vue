@@ -264,6 +264,12 @@ export default {
       this.authAnswer = null;
       this.authAnswerVisible = true;
       this.getData();
+    },
+    question: {
+      handler(val) {
+        this.$emit("update", val);
+      },
+      deep: true
     }
   },
   created() {

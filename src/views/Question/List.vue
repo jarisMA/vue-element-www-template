@@ -30,7 +30,7 @@
                 :question="item"
                 @like="addLike(item.id, key)"
                 @unlike="deleteLike(item.id, key)"
-                @detail="goDetail"
+                @detail="goDetail(key)"
               />
             </li>
           </ul>
@@ -154,7 +154,11 @@
       custom-class="question-drawer"
       ref="drawer"
     >
-      <question-detail :id="questionId" @backTop="drawerBackTop" />
+      <question-detail
+        :id="questionId"
+        @backTop="drawerBackTop"
+        @update="updateQuestion"
+      />
     </el-drawer>
   </div>
 </template>
@@ -201,7 +205,8 @@ export default {
       questions: [],
       liking: false,
       drawer: false,
-      questionId: null
+      questionId: null,
+      questionIndex: null
     };
   },
   computed: {
@@ -242,10 +247,11 @@ export default {
           this.loading = false;
         });
     },
-    goDetail(id) {
+    goDetail(index) {
       if (this.userInfo) {
         this.drawer = true;
-        this.questionId = id;
+        this.questionIndex = index;
+        this.questionId = this.questions[index].id;
       }
     },
     addQuestion() {
@@ -356,6 +362,12 @@ export default {
       drawer.scrollTo({
         top: 0,
         behaviour: "smooth"
+      });
+    },
+    updateQuestion(data) {
+      this.$set(this.questions, this.questionIndex, {
+        ...data,
+        images: data.images.join(",")
       });
     }
   }
