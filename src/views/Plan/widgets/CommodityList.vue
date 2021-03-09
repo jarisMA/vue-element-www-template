@@ -146,9 +146,19 @@
                       (good.sku.unit_price * good.number).toFixed(2)
                     }}</label
                   >
-                  <label class="link-label">{{
-                    good.sku.tb_purchase_url
-                  }}</label>
+                  <label
+                    :class="[
+                      'link-label',
+                      good.sku.tb_purchase_url ? 'bgImg' : ''
+                    ]"
+                    @click="
+                      good.sku.tb_purchase_url
+                        ? goRoute(good.sku.tb_purchase_url, '_blank')
+                        : ''
+                    "
+                  >
+                    {{ good.sku.tb_purchase_url ? "" : "-" }}
+                  </label>
                   <label class="remark-label">{{ good.sku.remark }}</label>
                 </li>
               </ul>
@@ -182,7 +192,7 @@
 import TheLoadingImage from "components/TheLoadingImage";
 import { mapState } from "vuex";
 import kujialeService from "service/kujiale";
-
+import { goRoute } from "utils/routes";
 export default {
   name: "CommodityList",
   components: { TheLoadingImage },
@@ -267,6 +277,7 @@ export default {
     this.getDesignBasic();
   },
   methods: {
+    goRoute,
     getDesignBasic() {
       kujialeService.designBasic(this.$route.params.designId).then(res => {
         this.design = res;
@@ -518,6 +529,15 @@ export default {
                   line-height: 21px;
                   font-size: 12px;
                   color: #111;
+                  &.link-label {
+                    text-align: center;
+                    &.bgImg {
+                      width: 24px;
+                      height: 24px;
+                      background-image: url("~images/commodity/shopping_cart.svg");
+                      cursor: pointer;
+                    }
+                  }
                   & + label {
                     margin-left: 10px;
                   }
