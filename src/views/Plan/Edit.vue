@@ -100,16 +100,12 @@ export default {
         this.cats = cats;
         this.listener();
         this.getListingBrief();
-        this.loading = false;
+        // this.loading = false;
       });
     },
     listener() {
       if (window.postMessage) {
         const callback = ev => {
-          const data =
-            (ev.data && typeof ev.data !== "object" && JSON.parse(ev.data)) ||
-            null;
-          console.log(ev, data, data && data.action);
           if (
             ev.origin === "http://www.kujiale.com" ||
             ev.origin === "http://yun.kujiale.com" ||
@@ -119,10 +115,8 @@ export default {
             const data =
               (ev.data && typeof ev.data !== "object" && JSON.parse(ev.data)) ||
               null;
-            console.log(ev, data, data && data.action);
             if (data && data.action === "kjl_loaded") {
               // 监听是否加载完成
-              console.log("loaded");
               this.loading = false;
             }
             if (data && data.action === "kjl_completed") {
