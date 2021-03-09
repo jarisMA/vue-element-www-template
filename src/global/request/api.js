@@ -19,6 +19,8 @@ export default {
   kujialeDeleteDesign: `${WEB_PREFIX}/kujiale/design/deletion`,
   kujialeCopyDesign: designId =>
     `${WEB_PREFIX}/kujiale/design/${designId}/copy`,
+  kujialeListSync: listingId =>
+    `${WEB_PREFIX}/kujiale/listing/${listingId}/sync`,
   kujialeListingBrief: listingId =>
     `${WEB_PREFIX}/kujiale/listing/${listingId}/brief`,
   kujialeDesignBasic: designId =>

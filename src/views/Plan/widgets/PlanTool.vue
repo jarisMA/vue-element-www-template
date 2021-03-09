@@ -236,7 +236,6 @@
 
 <script>
 import commodityService from "service/commodity";
-import kujialeService from "service/kujiale";
 import CommodityCard from "./CommodityCard.vue";
 import CommodityAttr from "./CommodityAttr.vue";
 import { hex2Rgba } from "utils/function";
@@ -260,6 +259,10 @@ export default {
     },
     listingId: {
       type: String
+    },
+    listingBrief: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -286,14 +289,8 @@ export default {
       detailTimer: null,
       offsetTop: 0,
       columns: 2,
-      listingBrief: {
-        list: [],
-        goods: [],
-        skus: []
-      },
       isListUp: false,
-      isListFullScreen: false,
-      listTimer: null
+      isListFullScreen: false
     };
   },
   watch: {
@@ -309,9 +306,6 @@ export default {
     values() {
       this.getCommodity();
     }
-  },
-  created() {
-    this.getListingBrief();
   },
   methods: {
     hex2Rgba,
@@ -362,13 +356,6 @@ export default {
         .then(res => {
           this.commodities = res;
         });
-    },
-    getListingBrief() {
-      if (this.listingId) {
-        kujialeService.listingBrief(this.listingId).then(res => {
-          this.listingBrief = res;
-        });
-      }
     },
     handleBack() {
       this.activeParentCat = null;
@@ -469,10 +456,6 @@ export default {
         clearTimeout(this.listTimer);
         this.listTimer = null;
       }
-      this.listTimer = setTimeout(() => {
-        this.getListingBrief();
-        this.listTimer = null;
-      }, 1000);
     },
     handleColumnChange(column) {
       this.columns = column;

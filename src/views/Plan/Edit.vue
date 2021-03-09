@@ -1,18 +1,21 @@
 <template>
   <div :class="['edit-plan-container', headerUnfold ? 'unfold' : '']">
-    <i class="el-icon-loading"></i>
+    <i class="el-icon-loading" v-if="loading"></i>
     <div class="iframe-wrapper">
-      <!-- <iframe ref="iframe"
-              class="iframe"
-              :src="url"
-              width="100%"
-              frameborder="0">
-      </iframe> -->
+      <iframe
+        ref="iframe"
+        class="iframe"
+        :src="url"
+        width="100%"
+        frameborder="0"
+      >
+      </iframe>
       <plan-tool
-        v-if="!loading"
+        v-if="!loading && showTool"
         class="plan-tool"
         :listingId="listingId"
         :rootCats="(cats[0] || {}).children || []"
+        :listingBrief="listingBrief"
         @addModel="addModel"
       />
     </div>
@@ -37,17 +40,27 @@ export default {
       url: "",
       cats: [],
       loading: true,
-      listingId: null
+      listingId: null,
+      showTool: false,
+      listingBrief: {
+        list: [],
+        goods: [],
+        skus: []
+      },
+      listingTimer: null
     };
   },
+  computed: {
+    ...mapState(["headerUnfold"])
+  },
   created() {
+    if (this.$route.query.tool == "true") {
+      this.showTool = true;
+    }
     this.getData();
   },
   beforeDestroy() {
     this.updateHeaderUnfold(false);
-  },
-  computed: {
-    ...mapState(["headerUnfold"])
   },
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
@@ -69,7 +82,8 @@ export default {
         this.listingId = res.listing_id;
         this.cats = cats;
         this.listener();
-        this.loading = false;
+        this.getListingBrief();
+        // this.loading = false;
       });
     },
     listener() {
@@ -93,6 +107,13 @@ export default {
               // 监听是否点击退出按钮
               this.exit();
             }
+            if (
+              (data && data.action === "kjl_saved") ||
+              (data.action === "kjl_auto_saved" && this.showTool)
+            ) {
+              // 监听是否触发保存事件
+              this.listingSync();
+            }
           }
         };
         if ("addEventListener" in document) {
@@ -105,7 +126,7 @@ export default {
     exit() {
       goMy();
     },
-    addModel(goodId = "3FO4KNKLFGEH") {
+    addModel(goodId) {
       const iframe = this.$refs["iframe"];
       iframe.contentWindow.postMessage(
         {
@@ -121,6 +142,28 @@ export default {
         },
         "*"
       );
+    },
+    listingSync() {
+      if (this.listingId) {
+        kujialeService.listingSync(this.listingId).then(() => {
+          if (this.listingTimer) {
+            clearTimeout(this.listingTimer);
+            this.listingTimer = null;
+          }
+          this.listingTimer = setTimeout(() => {
+            this.getListingBrief();
+            clearTimeout(this.listingTimer);
+            this.listingTimer = null;
+          }, 5000);
+        });
+      }
+    },
+    getListingBrief() {
+      if (this.listingId) {
+        kujialeService.listingBrief(this.listingId).then(res => {
+          this.listingBrief = res;
+        });
+      }
     }
   }
 };

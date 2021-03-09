@@ -26,9 +26,11 @@ const KujialeService = {
   updateDesignName: (designId, params) => {
     return request.post(API.kujialeDesignBasic(designId), params);
   },
-
   copyDesign: (designId, params) => {
     return request.post(API.kujialeCopyDesign(designId), params);
+  },
+  listingSync: listingId => {
+    return request.post(API.kujialeListSync(listingId));
   },
   listingBrief: listingId => {
     return request.get(API.kujialeListingBrief(listingId));
