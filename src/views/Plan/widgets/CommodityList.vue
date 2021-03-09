@@ -1,6 +1,6 @@
 <template>
   <div :class="['list-wrapper', full_screen ? 'full_screen' : '']">
-    <div class="brief" v-if="!full_screen">
+    <div class="brief" v-show="!full_screen">
       <div class="list-header">
         <label class="price" v-if="!up">¥{{ totalPrice }}</label>
         <label v-else class="header-title">已选商品清单</label>
@@ -61,7 +61,7 @@
         <label class="price">¥{{ totalPrice }}</label>
       </div>
     </div>
-    <div :class="['full', headerUnfold ? 'unfold' : '']" v-else>
+    <div :class="['full', headerUnfold ? 'unfold' : '']" v-show="full_screen">
       <div class="container-1200">
         <div class="list-content">
           <h3 class="list-title">
@@ -455,6 +455,9 @@ export default {
               &.plan-spec {
                 margin-right: 10px;
               }
+            }
+            & + label {
+              margin-left: 20px;
             }
           }
         }
