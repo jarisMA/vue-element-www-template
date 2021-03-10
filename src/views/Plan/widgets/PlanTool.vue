@@ -51,7 +51,11 @@
         enter-active-class="animated slideInRight"
         leave-active-class="animated slideOutRight"
       >
-        <div class="search-container" v-if="activeParentCat">
+        <div
+          class="search-container"
+          v-if="activeParentCat"
+          v-loading="catLoading"
+        >
           <div class="search-header">
             <template v-if="!isSearch">
               <div class="cat-name">
@@ -108,8 +112,8 @@
             @addValue="handleValueAdd"
             @columnChange="handleColumnChange"
           />
-          <div class="commodity-wrapper">
-            <div class="scroll-section">
+          <div class="commodity-wrapper" v-loading="commodityLoading">
+            <div class="scroll-section" v-infinite-scroll="getCommodity(true)">
               <div class="commodity-list">
                 <commodity-card
                   v-for="commodity of commodities"
@@ -267,6 +271,8 @@ export default {
   },
   data() {
     return {
+      catLoading: true,
+      commodityLoading: true,
       isSearch: false,
       name: null,
       cats: [],
@@ -290,7 +296,12 @@ export default {
       offsetTop: 0,
       columns: 2,
       isListUp: false,
-      isListFullScreen: false
+      isListFullScreen: false,
+      pagination: {
+        size: 30,
+        page: 1,
+        total: 0
+      }
     };
   },
   watch: {
@@ -310,11 +321,26 @@ export default {
   methods: {
     hex2Rgba,
     getCats(id) {
-      commodityService.cat(id).then(res => {
-        this.cats = res.children;
-      });
+      this.catLoading = true;
+      commodityService
+        .cat(id)
+        .then(res => {
+          this.cats = res.children;
+        })
+        .finally(() => {
+          this.catLoading = false;
+        });
     },
-    getCommodity() {
+    getCommodity(flag = false) {
+      if (!flag) {
+        this.pagination.page = 1;
+      } else {
+        if (this.pagination.page < this.pagination.total) {
+          this.pagination.page += 1;
+        } else {
+          return;
+        }
+      }
       this.activeCommodity = null;
       this.activeSkus = null;
       const brandIds = this.values
@@ -327,6 +353,7 @@ export default {
       const valueIds = this.values
         .filter(item => item.type === "value")
         .map(item => item.value.id);
+      this.commodityLoading = true;
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
@@ -351,10 +378,21 @@ export default {
             sizeZIndex > -1 ? this.values[sizeZIndex].value.min_size_z : null,
           max_size_z:
             sizeZIndex > -1 ? this.values[sizeZIndex].value.max_size_z : null,
-          value_ids: valueIds
+          value_ids: valueIds,
+          page: this.pagination.page,
+          page_size: this.pagination.size
         })
         .then(res => {
-          this.commodities = res;
+          const { data } = res;
+          if (flag) {
+            this.commodities = this.commodities.concat(data.list);
+          } else {
+            this.commodities = data.list;
+          }
+          this.pagination.total = data.pagination.total_pages;
+        })
+        .finally(() => {
+          this.commodityLoading = false;
         });
     },
     handleBack() {
