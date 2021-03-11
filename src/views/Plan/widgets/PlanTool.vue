@@ -312,10 +312,14 @@ export default {
       }
     },
     activeCat() {
-      this.getCommodity();
+      if (this.activeParentCat) {
+        this.getCommodity();
+      }
     },
     values() {
-      this.getCommodity();
+      if (this.activeParentCat) {
+        this.getCommodity();
+      }
     }
   },
   methods: {
@@ -397,6 +401,7 @@ export default {
     },
     handleBack() {
       this.activeParentCat = null;
+      this.activeCat = null;
       this.values = [];
       this.activeCommodity = null;
       this.activeSkus = null;
