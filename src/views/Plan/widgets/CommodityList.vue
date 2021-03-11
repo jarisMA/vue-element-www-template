@@ -26,33 +26,31 @@
               {{ item.typeName }}
             </h3>
             <ul class="sku-list">
-              <li
-                class="sku-item"
-                v-for="good of item.softOutfits"
-                :key="good.brandGoodId"
-              >
-                <the-loading-image
-                  :width="50"
-                  :height="50"
-                  :url="good.sku.img_id"
-                />
-                <div class="sku-content">
-                  <label class="sku-name ellipsis">
-                    {{ good.sku.name }}
-                  </label>
-                  <label class="sku-size">
-                    {{
-                      `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z} mm`
-                    }}
-                  </label>
-                </div>
-                <div class="sku-footer">
-                  <label class="sku-price">
-                    {{ `¥${good.sku.unit_price}` }}
-                  </label>
-                  <label class="sku-number"> ×{{ good.number }} </label>
-                </div>
-              </li>
+              <template v-for="good of item.softOutfits">
+                <li class="sku-item" v-if="good.sku" :key="good.brandGoodId">
+                  <the-loading-image
+                    :width="50"
+                    :height="50"
+                    :url="good.sku.img_id"
+                  />
+                  <div class="sku-content">
+                    <label class="sku-name ellipsis">
+                      {{ good.sku.name }}
+                    </label>
+                    <label class="sku-size">
+                      {{
+                        `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z} mm`
+                      }}
+                    </label>
+                  </div>
+                  <div class="sku-footer">
+                    <label class="sku-price">
+                      {{ `¥${good.sku.unit_price}` }}
+                    </label>
+                    <label class="sku-number"> ×{{ good.number }} </label>
+                  </div>
+                </li>
+              </template>
             </ul>
           </div>
         </div>
@@ -110,59 +108,59 @@
                   <label class="link-label">购买</label>
                   <label class="remark-label">通用备注</label>
                 </li>
-                <li
-                  class="table-tr"
-                  v-for="(good, gid) of item.softOutfits"
-                  :key="good.brandGoodId"
-                >
-                  <label class="order-label">{{
-                    `${key + 1}-${gid + 1}`
-                  }}</label>
-                  <label class="img-label">
-                    <the-loading-image
-                      :width="50"
-                      :height="50"
-                      :url="good.sku.img_id"
-                    />
-                  </label>
-                  <label class="name-label">{{ good.sku.name }}</label>
-                  <label class="brand-label">{{
-                    (good.sku.brand && good.sku.brand.name) || "-"
-                  }}</label>
-                  <label class="size-label">{{
-                    `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
-                  }}</label>
-                  <label class="unit-label">{{ good.unit }}</label>
-                  <label class="number-label">{{ good.number }}</label>
-                  <label class="code-label">{{
-                    good.sku.product_number
-                  }}</label>
-                  <label class="amount-label"
-                    >¥{{ good.sku.cashback_amount }}</label
-                  >
-                  <label class="price-label">¥{{ good.sku.unit_price }}</label>
-                  <label class="total-label"
-                    >¥{{
-                      (good.sku.unit_price * good.number).toFixed(2)
-                    }}</label
-                  >
-                  <label
-                    :class="[
-                      'link-label',
-                      good.sku.tb_purchase_url ? 'bgImg' : ''
-                    ]"
-                    @click="
-                      good.sku.tb_purchase_url
-                        ? goRoute(good.sku.tb_purchase_url, '_blank')
-                        : ''
-                    "
-                  >
-                    {{ good.sku.tb_purchase_url ? "" : "-" }}
-                  </label>
-                  <label class="remark-label">{{
-                    good.sku.remark || "-"
-                  }}</label>
-                </li>
+                <template v-for="(good, gid) of item.softOutfits">
+                  <li class="table-tr" v-if="good.sku" :key="good.brandGoodId">
+                    <label class="order-label">{{
+                      `${key + 1}-${gid + 1}`
+                    }}</label>
+                    <label class="img-label">
+                      <the-loading-image
+                        :width="50"
+                        :height="50"
+                        :url="good.sku.img_id"
+                      />
+                    </label>
+                    <label class="name-label">{{ good.sku.name }}</label>
+                    <label class="brand-label">{{
+                      (good.sku.brand && good.sku.brand.name) || "-"
+                    }}</label>
+                    <label class="size-label">{{
+                      `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
+                    }}</label>
+                    <label class="unit-label">{{ good.unit }}</label>
+                    <label class="number-label">{{ good.number }}</label>
+                    <label class="code-label">{{
+                      good.sku.product_number
+                    }}</label>
+                    <label class="amount-label"
+                      >¥{{ good.sku.cashback_amount }}</label
+                    >
+                    <label class="price-label"
+                      >¥{{ good.sku.unit_price }}</label
+                    >
+                    <label class="total-label"
+                      >¥{{
+                        (good.sku.unit_price * good.number).toFixed(2)
+                      }}</label
+                    >
+                    <label
+                      :class="[
+                        'link-label',
+                        good.sku.tb_purchase_url ? 'bgImg' : ''
+                      ]"
+                      @click="
+                        good.sku.tb_purchase_url
+                          ? goRoute(good.sku.tb_purchase_url, '_blank')
+                          : ''
+                      "
+                    >
+                      {{ good.sku.tb_purchase_url ? "" : "-" }}
+                    </label>
+                    <label class="remark-label">{{
+                      good.sku.remark || "-"
+                    }}</label>
+                  </li>
+                </template>
               </ul>
               <div class="section-footer">
                 <label class="number">
@@ -244,7 +242,9 @@ export default {
       return arr => {
         let count = 0;
         arr.map(item => {
-          count += item.number;
+          if (item.sku) {
+            count += item.number;
+          }
         });
         return count;
       };
@@ -253,7 +253,9 @@ export default {
       return arr => {
         let price = 0;
         arr.map(item => {
-          price += item.number * item.sku.unit_price;
+          if (item.sku) {
+            price += item.number * item.sku.unit_price;
+          }
         });
         return price.toFixed(2);
       };
@@ -262,7 +264,9 @@ export default {
       const goods = this.listing.goods;
       let total = 0;
       goods.map(good => {
-        total += good.sku.unit_price * good.number;
+        if (good.sku) {
+          total += good.sku.unit_price * good.number;
+        }
       });
       return total.toFixed(2);
     },
@@ -270,7 +274,9 @@ export default {
       const goods = this.listing.goods;
       let total = 0;
       goods.map(good => {
-        total += good.number;
+        if (good.sku) {
+          total += good.number;
+        }
       });
       return total;
     }
