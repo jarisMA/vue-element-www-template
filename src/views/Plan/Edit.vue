@@ -165,14 +165,23 @@ export default {
       if (this.listingId) {
         kujialeService.listingSync(this.listingId).then(() => {
           if (this.listingTimer) {
-            clearTimeout(this.listingTimer);
+            clearInterval(this.listingTimer);
             this.listingTimer = null;
           }
-          this.listingTimer = setTimeout(() => {
+          this.listingTimer = setInterval(() => {
+            this.getListingState();
+          }, 1000);
+        });
+      }
+    },
+    getListingState() {
+      if (this.listingId) {
+        kujialeService.listingState(this.listingId).then(res => {
+          if (res === 3) {
             this.getListingBrief();
-            clearTimeout(this.listingTimer);
+            clearInterval(this.listingTimer);
             this.listingTimer = null;
-          }, 5000);
+          }
         });
       }
     },
