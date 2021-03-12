@@ -25,7 +25,7 @@
       :url="(skus.length > 0 && skus[0].img_id) || ''"
     />
     <label class="price-label"
-      >¥{{ skus.length > 0 && skus[0].unit_price }}</label
+      >¥{{ skus.length > 0 && (skus[0].unit_price || "0.00") }}</label
     >
     <div class="size-wrapper" v-if="columns <= 4 && skus.length > 0">
       {{

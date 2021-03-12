@@ -10,7 +10,7 @@
           @click="handleAddModel(sku.kjl_sku_id)"
         >
           <the-loading-image :width="145" :height="145" :url="sku.img_id" />
-          <label class="sku-price"> ¥{{ sku.unit_price }} </label>
+          <label class="sku-price"> ¥{{ sku.unit_price || "0.00" }} </label>
         </li>
       </ul>
     </div>
