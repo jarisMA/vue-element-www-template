@@ -827,6 +827,9 @@ export default {
       width: calc(100% + 15px);
       max-height: 467px;
       overflow-y: scroll;
+      &::-webkit-scrollbar {
+        width: 15px;
+      }
     }
     .brand-wrapper {
       padding: 15px 10px;
