@@ -225,9 +225,11 @@ export default {
   },
   methods: {
     getConst() {
-      questionService.channels().then(res => {
-        this.channels = res;
-      });
+      if (this.userInfo) {
+        questionService.channels().then(res => {
+          this.channels = res;
+        });
+      }
     },
     getAllData(flag) {
       if (this.isAll === flag) {
