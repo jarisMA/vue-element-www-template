@@ -45,7 +45,7 @@
             !userInfo ? 'auto' : '',
             question.is_like ? 'active' : ''
           ]"
-          @click.stop="userInfo ? handleLikeClick() : ''"
+          @click.stop="handleLikeClick()"
         >
           好问题
           <span class="status-count">{{ question.like_count }}</span>
@@ -92,10 +92,21 @@ export default {
   },
   methods: {
     goQuestionDetail,
+    wxLogin() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+    },
     goDetail(id) {
+      if (!this.userInfo) {
+        this.wxLogin();
+        return;
+      }
       this.$emit("detail", id);
     },
     handleLikeClick() {
+      if (!this.userInfo) {
+        this.wxLogin();
+        return;
+      }
       if (this.question.is_like) {
         this.$emit("unlike");
       } else {
