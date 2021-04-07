@@ -47,7 +47,7 @@
               ['Question'].indexOf($route.name) > -1 ? 'active' : ''
             ]"
             @click="(visible || theme !== 'primary') && goQuestion()"
-            >五斗柜互助</span
+            >互助广场</span
           >
         </nav>
       </div>
