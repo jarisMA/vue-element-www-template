@@ -12,7 +12,9 @@
               ]"
               >{{ answer.user.nickname }}</span
             >
-            <div class="create-time">{{ answer.created_at }}</div>
+            <div class="create-time">
+              {{ formatDate(answer.created_at, "YYYY-MM-DD hh:mm:ss") }}
+            </div>
           </div>
         </div>
         <div class="card-content">
@@ -123,7 +125,7 @@
 import TheAvatar from "components/TheAvatar";
 import CommentCard from "./CommentCard";
 import Comment from "./Comment";
-
+import { formatDate } from "utils/moment";
 import { mapState } from "vuex";
 import questionService from "service/question";
 
@@ -192,6 +194,7 @@ export default {
     }
   },
   methods: {
+    formatDate,
     deleteAnswer() {
       this.loading = true;
       questionService
