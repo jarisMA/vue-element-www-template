@@ -24,8 +24,8 @@
             >
               <question-card
                 :question="item"
-                @like="addLike(item.id, key)"
-                @unlike="deleteLike(item.id, key)"
+                @like="toggleLike(item.id, key, true)"
+                @unlike="toggleLike(item.id, key, false)"
                 @detail="goDetail(key)"
               />
             </li>
@@ -242,7 +242,8 @@ export default {
       this.loading = true;
       let params = {
         page: start,
-        page_size: this.pagination.size
+        page_size: this.pagination.size,
+        type: 1
       };
       !this.isAll && (params.mine = true);
       questionService
@@ -334,36 +335,21 @@ export default {
       done && done();
       this.addVisible = false;
     },
-    addLike(id, key) {
+    toggleLike(id, key, flag = true) {
       if (!this.liking) {
         this.liking = true;
         questionService
           .addLike({
             type: 1,
-            resource_id: id
+            resource_id: id,
+            count: flag ? 1 : 0
           })
           .then(() => {
+            const count = flag ? 1 : -1;
             this.$set(this.questions, key, {
               ...this.questions[key],
-              like_count: this.questions[key].like_count + 1,
-              is_like: true
-            });
-          })
-          .finally(() => {
-            this.liking = false;
-          });
-      }
-    },
-    deleteLike(id, key) {
-      if (!this.liking) {
-        this.liking = true;
-        questionService
-          .deleteLike(1, id)
-          .then(() => {
-            this.$set(this.questions, key, {
-              ...this.questions[key],
-              like_count: this.questions[key].like_count - 1,
-              is_like: false
+              like_count: this.questions[key].like_count + count,
+              is_like: flag
             });
           })
           .finally(() => {

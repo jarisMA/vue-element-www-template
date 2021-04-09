@@ -258,36 +258,20 @@ export default {
       this.timer = null;
       if (this.isClap) {
         this.claping = true;
-        if (!this.answer.auth_like_count) {
-          questionService
-            .addLike({
-              type: 2,
-              resource_id: this.answer.id,
-              count: this.clapCount
-            })
-            .then(() => {
-              this.answer.auth_like_count = this.clapCount;
-              this.answer.like_count += this.clapCount;
-            })
-            .finally(() => {
-              this.claping = false;
-            });
-        } else {
-          questionService
-            .updateLike({
-              type: 2,
-              resource_id: this.answer.id,
-              count: this.clapCount
-            })
-            .then(() => {
-              const dis = this.clapCount - this.answer.auth_like_count;
-              this.answer.auth_like_count = this.clapCount;
-              this.answer.like_count += dis;
-            })
-            .finally(() => {
-              this.claping = false;
-            });
-        }
+        questionService
+          .addLike({
+            type: 2,
+            resource_id: this.answer.id,
+            count: this.clapCount
+          })
+          .then(() => {
+            const dis = this.clapCount - this.answer.auth_like_count;
+            this.answer.auth_like_count = this.clapCount;
+            this.answer.like_count += dis;
+          })
+          .finally(() => {
+            this.claping = false;
+          });
       }
       this.isClap = false;
     },

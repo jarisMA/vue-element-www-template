@@ -52,8 +52,6 @@ export default {
     `${WEB_PREFIX}/question/answer/${answerId}/comment`,
   questionComment: id => `${WEB_PREFIX}/question/answer/comment/${id}`,
   questionLikeAdd: `${WEB_PREFIX}/question-like`,
-  questionLikeDelete: (type, resourceId) =>
-    `${WEB_PREFIX}/question/${type}/${resourceId}/like`,
   commodityCats: `${WEB_PREFIX}/commodity/cat`,
   commodityCat: id => `${WEB_PREFIX}/commodity/cat/${id}`,
   commodityBrands: `${WEB_PREFIX}/commodity/brand`,

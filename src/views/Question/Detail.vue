@@ -26,14 +26,15 @@
           </div>
         </div>
         <div class="detail-bottom" v-if="userInfo">
-          <el-button
-            v-if="authAnswer"
-            class="add-btn"
-            type="primary"
-            @click="editAnswer"
-            >编辑回答</el-button
-          >
-          <el-button v-else class="add-btn" type="primary" @click="startAnswer"
+          <!-- <el-button v-if="authAnswer"
+                     class="add-btn"
+                     type="primary"
+                     @click="editAnswer">编辑回答</el-button>
+          <el-button v-else
+                     class="add-btn"
+                     type="primary"
+                     @click="startAnswer">写回答</el-button> -->
+          <el-button class="add-btn" type="primary" @click="startAnswer"
             >写回答</el-button
           >
 
@@ -147,10 +148,11 @@
               <p>暂无更多回答</p>
               <p>
                 你还可以
-                <span v-if="authAnswer" class="primary" @click="editAnswer"
+                <!-- <span v-if="authAnswer" class="primary" @click="editAnswer"
                   >编辑回答</span
                 >
-                <span v-else class="primary" @click="startAnswer">写回答</span>
+                <span v-else class="primary" @click="startAnswer">写回答</span> -->
+                <span class="primary" @click="startAnswer">写回答</span>
               </p>
             </div>
           </div>
@@ -365,7 +367,8 @@ export default {
     addAnswerSucc(value) {
       this.answerVisible = false;
       this.question.answer_count++;
-      this.authAnswer = value;
+      // this.authAnswer = value;
+      this.answers.unshift(value);
     },
     deletedAuthAnswer() {
       this.question.answer_count--;
@@ -378,28 +381,22 @@ export default {
     toggleLikeClick() {
       if (!this.liking) {
         this.liking = true;
+        let toggleFlag = false;
         if (!this.question.is_like) {
-          questionService
-            .addLike({
-              type: 1,
-              resource_id: this.id
-            })
-            .then(() => {
-              this.toggleLike(true);
-            })
-            .finally(() => {
-              this.liking = false;
-            });
-        } else {
-          questionService
-            .deleteLike(1, this.id)
-            .then(() => {
-              this.toggleLike(false);
-            })
-            .finally(() => {
-              this.liking = false;
-            });
+          toggleFlag = true;
         }
+        questionService
+          .addLike({
+            type: 1,
+            resource_id: this.id,
+            count: toggleFlag ? 1 : 0
+          })
+          .then(() => {
+            this.toggleLike(toggleFlag);
+          })
+          .finally(() => {
+            this.liking = false;
+          });
       }
     },
     toggleLike(flag) {
