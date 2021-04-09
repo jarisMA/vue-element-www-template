@@ -152,6 +152,7 @@
       ref="drawer"
     >
       <question-detail
+        v-if="drawer"
         :id="questionId"
         @backTop="drawerBackTop"
         @update="updateQuestion"
