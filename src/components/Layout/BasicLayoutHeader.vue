@@ -56,6 +56,11 @@
         leave-active-class="animated fadeOut"
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
+          <div
+            class="plan-go-enter"
+            v-if="userInfo"
+            @click="handlePlanGoDraw()"
+          ></div>
           <div class="user-handle-container">
             <el-button
               class="login-button"
@@ -108,9 +113,18 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import { goHome, goMy, goProfile, goBible, goQuestion } from "utils/routes";
+import {
+  goHome,
+  goMy,
+  goProfile,
+  goBible,
+  goQuestion,
+  goDrawPlan
+} from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
+import kujialeService from "service/kujiale";
+
 export default {
   name: "BasicLayoutHeader",
   components: {
@@ -173,6 +187,24 @@ export default {
     },
     handleLogout() {
       this.$store.commit("LOGOUT");
+    },
+    handlePlanGoDraw() {
+      kujialeService
+        .designList({
+          page: 1,
+          page_size: 2
+        })
+        .then(res => {
+          this.plans = res.result;
+          if (this.plans.length > 0 && !isVip()) {
+            this.$notice({
+              type: "warning",
+              title: "oops～方案创建数量已达上限"
+            });
+          } else {
+            goDrawPlan();
+          }
+        });
     }
   }
 };
@@ -276,6 +308,18 @@ export default {
   .header-ft {
     display: flex;
     align-items: center;
+    .plan-go-enter {
+      background-color: #15ae65;
+      width: 139px;
+      height: 32px;
+      margin-right: 20px;
+      background: url("~images/plan-go.jpg");
+      background-size: 139px 32px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
     .user-handle-container {
       position: relative;
       height: 100%;
