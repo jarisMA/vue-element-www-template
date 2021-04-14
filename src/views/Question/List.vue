@@ -3,10 +3,10 @@
     <div class="container-1200">
       <div class="operate-container" v-if="userInfo">
         <ul class="filter-container">
-          <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
+          <li :class="[isAll ? 'active' : '']" @click="getAllData()">
             全部
           </li>
-          <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
+          <li :class="[!isAll ? 'active' : '']" @click="getMyQuestions()">
             只看我的
           </li>
         </ul>
@@ -31,6 +31,7 @@
             </li>
           </ul>
           <pagination
+            class="pagination-wrapper"
             :pageSize="pagination.size"
             :current-page="pagination.page"
             :total="pagination.total"
@@ -191,7 +192,7 @@ export default {
       submiting: false,
       pagination: {
         page: 1,
-        size: 10,
+        size: 15,
         total: 0
       },
       channels: [],
@@ -241,14 +242,34 @@ export default {
     },
     getData(start = 1) {
       this.loading = true;
+      this.isAll = true;
       let params = {
         page: start,
         page_size: this.pagination.size,
         type: 1
       };
-      !this.isAll && (params.mine = true);
       questionService
         .questions(params)
+        .then(res => {
+          this.questions = res.list;
+          this.pagination.page = start;
+          this.pagination.total = res.pagination.total;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    getMyQuestions(start = 1) {
+      this.loading = true;
+      this.isAll = false;
+      let params = {
+        page: start,
+        page_size: this.pagination.size,
+        type: 1,
+        status: 2
+      };
+      questionService
+        .myQuestions(params)
         .then(res => {
           this.questions = res.list;
           this.pagination.page = start;
@@ -293,7 +314,9 @@ export default {
           title,
           content,
           images: images.join(","),
-          channel_id
+          channel_id,
+          type: 1,
+          status: 2
         })
         .then(res => {
           this.handleClose();
@@ -677,5 +700,8 @@ export default {
       }
     }
   }
+}
+.pagination-wrapper {
+  margin-top: 10px;
 }
 </style>

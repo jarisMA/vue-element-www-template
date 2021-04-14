@@ -22,7 +22,7 @@
         <the-preview-image
           width="80px"
           height="80px"
-          :srcList="images"
+          :srcList="question.images"
           @click.native.stop
         />
       </div>
@@ -78,14 +78,7 @@ export default {
     }
   },
   data() {
-    return {
-      images: (this.question.images && this.question.images.split(",")) || []
-    };
-  },
-  watch: {
-    question(val) {
-      this.images = (val.images && val.images.split(",")) || [];
-    }
+    return {};
   },
   computed: {
     ...mapState(["userInfo"])
