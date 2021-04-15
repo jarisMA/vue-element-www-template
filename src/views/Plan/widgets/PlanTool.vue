@@ -677,7 +677,7 @@ export default {
       height: 5px;
       overflow: hidden;
       .scroll-section {
-        padding: 5px 15px;
+        padding: 5px 15px 53px;
         width: calc(100% + 15px);
         height: 100%;
         overflow-y: scroll;

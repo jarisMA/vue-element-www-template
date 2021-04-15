@@ -60,115 +60,120 @@
       </div>
     </div>
     <div :class="['full', headerUnfold ? 'unfold' : '']" v-show="full_screen">
-      <div class="container-1200">
-        <div class="list-content">
-          <h3 class="list-title">
-            已选商品清单
-            <label
-              class="full_screen-icon bgImg"
-              @click="toggleFullScreen"
-            ></label>
-          </h3>
-          <div class="plan-desc">
-            <label class="plan-name">
-              方案名称 <span>{{ design.name || "-" }}</span>
-            </label>
-            <label class="plan-aulabelor">
-              设计师 <span>{{ userInfo.nickname }}</span>
-            </label>
-            <label class="plan-type">
-              房型信息
-              <span class="plan-spec">{{ design.srcArea || "-" }}㎡</span>|<span
-                >{{ design.specName || "-" }}</span
+      <div class="container-1200-wrapper">
+        <div class="container-1200">
+          <div class="list-content">
+            <h3 class="list-title">
+              已选商品清单
+              <label
+                class="full_screen-icon bgImg"
+                @click="toggleFullScreen"
+              ></label>
+            </h3>
+            <div class="plan-desc">
+              <label class="plan-name">
+                方案名称 <span>{{ design.name || "-" }}</span>
+              </label>
+              <label class="plan-aulabelor">
+                设计师 <span>{{ userInfo.nickname }}</span>
+              </label>
+              <label class="plan-type">
+                房型信息
+                <span class="plan-spec">{{ design.srcArea || "-" }}㎡</span
+                >|<span>{{ design.specName || "-" }}</span>
+              </label>
+            </div>
+            <div class="list-desc">
+              <div
+                class="list-section"
+                v-for="(item, key) of listing.list"
+                :key="key"
               >
-            </label>
-          </div>
-          <div class="list-desc">
-            <div
-              class="list-section"
-              v-for="(item, key) of listing.list"
-              :key="key"
-            >
-              <h3 class="list-spec">
-                {{ item.typeName }}
-              </h3>
-              <ul class="table">
-                <li class="table-header">
-                  <label class="order-label">序号</label>
-                  <label class="img-label">产品图</label>
-                  <label class="name-label">产品名称</label>
-                  <label class="brand-label">品牌</label>
-                  <label class="size-label">尺寸(mm)</label>
-                  <label class="unit-label">单位</label>
-                  <label class="number-label">数量</label>
-                  <label class="code-label">SKU编码</label>
-                  <label class="amount-label">返现/个</label>
-                  <label class="price-label">单价</label>
-                  <label class="total-label">总价</label>
-                  <label class="link-label">购买</label>
-                  <label class="remark-label">通用备注</label>
-                </li>
-                <template v-for="(good, gid) of item.softOutfits">
-                  <li class="table-tr" v-if="good.sku" :key="good.brandGoodId">
-                    <label class="order-label">{{
-                      `${key + 1}-${gid + 1}`
-                    }}</label>
-                    <label class="img-label">
-                      <the-loading-image
-                        :width="50"
-                        :height="50"
-                        :url="good.sku.img_id"
-                      />
-                    </label>
-                    <label class="name-label">{{ good.sku.name }}</label>
-                    <label class="brand-label">{{
-                      (good.sku.brand && good.sku.brand.name) || "-"
-                    }}</label>
-                    <label class="size-label">{{
-                      `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
-                    }}</label>
-                    <label class="unit-label">{{ good.unit }}</label>
-                    <label class="number-label">{{ good.number }}</label>
-                    <label class="code-label">{{
-                      good.sku.product_number
-                    }}</label>
-                    <label class="amount-label"
-                      >¥{{ good.sku.cashback_amount }}</label
-                    >
-                    <label class="price-label"
-                      >¥{{ good.sku.unit_price }}</label
-                    >
-                    <label class="total-label"
-                      >¥{{
-                        (good.sku.unit_price * good.number).toFixed(2)
-                      }}</label
-                    >
-                    <label
-                      :class="[
-                        'link-label',
-                        good.sku.tb_purchase_url ? 'bgImg' : ''
-                      ]"
-                      @click="
-                        good.sku.tb_purchase_url
-                          ? goRoute(good.sku.tb_purchase_url, '_blank')
-                          : ''
-                      "
-                    >
-                      {{ good.sku.tb_purchase_url ? "" : "-" }}
-                    </label>
-                    <label class="remark-label">{{
-                      good.sku.remark || "-"
-                    }}</label>
+                <h3 class="list-spec">
+                  {{ item.typeName }}
+                </h3>
+                <ul class="table">
+                  <li class="table-header">
+                    <label class="order-label">序号</label>
+                    <label class="img-label">产品图</label>
+                    <label class="name-label">产品名称</label>
+                    <label class="brand-label">品牌</label>
+                    <label class="size-label">尺寸(mm)</label>
+                    <label class="unit-label">单位</label>
+                    <label class="number-label">数量</label>
+                    <label class="code-label">SKU编码</label>
+                    <label class="amount-label">返现/个</label>
+                    <label class="price-label">单价</label>
+                    <label class="total-label">总价</label>
+                    <label class="link-label">购买</label>
+                    <label class="remark-label">通用备注</label>
                   </li>
-                </template>
-              </ul>
-              <div class="section-footer">
-                <label class="number">
-                  {{ number(item.softOutfits) }}件商品
-                </label>
-                <label class="total">
-                  小计：¥{{ price(item.softOutfits) }}
-                </label>
+                  <template v-for="(good, gid) of item.softOutfits">
+                    <li
+                      class="table-tr"
+                      v-if="good.sku"
+                      :key="good.brandGoodId"
+                    >
+                      <label class="order-label">{{
+                        `${key + 1}-${gid + 1}`
+                      }}</label>
+                      <label class="img-label">
+                        <the-loading-image
+                          :width="50"
+                          :height="50"
+                          :url="good.sku.img_id"
+                        />
+                      </label>
+                      <label class="name-label">{{ good.sku.name }}</label>
+                      <label class="brand-label">{{
+                        (good.sku.brand && good.sku.brand.name) || "-"
+                      }}</label>
+                      <label class="size-label">{{
+                        `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
+                      }}</label>
+                      <label class="unit-label">{{ good.unit }}</label>
+                      <label class="number-label">{{ good.number }}</label>
+                      <label class="code-label">{{
+                        good.sku.product_number
+                      }}</label>
+                      <label class="amount-label"
+                        >¥{{ good.sku.cashback_amount }}</label
+                      >
+                      <label class="price-label"
+                        >¥{{ good.sku.unit_price }}</label
+                      >
+                      <label class="total-label"
+                        >¥{{
+                          (good.sku.unit_price * good.number).toFixed(2)
+                        }}</label
+                      >
+                      <label
+                        :class="[
+                          'link-label',
+                          good.sku.tb_purchase_url ? 'bgImg' : ''
+                        ]"
+                        @click="
+                          good.sku.tb_purchase_url
+                            ? goRoute(good.sku.tb_purchase_url, '_blank')
+                            : ''
+                        "
+                      >
+                        {{ good.sku.tb_purchase_url ? "" : "-" }}
+                      </label>
+                      <label class="remark-label">{{
+                        good.sku.remark || "-"
+                      }}</label>
+                    </li>
+                  </template>
+                </ul>
+                <div class="section-footer">
+                  <label class="number">
+                    {{ number(item.softOutfits) }}件商品
+                  </label>
+                  <label class="total">
+                    小计：¥{{ price(item.softOutfits) }}
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -330,7 +335,8 @@ export default {
       // 循环遍历，每行加入tr标签，每个单元格加td标签
       this.listing.list.map(list => {
         list.softOutfits.map(good => {
-          str += `<tr>
+          if (good.sku) {
+            str += `<tr>
                     <td>${list.typeName}\t</td>
                     <td align="center">
                       <img height="20" src="${good.sku.img_id}" />\t
@@ -360,6 +366,7 @@ export default {
                       ¥${(good.sku.unit_price * good.number).toFixed(2)}\t
                     </td>
                   </tr>`;
+          }
         });
       });
       str += `<tr>
@@ -553,9 +560,13 @@ export default {
     &.unfold {
       padding-top: 52px;
     }
-    .container-1200 {
+    .container-1200-wrapper {
       flex: 1;
+      width: 100%;
       height: 5px;
+      overflow: auto;
+    }
+    .container-1200 {
       .list-content {
         flex: 1;
         padding: 60px 0;
