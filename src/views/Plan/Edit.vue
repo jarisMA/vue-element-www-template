@@ -71,7 +71,7 @@ export default {
     ...mapState(["headerUnfold"])
   },
   created() {
-    if (this.$route.query.tool == "true") {
+    if (this.$route.query.tool == "true" && this.$route.name === "EditPlan") {
       this.showTool = true;
     }
     this.getData();
