@@ -335,7 +335,7 @@ export default {
             answer_count: 0,
             title,
             content,
-            images: images.join(","),
+            images: images,
             channel,
             user: { id, nickname, avatar_url }
           });
