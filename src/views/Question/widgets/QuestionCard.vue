@@ -18,7 +18,7 @@
           {{ item }}
         </p>
       </div>
-      <div class="question-images">
+      <div class="question-images" v-if="question.images.length > 0">
         <the-preview-image
           width="80px"
           height="80px"
