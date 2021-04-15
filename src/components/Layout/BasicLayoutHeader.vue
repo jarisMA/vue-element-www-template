@@ -153,8 +153,24 @@ export default {
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
-    goBible,
-    goQuestion,
+    goBible() {
+      if (this.theme === "primary") {
+        this.$confirm(`是否确认离开当前页面?`).then(() => {
+          goBible();
+        });
+      } else {
+        goBible();
+      }
+    },
+    goQuestion() {
+      if (this.theme === "primary") {
+        this.$confirm(`是否确认离开当前页面?`).then(() => {
+          goQuestion();
+        });
+      } else {
+        goQuestion();
+      }
+    },
     goHome() {
       if (this.theme === "primary") {
         return;
@@ -298,7 +314,8 @@ export default {
           display: inline-block;
           width: 30px;
           height: 24px;
-          background: url("~images/header/wdghz2.svg") no-repeat center;
+          mask: url("~images/header/wdghz2.svg") no-repeat center;
+          background: @primaryColor;
           vertical-align: middle;
           margin-right: 4px;
         }
@@ -509,6 +526,11 @@ export default {
             &::before {
               background-image: url("~images/link_logo-3_white.svg");
             }
+          }
+        }
+        &.Question {
+          &::before {
+            background: #fff;
           }
         }
       }
