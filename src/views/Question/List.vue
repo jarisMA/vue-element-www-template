@@ -391,8 +391,7 @@ export default {
     },
     updateQuestion(data) {
       this.$set(this.questions, this.questionIndex, {
-        ...data,
-        images: data.images.join(",")
+        ...data
       });
     },
     deleteQuestion() {

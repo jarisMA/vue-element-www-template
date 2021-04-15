@@ -243,7 +243,6 @@ export default {
       isEditAnswer: false,
       authAnswer: null,
       authAnswerVisible: true,
-      originAnswers: [],
       answers: [],
       pagination: {
         size: 10,
@@ -296,17 +295,9 @@ export default {
       ];
       this.loading = true;
       Promise.all(promiseArr)
-        .then(([res, answers]) => {
-          const { question, auth_answer } = res;
-          this.authAnswer = auth_answer;
-          question.images =
-            (question.images && question.images.split(",")) || [];
+        .then(([question, answers]) => {
           this.question = question;
-          this.originAnswers = answers.list;
-          this.answers = this.originAnswers;
-          this.answers = this.originAnswers.filter(
-            item => item.id !== (this.authAnswer && this.authAnswer.id)
-          );
+          this.answers = answers.list;
           this.pagination.page = 1;
           this.pagination.total = answers.pagination.total;
         })
@@ -323,11 +314,7 @@ export default {
         })
         .then(res => {
           this.backTop();
-          this.originAnswers = res.list;
           this.answers = res.list;
-          this.answers = this.originAnswers.filter(
-            item => item.id !== (this.authAnswer && this.authAnswer.id)
-          );
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
         })
