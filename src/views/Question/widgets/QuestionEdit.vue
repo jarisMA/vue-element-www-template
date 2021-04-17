@@ -191,7 +191,9 @@ export default {
           title,
           content,
           images: images.join(","),
-          channel_id
+          channel_id,
+          type: 1,
+          status: 2
         })
         .then(() => {
           this.submiting = false;
