@@ -42,6 +42,7 @@ export default {
 
   questionChannels: `${WEB_PREFIX}/question/channels`,
   questions: `${WEB_PREFIX}/questions`,
+  myQuestions: `${WEB_PREFIX}/mine/question`,
   questionAdd: `${WEB_PREFIX}/question`,
   question: id => `${WEB_PREFIX}/question/${id}`,
   questionAnswers: questionId => `${WEB_PREFIX}/question/${questionId}/answers`,

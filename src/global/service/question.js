@@ -11,6 +11,9 @@ const questionService = {
   questions: (params = {}) => {
     return request.get(API.questions, params);
   },
+  myQuestions: (params = {}) => {
+    return request.get(API.myQuestions, params);
+  },
   addQuestion: params => {
     return request.post(API.questionAdd, params);
   },
