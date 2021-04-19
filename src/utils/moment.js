@@ -1,7 +1,7 @@
 import * as moment from "moment";
 moment.locale("zh-cn");
 export const formatDate = (date, format = "YYYY/MM/DD") => {
-  return moment(date).format(format);
+  return moment(date).utcOffset(480).format(format);
 };
 
 export const formNowFormatDay = date => {
