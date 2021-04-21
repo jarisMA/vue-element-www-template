@@ -2,7 +2,7 @@
   <div
     class="tool-container"
     ref="tool"
-    :style="{ width: columns >= 4 ? '650px' : '' }"
+    :style="{ width: columns >= 4 ? '655px' : '' }"
   >
     <div class="tool-wrapper">
       <div class="cat-container">
@@ -512,7 +512,7 @@ export default {
 @transitionDuration: 0.02s;
 .tool-container {
   position: relative;
-  width: 340px;
+  width: 345px;
   height: 100%;
   box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
   border-radius: 6px;
