@@ -1,52 +1,51 @@
 <template>
-  <div class="term-container" v-loading="loading">
-    <div class="term-info-wrapper" v-if="detail">
-      <div class="container-1200">
-        <div class="term-cover">
-          <the-loading-image
-            :url="detail.cover_file_url"
-            :width="284"
-            :height="212"
-          />
-        </div>
-        <div class="term-info">
-          <div class="term-name-wrapper">
-            <h4 class="term-name">{{ detail.name }}</h4>
-            <label
-              :class="{
-                'term-status': true,
-                started: detail.status === 1,
-                ended: detail.status === 2,
-                unstart: detail.status === 0
-              }"
-              >{{ TERM_STATUS[detail.status] }}</label
-            >
+  <div class="page">
+    <div class="container-1200">
+      <div class="page-left">
+        <the-loading-image
+          :width="240"
+          :height="180"
+          :url="detail.cover_file_url"
+        />
+        <h3 class="page-left-title">{{ detail.name }}</h3>
+        <p class="page-left-date">
+          {{ formatDate(detail.start_at) }} – {{ formatDate(detail.end_at) }}
+        </p>
+        <p class="page-left-desc">
+          {{ detail.description }}
+        </p>
+        <div class="page-left-more_list">
+          <div class="page-left-more_item">
+            班级公约
           </div>
-          <div class="term-time-wrapper">
-            课程有效期：
-            <span class="term-start">{{ formatDate(detail.start_at) }} </span>
-            至
-            <span class="term-end">{{ formatDate(detail.end_at) }} </span>
+          <div class="page-left-more_item">
+            班级手册
           </div>
-          <p class="term-desc">
-            {{ detail.description }}
-          </p>
         </div>
       </div>
-    </div>
-    <div class="term-content container-1200">
-      <el-tabs v-model="activeName" @tab-click="tabClick">
-        <el-tab-pane label="作业" name="homework">
-          <homework
-            :homeworks="homeworks"
-            :loading="loading"
-            @added="getData"
-          />
-        </el-tab-pane>
-        <el-tab-pane label="资料包" name="attach">
-          <attach :attaches="attaches" :loading="loading" />
-        </el-tab-pane>
-      </el-tabs>
+      <div class="page-right">
+        <el-tabs v-model="activeName" @tab-click="tabClick">
+          <el-tab-pane label="课程章节" name="category">
+            <div class="category-list">
+              <category-card
+                v-for="category of categories"
+                :key="category.id"
+                :category="category"
+              />
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="作业" name="homework">
+            <homework
+              :homeworks="homeworks"
+              :loading="loading"
+              @added="getData"
+            />
+          </el-tab-pane>
+          <el-tab-pane label="资料包" name="attach">
+            <attach :attaches="attaches" :loading="loading" />
+          </el-tab-pane>
+        </el-tabs>
+      </div>
     </div>
   </div>
 </template>
@@ -54,6 +53,7 @@
 <script>
 import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
+import CategoryCard from "./widgets/CategoryCard";
 import Homework from "./widgets/Homework";
 import Attach from "./widgets/Attach";
 
@@ -65,6 +65,7 @@ export default {
   name: "Term",
   components: {
     TheLoadingImage,
+    CategoryCard,
     Homework,
     Attach
   },
@@ -72,15 +73,16 @@ export default {
     return {
       TERM_STATUS,
       loading: true,
-      detail: null,
-      activeName: "homework",
+      detail: {},
+      activeName: "category",
+      categories: [],
       homeworks: [],
       attaches: []
     };
   },
   created() {
     const { tab } = this.$route.query;
-    if (tab && ["homework", "attach"].includes(tab)) {
+    if (tab && ["category", "homework", "attach"].includes(tab)) {
       this.activeName = tab;
     }
     this.getData();
@@ -94,6 +96,7 @@ export default {
       Promise.all([termService.campTerm(id), termService.campAttach(id)])
         .then(([res, attaches]) => {
           this.detail = res.camp_term;
+          this.categories = res.categories;
           this.homeworks = res.homeworks.filter(
             item =>
               item.is_online === 1 &&
@@ -123,108 +126,88 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-.term-container {
-  min-height: calc(100vh - 130px);
-}
-.term-info-wrapper {
+.page {
   width: 100%;
-  height: 210px;
-  padding-top: 60px;
-  background: #fff;
-  .container-1200 {
-    display: flex;
-    .term-cover {
-      margin-right: 20px;
-      width: 284px;
-      height: 212px;
+  padding: 40px 0;
+}
+.container-1200 {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0 10px;
+  .page-left {
+    flex: none;
+    margin-right: 20px;
+    padding: 20px;
+    width: 280px;
+    background: #ffffff;
+    .page-left-title {
+      margin-top: 20px;
+      line-height: 28px;
+      font-size: 22px;
+      font-weight: bold;
+      color: #2c3330;
     }
-    .term-info {
-      flex: 1;
-      .term-name-wrapper {
-        display: flex;
-        align-items: center;
-        .term-name {
-          margin-right: 15px;
-          max-width: 755px;
-          line-height: 1;
-          font-size: 24px;
-          font-weight: bold;
-          color: #333333;
-          overflow: hidden;
-          white-space: nowrap;
-          text-overflow: ellipsis;
-        }
-        .term-status {
-          padding: 0 7px;
-          height: 20px;
-          line-height: 20px;
-          font-size: 12px;
-          font-weight: 400;
-          color: #666666;
-          background: #d8d8d8;
-          border-radius: 10px;
-          &.unstart {
-            color: #6e6e6e;
-            background: #ffedcfff;
-          }
-          &.started {
-            color: #fff;
-            background: #18c20eff;
-          }
-          &.ended {
-            color: #666666;
-            background: #d8d8d8ff;
-          }
+    .page-left-date {
+      margin-top: 10px;
+      line-height: 21px;
+      font-size: 14px;
+      letter-spacing: 1px;
+      color: #2c3330;
+    }
+    .page-left-desc {
+      margin-top: 20px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #81948b;
+    }
+    .page-left-more_list {
+      margin-top: 34px;
+      width: 100%;
+    }
+    .page-left-more_item {
+      padding: 10px 0;
+      width: 100%;
+      line-height: 21px;
+      font-size: 14px;
+      color: #2c3330;
+      cursor: pointer;
+    }
+    .page-left-more_item + .page-left-more_item {
+      border-top: 1px solid #efefef;
+    }
+  }
+  .page-right {
+    flex: 1;
+    width: 880px;
+    background: #fff;
+    /deep/ .el-tabs {
+      width: 100%;
+      .el-tabs__header {
+        margin: 0;
+      }
+      .el-tabs__nav-scroll {
+        padding: 0 20px;
+      }
+      .el-tabs__item {
+        padding: 20px;
+        height: 69px;
+        line-height: 28px;
+        font-weight: normal;
+        font-size: 16px;
+        color: #81948b;
+        &.is-active {
+          color: #2c3330;
         }
       }
-      .term-time-wrapper {
-        margin: 12px 0 24px;
-        line-height: 1;
-        font-size: 14px;
-        font-weight: bold;
-        color: #ababab;
-      }
-      .term-desc {
-        line-height: 17px;
-        font-size: 12px;
-        font-weight: 400;
-        color: #ababab;
+      .el-tabs__nav-wrap::after {
+        background-color: #efefef;
       }
     }
   }
 }
-.term-content {
-  margin-top: 108px;
-  margin-bottom: 30px;
-  /deep/ .el-tabs {
-    .el-tabs__header {
-      margin-bottom: 20px;
-    }
-    .el-tabs__nav-scroll {
-      display: flex;
-    }
-    .el-tabs__active-bar {
-      // display: none;
-      width: 70px !important;
-      // transform: translateX(0) !important;
-      height: 4px;
-    }
-    .el-tabs__item {
-      position: relative;
-      padding: 0 20px 0 0 !important;
-      width: 70px;
-      text-align: center;
-      font-size: 16px;
-      font-weight: bold;
-      color: #333333;
-      box-sizing: content-box;
-    }
-    .el-tabs__nav-wrap::after {
-      width: 0 !important;
-    }
-    .el-tabs__item.is-disabled {
-      color: #cccccc;
-    }
-  }
+.category-list {
+  padding: 0 20px;
+  width: 100%;
 }
 </style>

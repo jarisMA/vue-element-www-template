@@ -359,7 +359,7 @@ export default {
 
 .homework-wrapper {
   .homework-tips {
-    margin-bottom: 20px;
+    padding: 20px;
     line-height: 20px;
     font-size: 14px;
     font-weight: 400;

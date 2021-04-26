@@ -46,3 +46,23 @@ export const USER_HOMEWORK_SCORE = {
   80: A1Img,
   100: SImg
 };
+
+// 班级绑定课程类型
+export const COURSE_TYPE_COURSE = 1;
+export const COURSE_TYPE_BIBLE = 3;
+export const COURSE_TYPE_LIVE = 2;
+
+export const COURSE_TYPE = {
+  [COURSE_TYPE_COURSE]: {
+    value: COURSE_TYPE_COURSE,
+    label: "课程"
+  },
+  [COURSE_TYPE_BIBLE]: {
+    value: COURSE_TYPE_BIBLE,
+    label: "宝典"
+  },
+  [COURSE_TYPE_LIVE]: {
+    value: 2,
+    label: "直播"
+  }
+};

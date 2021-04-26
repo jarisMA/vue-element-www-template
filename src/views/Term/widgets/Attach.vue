@@ -110,7 +110,7 @@ export default {
 <style lang='less' scoped>
 @padding: 20px;
 .attach-wrapper {
-  // margin-top: 16px;
+  padding-top: @padding;
 }
 .attach-list {
   width: 100%;

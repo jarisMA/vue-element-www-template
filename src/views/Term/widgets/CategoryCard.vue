@@ -1,11 +1,25 @@
 <template>
-  <div class="category-card">
+  <div
+    :class="[
+      'category-card',
+      new Date().valueOf() < new Date(category.start_at).valueOf()
+        ? 'disabled'
+        : ''
+    ]"
+  >
     <el-collapse>
-      <el-collapse-item>
+      <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
         <template slot="title">
           <div class="card-header">
             <div class="card-header-left">
-              <i class="card-header-icon play-icon"></i>
+              <i
+                :class="[
+                  'card-header-icon',
+                  category.type === COURSE_TYPE_COURSE ? 'play-icon' : '',
+                  category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
+                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
+                ]"
+              ></i>
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
@@ -13,39 +27,45 @@
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc">
-                  {{ category.desc }}
+                  {{ category.description }}
                 </p>
               </div>
-              <div class="card-header-content-right">
+              <div
+                class="card-header-content-right"
+                v-if="category.type === COURSE_TYPE_COURSE"
+              >
                 <label class="card-header-count"
-                  >{{ category.lesson_count }}节课</label
+                  >{{ category.resource.lesson_number }}节课</label
                 >
                 <label class="card-header-duration"
-                  >（{{ Math.floor(category.duration / 60) }}分钟）</label
+                  >（{{
+                    Math.floor(category.resource.second_duration / 60)
+                  }}分钟）</label
                 >
               </div>
             </div>
           </div>
         </template>
-        <div class="card-content">
+        <div class="card-content" v-if="category.type === COURSE_TYPE_COURSE">
           <div class="card-content-list">
             <div
               class="card-content-item"
-              v-for="lesson of category.lessons"
+              v-for="lesson of category.resource.lessons"
               :key="lesson.id"
             >
               <div class="card-content-item-left">
                 <i class="card-content-item-icon play-icon"></i>
                 <h5 class="card-content-item-title">
-                  {{ lesson.title }}
+                  {{ lesson.name }}
                 </h5>
               </div>
               <div class="card-content-item-right">
                 <label class="card-content-item-status">
-                  {{ lesson.status }}
+                  <!-- {{ lesson.status }} -->
                 </label>
                 <label class="card-content-item-duration">
-                  {{ lesson.duration }}
+                  <!-- {{ lesson.second_duration }} -->
+                  00:00
                 </label>
               </div>
             </div>
@@ -57,13 +77,25 @@
 </template>
 
 <script>
+import {
+  COURSE_TYPE_COURSE,
+  COURSE_TYPE_BIBLE,
+  COURSE_TYPE_LIVE
+} from "utils/const";
 export default {
-  name: "AcademyCategoryCard",
+  name: "CategoryCard",
   props: {
     category: {
       type: Object,
       required: true
     }
+  },
+  data() {
+    return {
+      COURSE_TYPE_COURSE,
+      COURSE_TYPE_BIBLE,
+      COURSE_TYPE_LIVE
+    };
   }
 };
 </script>
@@ -73,8 +105,20 @@ export default {
 
 .category-card {
   width: 100%;
+  &.disabled {
+    filter: opacity(0.5);
+    cursor: auto;
+  }
   /deep/ .el-collapse {
     border: unset;
+    .el-collapse-item.is-disabled {
+      .el-collapse-item__arrow {
+        display: none;
+      }
+      .el-collapse-item__header {
+        cursor: auto;
+      }
+    }
     .el-collapse-item__header {
       height: auto;
     }
@@ -102,9 +146,12 @@ export default {
       display: block;
       width: 32px;
       height: 32px;
-      background-color: @primaryColor;
+      background-color: #2c3330;
       mask-repeat: no-repeat;
       mask-size: cover;
+      &.active {
+        background-color: @primaryColor;
+      }
     }
   }
 
