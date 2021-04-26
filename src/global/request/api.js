@@ -38,6 +38,7 @@ export default {
   campAttaches: termId => `${WEB_PREFIX}/camp/term/${termId}/attach`,
   bibles: `${WEB_PREFIX}/bible`,
   bible: id => `${WEB_PREFIX}/bible/${id}`,
+  bibleNode: id => `${WEB_PREFIX}/bible-node/${id}`,
   biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`,
 
   questionChannels: `${WEB_PREFIX}/question/channels`,

@@ -6,6 +6,7 @@
         ? 'disabled'
         : ''
     ]"
+    @click.prevent="handleCardClick"
   >
     <el-collapse>
       <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
@@ -82,6 +83,8 @@ import {
   COURSE_TYPE_BIBLE,
   COURSE_TYPE_LIVE
 } from "utils/const";
+import { goBibleDetail } from "utils/routes";
+
 export default {
   name: "CategoryCard",
   props: {
@@ -96,6 +99,14 @@ export default {
       COURSE_TYPE_BIBLE,
       COURSE_TYPE_LIVE
     };
+  },
+  methods: {
+    handleCardClick() {
+      const { type, resource } = this.category;
+      if (type === COURSE_TYPE_BIBLE) {
+        goBibleDetail(resource.bible_id);
+      }
+    }
   }
 };
 </script>
