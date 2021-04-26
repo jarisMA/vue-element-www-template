@@ -44,6 +44,10 @@ export default {
     TheAvatar
   },
   props: {
+    id: {
+      type: Number,
+      required: true
+    },
     isEdit: {
       type: Boolean,
       default: false
@@ -90,7 +94,7 @@ export default {
             });
         } else {
           questionService
-            .addAnswer(this.$route.params.id, {
+            .addAnswer(this.id, {
               content: this.content
             })
             .then(res => {
@@ -101,7 +105,7 @@ export default {
                 auth_like_count: 0,
                 comment_count: 0,
                 like_count: 0,
-                question_id: this.$route.params.id,
+                question_id: this.id,
                 user: { id, nickname, avatar_url },
                 comments: []
               });

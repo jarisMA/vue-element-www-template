@@ -81,6 +81,15 @@ export const goBibleDetail = (id, type = "_self") => {
   );
 };
 
+export const goQuestion = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Question"
+    },
+    type
+  );
+};
+
 export const goQuestionDetail = (id, type = "_blank") => {
   return goRoute(
     {

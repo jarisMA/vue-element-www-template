@@ -77,9 +77,11 @@ import {
   // CascaderPanel,
   Loading,
   MessageBox,
-  Popconfirm
+  Popconfirm,
   // Message,
-  // Notification
+  // Notification,
+  // Scrollbar,
+  InfiniteScroll
 } from "element-ui";
 
 Vue.use(Pagination);
@@ -158,9 +160,9 @@ Vue.use(Image);
 // Vue.use(PageHeader);
 // Vue.use(CascaderPanel);
 Vue.use(Popconfirm);
-
+// Vue.use(Scrollbar);
 Vue.use(Loading.directive);
-
+Vue.use(InfiniteScroll);
 // Vue.prototype.$loading = Loading.service;
 // Vue.prototype.$msgbox = MessageBox;
 // Vue.prototype.$alert = MessageBox.alert;

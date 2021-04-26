@@ -8,14 +8,11 @@ const questionService = {
   addLike: (params = {}) => {
     return request.post(API.questionLikeAdd, params);
   },
-  updateLike: (params = {}) => {
-    return request.put(API.questionLikeAdd, params);
-  },
-  deleteLike: (type, resourceId) => {
-    return request.delete(API.questionLikeDelete(type, resourceId));
-  },
   questions: (params = {}) => {
     return request.get(API.questions, params);
+  },
+  myQuestions: (params = {}) => {
+    return request.get(API.myQuestions, params);
   },
   addQuestion: params => {
     return request.post(API.questionAdd, params);

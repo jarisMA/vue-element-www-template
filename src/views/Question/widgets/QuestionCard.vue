@@ -1,5 +1,8 @@
 <template>
-  <div class="question-card" @click.prevent="goDetail(question.id)">
+  <div
+    :class="['question-card', !userInfo ? 'auto' : '']"
+    @click.prevent="goDetail(question.id)"
+  >
     <div class="card-top">
       <label class="question-channel">
         <icon-svg svg-class="rz-icon" svg-name="rz"></icon-svg>
@@ -15,11 +18,11 @@
           {{ item }}
         </p>
       </div>
-      <div class="question-images">
+      <div class="question-images" v-if="question.images.length > 0">
         <the-preview-image
           width="80px"
           height="80px"
-          :srcList="images"
+          :srcList="question.images"
           @click.native.stop
         />
       </div>
@@ -30,20 +33,24 @@
         <span
           :class="[
             'user-name',
-            userInfo.id === question.user.id ? 'active' : ''
+            userInfo && userInfo.id === question.user.id ? 'active' : ''
           ]"
           >{{ question.user.nickname }}</span
         >
       </div>
       <ul class="question-status">
         <li
-          :class="['like-status', question.is_like ? 'active' : '']"
-          @click.stop="handleLikeClick"
+          :class="[
+            'like-status',
+            !userInfo ? 'auto' : '',
+            question.is_like ? 'active' : ''
+          ]"
+          @click.stop="handleLikeClick()"
         >
           好问题
           <span class="status-count">{{ question.like_count }}</span>
         </li>
-        <li class="comment-status">
+        <li :class="['comment-status', !userInfo ? 'auto' : '']">
           <span class="status-count">{{ question.answer_count }}</span
           >条回答
         </li>
@@ -71,24 +78,28 @@ export default {
     }
   },
   data() {
-    return {
-      images: (this.question.images && this.question.images.split(",")) || []
-    };
-  },
-  watch: {
-    question(val) {
-      this.images = (val.images && val.images.split(",")) || [];
-    }
+    return {};
   },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
     goQuestionDetail,
+    wxLogin() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+    },
     goDetail(id) {
+      if (!this.userInfo) {
+        this.wxLogin();
+        return;
+      }
       this.$emit("detail", id);
     },
     handleLikeClick() {
+      if (!this.userInfo) {
+        this.wxLogin();
+        return;
+      }
       if (this.question.is_like) {
         this.$emit("unlike");
       } else {
@@ -106,6 +117,9 @@ export default {
   padding: 24px 20px;
   background: #fff;
   cursor: pointer;
+  &.auto {
+    cursor: auto;
+  }
   .card-top {
     .question-channel {
       line-height: 24px;
@@ -172,6 +186,9 @@ export default {
         cursor: pointer;
         user-select: none;
         position: relative;
+        &.auto {
+          cursor: auto;
+        }
         &::before {
           position: absolute;
           top: 0;
@@ -183,10 +200,12 @@ export default {
           mask-repeat: no-repeat;
           mask-size: cover;
         }
-        &:hover {
-          color: #606c66;
-          &::before {
-            background-color: #606c66;
+        &:not(.auto) {
+          &:hover {
+            color: #606c66;
+            &::before {
+              background-color: #606c66;
+            }
           }
         }
         &.active {

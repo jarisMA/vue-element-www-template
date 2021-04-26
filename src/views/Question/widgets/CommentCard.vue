@@ -10,11 +10,11 @@
             <span
               :class="[
                 'user-name',
-                userInfo.id === comment.user.id ? 'active' : ''
+                userInfo && userInfo.id === comment.user.id ? 'active' : ''
               ]"
               >{{ comment.user.nickname }}</span
             >
-            <template v-if="comment.cited_user">
+            <template v-if="comment.cited_user && userInfo">
               <span class="reply-span">回复</span>
               <span
                 :class="[
@@ -27,7 +27,7 @@
           </div>
           <div class="time-wrapper">
             <!-- {{ fromNow(comment.created_at) }} -->
-            {{ comment.created_at }}
+            {{ formatDate(comment.created_at, "YYYY-MM-DD hh:mm:ss") }}
           </div>
         </div>
         <div class="card-content">
@@ -40,7 +40,7 @@
             <the-preview-image width="60px" height="60px" :srcList="images" />
           </div>
         </div>
-        <div class="card-bottom">
+        <div class="card-bottom" v-if="userInfo">
           <div
             v-if="allowComment"
             class="reply-operate operate-item"
@@ -65,7 +65,7 @@
             举报
           </div>
         </div>
-        <div v-show="commentVisible" class="reply-comment">
+        <div v-show="commentVisible && userInfo" class="reply-comment">
           <comment
             :answerId="answerId"
             :parent="parent || comment"
@@ -105,7 +105,7 @@ import ThePreviewImage from "components/ThePreviewImage";
 import Comment from "./Comment";
 import { mapState } from "vuex";
 import questionService from "service/question";
-import { fromNow } from "utils/moment";
+import { fromNow, formatDate } from "utils/moment";
 
 export default {
   name: "QuestionCommentCard",
@@ -177,6 +177,7 @@ export default {
   },
   methods: {
     fromNow,
+    formatDate,
     commented(val, key) {
       this.commentVisible = false;
       if (this.isSecondary) {

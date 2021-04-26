@@ -8,11 +8,13 @@
             <span
               :class="[
                 'user-name',
-                userInfo.id === answer.user.id ? 'active' : ''
+                userInfo && userInfo.id === answer.user.id ? 'active' : ''
               ]"
               >{{ answer.user.nickname }}</span
             >
-            <div class="create-time">{{ answer.created_at }}</div>
+            <div class="create-time">
+              {{ formatDate(answer.created_at, "YYYY-MM-DD hh:mm:ss") }}
+            </div>
           </div>
         </div>
         <div class="card-content">
@@ -71,7 +73,7 @@
           class="dropdown-wrapper"
           placement="top-end"
           trigger="click"
-          v-if="userInfo.id === answer.user.id"
+          v-if="userInfo && userInfo.id === answer.user.id"
         >
           <i class="el-icon-more"></i>
           <el-dropdown-menu slot="dropdown" class="question-dropdown">
@@ -123,7 +125,7 @@
 import TheAvatar from "components/TheAvatar";
 import CommentCard from "./CommentCard";
 import Comment from "./Comment";
-
+import { formatDate } from "utils/moment";
 import { mapState } from "vuex";
 import questionService from "service/question";
 
@@ -192,6 +194,7 @@ export default {
     }
   },
   methods: {
+    formatDate,
     deleteAnswer() {
       this.loading = true;
       questionService
@@ -255,36 +258,20 @@ export default {
       this.timer = null;
       if (this.isClap) {
         this.claping = true;
-        if (!this.answer.auth_like_count) {
-          questionService
-            .addLike({
-              type: 2,
-              resource_id: this.answer.id,
-              count: this.clapCount
-            })
-            .then(() => {
-              this.answer.auth_like_count = this.clapCount;
-              this.answer.like_count += this.clapCount;
-            })
-            .finally(() => {
-              this.claping = false;
-            });
-        } else {
-          questionService
-            .updateLike({
-              type: 2,
-              resource_id: this.answer.id,
-              count: this.clapCount
-            })
-            .then(() => {
-              const dis = this.clapCount - this.answer.auth_like_count;
-              this.answer.auth_like_count = this.clapCount;
-              this.answer.like_count += dis;
-            })
-            .finally(() => {
-              this.claping = false;
-            });
-        }
+        questionService
+          .addLike({
+            type: 2,
+            resource_id: this.answer.id,
+            count: this.clapCount
+          })
+          .then(() => {
+            const dis = this.clapCount - this.answer.auth_like_count;
+            this.answer.auth_like_count = this.clapCount;
+            this.answer.like_count += dis;
+          })
+          .finally(() => {
+            this.claping = false;
+          });
       }
       this.isClap = false;
     },

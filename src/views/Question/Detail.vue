@@ -25,15 +25,16 @@
             />
           </div>
         </div>
-        <div class="detail-bottom">
-          <el-button
-            v-if="authAnswer"
-            class="add-btn"
-            type="primary"
-            @click="editAnswer"
-            >编辑回答</el-button
-          >
-          <el-button v-else class="add-btn" type="primary" @click="startAnswer"
+        <div class="detail-bottom" v-if="userInfo">
+          <!-- <el-button v-if="authAnswer"
+                     class="add-btn"
+                     type="primary"
+                     @click="editAnswer">编辑回答</el-button>
+          <el-button v-else
+                     class="add-btn"
+                     type="primary"
+                     @click="startAnswer">写回答</el-button> -->
+          <el-button class="add-btn" type="primary" @click="startAnswer"
             >写回答</el-button
           >
 
@@ -95,8 +96,10 @@
               {{ question.title }}
             </h3>
             <answer-rich-text
+              v-if="userInfo"
               class="answer-rich-text"
               ref="answerRichText"
+              :id="id"
               :isEdit="isEditAnswer"
               :answer="authAnswer"
               @submited="addAnswerSucc"
@@ -145,10 +148,11 @@
               <p>暂无更多回答</p>
               <p>
                 你还可以
-                <span v-if="authAnswer" class="primary" @click="editAnswer"
+                <!-- <span v-if="authAnswer" class="primary" @click="editAnswer"
                   >编辑回答</span
                 >
-                <span v-else class="primary" @click="startAnswer">写回答</span>
+                <span v-else class="primary" @click="startAnswer">写回答</span> -->
+                <span class="primary" @click="startAnswer">写回答</span>
               </p>
             </div>
           </div>
@@ -193,6 +197,7 @@
       </div>
     </div>
     <question-edit
+      v-if="userInfo"
       :visible.sync="isEdit"
       :question="question"
       @update="updateQuestion"
@@ -238,7 +243,6 @@ export default {
       isEditAnswer: false,
       authAnswer: null,
       authAnswerVisible: true,
-      originAnswers: [],
       answers: [],
       pagination: {
         size: 10,
@@ -255,7 +259,19 @@ export default {
   },
   watch: {
     id() {
+      this.answerVisible = false;
+      this.isEdit = false;
+      this.isEditAnswer = false;
+      this.authAnswer = null;
+      this.authAnswerVisible = true;
+      this.answers = [];
       this.getData();
+    },
+    question: {
+      handler(val) {
+        this.$emit("update", val);
+      },
+      deep: true
     }
   },
   created() {
@@ -277,18 +293,11 @@ export default {
           page_size: this.pagination.size
         })
       ];
+      this.loading = true;
       Promise.all(promiseArr)
-        .then(([res, answers]) => {
-          const { question, auth_answer } = res;
-          this.authAnswer = auth_answer;
-          question.images =
-            (question.images && question.images.split(",")) || [];
+        .then(([question, answers]) => {
           this.question = question;
-          this.originAnswers = answers.list;
-          this.answers = this.originAnswers;
-          this.answers = this.originAnswers.filter(
-            item => item.id !== (this.authAnswer && this.authAnswer.id)
-          );
+          this.answers = answers.list;
           this.pagination.page = 1;
           this.pagination.total = answers.pagination.total;
         })
@@ -305,11 +314,7 @@ export default {
         })
         .then(res => {
           this.backTop();
-          this.originAnswers = res.list;
           this.answers = res.list;
-          this.answers = this.originAnswers.filter(
-            item => item.id !== (this.authAnswer && this.authAnswer.id)
-          );
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
         })
@@ -349,7 +354,8 @@ export default {
     addAnswerSucc(value) {
       this.answerVisible = false;
       this.question.answer_count++;
-      this.authAnswer = value;
+      // this.authAnswer = value;
+      this.answers.unshift(value);
     },
     deletedAuthAnswer() {
       this.question.answer_count--;
@@ -362,28 +368,22 @@ export default {
     toggleLikeClick() {
       if (!this.liking) {
         this.liking = true;
+        let toggleFlag = false;
         if (!this.question.is_like) {
-          questionService
-            .addLike({
-              type: 1,
-              resource_id: this.id
-            })
-            .then(() => {
-              this.toggleLike(true);
-            })
-            .finally(() => {
-              this.liking = false;
-            });
-        } else {
-          questionService
-            .deleteLike(1, this.id)
-            .then(() => {
-              this.toggleLike(false);
-            })
-            .finally(() => {
-              this.liking = false;
-            });
+          toggleFlag = true;
         }
+        questionService
+          .addLike({
+            type: 1,
+            resource_id: this.id,
+            count: toggleFlag ? 1 : 0
+          })
+          .then(() => {
+            this.toggleLike(toggleFlag);
+          })
+          .finally(() => {
+            this.liking = false;
+          });
       }
     },
     toggleLike(flag) {
@@ -400,7 +400,7 @@ export default {
         .deleteQuestion(this.id)
         .then(() => {
           this.$notice("删除问题成功");
-          this.$emit("close");
+          this.$emit("deleted");
         })
         .finally(() => {
           this.loading = false;

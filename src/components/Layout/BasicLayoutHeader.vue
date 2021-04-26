@@ -40,6 +40,15 @@
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
           >
+          <span
+            :class="[
+              'header-nav-item',
+              'Question',
+              ['Question'].indexOf($route.name) > -1 ? 'active' : ''
+            ]"
+            @click="(visible || theme !== 'primary') && goQuestion()"
+            >互助广场</span
+          >
         </nav>
       </div>
       <transition
@@ -47,6 +56,11 @@
         leave-active-class="animated fadeOut"
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
+          <div
+            class="plan-go-enter"
+            v-if="userInfo"
+            @click="handlePlanGoDraw()"
+          ></div>
           <div class="user-handle-container">
             <el-button
               class="login-button"
@@ -99,9 +113,18 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import { goHome, goMy, goProfile, goBible } from "utils/routes";
+import {
+  goHome,
+  goMy,
+  goProfile,
+  goBible,
+  goQuestion,
+  goDrawPlan
+} from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
+import kujialeService from "service/kujiale";
+
 export default {
   name: "BasicLayoutHeader",
   components: {
@@ -130,7 +153,24 @@ export default {
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
-    goBible,
+    goBible() {
+      if (this.theme === "primary") {
+        this.$confirm(`是否确认离开当前页面?`).then(() => {
+          goBible();
+        });
+      } else {
+        goBible();
+      }
+    },
+    goQuestion() {
+      if (this.theme === "primary") {
+        this.$confirm(`是否确认离开当前页面?`).then(() => {
+          goQuestion();
+        });
+      } else {
+        goQuestion();
+      }
+    },
     goHome() {
       if (this.theme === "primary") {
         return;
@@ -163,6 +203,24 @@ export default {
     },
     handleLogout() {
       this.$store.commit("LOGOUT");
+    },
+    handlePlanGoDraw() {
+      kujialeService
+        .designList({
+          page: 1,
+          page_size: 2
+        })
+        .then(res => {
+          this.plans = res.result;
+          if (this.plans.length > 0 && !isVip()) {
+            this.$notice({
+              type: "warning",
+              title: "oops～方案创建数量已达上限"
+            });
+          } else {
+            goDrawPlan();
+          }
+        });
     }
   }
 };
@@ -250,11 +308,35 @@ export default {
           margin-right: 4px;
         }
       }
+      .Question {
+        &:before {
+          content: "";
+          display: inline-block;
+          width: 30px;
+          height: 24px;
+          mask: url("~images/header/wdghz2.svg") no-repeat center;
+          background: @primaryColor;
+          vertical-align: middle;
+          margin-right: 4px;
+        }
+      }
     }
   }
   .header-ft {
     display: flex;
     align-items: center;
+    .plan-go-enter {
+      background-color: #15ae65;
+      width: 139px;
+      height: 32px;
+      margin-right: 20px;
+      background: url("~images/plan-go.jpg");
+      background-size: 139px 32px;
+      cursor: pointer;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
     .user-handle-container {
       position: relative;
       height: 100%;
@@ -444,6 +526,11 @@ export default {
             &::before {
               background-image: url("~images/link_logo-3_white.svg");
             }
+          }
+        }
+        &.Question {
+          &::before {
+            background: #fff;
           }
         }
       }

@@ -1,56 +1,64 @@
 <template>
   <div class="question-wrapper">
-    <div class="operate-container">
-      <ul class="filter-container">
-        <li :class="[isAll ? 'active' : '']" @click="getAllData(true)">
-          全部
-        </li>
-        <li :class="[!isAll ? 'active' : '']" @click="getAllData(false)">
-          只看我的
-        </li>
-      </ul>
-      <el-button class="add-btn" type="primary" @click="addVisible = true"
-        >我要提问</el-button
-      >
-    </div>
-    <div class="question-container" v-loading="loading">
-      <template v-if="questions.length > 0">
-        <ul class="question-list">
-          <li
-            class="question-item"
-            v-for="(item, key) of questions"
-            :key="item.id"
-          >
-            <question-card
-              :question="item"
-              @like="addLike(item.id, key)"
-              @unlike="deleteLike(item.id, key)"
-              @detail="goDetail"
-            />
+    <div class="container-1200">
+      <div class="operate-container" v-if="userInfo">
+        <ul class="filter-container">
+          <li :class="[isAll ? 'active' : '']" @click="getAllData()">
+            全部
+          </li>
+          <li :class="[!isAll ? 'active' : '']" @click="getMyQuestions()">
+            只看我的
           </li>
         </ul>
-        <pagination
-          :pageSize="pagination.size"
-          :current-page="pagination.page"
-          :total="pagination.total"
-          @change-page="getData"
-        />
-        <div class="question-more">
-          <p>没有想了解的内容？</p>
-          <p>
-            你还可以
-            <span class="primary" @click="addVisible = true">去提问</span>
-          </p>
-        </div>
-      </template>
-      <div v-else-if="!loading" class="empty-container">
-        <the-empty noText="还没有人提出过问题" />
         <el-button class="add-btn" type="primary" @click="addVisible = true"
           >我要提问</el-button
         >
       </div>
+      <div class="question-container" v-loading="loading">
+        <template v-if="questions.length > 0">
+          <ul class="question-list">
+            <li
+              class="question-item"
+              v-for="(item, key) of questions"
+              :key="item.id"
+            >
+              <question-card
+                :question="item"
+                @like="toggleLike(item.id, key, true)"
+                @unlike="toggleLike(item.id, key, false)"
+                @detail="goDetail(key)"
+              />
+            </li>
+          </ul>
+          <pagination
+            class="pagination-wrapper"
+            :pageSize="pagination.size"
+            :current-page="pagination.page"
+            :total="pagination.total"
+            @change-page="getData"
+          />
+          <div class="question-more" v-if="userInfo">
+            <p>没有想了解的内容？</p>
+            <p>
+              你还可以
+              <span class="primary" @click="addVisible = true">去提问</span>
+            </p>
+          </div>
+        </template>
+        <div v-else-if="!loading" class="empty-container">
+          <the-empty noText="还没有人提出过问题" />
+          <el-button
+            v-if="userInfo"
+            class="add-btn"
+            type="primary"
+            @click="addVisible = true"
+            >我要提问</el-button
+          >
+        </div>
+      </div>
     </div>
     <el-dialog
+      v-if="userInfo"
       class="add-dialog"
       :visible.sync="addVisible"
       width="580px"
@@ -60,6 +68,7 @@
         <el-form-item class="title-container" prop="title">
           <the-avatar :size="40" :url="userInfo.avatar_url" />
           <el-input
+            ref="titleInput"
             type="textarea"
             v-model.trim="addForm.title"
             resize="none"
@@ -143,7 +152,13 @@
       custom-class="question-drawer"
       ref="drawer"
     >
-      <question-detail :id="questionId" @backTop="drawerBackTop" />
+      <question-detail
+        v-if="drawer"
+        :id="questionId"
+        @backTop="drawerBackTop"
+        @update="updateQuestion"
+        @deleted="deleteQuestion"
+      />
     </el-drawer>
   </div>
 </template>
@@ -151,7 +166,7 @@
 <script>
 import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
-import QuestionCard from "./QuestionCard";
+import QuestionCard from "./widgets/QuestionCard";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
 import QuestionDetail from "@/views/Question/Detail";
@@ -177,7 +192,7 @@ export default {
       submiting: false,
       pagination: {
         page: 1,
-        size: 10,
+        size: 15,
         total: 0
       },
       channels: [],
@@ -190,8 +205,18 @@ export default {
       questions: [],
       liking: false,
       drawer: false,
-      questionId: null
+      questionId: null,
+      questionIndex: null
     };
+  },
+  watch: {
+    addVisible(val) {
+      if (val) {
+        this.$nextTick(() => {
+          this.$refs["titleInput"].focus();
+        });
+      }
+    }
   },
   computed: {
     ...mapState(["userInfo"])
@@ -202,9 +227,11 @@ export default {
   },
   methods: {
     getConst() {
-      questionService.channels().then(res => {
-        this.channels = res;
-      });
+      if (this.userInfo) {
+        questionService.channels().then(res => {
+          this.channels = res;
+        });
+      }
     },
     getAllData(flag) {
       if (this.isAll === flag) {
@@ -215,11 +242,12 @@ export default {
     },
     getData(start = 1) {
       this.loading = true;
+      this.isAll = true;
       let params = {
         page: start,
-        page_size: this.pagination.size
+        page_size: this.pagination.size,
+        type: 1
       };
-      !this.isAll && (params.mine = true);
       questionService
         .questions(params)
         .then(res => {
@@ -231,9 +259,38 @@ export default {
           this.loading = false;
         });
     },
-    goDetail(id) {
-      this.drawer = true;
-      this.questionId = id;
+    getMyQuestions(start = 1) {
+      this.loading = true;
+      this.isAll = false;
+      let params = {
+        page: start,
+        page_size: this.pagination.size,
+        type: 1,
+        status: 2
+      };
+      questionService
+        .myQuestions(params)
+        .then(res => {
+          this.questions = res.list;
+          this.pagination.page = start;
+          this.pagination.total = res.pagination.total;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    goDetail(index) {
+      if (this.userInfo) {
+        this.drawer = true;
+        this.questionIndex = index;
+        this.questionId = this.questions[index].id;
+        const dom = document.querySelector(".question-drawer .el-drawer__body");
+        if (dom) {
+          this.$nextTick(() => {
+            dom.scrollTo(0, 0);
+          });
+        }
+      }
     },
     addQuestion() {
       const { title, content, images, channel_id } = this.addForm;
@@ -257,7 +314,9 @@ export default {
           title,
           content,
           images: images.join(","),
-          channel_id
+          channel_id,
+          type: 1,
+          status: 2
         })
         .then(res => {
           this.handleClose();
@@ -276,7 +335,7 @@ export default {
             answer_count: 0,
             title,
             content,
-            images: images.join(","),
+            images: images,
             channel,
             user: { id, nickname, avatar_url }
           });
@@ -300,36 +359,21 @@ export default {
       done && done();
       this.addVisible = false;
     },
-    addLike(id, key) {
+    toggleLike(id, key, flag = true) {
       if (!this.liking) {
         this.liking = true;
         questionService
           .addLike({
             type: 1,
-            resource_id: id
+            resource_id: id,
+            count: flag ? 1 : 0
           })
           .then(() => {
+            const count = flag ? 1 : -1;
             this.$set(this.questions, key, {
               ...this.questions[key],
-              like_count: this.questions[key].like_count + 1,
-              is_like: true
-            });
-          })
-          .finally(() => {
-            this.liking = false;
-          });
-      }
-    },
-    deleteLike(id, key) {
-      if (!this.liking) {
-        this.liking = true;
-        questionService
-          .deleteLike(1, id)
-          .then(() => {
-            this.$set(this.questions, key, {
-              ...this.questions[key],
-              like_count: this.questions[key].like_count - 1,
-              is_like: false
+              like_count: this.questions[key].like_count + count,
+              is_like: flag
             });
           })
           .finally(() => {
@@ -344,6 +388,15 @@ export default {
         top: 0,
         behaviour: "smooth"
       });
+    },
+    updateQuestion(data) {
+      this.$set(this.questions, this.questionIndex, {
+        ...data
+      });
+    },
+    deleteQuestion() {
+      this.questions.splice(this.questionIndex, 1);
+      this.drawer = false;
     }
   }
 };
@@ -354,6 +407,9 @@ export default {
 @baseColor: #8ea098;
 .question-wrapper {
   padding: 0 10px;
+  .container-1200 {
+    margin-top: 20px;
+  }
   .question-container {
     min-height: calc(100vh - 528px - 50px);
   }
@@ -588,6 +644,18 @@ export default {
       }
     }
   }
+  /deep/ .question-drawer {
+    background: #fafafa !important;
+    outline: unset;
+    .el-drawer__header {
+      height: 60px;
+      padding: 20px;
+      margin: 0;
+    }
+    .el-drawer__body {
+      overflow: auto;
+    }
+  }
 }
 .empty-container {
   display: flex;
@@ -632,16 +700,7 @@ export default {
     }
   }
 }
-.question-drawer {
-  background: #fafafa !important;
-  outline: unset;
-  /deep/ .el-drawer__header {
-    height: 60px;
-    padding: 20px;
-    margin: 0;
-  }
-  /deep/.el-drawer__body {
-    overflow: auto;
-  }
+.pagination-wrapper {
+  margin-top: 10px;
 }
 </style>

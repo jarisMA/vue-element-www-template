@@ -8,14 +8,16 @@ yarn install
 ## 配置 HOST
 
 ```
-127.0.0.1 www.home-plan.cn
+127.0.0.1 www.docee.cn
 ```
 
 ## Touch .env.local
 
 ```
 NODE_ENV=development
-VUE_APP_HOST=https://api.home-plan.cn
+VUE_APP_DOMAIN=.docee.cn
+VUE_APP_HOST=https://api.docee.cn
+VUE_APP_WECHAT_APPID=wx90ef6e551abf286e
 ```
 
 ## Compiles and hot-reloads for development

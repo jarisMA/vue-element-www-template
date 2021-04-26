@@ -4,6 +4,7 @@
     :visible="visible"
     width="580px"
     :before-close="handleClose"
+    :modal="false"
     v-loading="loading"
   >
     <el-form :model="form" ref="form" @submit.native.prevent>
@@ -190,7 +191,9 @@ export default {
           title,
           content,
           images: images.join(","),
-          channel_id
+          channel_id,
+          type: 1,
+          status: 2
         })
         .then(() => {
           this.submiting = false;
