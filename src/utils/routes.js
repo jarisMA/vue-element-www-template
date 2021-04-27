@@ -60,6 +60,18 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
+export const goCourse = (id, type = "_blank") => {
+  return goRoute(
+    {
+      name: "Course",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
 export const goBible = (type = "_self") => {
   return goRoute(
     {

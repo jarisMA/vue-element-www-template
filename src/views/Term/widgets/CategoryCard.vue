@@ -6,7 +6,11 @@
         ? 'disabled'
         : ''
     ]"
-    @click.prevent="handleCardClick"
+    @click.prevent="
+      new Date().valueOf() >= new Date(category.start_at).valueOf()
+        ? handleCardClick()
+        : null
+    "
   >
     <el-collapse>
       <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
@@ -83,7 +87,7 @@ import {
   COURSE_TYPE_BIBLE,
   COURSE_TYPE_LIVE
 } from "utils/const";
-import { goBibleDetail } from "utils/routes";
+import { goBibleDetail, goCourse } from "utils/routes";
 
 export default {
   name: "CategoryCard",
@@ -105,6 +109,8 @@ export default {
       const { type, resource } = this.category;
       if (type === COURSE_TYPE_BIBLE) {
         goBibleDetail(resource.bible_id);
+      } else if (type === COURSE_TYPE_COURSE) {
+        goCourse(resource.id);
       }
     }
   }

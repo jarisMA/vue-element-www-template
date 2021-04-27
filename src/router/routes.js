@@ -10,6 +10,8 @@ import Home from "@/views/Home";
 import My from "@/views/My/Index";
 import Protocol from "@/views/Protocol";
 import Profile from "@/views/Profile";
+import Course from "@/views/Term/Course";
+
 const routes = [
   {
     path: "/",
@@ -50,6 +52,14 @@ const routes = [
     path: "/protocol",
     name: "Protocol",
     component: Protocol
+  },
+  {
+    path: "/course/:id",
+    name: "Course",
+    component: Course,
+    meta: {
+      auth: true
+    }
   },
   {
     path: "/*",

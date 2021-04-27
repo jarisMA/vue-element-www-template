@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-loading="loading">
     <div class="container-1200">
       <div class="page-left">
         <the-loading-image

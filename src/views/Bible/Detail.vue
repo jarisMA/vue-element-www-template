@@ -140,7 +140,9 @@ export default {
               this.activeNav = res.children[0] || {};
               this.menus = children || [];
               this.activeSubMenu =
-                (this.menus[0] && this.menus[0].children[0]) ||
+                (this.menus[0] &&
+                  this.menus[0].children &&
+                  this.menus[0].children[0]) ||
                 this.menus[0] ||
                 {};
               this.depth = this.getDepth(this.menus, 0);
@@ -152,7 +154,9 @@ export default {
             this.activeNav = res.children[0] || {};
             this.menus = this.activeNav.children || [];
             this.activeSubMenu =
-              (this.menus[0] && this.menus[0].children[0]) ||
+              (this.menus[0] &&
+                this.menus[0].children &&
+                this.menus[0].children[0]) ||
               this.menus[0] ||
               {};
             this.depth = this.getDepth(this.menus, 0);

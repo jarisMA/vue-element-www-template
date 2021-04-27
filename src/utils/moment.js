@@ -18,3 +18,25 @@ export const formNowFormatDay = date => {
 export const fromNow = (date, format = "YYYY年MM月DD日 HH:mm") => {
   return moment(date, format).fromNow();
 };
+
+export const formatSeconds = second => {
+  if (!second) return "00:00";
+  let secondTime = parseInt(second); // 秒
+  let minuteTime = 0; // 分
+  var hourTime = 0; // 小时
+  if (secondTime > 60) {
+    minuteTime = parseInt(secondTime / 60);
+    secondTime = parseInt(secondTime % 60);
+    if (minuteTime > 60) {
+      hourTime = parseInt(minuteTime / 60);
+      minuteTime = parseInt(minuteTime % 60);
+    }
+  }
+
+  let result =
+    ("0" + minuteTime).substr(-2, 2) + ":" + ("0" + secondTime).substr(-2, 2);
+  if (hourTime > 0) {
+    result = ("0" + hourTime).substr(-2, 2) + ":" + result;
+  }
+  return result;
+};

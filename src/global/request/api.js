@@ -36,6 +36,7 @@ export default {
   campHomeworkUpdate: id => `${WEB_PREFIX}/camp/homework/${id}`,
   checkTerm: id => `${WEB_PREFIX}/camp/term/${id}/check`,
   campAttaches: termId => `${WEB_PREFIX}/camp/term/${termId}/attach`,
+
   bibles: `${WEB_PREFIX}/bible`,
   bible: id => `${WEB_PREFIX}/bible/${id}`,
   bibleNode: id => `${WEB_PREFIX}/bible-node/${id}`,
@@ -61,5 +62,10 @@ export default {
   commodityAttrs: `${WEB_PREFIX}/commodity/attr`,
   commodityCatAttrs: catId => `${WEB_PREFIX}/commodity/cat/${catId}/attrs`,
 
-  course: id => `${WEB_PREFIX}/course/${id}`
+  course: id => `${WEB_PREFIX}/course/${id}`,
+  ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
+  ossRefreshVideoToken: videoId =>
+    `${PREFIX}/api/file/alioss-video-token/${videoId}`,
+  ossVideoAuth: videoId => `${PREFIX}/api/file/alioss-video/${videoId}`,
+  ossVideoStatus: videoId => `${PREFIX}/api/file/alioss-video/${videoId}/status`
 };
