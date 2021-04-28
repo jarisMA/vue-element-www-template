@@ -63,6 +63,8 @@ export default {
   commodityCatAttrs: catId => `${WEB_PREFIX}/commodity/cat/${catId}/attrs`,
 
   course: id => `${WEB_PREFIX}/course/${id}`,
+  lessonRecord: (courseId, lessonId) =>
+    `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,

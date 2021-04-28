@@ -10,7 +10,7 @@
           @click="showMenu = !showMenu"
         ></i>
         <label class="page-header-left_text">
-          {{ activeLesson && activeLesson.name }}
+          {{ activeLessonIndex > -1 && lessons[activeLessonIndex].name }}
         </label>
       </div>
       <div class="page-header-content">
@@ -34,28 +34,30 @@
               <div
                 :class="[
                   'page-menu-item',
-                  activeLesson.id === lesson.id ? 'active' : ''
+                  activeLessonIndex > -1 &&
+                  lessons[activeLessonIndex].id === lesson.id
+                    ? 'active'
+                    : ''
                 ]"
-                v-for="lesson of lessons"
+                v-for="(lesson, index) of lessons"
                 :key="lesson.id"
-                @click="handleToggleLesson(lesson)"
+                @click="handleToggleLesson(index)"
               >
                 <i
-                  :class="[
-                    'page-menu-item_icon',
-                    activeLesson.id === lesson.id
-                      ? 'playing-icon'
-                      : 'unplay-icon'
-                  ]"
+                  :class="['page-menu-item_icon', lessonStatusIconClass(index)]"
                 ></i>
                 <h4 class="page-menu-item_name">
                   {{ lesson.name }}
                 </h4>
                 <label class="page-menu-item-duration">
-                  <span class="primary" v-if="activeLesson.id === lesson.id">{{
-                    secondsUpdate
-                  }}</span
-                  >/{{ formatSeconds(lesson.second_duration) }}
+                  <template v-if="[2, 3].indexOf(lessonStatus(index)) > -1">
+                    <span
+                      :class="[
+                        [2].indexOf(lessonStatus(index)) > -1 ? 'primary' : ''
+                      ]"
+                      >{{ secondsUpdate(lesson.last_play_position) }}</span
+                    >/ </template
+                  >{{ formatSeconds(lesson.second_duration) }}
                 </label>
               </div>
             </div>
@@ -65,9 +67,12 @@
       </div>
       <div class="page-content-right">
         <video-player
-          v-if="activeLesson"
-          :vid="activeLesson.vod_id"
+          v-if="activeLessonIndex > -1"
+          :vid="lessons[activeLessonIndex].vod_id"
+          :startTime="lessons[activeLessonIndex].last_play_position"
           @timeUpdate="handleTimeUpdate"
+          @setRecord="setLessonRecord"
+          @ended="handleNextLesson"
         />
       </div>
     </div>
@@ -86,19 +91,56 @@ export default {
     return {
       detail: {},
       lessons: [],
-      activeLesson: null,
-      showMenu: false
+      activeLessonIndex: -1,
+      showMenu: false,
+      setRecording: false
     };
   },
   created() {
     this.getCourse();
   },
   computed: {
+    lessonStatus() {
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放
+      return index => {
+        const { lessons, activeLessonIndex } = this;
+        const lesson = lessons[index];
+        const last_play_position = lesson.last_play_position || 0;
+
+        return index === activeLessonIndex
+          ? 2
+          : last_play_position >= lesson.second_duration
+          ? 4
+          : last_play_position > 0
+          ? 3
+          : 1;
+      };
+    },
+    lessonStatusIconClass() {
+      return index => {
+        const status = this.lessonStatus(index);
+        let iconClass = "unplay-icon";
+        switch (status) {
+          case 2:
+            iconClass = "playing-icon";
+            break;
+          case 3:
+            iconClass = "played-icon";
+            break;
+          case 4:
+            iconClass = "completed-icon";
+            break;
+          case 1:
+          default:
+            break;
+        }
+        return iconClass;
+      };
+    },
     secondsUpdate() {
-      const format = formatSeconds(
-        (this.activeLesson && this.activeLesson.currentTime) || 0
-      );
-      return format;
+      return last_play_position => {
+        return formatSeconds(last_play_position || 0);
+      };
     }
   },
   methods: {
@@ -107,20 +149,40 @@ export default {
       courseService.course(this.$route.params.id).then(res => {
         this.detail = res;
         this.lessons = res.lessons;
-        this.activeLesson = this.lessons[0];
+        this.activeLessonIndex = res.lessons.length > 0 ? 0 : -1;
       });
     },
-    handleToggleLesson(lesson) {
-      if (lesson.id === this.activeLesson.id) {
+    setLessonRecord(params) {
+      const { lessons, activeLessonIndex, setRecording } = this;
+      const lesson = lessons[activeLessonIndex];
+      if (!setRecording) {
+        this.setRecording = true;
+        courseService
+          .setLessonRecord(this.$route.params.id, lesson.id, params)
+          .finally(() => {
+            this.setRecording = false;
+          });
+      }
+    },
+    handleToggleLesson(index) {
+      const { lessons, activeLessonIndex } = this;
+      if (lessons[index].id === lessons[activeLessonIndex].id) {
         return;
       }
-      this.activeLesson = lesson;
+      this.activeLessonIndex = index;
     },
-    handleTimeUpdate(currentTime) {
-      this.activeLesson = {
-        ...this.activeLesson,
-        currentTime
-      };
+    handleTimeUpdate(last_play_position) {
+      const { lessons, activeLessonIndex } = this;
+      this.$set(lessons, activeLessonIndex, {
+        ...lessons[activeLessonIndex],
+        last_play_position: last_play_position
+      });
+    },
+    handleNextLesson() {
+      const { lessons, activeLessonIndex } = this;
+      if (lessons.length > activeLessonIndex + 1) {
+        this.handleToggleLesson(activeLessonIndex + 1);
+      }
     }
   }
 };
@@ -218,8 +280,9 @@ export default {
       width: 0px;
     }
     .page-menu-wrapper {
-      width: 100%;
       padding: 0 20px;
+      width: 370px;
+      height: 100%;
       overflow-y: auto;
     }
     .page-menu-header {
