@@ -107,10 +107,10 @@ export default {
         const { lessons, activeLessonIndex } = this;
         const lesson = lessons[index];
         const last_play_position = lesson.last_play_position || 0;
-
+        const play_second_duration = lesson.play_second_duration || 0;
         return index === activeLessonIndex
           ? 2
-          : last_play_position >= lesson.second_duration
+          : play_second_duration >= lesson.second_duration
           ? 4
           : last_play_position > 0
           ? 3
@@ -305,7 +305,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        padding: 16px 8px 16px 10px;
+        padding: 16px 8px;
         width: 100%;
         border: 1px solid #494949;
         cursor: pointer;

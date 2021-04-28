@@ -83,7 +83,9 @@ export default {
             encryptType: 1 //当播放私有加密流时需要设置。
           },
           player => {
-            player.seek(this.startTime);
+            player.seek(
+              this.startTime < player.getDuration() ? this.startTime : 0
+            );
             player.on("play", this.handlePlay);
             player.on("pause", this.handlePause);
             player.on("timeupdate", this.handleTimeUpdate);
@@ -148,7 +150,7 @@ export default {
     width: 100%;
     height: 100% !important;
     .prism-controlbar {
-      // display: block !important;
+      display: block !important;
     }
     .prism-progress-played {
       background-color: @primaryColor;
