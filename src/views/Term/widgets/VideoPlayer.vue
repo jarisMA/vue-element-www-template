@@ -148,7 +148,7 @@ export default {
     width: 100%;
     height: 100% !important;
     .prism-controlbar {
-      display: block !important;
+      // display: block !important;
     }
     .prism-progress-played {
       background-color: @primaryColor;
