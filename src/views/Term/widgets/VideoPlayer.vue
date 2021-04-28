@@ -139,12 +139,46 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 .player-container {
   width: 100%;
   height: 100%;
   /deep/ .prism-player {
     width: 100%;
     height: 100% !important;
+    .prism-controlbar {
+      display: block !important;
+    }
+    .prism-progress-played {
+      background-color: @primaryColor;
+    }
+    .prism-cc-btn {
+      display: none !important;
+    }
+    .prism-volume {
+      margin-top: 12px !important;
+      margin-right: 10px !important;
+      .volume-icon {
+        width: 24px;
+        height: 24px;
+        background-image: url("~images/course/volume_on.svg");
+        .short-horizontal {
+          display: none;
+        }
+        .long-horizontal {
+          display: none;
+        }
+      }
+    }
+    .prism-setting-btn {
+      margin-right: 10px !important;
+      background-image: url("~images/course/settings.svg");
+    }
+    .prism-fullscreen-btn {
+      margin-right: 30px !important;
+      background-image: url("~images/course/fullscreen.svg");
+    }
   }
 }
 </style>

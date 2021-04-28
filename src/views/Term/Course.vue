@@ -10,7 +10,7 @@
           @click="showMenu = !showMenu"
         ></i>
         <label class="page-header-left_text">
-          {{ activeLessonIndex > -1 && lessons[activeLessonIndex].name }}
+          {{ activeLessonIndex > -1 ? lessons[activeLessonIndex].name : "" }}
         </label>
       </div>
       <div class="page-header-content">
@@ -286,7 +286,7 @@ export default {
       overflow-y: auto;
     }
     .page-menu-header {
-      padding: 30px;
+      padding: 30px 0;
       width: 100%;
       .page-menu-title {
         line-height: 24px;
