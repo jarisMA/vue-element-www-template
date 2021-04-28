@@ -37,7 +37,8 @@
                   activeLessonIndex > -1 &&
                   lessons[activeLessonIndex].id === lesson.id
                     ? 'active'
-                    : ''
+                    : '',
+                  [4].indexOf(lessonStatus(index)) > -1 ? 'completed' : ''
                 ]"
                 v-for="(lesson, index) of lessons"
                 :key="lesson.id"
@@ -319,6 +320,14 @@ export default {
             color: @primaryColor;
           }
         }
+        &.completed {
+          .page-menu-item_name {
+            color: #999999;
+          }
+          .page-menu-item-duration {
+            color: #666666;
+          }
+        }
       }
       .page-menu-item_icon {
         flex: none;
@@ -347,13 +356,13 @@ export default {
         line-height: 24px;
         font-weight: normal;
         font-size: 14px;
-        color: #999999;
+        color: #eeeeee;
       }
       .page-menu-item-duration {
         flex: none;
         line-height: 24px;
         font-size: 14px;
-        color: #666666;
+        color: #999999;
       }
     }
   }
