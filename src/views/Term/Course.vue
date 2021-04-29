@@ -48,7 +48,7 @@
                 <i
                   :class="['page-menu-item_icon', lessonStatusIconClass(index)]"
                 ></i>
-                <h4 class="page-menu-item_name">
+                <h4 class="page-menu-item_name ellipsis">
                   {{ lesson.name }}
                 </h4>
                 <label class="page-menu-item-duration">

@@ -28,7 +28,7 @@
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
-                <h4 class="card-header-title">
+                <h4 class="card-header-title ellipsis">
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
@@ -76,7 +76,7 @@
                     lessonStatusIconClass(index)
                   ]"
                 ></i>
-                <h5 class="card-content-item-title">
+                <h5 class="card-content-item-title ellipsis">
                   {{ lesson.name }}
                 </h5>
               </div>
@@ -319,7 +319,12 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 5px;
+    .card-header-content-left {
+      flex: 1;
+      width: 5px;
+    }
     .card-header-title {
+      width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
@@ -332,6 +337,7 @@ export default {
       color: #606c66;
     }
     .card-header-content-right {
+      flex: none;
       line-height: 2;
       font-size: 12px;
       color: #8ea098;
@@ -374,10 +380,12 @@ export default {
     &.completed {
     }
     .card-content-item-left {
+      flex: 1;
       display: flex;
       align-items: center;
       justify-content: flex-start;
       .card-content-item-icon {
+        flex: none;
         display: block;
         margin-right: 9px;
         width: 20px;
@@ -398,6 +406,8 @@ export default {
         }
       }
       .card-content-item-title {
+        flex: 1;
+        width: 5px;
         line-height: 21px;
         font-size: 14px;
         font-weight: normal;
@@ -406,6 +416,7 @@ export default {
     }
 
     .card-content-item-right {
+      flex: none;
       display: inline-block;
       line-height: 16px;
       font-size: 12px;
