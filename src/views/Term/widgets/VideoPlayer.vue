@@ -30,6 +30,7 @@ export default {
   },
   data() {
     return {
+      stopEmit: false,
       loading: true,
       player: null,
       status: 0,
@@ -40,6 +41,7 @@ export default {
   watch: {
     vid(val, oldVal) {
       if (val !== oldVal) {
+        this.stopEmit = true;
         this.checkTransformCodeStatus();
         this.handleClearTimer();
       }
@@ -50,6 +52,10 @@ export default {
   },
   methods: {
     checkTransformCodeStatus() {
+      if (this.player) {
+        this.player.dispose();
+        this.player = null;
+      }
       vodService
         .ossVideoStatus(this.vid)
         .then(data => {
@@ -71,10 +77,7 @@ export default {
         });
     },
     initPlayer() {
-      if (this.player) {
-        this.player.dispose();
-        this.player = null;
-      }
+      this.stopEmit = false;
       vodService.ossVideoAuth(this.vid).then(data => {
         const { PlayAuth, VideoMeta } = data;
         // eslint-disable-next-line
@@ -105,11 +108,13 @@ export default {
       const nowTime = new Date().valueOf();
       const second_duration = (nowTime - this.timestamp) / 1000;
       const last_play_position = this.player.getCurrentTime();
-      this.$emit("setRecord", {
-        last_play_position,
-        second_duration
-      });
-      this.timestamp = nowTime;
+      if (!this.stopEmit) {
+        this.$emit("setRecord", {
+          last_play_position,
+          second_duration
+        });
+        this.timestamp = nowTime;
+      }
     },
     handleClearTimer() {
       this.timer && clearInterval(this.timer);
@@ -130,7 +135,9 @@ export default {
     handleTimeUpdate() {
       // console.log('timeUpdate');
       const currentTime = this.player.getCurrentTime();
-      this.$emit("timeUpdate", currentTime);
+      if (!this.stopEmit) {
+        this.$emit("timeUpdate", currentTime);
+      }
     },
     handleCompleteSeek() {
       // console.log('completeSeek')

@@ -177,11 +177,11 @@ export default {
       }
       this.activeLessonIndex = index;
     },
-    handleTimeUpdate(last_play_position) {
+    handleTimeUpdate(second) {
       const { lessons, activeLessonIndex } = this;
       this.$set(lessons, activeLessonIndex, {
         ...lessons[activeLessonIndex],
-        last_play_position: last_play_position
+        last_play_position: second
       });
     },
     handleNextLesson() {
