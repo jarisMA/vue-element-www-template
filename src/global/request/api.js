@@ -31,6 +31,7 @@ export default {
   ossStore: `${PREFIX}/api/file/alioss-store`,
   campTerms: `${WEB_PREFIX}/camp/terms`,
   campTerm: id => `${WEB_PREFIX}/camp/term/${id}`,
+  campTermFeedback: id => `${WEB_PREFIX}/camp/term/${id}/feedback`,
   campHomework: (campId, termId, homeworkId) =>
     `${WEB_PREFIX}/camp/${campId}/term/${termId}/homework/${homeworkId}`,
   campHomeworkUpdate: id => `${WEB_PREFIX}/camp/homework/${id}`,

@@ -19,6 +19,9 @@ const termRequest = {
   },
   campAttach(termId) {
     return request.get(API.campAttaches(termId));
+  },
+  termFeedback(id, params = {}) {
+    return request.put(API.campTermFeedback(id), params);
   }
 };
 

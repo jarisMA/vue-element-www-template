@@ -46,6 +46,7 @@
           </el-tab-pane>
         </el-tabs>
       </div>
+      <feedback />
     </div>
   </div>
 </template>
@@ -60,6 +61,7 @@ import Attach from "./widgets/Attach";
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan, goMy } from "utils/routes";
+import Feedback from "./widgets/Feedback.vue";
 
 export default {
   name: "Term",
@@ -67,7 +69,8 @@ export default {
     TheLoadingImage,
     CategoryCard,
     Homework,
-    Attach
+    Attach,
+    Feedback
   },
   data() {
     return {
