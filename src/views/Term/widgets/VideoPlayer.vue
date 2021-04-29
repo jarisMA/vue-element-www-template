@@ -84,14 +84,24 @@ export default {
           },
           player => {
             let timer = setInterval(() => {
-              if (["init"].indexOf(player.getStatus()) < 0) {
+              if (
+                [
+                  "ready",
+                  "loading",
+                  "playing",
+                  "play",
+                  "pause",
+                  "ended"
+                ].indexOf(player.getStatus()) > -1
+              ) {
                 player.seek(
-                  this.startTime < player.getDuration() ? this.startTime : 0
+                  this.startTime < player.getDuration() * 0.9
+                    ? this.startTime
+                    : 0
                 );
                 clearInterval(timer);
               }
-            }, 300);
-
+            }, 100);
             player.on("play", this.handlePlay);
             player.on("pause", this.handlePause);
             player.on("timeupdate", this.handleTimeUpdate);
@@ -140,7 +150,7 @@ export default {
       // console.log('ended');
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
-      this.$emit("ended");
+      // this.$emit("ended");
     }
   }
 };
@@ -156,7 +166,7 @@ export default {
     width: 100%;
     height: 100% !important;
     .prism-controlbar {
-      display: block !important;
+      // display: block !important;
     }
     .prism-progress-played {
       background-color: @primaryColor;

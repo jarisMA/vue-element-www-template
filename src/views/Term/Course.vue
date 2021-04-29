@@ -112,7 +112,7 @@ export default {
         const play_second_duration = lesson.play_second_duration || 0;
         return index === activeLessonIndex
           ? 2
-          : play_second_duration >= lesson.second_duration
+          : play_second_duration * 0.9 >= lesson.second_duration
           ? 4
           : last_play_position > 0
           ? 3
@@ -254,7 +254,8 @@ export default {
       margin-right: 5px;
       width: 40px;
       height: 40px;
-      background: url("~images/course/douxi.svg") no-repeat;
+      background-size: cover;
+      background-image: url("~images/course/douxi.png");
     }
     .page-header-right_text {
       line-height: 24px;

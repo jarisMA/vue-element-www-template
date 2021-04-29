@@ -31,7 +31,7 @@
                 <h4 class="card-header-title">
                   {{ category.title }}
                 </h4>
-                <p class="card-header-desc">
+                <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
                 </p>
               </div>
@@ -40,13 +40,19 @@
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
                 <label class="card-header-count"
-                  >{{ category.resource.lesson_number }}节课</label
+                  >{{ category.resource.lessons.length }}节课</label
                 >
                 <label class="card-header-duration"
-                  >（{{
-                    Math.floor(category.resource.second_duration / 60)
-                  }}分钟）</label
+                  >（{{ Math.floor(courseDuration / 60) }}分钟）</label
                 >
+              </div>
+              <div
+                class="card-header-content-right"
+                v-if="category.type === COURSE_TYPE_LIVE"
+              >
+                <label class="card-header-date">{{
+                  formatDate(category.start_at, "MM月DD日 HH:mm")
+                }}</label>
               </div>
             </div>
           </div>
@@ -88,7 +94,7 @@ import {
   COURSE_TYPE_LIVE
 } from "utils/const";
 import { goBibleDetail, goCourse } from "utils/routes";
-import { formatSeconds } from "utils/moment";
+import { formatSeconds, formatDate } from "utils/moment";
 
 export default {
   name: "CategoryCard",
@@ -105,12 +111,26 @@ export default {
       COURSE_TYPE_LIVE
     };
   },
+  computed: {
+    courseDuration() {
+      const { category } = this;
+      const { type, resource } = category;
+      let duration = 0;
+      if (type === COURSE_TYPE_COURSE) {
+        duration = resource.lessons.reduce((prev, next) => {
+          return prev + next.second_duration;
+        }, 0);
+      }
+      return duration;
+    }
+  },
   methods: {
+    formatDate,
     formatSeconds,
     handleCardClick() {
       const { type, resource } = this.category;
       if (type === COURSE_TYPE_BIBLE) {
-        goBibleDetail(resource.bible_id);
+        goBibleDetail(resource.bible_id, "_blank");
       }
     },
     handleLessonClick(index) {
@@ -205,6 +225,12 @@ export default {
       line-height: 2;
       font-size: 12px;
       color: #8ea098;
+      .card-header-date {
+        margin-right: 24px;
+        line-height: 16px;
+        font-size: 12px;
+        color: #8ea098;
+      }
     }
   }
 }
