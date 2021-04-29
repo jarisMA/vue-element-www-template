@@ -169,7 +169,7 @@ export default {
             this.$set(lessons, activeLessonIndex, {
               ...lesson,
               play_second_duration:
-                lesson.play_second_duration + params.second_duration
+                lesson.play_second_duration - 0 + (params.second_duration - 0)
             });
           })
           .finally(() => {
