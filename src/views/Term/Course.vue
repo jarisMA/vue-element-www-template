@@ -165,6 +165,13 @@ export default {
         this.setRecording = true;
         courseService
           .setLessonRecord(this.$route.params.id, lesson.id, params)
+          .then(() => {
+            this.$set(lessons, activeLessonIndex, {
+              ...lesson,
+              play_second_duration:
+                lesson.play_second_duration + params.second_duration
+            });
+          })
           .finally(() => {
             this.setRecording = false;
           });
