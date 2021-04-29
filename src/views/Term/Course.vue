@@ -92,12 +92,14 @@ export default {
     return {
       detail: {},
       lessons: [],
+      lessonIndex: 1,
       activeLessonIndex: -1,
       showMenu: false,
       setRecording: false
     };
   },
   created() {
+    this.lessonIndex = this.$route.params.lessonIndex;
     this.getCourse();
   },
   computed: {
@@ -150,7 +152,8 @@ export default {
       courseService.course(this.$route.params.id).then(res => {
         this.detail = res;
         this.lessons = res.lessons;
-        this.activeLessonIndex = res.lessons.length > 0 ? 0 : -1;
+        this.activeLessonIndex =
+          res.lessons.length >= this.lessonIndex ? this.lessonIndex - 1 : -1;
       });
     },
     setLessonRecord(params) {

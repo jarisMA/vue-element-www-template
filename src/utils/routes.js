@@ -60,12 +60,13 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
-export const goCourse = (id, type = "_blank") => {
+export const goCourse = (id, lessonIndex, type = "_blank") => {
   return goRoute(
     {
       name: "Course",
       params: {
-        id
+        id,
+        lessonIndex
       }
     },
     type

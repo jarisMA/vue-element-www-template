@@ -15,7 +15,7 @@
     <el-collapse>
       <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
         <template slot="title">
-          <div class="card-header">
+          <div class="card-header" @click.prevent>
             <div class="card-header-left">
               <i
                 :class="[
@@ -55,8 +55,9 @@
           <div class="card-content-list">
             <div
               class="card-content-item"
-              v-for="lesson of category.resource.lessons"
+              v-for="(lesson, index) of category.resource.lessons"
               :key="lesson.id"
+              @click.stop="handleLessonClick(index)"
             >
               <div class="card-content-item-left">
                 <i class="card-content-item-icon play-icon"></i>
@@ -69,8 +70,7 @@
                   <!-- {{ lesson.status }} -->
                 </label>
                 <label class="card-content-item-duration">
-                  <!-- {{ lesson.second_duration }} -->
-                  00:00
+                  {{ formatSeconds(lesson.second_duration) }}
                 </label>
               </div>
             </div>
@@ -88,6 +88,7 @@ import {
   COURSE_TYPE_LIVE
 } from "utils/const";
 import { goBibleDetail, goCourse } from "utils/routes";
+import { formatSeconds } from "utils/moment";
 
 export default {
   name: "CategoryCard",
@@ -105,12 +106,17 @@ export default {
     };
   },
   methods: {
+    formatSeconds,
     handleCardClick() {
       const { type, resource } = this.category;
       if (type === COURSE_TYPE_BIBLE) {
         goBibleDetail(resource.bible_id);
-      } else if (type === COURSE_TYPE_COURSE) {
-        goCourse(resource.id);
+      }
+    },
+    handleLessonClick(index) {
+      const { type, resource } = this.category;
+      if (type === COURSE_TYPE_COURSE) {
+        goCourse(resource.id, index + 1);
       }
     }
   }
