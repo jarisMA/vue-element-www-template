@@ -73,6 +73,7 @@ export default {
     initPlayer() {
       if (this.player) {
         this.player.dispose();
+        this.player = null;
       }
       vodService.ossVideoAuth(this.vid).then(data => {
         const { PlayAuth, VideoMeta } = data;
@@ -87,6 +88,7 @@ export default {
             encryptType: 1 //当播放私有加密流时需要设置。
           },
           player => {
+            console.log(this.startTime, this.duration);
             const startTime =
               this.startTime > this.duration * 0.9 ? 0 : this.startTime;
             player.seek(startTime);
