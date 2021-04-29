@@ -22,6 +22,10 @@ export default {
     startTime: {
       type: Number,
       default: 0
+    },
+    duration: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -83,25 +87,9 @@ export default {
             encryptType: 1 //当播放私有加密流时需要设置。
           },
           player => {
-            let timer = setInterval(() => {
-              if (
-                [
-                  "ready",
-                  "loading",
-                  "playing",
-                  "play",
-                  "pause",
-                  "ended"
-                ].indexOf(player.getStatus()) > -1
-              ) {
-                player.seek(
-                  this.startTime < player.getDuration() * 0.9
-                    ? this.startTime
-                    : 0
-                );
-                clearInterval(timer);
-              }
-            }, 100);
+            player.seek(
+              this.startTime < this.duration * 0.9 ? this.startTime : 0
+            );
             player.on("play", this.handlePlay);
             player.on("pause", this.handlePause);
             player.on("timeupdate", this.handleTimeUpdate);

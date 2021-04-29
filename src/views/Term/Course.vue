@@ -72,6 +72,7 @@
           v-if="activeLessonIndex > -1"
           :vid="lessons[activeLessonIndex].vod_id"
           :startTime="lessons[activeLessonIndex].last_play_position"
+          :duration="lessons[activeLessonIndex].second_duration"
           @timeUpdate="handleTimeUpdate"
           @setRecord="setLessonRecord"
           @ended="handleNextLesson"
