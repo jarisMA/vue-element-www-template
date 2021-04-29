@@ -20,7 +20,7 @@
               <i
                 :class="[
                   'card-header-icon',
-                  category.type === COURSE_TYPE_COURSE ? 'play-icon' : '',
+                  category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
                   category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
                   category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
                 ]"
@@ -60,20 +60,29 @@
         <div class="card-content" v-if="category.type === COURSE_TYPE_COURSE">
           <div class="card-content-list">
             <div
-              class="card-content-item"
+              :class="[
+                'card-content-item',
+                lessonStatus(index) === 3 ? 'active' : '',
+                lessonStatus(index) === 4 ? 'completed' : ''
+              ]"
               v-for="(lesson, index) of category.resource.lessons"
               :key="lesson.id"
               @click.stop="handleLessonClick(index)"
             >
               <div class="card-content-item-left">
-                <i class="card-content-item-icon play-icon"></i>
+                <i
+                  :class="[
+                    'card-content-item-icon',
+                    lessonStatusIconClass(index)
+                  ]"
+                ></i>
                 <h5 class="card-content-item-title">
                   {{ lesson.name }}
                 </h5>
               </div>
               <div class="card-content-item-right">
                 <label class="card-content-item-status">
-                  <!-- {{ lesson.status }} -->
+                  {{ lessonStatusText(index) }}
                 </label>
                 <label class="card-content-item-duration">
                   {{ formatSeconds(lesson.second_duration) }}
@@ -122,6 +131,88 @@ export default {
         }, 0);
       }
       return duration;
+    },
+    lessonStatus() {
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放
+      return index => {
+        const { type, resource } = this.category;
+        if (type !== COURSE_TYPE_COURSE) return 0;
+        const { lessons } = resource;
+        const lesson = lessons[index];
+        const last_play_position = lesson.last_play_position || 0;
+        const play_second_duration = lesson.play_second_duration || 0;
+        return play_second_duration * 0.9 >= lesson.second_duration
+          ? 4
+          : last_play_position > 0
+          ? 3
+          : 1;
+      };
+    },
+    lessonStatusText() {
+      return index => {
+        const { type, resource } = this.category;
+        if (type !== COURSE_TYPE_COURSE) return 0;
+        const status = this.lessonStatus(index);
+        const { lessons } = resource;
+        const lesson = lessons[index];
+        let text = "";
+        switch (status) {
+          case 3:
+            text = "学习至" + this.formatSeconds(lesson.last_play_position);
+            break;
+          case 4:
+            text = "已学完";
+            break;
+          case 1:
+          default:
+            break;
+        }
+        return text;
+      };
+    },
+    lessonStatusIconClass() {
+      return index => {
+        const status = this.lessonStatus(index);
+        let iconClass = "unplay-icon";
+        switch (status) {
+          case 3:
+            iconClass = "played-icon";
+            break;
+          case 4:
+            iconClass = "completed-icon";
+            break;
+          case 1:
+          default:
+            break;
+        }
+        return iconClass;
+      };
+    },
+    courseStatus() {
+      // 3 播放完成，2 上次播放，1 未播放
+      const { type, resource } = this.category;
+      if (type !== COURSE_TYPE_COURSE) return 0;
+      const { lessons } = resource;
+      return lessons.every((lesson, index) => {
+        return this.lessonStatus(index) === 4;
+      })
+        ? 3
+        : 1;
+    },
+    courseStatusIcon() {
+      const { type } = this.category;
+      if (type !== COURSE_TYPE_COURSE) return 0;
+      let iconClass = "unplay-icon";
+      const status = this.courseStatus;
+      switch (status) {
+        case 3:
+          iconClass = "completed-icon";
+          break;
+        case 1:
+        default:
+          break;
+      }
+      return iconClass;
     }
   },
   methods: {
@@ -200,6 +291,25 @@ export default {
       &.active {
         background-color: @primaryColor;
       }
+      &.unplay-icon {
+        mask-image: url("~images/course/unplay.svg");
+      }
+      &.played-icon {
+        background-color: @primaryColor;
+        mask-image: url("~images/course/played.svg");
+      }
+      &.completed-icon {
+        mask-image: url("~images/course/completed.svg");
+      }
+      &.bible-icon {
+        mask-image: url("~images/academy/bible.svg");
+      }
+      &.live-icon {
+        mask-image: url("~images/academy/live.svg");
+      }
+      &.complete-icon {
+        mask-image: url("~images/academy/complete.svg");
+      }
     }
   }
 
@@ -249,6 +359,19 @@ export default {
     cursor: pointer;
     &:hover {
       background: #f7fdfa;
+      .card-content-item-title {
+        color: #111 !important;
+      }
+    }
+    &.active {
+      .card-content-item-title {
+        color: @primaryColor !important;
+      }
+      .card-content-item-status {
+        color: @primaryColor !important;
+      }
+    }
+    &.completed {
     }
     .card-content-item-left {
       display: flex;
@@ -259,9 +382,20 @@ export default {
         margin-right: 9px;
         width: 20px;
         height: 20px;
-        background-color: #2c3330;
         mask-size: cover;
         mask-repeat: no-repeat;
+        &.unplay-icon {
+          background-color: #2c3330;
+          mask-image: url("~images/course/unplay.svg");
+        }
+        &.played-icon {
+          background-color: @primaryColor;
+          mask-image: url("~images/course/unplay.svg");
+        }
+        &.completed-icon {
+          background-color: #2c3330;
+          mask-image: url("~images/course/completed.svg");
+        }
       }
       .card-content-item-title {
         line-height: 21px;
@@ -277,23 +411,11 @@ export default {
       font-size: 12px;
       text-align: right;
       color: #8ea098;
-      .card-content-item-status {
-        margin-right: 25px;
+      .card-content-item-duration {
+        display: inline-block;
+        width: 50px;
       }
     }
   }
-}
-
-.play-icon {
-  mask-image: url("~images/academy/play.svg");
-}
-.bible-icon {
-  mask-image: url("~images/academy/bible.svg");
-}
-.live-icon {
-  mask-image: url("~images/academy/live.svg");
-}
-.complete-icon {
-  mask-image: url("~images/academy/complete.svg");
 }
 </style>
