@@ -4,7 +4,7 @@
       'category-card',
       new Date().valueOf() < new Date(category.start_at).valueOf()
         ? 'disabled'
-        : ''
+        : 'pointer'
     ]"
     @click.prevent="
       new Date().valueOf() >= new Date(category.start_at).valueOf()
@@ -131,6 +131,11 @@ export default {
   &.disabled {
     filter: opacity(0.5);
     cursor: auto;
+  }
+  &.pointer {
+    /deep/ .el-collapse-item__header {
+      cursor: pointer !important;
+    }
   }
   /deep/ .el-collapse {
     border: unset;

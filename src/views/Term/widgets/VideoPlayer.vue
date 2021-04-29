@@ -83,9 +83,15 @@ export default {
             encryptType: 1 //当播放私有加密流时需要设置。
           },
           player => {
-            player.seek(
-              this.startTime < player.getDuration() ? this.startTime : 0
-            );
+            let timer = setInterval(() => {
+              if (["init"].indexOf(player.getStatus()) < 0) {
+                player.seek(
+                  this.startTime < player.getDuration() ? this.startTime : 0
+                );
+                clearInterval(timer);
+              }
+            }, 300);
+
             player.on("play", this.handlePlay);
             player.on("pause", this.handlePause);
             player.on("timeupdate", this.handleTimeUpdate);
