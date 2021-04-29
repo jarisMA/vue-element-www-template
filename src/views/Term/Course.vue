@@ -114,7 +114,7 @@ export default {
         const play_second_duration = lesson.play_second_duration || 0;
         return index === activeLessonIndex
           ? 2
-          : play_second_duration * 0.9 >= lesson.second_duration
+          : play_second_duration >= lesson.second_duration * 0.9
           ? 4
           : last_play_position > 0
           ? 3
