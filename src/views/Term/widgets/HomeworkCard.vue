@@ -336,6 +336,7 @@ export default {
 .homework-card {
   position: relative;
   width: 100%;
+  padding: 0 20px;
   // height: 82px;
   background: #ffffff;
   .homework-info {
@@ -438,7 +439,7 @@ export default {
       width: 100%;
     }
     .homework-desc {
-      width: @leftWidth;
+      width: calc(50% - @leftMarginRight);
       margin-right: @leftMarginRight;
       .homework-desc-content {
         &::after {
@@ -538,7 +539,7 @@ export default {
     .homework-plan-card {
       display: flex;
       margin-top: 27px;
-      width: 448px;
+      width: 50%;
       height: 224px;
       padding: 10px;
       background: #fbfbfb;

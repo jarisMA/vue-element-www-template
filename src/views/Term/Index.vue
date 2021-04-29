@@ -14,14 +14,14 @@
         <p class="page-left-desc">
           {{ detail.description }}
         </p>
-        <div class="page-left-more_list">
+        <!-- <div class="page-left-more_list">
           <div class="page-left-more_item">
             班级公约
           </div>
           <div class="page-left-more_item">
             班级手册
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="page-right">
         <el-tabs v-model="activeName" @tab-click="tabClick">

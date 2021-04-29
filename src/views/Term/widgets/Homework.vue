@@ -358,12 +358,15 @@ export default {
 @import "~styles/variable";
 
 .homework-wrapper {
+  padding: 13px 20px;
   .homework-tips {
-    padding: 20px;
+    margin-bottom: 5px;
+    padding: 10px;
     line-height: 20px;
     font-size: 14px;
     font-weight: 400;
     color: #333;
+    background: #f5f5f5;
     .warning-icon {
       display: inline-block;
       margin-right: 4px;
@@ -379,8 +382,11 @@ export default {
     }
   }
   .homework-list {
-    li:not(:last-child) {
+    li:last-child {
       margin-bottom: 20px;
+    }
+    li + li {
+      border-top: 1px solid #efefef;
     }
   }
   /deep/ .submitHomeworkDialog {

@@ -3,8 +3,8 @@
     <div class="image-wrapper">
       <the-loading-image
         v-if="attach.type === 'plan'"
-        :width="80"
-        :height="80"
+        :width="60"
+        :height="60"
         :url="attach.design_cover_url"
       />
       <img v-else class="file-icon" src="~images/term/data.svg" />
@@ -62,24 +62,15 @@ export default {
 
 .attach-card {
   position: relative;
-  margin-bottom: 20px;
-  padding: @padding;
+  padding: @padding 0;
   width: 100%;
   display: flex;
   align-items: center;
   background: #fff;
-  &::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: @primaryColor;
-    content: "";
-  }
+
   .image-wrapper {
     margin-right: @padding;
-    width: 80px;
+    width: 60px;
     text-align: center;
     .file-icon {
       width: 60px;
@@ -88,23 +79,25 @@ export default {
   }
   .attach-name {
     margin-right: @padding;
-    width: 360px;
-    font-size: 20px;
-    font-weight: 600;
-    color: #333333;
+    width: 260px;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: normal;
+    color: #2c3330;
   }
   .attach-description {
     margin-right: @padding;
-    width: 380px;
-    font-size: 14px;
-    line-height: 21px;
+    width: 264px;
+    line-height: 16px;
+    font-size: 12px;
     color: #8ea098;
   }
   .attach-size {
-    margin-right: 84px;
+    margin-right: 20px;
     width: 80px;
+    line-height: 24px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: normal;
     color: #9b9b9b;
     text-align: center;
   }
@@ -116,11 +109,11 @@ export default {
     height: 30px;
     line-height: 30px;
     font-size: 14px;
-    font-weight: 400;
+    font-weight: normal;
     color: #ffffff;
     background: @primaryColor;
     img {
-      margin-right: 9px;
+      margin-right: 4px;
     }
     cursor: pointer;
     &:hover {
