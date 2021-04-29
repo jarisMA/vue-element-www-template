@@ -5,7 +5,8 @@
         <i
           :class="[
             'page-header-left_icon',
-            showMenu ? 'close-icon' : 'menu-icon'
+            'menu-icon',
+            showMenu ? 'close' : 'show'
           ]"
           @click="showMenu = !showMenu"
         ></i>
@@ -220,14 +221,18 @@ export default {
       margin-right: 10px;
       width: 24px;
       height: 24px;
-      background-repeat: no-repeat;
-      background-size: cover;
+      mask-repeat: no-repeat;
+      mask-size: cover;
       cursor: pointer;
+      background-color: #999;
       &.close-icon {
-        background-image: url("~images/course/menuclose.svg");
+        mask-image: url("~images/course/menuclose.svg");
       }
       &.menu-icon {
-        background-image: url("~images/course/menu.svg");
+        mask-image: url("~images/course/menu.svg");
+        &.close {
+          background-color: #14af64;
+        }
       }
     }
     .page-header-left_text {
