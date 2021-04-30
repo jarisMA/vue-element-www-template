@@ -1,7 +1,8 @@
 <template>
   <div class="player-container">
-    <div class="prism-player" :id="id" @click="handleTogglePlay">
-      <div class="phone-container">{{ userInfo.phone.substr(-4, 4) }}</div>
+    <div class="prism-player" :id="id" @click="handleTogglePlay"></div>
+    <div class="phone-container" v-if="status && !loading">
+      {{ userInfo.phone.substr(-4, 4) }}
     </div>
     <div v-if="!status && !loading">{{ vid }} 视频转码中 ～</div>
   </div>
@@ -217,25 +218,25 @@ export default {
   }
 }
 .player-container {
+  position: relative;
   width: 100%;
   height: 100%;
+  .phone-container {
+    position: absolute;
+    top: 50%;
+    right: -100%;
+    padding: 5px 10px;
+    color: #fff;
+    font-weight: 600;
+    font-size: 20px;
+    z-index: 1;
+    animation: phoneMove 10s linear 2s infinite;
+    background: rgba(0, 0, 0, 0.3);
+  }
   /deep/ .prism-player {
-    position: relative;
     width: 100%;
     height: 100% !important;
     overflow: hidden;
-    .phone-container {
-      position: absolute;
-      top: 50%;
-      right: -100%;
-      padding: 5px 10px;
-      color: #fff;
-      font-weight: 600;
-      font-size: 20px;
-      z-index: 1;
-      animation: phoneMove 10s linear 10s infinite;
-      background: rgba(0, 0, 0, 0.3);
-    }
 
     .prism-controlbar {
       // display: block !important;
