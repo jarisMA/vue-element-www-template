@@ -1,12 +1,15 @@
 <template>
   <div class="player-container">
-    <div class="prism-player" :id="id"></div>
+    <div class="prism-player" :id="id" @click="handleTogglePlay">
+      <div class="phone-container">{{ userInfo.phone.substr(-4, 4) }}</div>
+    </div>
     <div v-if="!status && !loading">{{ vid }} 视频转码中 ～</div>
   </div>
 </template>
 
 <script>
 import vodService from "service/vod";
+import { mapState } from "vuex";
 
 export default {
   name: "VideoPlayer",
@@ -32,10 +35,12 @@ export default {
     return {
       stopEmit: false,
       loading: true,
+      seeked: false,
       player: null,
       status: 0,
       timestamp: new Date().valueOf(),
-      timer: null
+      timer: null,
+      playing: false
     };
   },
   watch: {
@@ -47,14 +52,23 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
   mounted() {
     this.checkTransformCodeStatus();
+  },
+  beforeDestroy() {
+    document.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
     checkTransformCodeStatus() {
       if (this.player) {
         this.player.dispose();
         this.player = null;
+        this.playing = false;
+        this.seeked = false;
+        document.removeEventListener("keydown", this.handleKeydown);
       }
       vodService
         .ossVideoStatus(this.vid)
@@ -84,6 +98,7 @@ export default {
         this.player = new Aliplayer({
             id: this.id,
             width: "100%",
+            height: "100%",
             autoplay: true,
             vid: this.vid,
             playauth: PlayAuth,
@@ -91,11 +106,13 @@ export default {
             encryptType: 1 //当播放私有加密流时需要设置。
           },
           player => {
-            console.log(this.startTime, this.duration);
-            const startTime =
-              this.startTime > this.duration * 0.9 ? 0 : this.startTime;
-            player.seek(startTime);
+            window.player = player;
+            document.addEventListener("keydown", this.handleKeydown);
+            player.on("canplaythrough", this.handleCanplaythrough);
+            // player.on("canplay", this.handleCanplay);
+            // player.on("ready", this.handleReady);
             player.on("play", this.handlePlay);
+            // player.on("playing", this.handlePlaying);
             player.on("pause", this.handlePause);
             player.on("timeupdate", this.handleTimeUpdate);
             player.on("ended", this.handleEnded);
@@ -120,34 +137,70 @@ export default {
       this.timer && clearInterval(this.timer);
       this.timer = null;
     },
+    handleCanplay() {
+      console.log("canplay");
+    },
+    handleCanplaythrough() {
+      // console.log("canplaythrough");
+      if (!this.seeked) {
+        this.seeked = true;
+        const startTime =
+          this.startTime > this.duration * 0.9 ? 0 : this.startTime;
+        this.player.seek(startTime);
+      }
+    },
+    handleReady() {
+      console.log("ready");
+    },
     handlePlay() {
-      // console.log('play')
+      // console.log("play");
       this.timestamp = new Date().valueOf();
       this.timer = setInterval(() => {
         this.handleSetRecord();
       }, 2000);
     },
+    handlePlaying() {
+      console.log("playing");
+    },
     handlePause() {
-      // console.log('pause')
+      // console.log("pause");
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
     },
     handleTimeUpdate() {
-      // console.log('timeUpdate');
+      console.log("timeUpdate");
       const currentTime = this.player.getCurrentTime();
       if (!this.stopEmit) {
         this.$emit("timeUpdate", currentTime);
       }
     },
     handleCompleteSeek() {
-      // console.log('completeSeek')
+      // console.log("completeSeek");
       this.handleSetRecord();
     },
     handleEnded() {
-      // console.log('ended');
+      console.log("ended");
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
       // this.$emit("ended");
+    },
+    handleKeydown(e) {
+      console.log(e);
+      // 空格
+      if (e.keyCode === 32) {
+        this.handleTogglePlay();
+      }
+    },
+    handleTogglePlay() {
+      const status = this.player && this.player.getStatus();
+      // console.log(status);
+      if (status === "playing" || this.playing) {
+        this.playing = false;
+        this.player.pause();
+      } else if (status === "pause" || !this.playing) {
+        this.playing = true;
+        this.player.play();
+      }
     }
   }
 };
@@ -155,13 +208,35 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-
+@keyframes phoneMove {
+  from {
+    right: 0;
+  }
+  to {
+    right: 100%;
+  }
+}
 .player-container {
   width: 100%;
   height: 100%;
   /deep/ .prism-player {
+    position: relative;
     width: 100%;
     height: 100% !important;
+    overflow: hidden;
+    .phone-container {
+      position: absolute;
+      top: 50%;
+      right: -100%;
+      padding: 5px 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 20px;
+      z-index: 1;
+      animation: phoneMove 10s linear 10s infinite;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
     .prism-controlbar {
       // display: block !important;
     }
