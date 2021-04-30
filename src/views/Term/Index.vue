@@ -47,6 +47,10 @@
         </el-tabs>
       </div>
       <feedback
+        v-if="
+          detail.feedback_at &&
+            new Date().valueOf() >= new Date(detail.feedback_at.valueOf())
+        "
         ref="feedback"
         :defaultComment.sync="feedback.comment"
         :defaultScore.sync="feedback.score"
