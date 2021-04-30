@@ -1,6 +1,6 @@
 <template>
   <div class="player-container">
-    <div class="prism-player" :id="id" @click="handleTogglePlay"></div>
+    <div class="prism-player" :id="id"></div>
     <div class="phone-container" v-if="status && !loading">
       {{ userInfo.phone.substr(-4, 4) }}
     </div>
@@ -65,6 +65,9 @@ export default {
   methods: {
     checkTransformCodeStatus() {
       if (this.player) {
+        document
+          .querySelector("#videoPlayer video")
+          .addEventListener("click", this.handleTogglePlay);
         this.player.dispose();
         this.player = null;
         this.playing = false;
@@ -109,6 +112,9 @@ export default {
           player => {
             window.player = player;
             document.addEventListener("keydown", this.handleKeydown);
+            document
+              .querySelector("#videoPlayer video")
+              .addEventListener("click", this.handleTogglePlay);
             player.on("canplaythrough", this.handleCanplaythrough);
             // player.on("canplay", this.handleCanplay);
             // player.on("ready", this.handleReady);
@@ -169,7 +175,7 @@ export default {
       this.handleClearTimer(this.timer);
     },
     handleTimeUpdate() {
-      console.log("timeUpdate");
+      // console.log("timeUpdate");
       const currentTime = this.player.getCurrentTime();
       if (!this.stopEmit) {
         this.$emit("timeUpdate", currentTime);

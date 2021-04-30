@@ -336,7 +336,7 @@ export default {
 .homework-card {
   position: relative;
   width: 100%;
-  padding: 0 20px;
+  // padding: 0 20px;
   // height: 82px;
   background: #ffffff;
   .homework-info {
