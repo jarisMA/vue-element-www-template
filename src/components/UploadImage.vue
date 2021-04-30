@@ -1,19 +1,17 @@
 <template>
-  <div :class="[theme]" v-loading="uploading">
-    <el-upload
-      ref="upload"
-      class="upload"
-      action=""
-      accept="image/*"
-      :before-upload="upload"
-    >
+  <div :class="[theme]"
+       v-loading="uploading">
+    <el-upload ref="upload"
+               class="upload"
+               action=""
+               accept="image/*"
+               :before-upload="upload">
       <div v-if="theme === 'comment' || theme === 'active_comment'">
-        <icon-svg
-          :svg-class="['pic-icon', theme === 'active_comment' ? 'active' : '']"
-          svg-name="pic"
-        ></icon-svg>
+        <icon-svg :svg-class="['pic-icon', theme === 'active_comment' ? 'active' : '']"
+                  svg-name="pic"></icon-svg>
       </div>
-      <div class="add-image" v-else>
+      <div class="add-image"
+           v-else>
         <img src="~images/add.png" />
       </div>
     </el-upload>
@@ -28,15 +26,23 @@ export default {
   props: {
     theme: {
       type: String
+    },
+    space: {
+      type: String,
+      default: 'www'
+    },
+    folder: {
+      type: String,
+      default: 'homework'
     }
   },
-  data() {
+  data () {
     return {
       uploading: false
     };
   },
   methods: {
-    validateFile(file) {
+    validateFile (file) {
       const fileName = file.name;
       const suffix = fileName.split(".").pop();
       const imageRegex = /(jpg|jpeg|gif|png|svg)/;
@@ -49,7 +55,7 @@ export default {
       }
       return true;
     },
-    upload(file) {
+    upload (file) {
       if (!this.validateFile(file)) {
         return false;
       }
@@ -57,8 +63,8 @@ export default {
       ossService.upload(
         {
           file,
-          space: "homework",
-          folder: "homework"
+          space: this.space,
+          folder: this.folder
         },
         res => {
           this.$emit("added", res.url);
@@ -66,7 +72,7 @@ export default {
         () => {
           this.$notice({
             type: "danger",
-            title: "上传效果图失败"
+            title: "上传图片失败"
           });
         },
         () => {
