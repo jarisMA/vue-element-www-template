@@ -114,6 +114,7 @@
             </div>
           </div>
           <div class="step-complete step" v-if="step === 3">
+            <i class="step-complete-close" @click="visible = false"></i>
             <div class="step-complete-header">
               <div class="step-complete-avatar_wrapper">
                 <i
@@ -278,6 +279,7 @@ export default {
     background: rgba(0, 0, 0, 0.5);
     z-index: 1;
     .feedback-dialog {
+      position: relative;
       width: 770px;
       height: 376px;
       .feedback-content {
@@ -510,6 +512,18 @@ export default {
           flex-direction: column;
           align-items: center;
           justify-content: center;
+          .step-complete-close {
+            display: inline-block;
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            width: 16px;
+            height: 16px;
+            background-image: url("~images/term/close.svg");
+            background-repeat: no-repeat;
+            background-size: cover;
+            cursor: pointer;
+          }
           .step-complete-header {
             .step-complete-avatar_wrapper {
               & + .step-complete-avatar_wrapper {
