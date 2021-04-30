@@ -9,7 +9,7 @@
         />
       </li>
     </ul>
-    <the-empty noText="暂时还没资料分享" v-else-if="!loading" />
+    <the-empty noText="暂无资料可使用" v-else-if="!loading" />
     <edit-plan-name-dialog
       type="copy"
       :visible.sync="visible"

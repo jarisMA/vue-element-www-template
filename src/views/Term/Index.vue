@@ -26,13 +26,14 @@
       <div class="page-right">
         <el-tabs v-model="activeName" @tab-click="tabClick">
           <el-tab-pane label="课程章节" name="category">
-            <div class="category-list">
+            <div class="category-list" v-if="categories.length > 0">
               <category-card
                 v-for="category of categories"
                 :key="category.id"
                 :category="category"
               />
             </div>
+            <the-empty v-else-if="!loading" noText="暂无课程可学习" />
           </el-tab-pane>
           <el-tab-pane label="作业" name="homework">
             <homework
@@ -71,6 +72,7 @@ import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan, goMy } from "utils/routes";
 import Feedback from "./widgets/Feedback.vue";
+import TheEmpty from "components/TheEmpty.vue";
 
 export default {
   name: "Term",
@@ -79,7 +81,8 @@ export default {
     CategoryCard,
     Homework,
     Attach,
-    Feedback
+    Feedback,
+    TheEmpty
   },
   data() {
     return {
