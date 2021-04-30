@@ -221,6 +221,7 @@ export default {
   position: relative;
   width: 100%;
   height: 100%;
+  overflow: hidden;
   .phone-container {
     position: absolute;
     top: 50%;
@@ -236,8 +237,6 @@ export default {
   /deep/ .prism-player {
     width: 100%;
     height: 100% !important;
-    overflow: hidden;
-
     .prism-controlbar {
       // display: block !important;
     }
