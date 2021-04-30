@@ -23,7 +23,7 @@
             type="textarea"
             resize="none"
             placeholder="我想说..."
-            v-model.trim="comment"
+            v-model="comment"
           ></el-input>
         </div>
         <div class="step-comment-footer">
@@ -104,17 +104,22 @@
 </template>
 
 <script>
-import termService from "service/term";
-
 export default {
   name: "TermFeedback",
+  props: {
+    defaultComment: {
+      type: String
+    },
+    defaultScore: {
+      type: Number
+    }
+  },
   data() {
     return {
       visible: false,
       step: 1,
-      comment: "",
-      score: 0,
-      sending: false,
+      comment: this.defaultComment,
+      score: this.defaultScore,
       tips: {
         1: "还行，送出一朵花",
         2: "挺好，请喝杯咖啡",
@@ -124,41 +129,43 @@ export default {
       }
     };
   },
+  created() {
+    this.init();
+  },
+  watch: {
+    defaultComment(val) {
+      this.comment = val;
+      this.init();
+    },
+    defaultScore(val) {
+      this.score = val;
+      this.init();
+    }
+  },
   methods: {
+    init() {
+      if (this.defaultComment) {
+        this.step = 2;
+      }
+      if (this.defaultComment && this.defaultScore > 0) {
+        this.step = 3;
+      }
+    },
     handleToggleVisible() {
       this.visible = !this.visible;
-      this.step = 1;
-      this.comment = "";
-      this.score = 0;
     },
     handleNext() {
       this.step < 3 && this.step++;
     },
     handleSendFeedback() {
-      const { step, comment, score, sending } = this;
-      if ((step === 1 && !comment) || (step === 2 && !score)) {
+      const { step, comment, score } = this;
+      if ((step === 1 && !comment.trim()) || (step === 2 && !score)) {
         return;
       }
-      if (sending) {
-        this.$notice({
-          type: "warning",
-          title: "请耐心等待"
-        });
-        return;
-      }
-      this.sending = true;
-      console.log(this.$route.params.id);
-      termService
-        .termFeedback(this.$route.params.id, {
-          comment: this.comment,
-          score: this.score
-        })
-        .then(() => {
-          this.handleNext();
-        })
-        .finally(() => {
-          this.sending = false;
-        });
+      this.$emit("feedback", {
+        comment: comment.trim(),
+        score: score
+      });
     }
   }
 };
@@ -294,6 +301,9 @@ export default {
           font-size: 16px;
           color: #2c3330;
           cursor: pointer;
+          label {
+            cursor: pointer;
+          }
           .next-icon {
             display: inline-block;
             margin-left: 4px;

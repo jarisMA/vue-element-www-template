@@ -46,7 +46,12 @@
           </el-tab-pane>
         </el-tabs>
       </div>
-      <feedback />
+      <feedback
+        ref="feedback"
+        :defaultComment.sync="feedback.comment"
+        :defaultScore.sync="feedback.score"
+        @feedback="handleFeedback"
+      />
     </div>
   </div>
 </template>
@@ -77,10 +82,15 @@ export default {
       TERM_STATUS,
       loading: true,
       detail: {},
+      feedback: {
+        comment: "",
+        score: null
+      },
       activeName: "category",
       categories: [],
       homeworks: [],
-      attaches: []
+      attaches: [],
+      feedbackSending: false
     };
   },
   created() {
@@ -99,6 +109,7 @@ export default {
       Promise.all([termService.campTerm(id), termService.campAttach(id)])
         .then(([res, attaches]) => {
           this.detail = res.camp_term;
+          this.feedback = res.feedback;
           this.categories = res.categories;
           this.homeworks = res.homeworks.filter(
             item =>
@@ -122,6 +133,24 @@ export default {
           }
         });
       }
+    },
+    handleFeedback(params) {
+      if (this.feedbackSending) {
+        this.$notice({
+          type: "warning",
+          title: "请耐心等待"
+        });
+        return;
+      }
+      this.feedbackSending = true;
+      termService
+        .termFeedback(this.$route.params.id, params)
+        .then(() => {
+          this.$refs.feedback.handleNext();
+        })
+        .finally(() => {
+          this.feedbackSending = false;
+        });
     }
   }
 };
