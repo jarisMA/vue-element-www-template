@@ -96,7 +96,7 @@ export default {
       lessons: [],
       lessonIndex: 1,
       activeLessonIndex: -1,
-      showMenu: false,
+      showMenu: true,
       setRecording: false
     };
   },
