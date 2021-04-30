@@ -2,7 +2,7 @@
   <div class="player-container">
     <div class="prism-player" :id="id"></div>
     <div class="phone-container" v-if="status && !loading">
-      {{ userInfo.phone.substr(-4, 4) }}
+      {{ userInfo.phone }}{{ userInfo.nickname }}
     </div>
     <div v-if="!status && !loading">{{ vid }} 视频转码中 ～</div>
   </div>
@@ -216,10 +216,13 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @keyframes phoneMove {
-  from {
-    right: 0;
+  0% {
+    right: -100%;
   }
-  to {
+  50% {
+    right: -100%;
+  }
+  100% {
     right: 100%;
   }
 }
@@ -228,17 +231,17 @@ export default {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  word-break: keep-all;
   .phone-container {
     position: absolute;
     top: 50%;
     right: -100%;
     padding: 5px 10px;
-    color: #fff;
-    font-weight: 600;
-    font-size: 20px;
+    color: rgba(255, 255, 255, 0.3);
+    line-height: 24px;
+    font-size: 14px;
     z-index: 1;
-    animation: phoneMove 10s linear 2s infinite;
-    background: rgba(0, 0, 0, 0.3);
+    animation: phoneMove 20s linear 2s infinite;
   }
   /deep/ .prism-player {
     width: 100%;
