@@ -425,10 +425,10 @@ export default {
     }
   }
   .fold-wrapper {
-    padding: 0 0 26px;
+    padding: 0 20px 26px;
   }
   .homework-desc-wrapper {
-    padding: 20px;
+    padding: 20px 0;
     min-height: 64px;
     display: flex;
     align-items: flex-start;
