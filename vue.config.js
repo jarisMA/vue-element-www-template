@@ -27,7 +27,13 @@ module.exports = {
     //   }
     // }
   },
-
+  css: {
+    loaderOptions: {
+      less: {
+        javascriptEnabled: true
+      }
+    }
+  },
   chainWebpack: config => {
     config.plugin("provide").use(webpack.ProvidePlugin, [
       {

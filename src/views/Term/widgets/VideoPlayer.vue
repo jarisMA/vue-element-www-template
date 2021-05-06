@@ -215,6 +215,7 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
+@randomTop: `Math.floor(Math.random() * (80 - 20 + 1)) + 20 + "%" `;
 @keyframes phoneMove {
   0% {
     right: -100%;
@@ -234,7 +235,7 @@ export default {
   word-break: keep-all;
   .phone-container {
     position: absolute;
-    top: 50%;
+    top: calc(~"@{randomTop}");
     right: -100%;
     padding: 5px 10px;
     color: rgba(255, 255, 255, 0.3);
