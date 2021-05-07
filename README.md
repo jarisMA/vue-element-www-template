@@ -18,6 +18,7 @@ NODE_ENV=development
 VUE_APP_DOMAIN=.docee.cn
 VUE_APP_HOST=https://api.docee.cn
 VUE_APP_WECHAT_APPID=wx90ef6e551abf286e
+VUE_APP_TERM_ID=1
 ```
 
 ## Compiles and hot-reloads for development
