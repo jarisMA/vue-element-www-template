@@ -296,7 +296,7 @@ export default {
     }
     .prism-controlbar {
       height: 40px;
-      display: block !important;
+      // display: block !important;
       .quality-components {
         float: right;
         color: #fff;
