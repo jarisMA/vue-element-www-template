@@ -314,6 +314,10 @@ export default {
     transition: width 0.3s;
     .scrollbar-section {
       height: 100%;
+      /deep/ .el-scrollbar__wrap {
+        overflow: hidden;
+        overflow-y: scroll;
+      }
     }
     &.show {
       width: 20%;
