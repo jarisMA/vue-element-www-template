@@ -80,7 +80,7 @@ import {
   Popconfirm,
   // Message,
   // Notification,
-  // Scrollbar,
+  Scrollbar,
   InfiniteScroll
 } from "element-ui";
 
@@ -160,7 +160,7 @@ Vue.use(Image);
 // Vue.use(PageHeader);
 // Vue.use(CascaderPanel);
 Vue.use(Popconfirm);
-// Vue.use(Scrollbar);
+Vue.use(Scrollbar);
 Vue.use(Loading.directive);
 Vue.use(InfiniteScroll);
 // Vue.prototype.$loading = Loading.service;

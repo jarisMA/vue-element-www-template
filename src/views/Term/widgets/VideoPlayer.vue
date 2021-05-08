@@ -365,6 +365,12 @@ export default {
       margin-right: 10px !important;
       background-image: url("~images/course/settings.svg");
     }
+    .prism-setting-item {
+      &.prism-setting-cc,
+      &.prism-setting-audio {
+        display: none;
+      }
+    }
     .prism-fullscreen-btn {
       margin-top: 10px !important;
       margin-left: 16px;
