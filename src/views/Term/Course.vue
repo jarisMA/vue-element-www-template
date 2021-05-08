@@ -210,6 +210,10 @@ export default {
 @import "~styles/variable";
 
 .course-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -217,6 +221,7 @@ export default {
 }
 
 .page-header {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -293,6 +298,7 @@ export default {
 }
 
 .page-content {
+  flex: 1;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
