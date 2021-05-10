@@ -98,6 +98,33 @@
         :style="{ zIndex: 4 }"
       />
     </div>
+
+    <div class="academy-content">
+      <div class="academy-content-card">
+        <div class="card-img"></div>
+
+        <div class="card-content">
+          <span class="card-content-label">// CAMP:</span>
+          <span class="card-content-title">妙笔生花 软装训练</span>
+          <div class="card-content-desc-surround">
+            <div class="card-content-desc">
+              <div>
+                <span class="desc-fontstyle desc-trainingcamp"
+                  >超软装设计·训练营</span
+                >
+                <span class="desc-fontstyle desc-stage">一期班</span>
+              </div>
+              <span class="desc-fontstyle desc-status">热招中</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <span class="card-footer-dollar">￥4999</span>
+          <button class="card-footer-btn">立即报名 →</button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -324,5 +351,144 @@ export default {
       }
     }
   }
+}
+
+.academy-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 900px;
+  background-color: white;
+}
+
+.academy-content-card {
+  border: 1px solid #efefef;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+
+  width: 540px;
+  // background-color: black;
+}
+
+.card-img {
+  width: 508px;
+  height: 286px;
+  margin: 16px 0 0 16px;
+  // background-color: blanchedalmond;
+  background: url("~images/academy/cardimg.png");
+  background-size: cover;
+}
+
+.card-content {
+  width: 100%;
+  padding-top: 16px;
+  // background-color: blue;
+}
+
+.card-content-label {
+  display: block;
+  padding-left: 16px;
+  font-size: 24px;
+  font-weight: 800;
+  font-style: normal;
+  font-family: Source Han Sans SC;
+  line-height: 30px;
+  color: #dddddd;
+  // background-color: red;
+}
+
+.card-content-title {
+  display: block;
+  padding-top: 10px;
+  padding-left: 16px;
+  font-size: 40px;
+  font-weight: 800;
+  font-style: normal;
+  font-family: Source Han Sans SC;
+  color: #ff9100;
+  // background-color: seagreen;
+}
+
+.card-content-desc-surround {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 24px;
+}
+
+.card-content-desc {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 508px;
+  background-color: #fafafa;
+}
+
+.desc-fontstyle {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: PingFang SC;
+  line-height: 24px;
+  color: #606c66;
+}
+
+.desc-trainingcamp {
+  font-style: normal;
+  font-weight: normal;
+  text-transform: uppercase;
+  padding-left: 12px;
+}
+
+.desc-stage {
+  padding-left: 8px;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.desc-status {
+  padding-right: 12px;
+  color: #9b00ff;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding-top: 28px;
+  padding-bottom: 28px;
+  padding-left: 16px;
+  padding-right: 16px;
+  // background-color: greenyellow;
+}
+
+.card-footer-dollar {
+  font-family: Open Sans;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 40px;
+  line-height: 40px;
+  /* identical to box height, or 100% */
+  color: #9b00ff;
+  // background-color: honeydew;
+}
+
+.card-footer-btn {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 12px 30px;
+  font-family: PingFang SC;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: white;
+  background-color: #9b00ff;
+  border: 0;
+  outline: none;
+  cursor: pointer;
 }
 </style>

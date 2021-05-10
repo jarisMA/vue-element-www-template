@@ -1,7 +1,18 @@
 <template>
   <div class="my-container" v-loading="loading">
+    <div class="container-1200 container-head">
+      <span class="container-title">工作台</span>
+      <div class="container-searchbar">
+        <div class="search-icon"></div>
+        <input
+          placeholder="在工作台搜索..."
+          class="search-input"
+          placeholder-class="search-input-placeholder"
+        />
+      </div>
+    </div>
     <div class="container-1200">
-      <div class="left-container">
+      <!-- <div class="left-container">
         <div class="login-user-wrapper">
           <the-avatar
             :size="80"
@@ -34,8 +45,8 @@
           <el-menu-item index="plan">我的方案</el-menu-item>
           <el-menu-item index="term">我的班级</el-menu-item>
         </el-menu>
-      </div>
-      <div class="right-container">
+      </div> -->
+      <div class="my-container-plan">
         <!-- <el-scrollbar class="scrollbar-section"> -->
         <my-plan
           v-if="currentMenu === 'plan'"
@@ -53,15 +64,15 @@
 import { mapState } from "vuex";
 import MyPlan from "./widgets/Plan";
 import MyTerm from "./widgets/Term";
-import TheAvatar from "components/TheAvatar";
+// import TheAvatar from "components/TheAvatar";
 import { isVip } from "utils/function";
 
 export default {
   name: "My",
   components: {
     MyPlan,
-    MyTerm,
-    TheAvatar
+    MyTerm
+    // TheAvatar
   },
   data() {
     return {
@@ -104,108 +115,157 @@ export default {
 @import "~styles/variable.less";
 
 @leftWidth: 224px;
+
 .my-container {
+  box-sizing: border-box;
+  background-color: white;
   .container-1200 {
     display: flex;
   }
-  .left-container {
-    width: @leftWidth;
-    margin-right: 20px;
-  }
-  .login-user-wrapper {
+  .container-head {
+    // background-color:greenyellow;
+    padding-top: 34px;
+    padding-bottom: 16px;
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    margin: 20px 0;
-    width: @leftWidth;
-    height: @leftWidth;
-    background: #fff;
-    .nickname {
-      display: -webkit-box;
-      width: 190px;
-      line-height: 30px;
+    .container-title {
+      // background-color: royalblue;
+      font-family: PingFang SC;
+      font-style: normal;
+      font-weight: 600;
       font-size: 20px;
-      font-weight: 500;
-      color: #333333;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
-      text-align: center;
+      line-height: 28px;
+      color: #2c3330;
     }
-    .login-user-image {
-      margin-bottom: 20px;
-      // border: 2px solid @primaryColor;
-      background-color: transparent;
-      cursor: auto;
-    }
-
-    .user-icon {
-      margin-top: 10px;
-      width: 18px;
-      height: 18px;
-      cursor: pointer;
-    }
-  }
-  .el-menu {
-    width: @leftWidth;
-    border: unset;
-  }
-  .el-menu-item {
-    position: relative;
-    height: 42px;
-    line-height: 42px;
-    text-align: left;
-    font-size: 14px;
-    font-weight: 500;
-    color: #333333;
-    background: #fff;
-    &:not(:last-child) {
-      border-bottom: 1px solid #e6e6e6ff;
-    }
-    &.is-active {
-      &::before {
-        position: absolute;
-        left: 0;
-        top: 50%;
-        width: 4px;
-        height: 30px;
-        transform: translateY(-50%);
-        content: "";
-        background: @primaryColor;
+    .container-searchbar {
+      display: flex;
+      align-items: center;
+      width: 280px;
+      height: 40px;
+      padding-left: 13px;
+      background: rgba(0, 0, 0, 0.03);
+      .search-icon {
+        height: 24px;
+        width: 24px;
+        background-size: cover;
+        background: url("~images/my/search.svg");
+      }
+      .search-input {
+        padding-left: 15px;
+        outline: none;
+        border: 0;
+        background: rgba(0, 0, 0, 0);
+      }
+      .search-input-placeholder {
+        font-family: PingFang SC;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 14px;
+        line-height: 20px;
+        color: rgba(153, 153, 153);
       }
     }
   }
-  .right-container {
+
+  // .left-container {
+  //   width: @leftWidth;
+  //   margin-right: 20px;
+  // }
+  // .login-user-wrapper {
+  //   display: flex;
+  //   flex-direction: column;
+  //   align-items: center;
+  //   justify-content: center;
+  //   margin: 20px 0;
+  //   width: @leftWidth;
+  //   height: @leftWidth;
+  //   background: #fff;
+  //   .nickname {
+  //     display: -webkit-box;
+  //     width: 190px;
+  //     line-height: 30px;
+  //     font-size: 20px;
+  //     font-weight: 500;
+  //     color: #333333;
+  //     -webkit-box-orient: vertical;
+  //     -webkit-line-clamp: 2;
+  //     overflow: hidden;
+  //     text-align: center;
+  //   }
+  //   .login-user-image {
+  //     margin-bottom: 20px;
+  //     // border: 2px solid @primaryColor;
+  //     background-color: transparent;
+  //     cursor: auto;
+  //   }
+
+  //   .user-icon {
+  //     margin-top: 10px;
+  //     width: 18px;
+  //     height: 18px;
+  //     cursor: pointer;
+  //   }
+  // }
+  // .el-menu {
+  //   width: @leftWidth;
+  //   border: unset;
+  // }
+  // .el-menu-item {
+  //   position: relative;
+  //   height: 42px;
+  //   line-height: 42px;
+  //   text-align: left;
+  //   font-size: 14px;
+  //   font-weight: 500;
+  //   color: #333333;
+  //   background: #fff;
+  //   &:not(:last-child) {
+  //     border-bottom: 1px solid #e6e6e6ff;
+  //   }
+  //   &.is-active {
+  //     &::before {
+  //       position: absolute;
+  //       left: 0;
+  //       top: 50%;
+  //       width: 4px;
+  //       height: 30px;
+  //       transform: translateY(-50%);
+  //       content: "";
+  //       background: @primaryColor;
+  //     }
+  //   }
+  // }
+  .my-container-plan {
     flex: 1;
   }
-  .scrollbar-section {
-    height: calc(100vh - 120px);
-  }
+  // .scrollbar-section {
+  //   height: calc(100vh - 120px);
+  // }
 }
 </style>
 <style lang="less">
-.vip-popper {
-  position: relative;
-  padding: 3px 6px;
-  font-size: 12px;
-  font-weight: 400;
-  color: #333333;
-  line-height: 18px;
-  border: unset !important;
-  box-shadow: 0px 0px 4px 0px rgba(180, 180, 180, 0.5);
-  z-index: 1;
-  &::before {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 8px;
-    height: 8px;
-    content: "";
-    transform: translate(-50%, -50%) rotate(45deg);
-    background: white;
-    z-index: 0;
-    box-shadow: -2px -2px 3px 0px rgba(180, 180, 180, 0.5);
-  }
-}
+// .vip-popper {
+//   position: relative;
+//   padding: 3px 6px;
+//   font-size: 12px;
+//   font-weight: 400;
+//   color: #333333;
+//   line-height: 18px;
+//   border: unset !important;
+//   box-shadow: 0px 0px 4px 0px rgba(180, 180, 180, 0.5);
+//   z-index: 1;
+//   &::before {
+//     position: absolute;
+//     top: 0;
+//     left: 50%;
+//     width: 8px;
+//     height: 8px;
+//     content: "";
+//     transform: translate(-50%, -50%) rotate(45deg);
+//     background: white;
+//     z-index: 0;
+//     box-shadow: -2px -2px 3px 0px rgba(180, 180, 180, 0.5);
+//   }
+// }
 </style>

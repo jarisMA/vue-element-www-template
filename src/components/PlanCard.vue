@@ -37,13 +37,12 @@
         </el-dropdown>
       </div>
       <span class="house-type"
-        >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
+        >{{ parseInt(detail.srcArea) }}㎡ {{ detail.specName }}</span
       >
       <div class="house-desc" v-if="theme !== 'homework'">
         <label class="house-address">
-          <icon-svg class="location-icon" svg-name="location"></icon-svg
-          >{{ filterCity }}
-          {{ detail.commName }}
+          <icon-svg class="location-icon" svg-name="location"></icon-svg>
+          {{ filterCity }} · {{ detail.commName }}
         </label>
       </div>
       <span v-if="theme === 'my'" class="plan-date">{{ date }}</span>
@@ -126,6 +125,7 @@ export default {
 @padding: 12px;
 @homeworkPadding: 10px;
 .plan-card {
+  border: 1px solid #efefef;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -198,7 +198,7 @@ export default {
     flex-direction: column;
     width: 100%;
     padding: 5px @padding 10px;
-    border-top: 1px solid #e6e6e6;
+    // border-top: 1px solid #e6e6e6;
     &.homework {
       padding: 10px 10px;
     }

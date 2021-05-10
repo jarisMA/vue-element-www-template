@@ -215,7 +215,7 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable.less";
 .my-plan-container {
-  padding: 20px 0;
+  // padding: 20px 0;
 }
 .add-btn-wrapper {
   display: flex;

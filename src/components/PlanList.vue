@@ -137,6 +137,7 @@ export default {
   display: flex;
   flex-wrap: wrap;
   .add-plan {
+    border: 1px solid #efefef;
     display: flex;
     flex-direction: column;
     height: 328px;
