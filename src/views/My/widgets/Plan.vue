@@ -109,7 +109,7 @@ export default {
       this.$emit("update:loading", true);
       kujialeService
         .designList({
-          keyword: this.keyword,
+          keyword: this.keyword || null,
           page: start,
           page_size: this.planCount
         })
