@@ -231,18 +231,13 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable.less";
 .my-plan-container {
-  // padding: 20px 0;
   .container-head {
-    // background-color:greenyellow;
-    padding-top: 34px;
-    padding-bottom: 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-top: 34px;
+    padding-bottom: 16px;
     .container-title {
-      // background-color: royalblue;
-      font-family: PingFang SC;
-      font-style: normal;
       font-weight: 600;
       font-size: 20px;
       line-height: 28px;
@@ -268,9 +263,6 @@ export default {
         background: rgba(0, 0, 0, 0);
       }
       .search-input-placeholder {
-        font-family: PingFang SC;
-        font-style: normal;
-        font-weight: normal;
         font-size: 14px;
         line-height: 20px;
         color: rgba(153, 153, 153);

@@ -125,13 +125,13 @@ export default {
 @padding: 12px;
 @homeworkPadding: 10px;
 .plan-card {
-  border: 1px solid #efefef;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 0;
   width: 100%;
+  border: 1px solid #efefef;
   background: #fff;
   box-sizing: border-box;
   cursor: pointer;
@@ -198,7 +198,6 @@ export default {
     flex-direction: column;
     width: 100%;
     padding: 5px @padding 10px;
-    // border-top: 1px solid #e6e6e6;
     &.homework {
       padding: 10px 10px;
     }
