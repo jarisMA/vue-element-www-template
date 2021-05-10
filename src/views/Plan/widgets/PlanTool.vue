@@ -80,7 +80,6 @@
               clearable
               v-model="name"
               @keyup.enter.native="handleNameInputConfirm"
-              @blur="handleNameInputConfirm"
             >
             </el-input>
           </div>
@@ -116,8 +115,8 @@
             <div class="scroll-section" v-infinite-scroll="getCommodity(true)">
               <div class="commodity-list">
                 <commodity-card
-                  v-for="commodity of commodities"
-                  :key="commodity.id"
+                  v-for="(commodity, index) of commodities"
+                  :key="`${commodity.id}-${index}`"
                   :commodity="commodity"
                   :values="values"
                   :columns="columns"
@@ -156,7 +155,9 @@
         }"
       >
         {{
-          item.type === "price"
+          item.type === "search"
+            ? item.value.name
+            : item.type === "price"
             ? `${item.value.min_price ? item.value.min_price : "∞"}-${
                 item.value.max_price ? item.value.max_price : "∞"
               }元`
@@ -357,13 +358,16 @@ export default {
       const valueIds = this.values
         .filter(item => item.type === "value")
         .map(item => item.value.id);
+      const names = this.values
+        .filter(item => item.type === "search")
+        .map(item => item.value.name);
       this.commodityLoading = true;
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
           cat_id: (this.activeCat && this.activeCat.id) || null,
           brand_ids: brandIds,
-          name: this.name || null,
+          name: names ? names[0] || null : null,
           min_price:
             priceIndex > -1 ? this.values[priceIndex].value.min_price : null,
           max_price:
@@ -408,14 +412,36 @@ export default {
       this.columns = 2;
     },
     handleNameInputConfirm() {
-      this.getCommodity();
+      this.handleValueAdd({
+        type: "search",
+        attrId: 0,
+        color: "#9F8164",
+        value: {
+          id: -1,
+          name: this.name
+        }
+      });
       this.isSearch = false;
     },
     handleValueAdd(value) {
+      if (this.values.length === 15) {
+        this.$notice({
+          type: "warning",
+          title: "筛选条件最多只能15条"
+        });
+        return;
+      }
       const valueIds = this.values
         .filter(item => item.value.id)
         .map(item => item.value.id);
-      if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
+      if (value.type === "search") {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        this.values.push(value);
+        this.name = "";
+      } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
         this.values.push(value);
       } else if (value.type === "price") {
         const index = this.values.findIndex(item => item.type === value.type);

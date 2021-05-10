@@ -10,7 +10,7 @@
           ]"
           @click="showMenu = !showMenu"
         ></i>
-        <label class="page-header-left_text">
+        <label class="page-header-left_text ellipsis">
           {{ activeLessonIndex > -1 ? lessons[activeLessonIndex].name : "" }}
         </label>
       </div>
@@ -26,46 +26,51 @@
     </div>
     <div class="page-content">
       <div :class="['page-content-left', showMenu ? 'show' : 'hide']">
-        <div class="page-menu-wrapper">
-          <div class="page-menu-header">
-            <h3 class="page-menu-title">{{ detail.name }}</h3>
-          </div>
-          <div class="page-menu-content">
-            <div class="page-menu-list">
-              <div
-                :class="[
-                  'page-menu-item',
-                  activeLessonIndex > -1 &&
-                  lessons[activeLessonIndex].id === lesson.id
-                    ? 'active'
-                    : '',
-                  [4].indexOf(lessonStatus(index)) > -1 ? 'completed' : ''
-                ]"
-                v-for="(lesson, index) of lessons"
-                :key="lesson.id"
-                @click="handleToggleLesson(index)"
-              >
-                <i
-                  :class="['page-menu-item_icon', lessonStatusIconClass(index)]"
-                ></i>
-                <h4 class="page-menu-item_name ellipsis">
-                  {{ lesson.name }}
-                </h4>
-                <label class="page-menu-item-duration">
-                  <template v-if="[2, 3].indexOf(lessonStatus(index)) > -1">
-                    <span
-                      :class="[
-                        [2].indexOf(lessonStatus(index)) > -1 ? 'primary' : ''
-                      ]"
-                      >{{ secondsUpdate(lesson.last_play_position) }}</span
-                    >/ </template
-                  >{{ formatSeconds(lesson.second_duration) }}
-                </label>
+        <el-scrollbar class="scrollbar-section">
+          <div class="page-menu-wrapper">
+            <div class="page-menu-header">
+              <h3 class="page-menu-title">{{ detail.name }}</h3>
+            </div>
+            <div class="page-menu-content">
+              <div class="page-menu-list">
+                <div
+                  :class="[
+                    'page-menu-item',
+                    activeLessonIndex > -1 &&
+                    lessons[activeLessonIndex].id === lesson.id
+                      ? 'active'
+                      : '',
+                    [4].indexOf(lessonStatus(index)) > -1 ? 'completed' : ''
+                  ]"
+                  v-for="(lesson, index) of lessons"
+                  :key="lesson.id"
+                  @click="handleToggleLesson(index)"
+                >
+                  <i
+                    :class="[
+                      'page-menu-item_icon',
+                      lessonStatusIconClass(index)
+                    ]"
+                  ></i>
+                  <h4 class="page-menu-item_name ellipsis">
+                    {{ lesson.name }}
+                  </h4>
+                  <label class="page-menu-item-duration">
+                    <template v-if="[2, 3].indexOf(lessonStatus(index)) > -1">
+                      <span
+                        :class="[
+                          [2].indexOf(lessonStatus(index)) > -1 ? 'primary' : ''
+                        ]"
+                        >{{ secondsUpdate(lesson.last_play_position) }}</span
+                      >/ </template
+                    >{{ formatSeconds(lesson.second_duration) }}
+                  </label>
+                </div>
               </div>
             </div>
+            <div class="page-menu-footer"></div>
           </div>
-          <div class="page-menu-footer"></div>
-        </div>
+        </el-scrollbar>
       </div>
       <div class="page-content-right">
         <video-player
@@ -205,6 +210,10 @@ export default {
 @import "~styles/variable";
 
 .course-page {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -212,18 +221,25 @@ export default {
 }
 
 .page-header {
+  flex: none;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 30px;
   width: 100%;
-  height: 80px;
+  height: 7.4%;
+  min-height: 52px;
+  max-height: 80px;
   background: #393939;
-
   .page-header-left {
+    flex: none;
+    width: 20%;
+    padding-left: 30px;
+    min-width: 230px;
+    max-width: 370px;
     display: flex;
     align-items: center;
     justify-content: flex-start;
+
     .page-header-left_icon {
       display: inline-block;
       margin-right: 10px;
@@ -244,6 +260,7 @@ export default {
       }
     }
     .page-header-left_text {
+      flex: 1;
       font-size: 14px;
       line-height: 24px;
       color: #999999;
@@ -260,8 +277,10 @@ export default {
     }
   }
   .page-header-right {
+    flex: none;
     display: flex;
     align-items: center;
+    padding-right: 30px;
     .page-header-right_icon {
       display: inline-block;
       margin-right: 5px;
@@ -279,6 +298,7 @@ export default {
 }
 
 .page-content {
+  flex: 1;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -286,22 +306,32 @@ export default {
   height: calc(100% - 80px);
   .page-content-left {
     flex: none;
-    width: 370px;
+    width: 20%;
+    min-width: 230px;
+    max-width: 370px;
     height: 100%;
     background: #494949;
-    overflow: hidden;
     transition: width 0.3s;
+    .scrollbar-section {
+      height: 100%;
+      /deep/ .el-scrollbar__wrap {
+        overflow: hidden;
+        overflow-y: scroll;
+      }
+    }
     &.show {
-      width: 370px;
+      width: 20%;
     }
     &.hide {
-      width: 0px;
+      min-width: 0px;
+      width: 0%;
     }
     .page-menu-wrapper {
       padding: 0 20px;
-      width: 370px;
-      height: 100%;
-      overflow-y: auto;
+      width: 20vw;
+      min-width: 230px;
+      max-width: 370px;
+      min-height: 100%;
     }
     .page-menu-header {
       padding: 30px 0;
@@ -387,6 +417,29 @@ export default {
     flex: 1;
     width: 50px;
     height: 100%;
+  }
+}
+@media screen and (max-width: 1440px) {
+  .page-content {
+    .page-content-left {
+      .page-menu-header {
+        padding: 24px 0;
+        .page-menu-title {
+          font-size: 16px;
+        }
+      }
+      .page-menu-content {
+        .page-menu-item_icon {
+          width: 20px;
+          height: 20px;
+        }
+        .page-menu-item_name,
+        .page-menu-item-duration {
+          line-height: 16px;
+          font-size: 12px;
+        }
+      }
+    }
   }
 }
 </style>
