@@ -1,16 +1,5 @@
 <template>
   <div class="my-container" v-loading="loading">
-    <div class="container-1200 container-head">
-      <span class="container-title">工作台</span>
-      <div class="container-searchbar">
-        <div class="search-icon"></div>
-        <input
-          placeholder="在工作台搜索..."
-          class="search-input"
-          placeholder-class="search-input-placeholder"
-        />
-      </div>
-    </div>
     <div class="container-1200">
       <!-- <div class="left-container">
         <div class="login-user-wrapper">
@@ -121,51 +110,6 @@ export default {
   background-color: white;
   .container-1200 {
     display: flex;
-  }
-  .container-head {
-    // background-color:greenyellow;
-    padding-top: 34px;
-    padding-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .container-title {
-      // background-color: royalblue;
-      font-family: PingFang SC;
-      font-style: normal;
-      font-weight: 600;
-      font-size: 20px;
-      line-height: 28px;
-      color: #2c3330;
-    }
-    .container-searchbar {
-      display: flex;
-      align-items: center;
-      width: 280px;
-      height: 40px;
-      padding-left: 13px;
-      background: rgba(0, 0, 0, 0.03);
-      .search-icon {
-        height: 24px;
-        width: 24px;
-        background-size: cover;
-        background: url("~images/my/search.svg");
-      }
-      .search-input {
-        padding-left: 15px;
-        outline: none;
-        border: 0;
-        background: rgba(0, 0, 0, 0);
-      }
-      .search-input-placeholder {
-        font-family: PingFang SC;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 14px;
-        line-height: 20px;
-        color: rgba(153, 153, 153);
-      }
-    }
   }
 
   // .left-container {
