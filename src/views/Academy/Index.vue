@@ -1,104 +1,152 @@
 <template>
   <div class="academy-page">
-    <div class="academy-banner"
-         ref="banner">
-      <day-logo-svg ref="dayLogoSvg"
-                    @mousedown="e => mousedown(e, 'dayLogoSvg')"
-                    class="day-logo-svg"
-                    :style="{ zIndex: 2 }" />
-      <docee-svg ref="doceeSvg"
-                 @mousedown="e => mousedown(e, 'doceeSvg')"
-                 class="docee-svg"
-                 :style="{ zIndex: 3 }" />
-      <dog-svg ref="dogSvg"
-               @mousedown="e => mousedown(e, 'dogSvg')"
-               class="dog-svg"
-               :style="{ zIndex: 1 }" />
-      <dxjxs-svg ref="dxjxsSvg"
-                 @mousedown="e => mousedown(e, 'dxjxsSvg')"
-                 class="dxjxs-svg"
-                 :style="{ zIndex: 1 }" />
-      <dz-svg ref="dzSvg"
-              @mousedown="e => mousedown(e, 'dzSvg')"
-              class="dz-svg"
-              :style="{ zIndex: 1 }" />
-      <gz-svg ref="gzSvg"
-              @mousedown="e => mousedown(e, 'gzSvg')"
-              class="gz-svg"
-              :style="{ zIndex: 1 }" />
-      <hb-svg ref="hbSvg"
-              @mousedown="e => mousedown(e, 'hbSvg')"
-              class="hb-svg"
-              :style="{ zIndex: 1 }" />
-      <jz-svg ref="jzSvg"
-              @mousedown="e => mousedown(e, 'jzSvg')"
-              class="jz-svg"
-              :style="{ zIndex: 1 }" />
-      <ldd-svg ref="lddSvg"
-               @mousedown="e => mousedown(e, 'lddSvg')"
-               class="ldd-svg"
-               :style="{ zIndex: 2 }" />
-      <lsy-svg ref="lsySvg"
-               @mousedown="e => mousedown(e, 'lsySvg')"
-               class="lsy-svg"
-               :style="{ zIndex: 2 }" />
-      <sf-svg ref="sfSvg"
-              @mousedown="e => mousedown(e, 'sfSvg')"
-              class="sf-svg"
-              :style="{ zIndex: 2 }" />
-      <sz-svg ref="szSvg"
-              @mousedown="e => mousedown(e, 'szSvg')"
-              class="sz-svg"
-              :style="{ zIndex: 1 }" />
-      <xg-svg ref="xgSvg"
-              @mousedown="e => mousedown(e, 'xgSvg')"
-              class="xg-svg"
-              :style="{ zIndex: 1 }" />
-      <yz-svg ref="yzSvg"
-              @mousedown="e => mousedown(e, 'yzSvg')"
-              class="yz-svg"
-              :style="{ zIndex: 1 }" />
-      <zwj-svg ref="zwjSvg"
-               @mousedown="e => mousedown(e, 'zwjSvg')"
-               class="zwj-svg"
-               :style="{ zIndex: 1 }" />
-      <zz-svg ref="zzSvg"
-              @mousedown="e => mousedown(e, 'zzSvg')"
-              class="zz-svg"
-              :style="{ zIndex: 4 }" />
+    <div class="academy-banner" ref="banner">
+      <day-logo-svg
+        ref="dayLogoSvg"
+        @mousedown="e => mousedown(e, 'dayLogoSvg')"
+        class="day-logo-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <docee-svg
+        ref="doceeSvg"
+        @mousedown="e => mousedown(e, 'doceeSvg')"
+        class="docee-svg"
+        :style="{ zIndex: 3 }"
+      />
+      <dog-svg
+        ref="dogSvg"
+        @mousedown="e => mousedown(e, 'dogSvg')"
+        class="dog-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <dxjxs-svg
+        ref="dxjxsSvg"
+        @mousedown="e => mousedown(e, 'dxjxsSvg')"
+        class="dxjxs-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <dz-svg
+        ref="dzSvg"
+        @mousedown="e => mousedown(e, 'dzSvg')"
+        class="dz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <gz-svg
+        ref="gzSvg"
+        @mousedown="e => mousedown(e, 'gzSvg')"
+        class="gz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <hb-svg
+        ref="hbSvg"
+        @mousedown="e => mousedown(e, 'hbSvg')"
+        class="hb-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <jz-svg
+        ref="jzSvg"
+        @mousedown="e => mousedown(e, 'jzSvg')"
+        class="jz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <ldd-svg
+        ref="lddSvg"
+        @mousedown="e => mousedown(e, 'lddSvg')"
+        class="ldd-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <lsy-svg
+        ref="lsySvg"
+        @mousedown="e => mousedown(e, 'lsySvg')"
+        class="lsy-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <sf-svg
+        ref="sfSvg"
+        @mousedown="e => mousedown(e, 'sfSvg')"
+        class="sf-svg"
+        :style="{ zIndex: 2 }"
+      />
+      <sz-svg
+        ref="szSvg"
+        @mousedown="e => mousedown(e, 'szSvg')"
+        class="sz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <xg-svg
+        ref="xgSvg"
+        @mousedown="e => mousedown(e, 'xgSvg')"
+        class="xg-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <yz-svg
+        ref="yzSvg"
+        @mousedown="e => mousedown(e, 'yzSvg')"
+        class="yz-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <zwj-svg
+        ref="zwjSvg"
+        @mousedown="e => mousedown(e, 'zwjSvg')"
+        class="zwj-svg"
+        :style="{ zIndex: 1 }"
+      />
+      <zz-svg
+        ref="zzSvg"
+        @mousedown="e => mousedown(e, 'zzSvg')"
+        class="zz-svg"
+        :style="{ zIndex: 4 }"
+      />
     </div>
 
     <div class="academy-body">
-      <div class="academy-body-card"
-           v-for="camp of camps"
-           :key="camp.id">
-        <img :src=backroundImage
-             class="academy-card-img">
+      <div class="academy-body-card" v-for="camp of camps" :key="camp.id">
+        <img :src="backroundImage" class="academy-card-img" />
         <div class="academy-card-main">
           <span class="academy-card-label">// CAMP:</span>
-          <span class="academy-card-title"
-                :style="{color: camp.titleColor}">{{camp.title}}</span>
+          <span
+            class="academy-card-title"
+            :style="{ color: camp.titleColor }"
+            >{{ camp.title }}</span
+          >
           <div class="academy-desc-wrapper">
             <div class="academy-card-desc">
               <div>
-                <span class="desc_fontstyle academy-desc-camp">{{camp.campName}}</span>
-                <span class="desc_fontstyle academy-desc-stage">{{camp.termName}}</span>
+                <span class="desc_fontstyle academy-desc-camp">{{
+                  camp.campName
+                }}</span>
+                <span class="desc_fontstyle academy-desc-stage">{{
+                  camp.termName
+                }}</span>
               </div>
-              <span class="desc-_ontstyle academy-desc-status"
-                    :style="{color:camp.color}">{{ campStatus(camp.register_at, camp.open_at) === 1 ? '热招中' : '已开课'  }}</span>
+              <span
+                class="desc-_ontstyle academy-desc-status"
+                :style="{ color: camp.color }"
+                >{{
+                  campStatus(camp.register_at, camp.open_at) === 1
+                    ? "热招中"
+                    : "已开课"
+                }}</span
+              >
             </div>
           </div>
         </div>
 
         <div class="academy-card-footer">
-          <span class="academy-card-price"
-                :style="{color:camp.color}">￥{{camp.price}}</span>
-          <button class="academy-card-btn"
-                  :style="{background:camp.color}">
-            {{ campStatus(camp.register_at, camp.open_at) === 1 ? '开始报名' : '查看详情'  }}
-            <img src="~images/academy/vector.svg"
-                 v-if="campStatus(camp.register_at, camp.open_at) === 1"
-                 class="academy-btn-vector">
+          <span class="academy-card-price" :style="{ color: camp.color }"
+            >￥{{ camp.price }}</span
+          >
+          <button class="academy-card-btn" :style="{ background: camp.color }">
+            {{
+              campStatus(camp.register_at, camp.open_at) === 1
+                ? "开始报名"
+                : "查看详情"
+            }}
+            <img
+              src="~images/academy/vector.svg"
+              v-if="campStatus(camp.register_at, camp.open_at) === 1"
+              class="academy-btn-vector"
+            />
           </button>
         </div>
       </div>
@@ -143,42 +191,45 @@ export default {
     ZwjSvg,
     ZzSvg
   },
-  data () {
+  data() {
     return {
       moveDom: null,
       left: 0,
       top: 0,
       startX: 0,
       startY: 0,
-      camps: [{
-        id: 1,
-        cover_url: "",
-        title: "妙笔生花 软装训练",
-        titleColor: "#FF9100",
-        campName: "超软装设计·训练营",
-        termName: "一期班",
-        price: "4999",
-        color: "#9B00FF",
-        backroundImage: "",
-        register_at: "2021-05-10",
-        open_at: "2021-05-12"
-      }, {
-        id: 2,
-        cover_url: "",
-        title: "户型大改造",
-        titleColor: "#14AF64",
-        campName: "户型大改造·训练营",
-        termName: "一期班",
-        price: "4999",
-        color: "#14AF64",
-        backroundImage: "",
-        register_at: "2021-05-08",
-        open_at: "2021-05-09"
-      }]
+      camps: [
+        {
+          id: 1,
+          cover_url: "",
+          title: "妙笔生花 软装训练",
+          titleColor: "#FF9100",
+          campName: "超软装设计·训练营",
+          termName: "一期班",
+          price: "4999",
+          color: "#9B00FF",
+          backroundImage: "",
+          register_at: "2021-05-10",
+          open_at: "2021-05-12"
+        },
+        {
+          id: 2,
+          cover_url: "",
+          title: "户型大改造",
+          titleColor: "#14AF64",
+          campName: "户型大改造·训练营",
+          termName: "一期班",
+          price: "4999",
+          color: "#14AF64",
+          backroundImage: "",
+          register_at: "2021-05-08",
+          open_at: "2021-05-09"
+        }
+      ]
     };
   },
   computed: {
-    campStatus () {
+    campStatus() {
       return (register_at, open_at) => {
         const now = new Date().valueOf();
         const open = new Date(open_at).valueOf();
@@ -189,10 +240,10 @@ export default {
         if (now >= register) {
           return 1; // 开始报名了
         }
-      }
+      };
     }
   },
-  mounted () {
+  mounted() {
     this.$nextTick(() => {
       const timer = setTimeout(() => {
         const banner = this.$refs["banner"];
@@ -203,15 +254,15 @@ export default {
     window.addEventListener("mouseup", this.mouseup);
     window.addEventListener("mousemove", this.mousemove);
   },
-  beforeDestroy () {
+  beforeDestroy() {
     window.removeEventListener("mouseup", this.mouseup);
     window.removeEventListener("mousemove", this.mousemove);
   },
   methods: {
-    mouseup () {
+    mouseup() {
       this.moveDom = null;
     },
-    mousemove (e) {
+    mousemove(e) {
       if (this.moveDom) {
         const banner = this.$refs["banner"];
         const maxWidth = banner.clientWidth;
@@ -237,7 +288,7 @@ export default {
         this.getMaxZIndex(el);
       }
     },
-    mousedown (e, ref) {
+    mousedown(e, ref) {
       this.moveDom = this.$refs[ref].$el;
       this.left = this.moveDom.offsetLeft;
       this.top = this.moveDom.offsetTop;
@@ -245,7 +296,7 @@ export default {
       this.startY = e.clientY;
       this.getMaxZIndex(this.moveDom);
     },
-    getMaxZIndex (el, left, top) {
+    getMaxZIndex(el, left, top) {
       let doms = document.querySelectorAll(".academy-banner>div");
       const minX = left || el.offsetLeft;
       const minY = top || el.offsetTop;
