@@ -99,8 +99,8 @@
       />
     </div>
 
-    <div class="academy-body">
-      <div class="academy-body-card" v-for="camp of camps" :key="camp.id">
+    <div class="academy-content">
+      <div class="academy-content-card" v-for="camp of camps" :key="camp.id">
         <img :src="backroundImage" class="academy-card-img" />
         <div class="academy-card-main">
           <span class="academy-card-label">// CAMP:</span>
@@ -112,15 +112,17 @@
           <div class="academy-desc-wrapper">
             <div class="academy-card-desc">
               <div>
-                <span class="desc_fontstyle academy-desc-camp">{{
-                  camp.campName
-                }}</span>
-                <span class="desc_fontstyle academy-desc-stage">{{
-                  camp.termName
-                }}</span>
+                <span
+                  class="academy-card-desc_fontstyle academy-card-desc_camp"
+                  >{{ camp.campName }}</span
+                >
+                <span
+                  class="academy-card-desc_fontstyle academy-card-desc_stage"
+                  >{{ camp.termName }}</span
+                >
               </div>
               <span
-                class="desc_fontstyle academy-desc-status"
+                class="academy-card-desc_fontstyle academy-card-desc_status"
                 :style="{ color: camp.statusColor }"
                 >{{
                   campStatus(camp.register_at, camp.open_at) === 1
@@ -149,7 +151,7 @@
             <img
               src="~images/academy/vector.svg"
               v-if="campStatus(camp.register_at, camp.open_at) === 1"
-              class="academy-btn-vector"
+              class="academy-card-btn_vector"
             />
           </button>
         </div>
@@ -431,18 +433,18 @@ export default {
   }
 }
 
-.academy-body {
+.academy-content {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
   min-height: 750px;
   background-color: white;
-  .academy-body-card {
+  .academy-content-card {
     width: 540px;
     padding: 16px 16px 24px 16px;
     border: 1px solid #efefef;
-    & + .academy-body-card {
+    & + .academy-content-card {
       margin-left: 100px;
     }
     &:hover {
@@ -483,23 +485,23 @@ export default {
           width: 508px;
           padding: 12px;
           background-color: #fafafa;
-          .desc_fontstyle {
+          .academy-card-desc_fontstyle {
             font-size: 14px;
             font-weight: 400;
             line-height: 24px;
             color: #606c66;
           }
-          .academy-desc-camp {
+          .academy-card-desc_camp {
             text-transform: uppercase;
             cursor: default;
           }
-          .academy-desc-stage {
+          .academy-card-desc_stage {
             padding-left: 8px;
             font-weight: 500;
             text-transform: uppercase;
             cursor: default;
           }
-          .academy-desc-status {
+          .academy-card-desc_status {
             color: #9b00ff;
             cursor: default;
           }
@@ -533,7 +535,7 @@ export default {
       background-color: #9b00ff;
       cursor: pointer;
     }
-    .academy-btn-vector {
+    .academy-card-btn_vector {
       width: 16px;
       height: 10px;
       margin-top: 3px;
