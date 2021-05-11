@@ -69,17 +69,21 @@
               </div>
               <label
                 class="search-icon bgImg pointer"
-                @click="isSearch = true"
+                @click="handleSearchShow"
               ></label>
             </template>
             <el-input
               v-else
+              ref="nameSearch"
               class="name-search"
+              type="text"
               :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
               prefix-icon="search-icon bgImg"
-              clearable
               v-model="name"
+              autofocus
+              clearable
               @keyup.enter.native="handleNameInputConfirm"
+              @blur="isSearch = false"
             >
             </el-input>
           </div>
@@ -112,7 +116,11 @@
             @columnChange="handleColumnChange"
           />
           <div class="commodity-wrapper" v-loading="commodityLoading">
-            <div class="scroll-section" v-infinite-scroll="getCommodity(true)">
+            <div
+              class="scroll-section"
+              ref="commodityScroll"
+              v-infinite-scroll="getCommodity(true)"
+            >
               <div class="commodity-list">
                 <commodity-card
                   v-for="(commodity, index) of commodities"
@@ -411,6 +419,12 @@ export default {
       this.activeSkus = null;
       this.columns = 2;
     },
+    handleSearchShow() {
+      this.isSearch = true;
+      this.$nextTick(() => {
+        this.$refs.nameSearch.focus();
+      });
+    },
     handleNameInputConfirm() {
       this.handleValueAdd({
         type: "search",
@@ -439,8 +453,7 @@ export default {
         if (index > -1) {
           this.values.splice(index, 1);
         }
-        this.values.push(value);
-        this.name = "";
+        value.value.name && this.values.push(value);
       } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
         this.values.push(value);
       } else if (value.type === "price") {
@@ -482,8 +495,10 @@ export default {
           : data.images
           ? (data.images || "").split(",")
           : [];
-      const offsetTop = document.getElementById(`commodity-${data.id}`)
-        .offsetTop;
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${data.id}`).offsetTop - scrollTop;
+
       const height = 280;
       if (offsetTop + height > this.$refs["tool"].clientHeight) {
         this.offsetTop =
@@ -505,7 +520,10 @@ export default {
     },
     handleShowSkus(id, skus) {
       this.activeCommodity = null;
-      const offsetTop = document.getElementById(`commodity-${id}`).offsetTop;
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${id}`).offsetTop - scrollTop;
+
       const height = Math.min(
         skus.length * 145 + (skus.length - 1) * 10 + 10,
         424
@@ -674,6 +692,21 @@ export default {
             width: 24px;
             height: 24px;
             background: url("~images/common/search.svg");
+          }
+        }
+        .el-input__suffix {
+          right: 2px;
+          .el-input__suffix-inner {
+            .el-input__icon {
+              background: red;
+              width: 24px;
+              height: 24px;
+              background: url("~images/commodity/cancel.svg") no-repeat;
+              border: unset;
+              &::before {
+                display: none;
+              }
+            }
           }
         }
       }

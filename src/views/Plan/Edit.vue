@@ -220,6 +220,7 @@ export default {
     top: 52px;
     left: 44px;
     height: calc(100% - 52px - 8px);
+    cursor: auto;
   }
   .iframe {
     position: relative;

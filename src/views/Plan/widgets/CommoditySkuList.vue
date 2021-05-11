@@ -57,7 +57,7 @@ export default {
     cursor: pointer;
   }
   .scroll-wrapper {
-    padding: 0 5px;
+    padding: 0 5px 10px;
     width: calc(100% + 15px);
     max-height: calc(@maxHeight - 24px);
     overflow-y: scroll;
