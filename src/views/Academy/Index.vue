@@ -359,7 +359,7 @@ export default {
   width: 100%;
   height: 900px;
   background-color: white;
-  .academy-content-card {  
+  .academy-content-card {
     width: 540px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     border: 1px solid #efefef;
@@ -383,7 +383,7 @@ export default {
       }
       .card-content-title {
         display: block;
-        padding:10px 0 0 16px;
+        padding: 10px 0 0 16px;
         font-size: 40px;
         font-weight: 800;
         color: #ff9100;
@@ -400,7 +400,7 @@ export default {
           width: 508px;
           background-color: #fafafa;
           .desc-fontstyle {
-            padding:12px 0 12px 0; 
+            padding: 12px 0 12px 0;
             font-size: 14px;
             font-weight: 400;
             line-height: 24px;
@@ -428,7 +428,7 @@ export default {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding:28px 16px 28px 16px;
+    padding: 28px 16px 28px 16px;
     .card-footer-dollar {
       font-weight: 800;
       font-size: 40px;

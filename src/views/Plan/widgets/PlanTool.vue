@@ -112,7 +112,11 @@
             @columnChange="handleColumnChange"
           />
           <div class="commodity-wrapper" v-loading="commodityLoading">
-            <div class="scroll-section" v-infinite-scroll="getCommodity(true)">
+            <div
+              class="scroll-section"
+              ref="commodityScroll"
+              v-infinite-scroll="getCommodity(true)"
+            >
               <div class="commodity-list">
                 <commodity-card
                   v-for="(commodity, index) of commodities"
@@ -482,8 +486,10 @@ export default {
           : data.images
           ? (data.images || "").split(",")
           : [];
-      const offsetTop = document.getElementById(`commodity-${data.id}`)
-        .offsetTop;
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${data.id}`).offsetTop - scrollTop;
+
       const height = 280;
       if (offsetTop + height > this.$refs["tool"].clientHeight) {
         this.offsetTop =
@@ -505,7 +511,10 @@ export default {
     },
     handleShowSkus(id, skus) {
       this.activeCommodity = null;
-      const offsetTop = document.getElementById(`commodity-${id}`).offsetTop;
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${id}`).offsetTop - scrollTop;
+
       const height = Math.min(
         skus.length * 145 + (skus.length - 1) * 10 + 10,
         424
