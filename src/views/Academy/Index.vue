@@ -1,127 +1,105 @@
 <template>
   <div class="academy-page">
-    <div class="academy-banner" ref="banner">
-      <day-logo-svg
-        ref="dayLogoSvg"
-        @mousedown="e => mousedown(e, 'dayLogoSvg')"
-        class="day-logo-svg"
-        :style="{ zIndex: 2 }"
-      />
-      <docee-svg
-        ref="doceeSvg"
-        @mousedown="e => mousedown(e, 'doceeSvg')"
-        class="docee-svg"
-        :style="{ zIndex: 3 }"
-      />
-      <dog-svg
-        ref="dogSvg"
-        @mousedown="e => mousedown(e, 'dogSvg')"
-        class="dog-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <dxjxs-svg
-        ref="dxjxsSvg"
-        @mousedown="e => mousedown(e, 'dxjxsSvg')"
-        class="dxjxs-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <dz-svg
-        ref="dzSvg"
-        @mousedown="e => mousedown(e, 'dzSvg')"
-        class="dz-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <gz-svg
-        ref="gzSvg"
-        @mousedown="e => mousedown(e, 'gzSvg')"
-        class="gz-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <hb-svg
-        ref="hbSvg"
-        @mousedown="e => mousedown(e, 'hbSvg')"
-        class="hb-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <jz-svg
-        ref="jzSvg"
-        @mousedown="e => mousedown(e, 'jzSvg')"
-        class="jz-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <ldd-svg
-        ref="lddSvg"
-        @mousedown="e => mousedown(e, 'lddSvg')"
-        class="ldd-svg"
-        :style="{ zIndex: 2 }"
-      />
-      <lsy-svg
-        ref="lsySvg"
-        @mousedown="e => mousedown(e, 'lsySvg')"
-        class="lsy-svg"
-        :style="{ zIndex: 2 }"
-      />
-      <sf-svg
-        ref="sfSvg"
-        @mousedown="e => mousedown(e, 'sfSvg')"
-        class="sf-svg"
-        :style="{ zIndex: 2 }"
-      />
-      <sz-svg
-        ref="szSvg"
-        @mousedown="e => mousedown(e, 'szSvg')"
-        class="sz-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <xg-svg
-        ref="xgSvg"
-        @mousedown="e => mousedown(e, 'xgSvg')"
-        class="xg-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <yz-svg
-        ref="yzSvg"
-        @mousedown="e => mousedown(e, 'yzSvg')"
-        class="yz-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <zwj-svg
-        ref="zwjSvg"
-        @mousedown="e => mousedown(e, 'zwjSvg')"
-        class="zwj-svg"
-        :style="{ zIndex: 1 }"
-      />
-      <zz-svg
-        ref="zzSvg"
-        @mousedown="e => mousedown(e, 'zzSvg')"
-        class="zz-svg"
-        :style="{ zIndex: 4 }"
-      />
+    <div class="academy-banner"
+         ref="banner">
+      <day-logo-svg ref="dayLogoSvg"
+                    @mousedown="e => mousedown(e, 'dayLogoSvg')"
+                    class="day-logo-svg"
+                    :style="{ zIndex: 2 }" />
+      <docee-svg ref="doceeSvg"
+                 @mousedown="e => mousedown(e, 'doceeSvg')"
+                 class="docee-svg"
+                 :style="{ zIndex: 3 }" />
+      <dog-svg ref="dogSvg"
+               @mousedown="e => mousedown(e, 'dogSvg')"
+               class="dog-svg"
+               :style="{ zIndex: 1 }" />
+      <dxjxs-svg ref="dxjxsSvg"
+                 @mousedown="e => mousedown(e, 'dxjxsSvg')"
+                 class="dxjxs-svg"
+                 :style="{ zIndex: 1 }" />
+      <dz-svg ref="dzSvg"
+              @mousedown="e => mousedown(e, 'dzSvg')"
+              class="dz-svg"
+              :style="{ zIndex: 1 }" />
+      <gz-svg ref="gzSvg"
+              @mousedown="e => mousedown(e, 'gzSvg')"
+              class="gz-svg"
+              :style="{ zIndex: 1 }" />
+      <hb-svg ref="hbSvg"
+              @mousedown="e => mousedown(e, 'hbSvg')"
+              class="hb-svg"
+              :style="{ zIndex: 1 }" />
+      <jz-svg ref="jzSvg"
+              @mousedown="e => mousedown(e, 'jzSvg')"
+              class="jz-svg"
+              :style="{ zIndex: 1 }" />
+      <ldd-svg ref="lddSvg"
+               @mousedown="e => mousedown(e, 'lddSvg')"
+               class="ldd-svg"
+               :style="{ zIndex: 2 }" />
+      <lsy-svg ref="lsySvg"
+               @mousedown="e => mousedown(e, 'lsySvg')"
+               class="lsy-svg"
+               :style="{ zIndex: 2 }" />
+      <sf-svg ref="sfSvg"
+              @mousedown="e => mousedown(e, 'sfSvg')"
+              class="sf-svg"
+              :style="{ zIndex: 2 }" />
+      <sz-svg ref="szSvg"
+              @mousedown="e => mousedown(e, 'szSvg')"
+              class="sz-svg"
+              :style="{ zIndex: 1 }" />
+      <xg-svg ref="xgSvg"
+              @mousedown="e => mousedown(e, 'xgSvg')"
+              class="xg-svg"
+              :style="{ zIndex: 1 }" />
+      <yz-svg ref="yzSvg"
+              @mousedown="e => mousedown(e, 'yzSvg')"
+              class="yz-svg"
+              :style="{ zIndex: 1 }" />
+      <zwj-svg ref="zwjSvg"
+               @mousedown="e => mousedown(e, 'zwjSvg')"
+               class="zwj-svg"
+               :style="{ zIndex: 1 }" />
+      <zz-svg ref="zzSvg"
+              @mousedown="e => mousedown(e, 'zzSvg')"
+              class="zz-svg"
+              :style="{ zIndex: 4 }" />
     </div>
 
-    <div class="academy-content">
-      <div class="academy-content-card">
-        <div class="card-img"></div>
-
-        <div class="card-content">
-          <span class="card-content-label">// CAMP:</span>
-          <span class="card-content-title">妙笔生花 软装训练</span>
-          <div class="card-content-desc-surround">
-            <div class="card-content-desc">
+    <div class="academy-body">
+      <div class="academy-body-card"
+           v-for="camp of camps"
+           :key="camp.id">
+        <img :src=backroundImage
+             class="academy-card-img">
+        <div class="academy-card-main">
+          <span class="academy-card-label">// CAMP:</span>
+          <span class="academy-card-title"
+                :style="{color: camp.titleColor}">{{camp.title}}</span>
+          <div class="academy-desc-wrapper">
+            <div class="academy-card-desc">
               <div>
-                <span class="desc-fontstyle desc-trainingcamp"
-                  >超软装设计·训练营</span
-                >
-                <span class="desc-fontstyle desc-stage">一期班</span>
+                <span class="desc_fontstyle academy-desc-camp">{{camp.campName}}</span>
+                <span class="desc_fontstyle academy-desc-stage">{{camp.termName}}</span>
               </div>
-              <span class="desc-fontstyle desc-status">热招中</span>
+              <span class="desc-_ontstyle academy-desc-status"
+                    :style="{color:camp.color}">{{ campStatus(camp.register_at, camp.open_at) === 1 ? '热招中' : '已开课'  }}</span>
             </div>
           </div>
         </div>
 
-        <div class="card-footer">
-          <span class="card-footer-dollar">￥4999</span>
-          <button class="card-footer-btn">立即报名 →</button>
+        <div class="academy-card-footer">
+          <span class="academy-card-price"
+                :style="{color:camp.color}">￥{{camp.price}}</span>
+          <button class="academy-card-btn"
+                  :style="{background:camp.color}">
+            {{ campStatus(camp.register_at, camp.open_at) === 1 ? '开始报名' : '查看详情'  }}
+            <img src="~images/academy/vector.svg"
+                 v-if="campStatus(camp.register_at, camp.open_at) === 1"
+                 class="academy-btn-vector">
+          </button>
         </div>
       </div>
     </div>
@@ -165,16 +143,56 @@ export default {
     ZwjSvg,
     ZzSvg
   },
-  data() {
+  data () {
     return {
       moveDom: null,
       left: 0,
       top: 0,
       startX: 0,
-      startY: 0
+      startY: 0,
+      camps: [{
+        id: 1,
+        cover_url: "",
+        title: "妙笔生花 软装训练",
+        titleColor: "#FF9100",
+        campName: "超软装设计·训练营",
+        termName: "一期班",
+        price: "4999",
+        color: "#9B00FF",
+        backroundImage: "",
+        register_at: "2021-05-10",
+        open_at: "2021-05-12"
+      }, {
+        id: 2,
+        cover_url: "",
+        title: "户型大改造",
+        titleColor: "#14AF64",
+        campName: "户型大改造·训练营",
+        termName: "一期班",
+        price: "4999",
+        color: "#14AF64",
+        backroundImage: "",
+        register_at: "2021-05-08",
+        open_at: "2021-05-09"
+      }]
     };
   },
-  mounted() {
+  computed: {
+    campStatus () {
+      return (register_at, open_at) => {
+        const now = new Date().valueOf();
+        const open = new Date(open_at).valueOf();
+        const register = new Date(register_at).valueOf();
+        if (now >= open) {
+          return 2; // 开课了
+        }
+        if (now >= register) {
+          return 1; // 开始报名了
+        }
+      }
+    }
+  },
+  mounted () {
     this.$nextTick(() => {
       const timer = setTimeout(() => {
         const banner = this.$refs["banner"];
@@ -185,15 +203,15 @@ export default {
     window.addEventListener("mouseup", this.mouseup);
     window.addEventListener("mousemove", this.mousemove);
   },
-  beforeDestroy() {
+  beforeDestroy () {
     window.removeEventListener("mouseup", this.mouseup);
     window.removeEventListener("mousemove", this.mousemove);
   },
   methods: {
-    mouseup() {
+    mouseup () {
       this.moveDom = null;
     },
-    mousemove(e) {
+    mousemove (e) {
       if (this.moveDom) {
         const banner = this.$refs["banner"];
         const maxWidth = banner.clientWidth;
@@ -219,7 +237,7 @@ export default {
         this.getMaxZIndex(el);
       }
     },
-    mousedown(e, ref) {
+    mousedown (e, ref) {
       this.moveDom = this.$refs[ref].$el;
       this.left = this.moveDom.offsetLeft;
       this.top = this.moveDom.offsetTop;
@@ -227,7 +245,7 @@ export default {
       this.startY = e.clientY;
       this.getMaxZIndex(this.moveDom);
     },
-    getMaxZIndex(el, left, top) {
+    getMaxZIndex (el, left, top) {
       let doms = document.querySelectorAll(".academy-banner>div");
       const minX = left || el.offsetLeft;
       const minY = top || el.offsetTop;
@@ -352,94 +370,94 @@ export default {
     }
   }
 }
-.academy-content {
+.academy-body {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 900px;
+  min-height: 900px;
   background-color: white;
-  .academy-content-card {
+  .academy-body-card {
     width: 540px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    padding: 16px 16px 24px 16px;
     border: 1px solid #efefef;
-    .card-img {
+    & + .academy-body-card {
+      margin-left: 100px;
+    }
+    &:hover {
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
+    }
+    .academy-card-img {
       width: 508px;
       height: 286px;
-      margin: 16px 0 0 16px;
-      background: url("~images/academy/cardimg.png");
-      background-size: cover;
     }
-    .card-content {
+    .academy-card-main {
       width: 100%;
       padding-top: 16px;
-      .card-content-label {
+      .academy-card-label {
         display: block;
-        padding-left: 16px;
         font-size: 24px;
         font-weight: 800;
         line-height: 30px;
         color: #dddddd;
       }
-      .card-content-title {
+      .academy-card-title {
         display: block;
-        padding: 10px 0 0 16px;
+        padding: 10px 0 0 0;
         font-size: 40px;
         font-weight: 800;
         color: #ff9100;
       }
-      .card-content-desc-surround {
+      .academy-desc-wrapper {
         display: flex;
         justify-content: center;
         align-items: center;
-        padding-top: 24px;
-        .card-content-desc {
+        margin-top: 24px;
+        .academy-card-desc {
           display: flex;
           align-items: center;
           justify-content: space-between;
           width: 508px;
+          padding: 12px 12px 12px 12px;
           background-color: #fafafa;
-          .desc-fontstyle {
-            padding: 12px 0 12px 0;
+          .desc_fontstyle {
+            padding: 12px 0 0 0;
             font-size: 14px;
             font-weight: 400;
             line-height: 24px;
             color: #606c66;
           }
-          .desc-trainingcamp {
-            padding-left: 12px;
-            font-weight: normal;
+          .academy-desc-camp {
             text-transform: uppercase;
           }
-          .desc-stage {
+          .academy-desc-stage {
             padding-left: 8px;
             font-weight: 500;
             text-transform: uppercase;
           }
-          .desc-status {
-            padding-right: 12px;
+          .academy-desc-status {
             color: #9b00ff;
           }
         }
       }
     }
   }
-  .card-footer {
+  .academy-card-footer {
     display: flex;
     justify-content: space-between;
     width: 100%;
-    padding: 28px 16px 28px 16px;
-    .card-footer-dollar {
+    padding-top: 24px;
+    .academy-card-price {
       font-weight: 800;
       font-size: 40px;
       line-height: 40px;
       color: #9b00ff;
     }
-    .card-footer-btn {
+    .academy-card-btn {
       display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      padding: 12px 30px;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 34px 12px 30px;
       font-weight: 500;
       font-size: 16px;
       line-height: 24px;
@@ -448,6 +466,12 @@ export default {
       color: white;
       background-color: #9b00ff;
       cursor: pointer;
+    }
+    .academy-btn-vector {
+      width: 16px;
+      height: 10px;
+      margin-top: 3px;
+      margin-left: 8px;
     }
   }
 }
