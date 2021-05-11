@@ -120,7 +120,7 @@
                 }}</span>
               </div>
               <span
-                class="desc-_ontstyle academy-desc-status"
+                class="desc_fontstyle academy-desc-status"
                 :style="{ color: camp.statusColor }"
                 >{{
                   campStatus(camp.register_at, camp.open_at) === 1
@@ -430,9 +430,7 @@ export default {
     }
   }
 }
-span {
-  cursor: default;
-}
+
 .academy-body {
   display: flex;
   justify-content: center;
@@ -463,6 +461,7 @@ span {
         font-weight: 800;
         line-height: 30px;
         color: #dddddd;
+        cursor: default;
       }
       .academy-card-title {
         display: block;
@@ -470,6 +469,7 @@ span {
         font-size: 40px;
         font-weight: 800;
         color: #ff9100;
+        cursor: default;
       }
       .academy-desc-wrapper {
         display: flex;
@@ -481,10 +481,9 @@ span {
           align-items: center;
           justify-content: space-between;
           width: 508px;
-          padding: 12px 12px 12px 12px;
+          padding: 12px;
           background-color: #fafafa;
           .desc_fontstyle {
-            padding: 12px 0 0 0;
             font-size: 14px;
             font-weight: 400;
             line-height: 24px;
@@ -492,14 +491,17 @@ span {
           }
           .academy-desc-camp {
             text-transform: uppercase;
+            cursor: default;
           }
           .academy-desc-stage {
             padding-left: 8px;
             font-weight: 500;
             text-transform: uppercase;
+            cursor: default;
           }
           .academy-desc-status {
             color: #9b00ff;
+            cursor: default;
           }
         }
       }
@@ -515,12 +517,13 @@ span {
       font-size: 40px;
       line-height: 40px;
       color: #9b00ff;
+      cursor: default;
     }
     .academy-card-btn {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 12px 30px 12px 30px;
+      padding: 12px 30px;
       font-weight: 500;
       font-size: 16px;
       line-height: 24px;
