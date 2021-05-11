@@ -121,11 +121,13 @@
               </div>
               <span
                 class="desc-_ontstyle academy-desc-status"
-                :style="{ color: camp.color }"
+                :style="{ color: camp.statusColor }"
                 >{{
                   campStatus(camp.register_at, camp.open_at) === 1
                     ? "热招中"
-                    : "已开课"
+                    : campStatus(camp.register_at, camp.open_at) === 2
+                    ? "已开课"
+                    : "敬请期待"
                 }}</span
               >
             </div>
@@ -140,7 +142,9 @@
             {{
               campStatus(camp.register_at, camp.open_at) === 1
                 ? "开始报名"
-                : "查看详情"
+                : campStatus(camp.register_at, camp.open_at) === 2
+                ? "查看详情"
+                : "敬请期待"
             }}
             <img
               src="~images/academy/vector.svg"
@@ -208,6 +212,7 @@ export default {
           termName: "一期班",
           price: "4999",
           color: "#9B00FF",
+          statusColor: "#9B00FF",
           backroundImage: "",
           register_at: "2021-05-10",
           open_at: "2021-05-12"
@@ -221,6 +226,7 @@ export default {
           termName: "一期班",
           price: "4999",
           color: "#14AF64",
+          statusColor: "#606C66",
           backroundImage: "",
           register_at: "2021-05-08",
           open_at: "2021-05-09"
@@ -234,6 +240,9 @@ export default {
         const now = new Date().valueOf();
         const open = new Date(open_at).valueOf();
         const register = new Date(register_at).valueOf();
+        if (now < register) {
+          return 3; //敬请期待
+        }
         if (now >= open) {
           return 2; // 开课了
         }
@@ -421,12 +430,15 @@ export default {
     }
   }
 }
+span {
+  cursor: default;
+}
 .academy-body {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  min-height: 900px;
+  min-height: 750px;
   background-color: white;
   .academy-body-card {
     width: 540px;
@@ -508,7 +520,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding: 12px 34px 12px 30px;
+      padding: 12px 30px 12px 30px;
       font-weight: 500;
       font-size: 16px;
       line-height: 24px;
