@@ -12,6 +12,7 @@
       class="bgImg multi-icon"
       v-if="skus.length > 1"
       @click.stop="handleSkusClick"
+      @mouseover="handleSkusClick"
     ></label>
     <label
       class="bgImg info-icon"
