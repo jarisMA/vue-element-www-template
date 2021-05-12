@@ -196,7 +196,6 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import { mapState } from "vuex";
-import kujialeService from "service/kujiale";
 import { goRoute } from "utils/routes";
 export default {
   name: "CommodityList",
@@ -213,16 +212,14 @@ export default {
     listingBrief: {
       type: Object,
       required: true
+    },
+    design: {
+      type: Object,
+      required: true
     }
   },
   data() {
-    return {
-      design: {
-        name: "",
-        specName: "",
-        srcArea: ""
-      }
-    };
+    return {};
   },
   computed: {
     ...mapState(["headerUnfold", "userInfo"]),
@@ -286,16 +283,9 @@ export default {
       return total;
     }
   },
-  created() {
-    this.getDesignBasic();
-  },
+  created() {},
   methods: {
     goRoute,
-    getDesignBasic() {
-      kujialeService.designBasic(this.$route.params.designId).then(res => {
-        this.design = res;
-      });
-    },
     toggleUp() {
       this.$emit("update:up", !this.up);
     },
@@ -469,6 +459,9 @@ export default {
         height: 100%;
         padding: 0 @padding @padding;
         overflow-y: scroll;
+        &::-webkit-scrollbar {
+          width: 15px;
+        }
       }
       .list-section {
         .list-title {

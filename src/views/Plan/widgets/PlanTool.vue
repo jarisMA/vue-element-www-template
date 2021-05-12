@@ -59,11 +59,10 @@
           <div class="search-header">
             <template v-if="!isSearch">
               <div class="cat-name">
-                <label
-                  class="back-icon bgImg pointer"
-                  @click="handleBack"
-                ></label>
-                <h3>
+                <div class="back-icon-wrapper" @click="handleBack">
+                  <label class="back-icon bgImg pointer"></label>
+                </div>
+                <h3 class="ellipsis">
                   {{ (activeParentCat || {}).name }}
                 </h3>
               </div>
@@ -145,6 +144,7 @@
             :up.sync="isListUp"
             :full_screen.sync="isListFullScreen"
             :listingBrief="listingBrief"
+            :design="design"
           />
         </div>
       </transition>
@@ -266,6 +266,10 @@ export default {
     CommodityList
   },
   props: {
+    design: {
+      type: Object,
+      required: true
+    },
     rootCats: {
       type: Array,
       required: true
@@ -650,31 +654,47 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 10px;
+      padding: 0 10px 0 0;
       width: 100%;
       height: 40px;
       border-bottom: 1px solid #efefef;
       .cat-name {
+        flex: 1;
         display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .back-icon-wrapper {
+          flex: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 40px;
+          height: 40px;
+          cursor: pointer;
+          .back-icon {
+            width: 24px;
+            height: 24px;
+            background-image: url("~images/common/back.svg");
+          }
+        }
         h3 {
+          flex: 1;
+          width: 5px;
           line-height: 24px;
           font-weight: 600;
           font-size: 16px;
           color: #666666;
         }
       }
-      .back-icon {
-        width: 24px;
-        height: 24px;
-        background-image: url("~images/common/back.svg");
-      }
       .search-icon {
+        flex: none;
         width: 24px;
         height: 24px;
         background-image: url("~images/common/search.svg");
       }
       /deep/ .name-search {
-        width: 100%;
+        margin-left: 10px;
+        width: calc(100% - 10px);
         .el-input__inner {
           width: 100%;
           height: 28px;

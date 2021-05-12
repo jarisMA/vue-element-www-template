@@ -21,10 +21,12 @@
             :listingId="listingId"
             :rootCats="(cats[0] || {}).children || []"
             :listingBrief="listingBrief"
+            :design="design"
             @addModel="addModel"
           />
         </transition>
-        <div class="toolbar-mask" v-if="toolActive"></div>
+        <!-- <div class="toolbar-mask"
+             v-if="toolActive"></div> -->
         <div class="toolbar">
           <div
             :class="['tool-icon-wrapper', toolActive ? 'active' : '']"
@@ -58,6 +60,7 @@ export default {
       loading: true,
       listingId: null,
       showTool: false,
+      design: {},
       listingBrief: {
         list: [],
         goods: [],
@@ -90,14 +93,23 @@ export default {
             designid: this.$route.params.designId
           })
         );
+        promiseArr.push(commodityService.cats());
+        promiseArr.push(
+          kujialeService.designBasic(this.$route.params.designId)
+        );
       } else {
         promiseArr.push(kujialeService.iframe(4));
       }
-      promiseArr.push(commodityService.cats());
-      Promise.all(promiseArr).then(([res, cats]) => {
+      Promise.all(promiseArr).then(([res, cats, design]) => {
         this.url = res.url;
         this.listingId = res.listing_id;
-        this.cats = cats;
+        this.cats = cats || [];
+        this.design = design || {};
+        if (design && design.name) {
+          document.querySelector("head title").innerHTML =
+            design.name + " - 斗西家计划 - 可以自己设计装修的学习平台";
+          document.getElementById("footer-plan-name").innerHTML = design.name;
+        }
         this.listener();
         this.getListingBrief();
         // this.loading = false;
@@ -131,6 +143,9 @@ export default {
             ) {
               // 监听是否触发保存事件
               this.listingSync();
+            }
+            if (data && data.action === "kjl_toggle_leftSideNavigatorTab") {
+              this.toolActive = false;
             }
           }
         };
@@ -221,6 +236,7 @@ export default {
     left: 44px;
     height: calc(100% - 52px - 8px);
     cursor: auto;
+    z-index: 1;
   }
   .iframe {
     position: relative;
@@ -253,7 +269,7 @@ export default {
       .tool-icon {
         width: 24px;
         height: 24px;
-        background-image: url("~images/commodity/tool.png");
+        background-image: url("~images/commodity/tool.svg");
         background-repeat: no-repeat;
         background-size: cover;
         cursor: pointer;
@@ -263,11 +279,6 @@ export default {
         background-color: rgba(57, 123, 243, 0.1);
         .tool-icon {
           filter: unset;
-        }
-        &:hover {
-          .tool-icon {
-            background-image: url("~images/commodity/hide.svg");
-          }
         }
       }
       &:hover {
