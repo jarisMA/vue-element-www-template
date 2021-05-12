@@ -1,5 +1,5 @@
 <template>
-  <div class="plan-list-container">
+  <div>
     <template v-if="plans.length > 0 || theme === 'my'">
       <ul class="plan-list">
         <li :class="['plan-item', theme]" v-if="theme === 'my'">
@@ -133,14 +133,18 @@ export default {
 @margin: 24px;
 @myMargin: 20px;
 @count: 4;
+
 .plan-list {
   display: flex;
   flex-wrap: wrap;
   .add-plan {
     display: flex;
     flex-direction: column;
-    height: 328px;
-    padding: 10px;
+    flex-direction: column;
+    align-items: center;
+    height: 380px;
+    width: 261px;
+    padding: 7px 8px;
     border: 1px solid #efefef;
     background: #fff;
     cursor: pointer;
@@ -150,22 +154,25 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      margin-bottom: 10px;
+      width: 245px;
+      height: 300px;
+      margin-bottom: 16px;
       color: @primaryColor;
       background: #f9f9f9ff;
       img {
-        width: 72px;
-        margin-bottom: 14px;
+        width: 48px;
+        margin-bottom: 8px;
       }
       label {
         font-size: 16px;
         font-weight: 500;
+        line-height: 28px;
         color: #14af64;
       }
     }
     .add-plan-button {
-      width: 100%;
-      height: 40px;
+      width: 245px;
+      height: 48px;
       display: flex;
       justify-content: center;
       align-items: center;
