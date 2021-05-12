@@ -16,7 +16,7 @@
           @click="searchBlackClick"
         />
       </div>
-      <div class="my-container-searchbar" v-show="searchGray">
+      <div class="my-container-searchbar" v-show="!searchBlack">
         <div class="gray-search-icon"></div>
         <input
           placeholder="在工作台搜索..."
@@ -101,8 +101,7 @@ export default {
       editType: 1, // 1为编辑，2为复制
 
       // showORhide:false,
-      searchBlack: true,
-      searchGray: false
+      searchBlack: true
     };
   },
   computed: {
@@ -194,6 +193,7 @@ export default {
       this.editType = 1;
       this.addVisible = true;
     },
+
     editPlanInfo(value) {
       if (!value) {
         return;
@@ -240,18 +240,13 @@ export default {
     },
 
     blurInput() {
-      console.log("blur");
       if (this.keyword == "") {
-        this.searchGray = false;
         this.searchBlack = true;
       }
     },
     searchBlackClick() {
-      if (this.searchBlack == true) {
+      if (this.searchBlack) {
         this.searchBlack = false;
-        this.searchGray = true;
-      }
-      if (this.searchGray == true) {
         this.$nextTick(() => {
           this.$refs["searchInput"].focus();
         });
