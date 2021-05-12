@@ -23,6 +23,7 @@
             :listingBrief="listingBrief"
             :design="design"
             @addModel="addModel"
+            @showFeedback="handleShowFeedback"
           />
         </transition>
         <!-- <div class="toolbar-mask"
@@ -37,6 +38,35 @@
         </div>
       </template>
     </div>
+    <el-dialog
+      :visible.sync="showFeedback"
+      title="模型问题反馈"
+      class="feedback-dialog"
+      width="580px"
+    >
+      <el-form :model="feedbackForm" ref="feedbackForm" @submit.native.prevent>
+        <el-form-item
+          prop="content"
+          :rules="[{ required: true, message: '描述不能为空' }]"
+        >
+          <el-input
+            type="textarea"
+            placeholder="请简单描述您遇到的问题"
+            resize="none"
+            v-model="feedbackForm.content"
+          ></el-input>
+        </el-form-item>
+        <el-form-item class="feedback-submit">
+          <el-button
+            type="primary"
+            class="feedback-submit-btn"
+            :loading="feedbacking"
+            @click="handleFeedbackSubmit"
+            >提交</el-button
+          >
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -67,7 +97,13 @@ export default {
         skus: []
       },
       listingTimer: null,
-      toolActive: false
+      toolActive: false,
+      feedbackSku: null,
+      showFeedback: false,
+      feedbackForm: {
+        content: ""
+      },
+      feedbacking: false
     };
   },
   computed: {
@@ -206,6 +242,33 @@ export default {
           this.listingBrief = res;
         });
       }
+    },
+    handleShowFeedback(sku) {
+      this.feedbackSku = sku;
+      this.showFeedback = true;
+    },
+    handleFeedbackSubmit() {
+      this.$refs["feedbackForm"].validate(res => {
+        if (res) {
+          this.feedbacking = true;
+          const { content } = this.feedbackForm;
+          commodityService
+            .skuFeedback(this.feedbackSku.id, {
+              content
+            })
+            .then(() => {
+              this.$refs["feedbackForm"].resetFields();
+              this.showFeedback = false;
+              this.$notice({
+                type: "success",
+                title: "反馈成功"
+              });
+            })
+            .finally(() => {
+              this.feedbacking = false;
+            });
+        }
+      });
     }
   }
 };
@@ -222,6 +285,45 @@ export default {
   &.unfold {
     margin-top: 52px !important;
     height: calc(100vh - 72px);
+  }
+  /deep/ .feedback-dialog {
+    .el-dialog {
+      padding: 20px;
+    }
+    .el-dialog__header {
+      padding: 0;
+      margin-bottom: 16px;
+      .el-dialog__title {
+        display: inline-block;
+        line-height: 28px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #111111;
+      }
+      .el-dialog__headerbtn {
+        top: 25px;
+      }
+    }
+    .el-dialog__body {
+      padding: 0;
+      .el-form-item {
+        margin-bottom: 20px;
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
+      .el-textarea__inner {
+        height: 91px;
+      }
+      .feedback-submit {
+        text-align: right;
+        .feedback-submit-btn {
+          padding: 8px 24px;
+          line-height: 1;
+          font-size: 14px;
+        }
+      }
+    }
   }
 }
 .iframe-wrapper {

@@ -243,6 +243,7 @@
       :skus.sync="activeSkus"
       v-if="activeSkus"
       @addModel="handleAddModel"
+      @showFeedback="handleShowFeedback"
     />
   </div>
 </template>
@@ -550,6 +551,9 @@ export default {
     },
     handleColumnChange(column) {
       this.columns = column;
+    },
+    handleShowFeedback(sku) {
+      this.$emit("showFeedback", sku);
     }
   }
 };
