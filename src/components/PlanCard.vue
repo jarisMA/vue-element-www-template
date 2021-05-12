@@ -233,7 +233,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 35px 2px 0 2px;
+      margin: 38px 2px 0 2px;
       .house-address-wrapper {
         display: flex;
         align-items: center;
