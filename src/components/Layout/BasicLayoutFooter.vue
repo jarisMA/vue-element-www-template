@@ -11,12 +11,15 @@
         </template>
       </div>
 
-      <div class="right" v-if="theme !== 'primary'">
+      <div class="right" v-show="theme !== 'primary'">
         <p class="email">联系邮箱：kf@home-plan.cn</p>
         <div class="img-hover">
           <img src="~images/wx-logo.svg" alt="" class="image" />
           <img src="~images/direction_logo-3.svg" class="look-wx_imag" />
         </div>
+      </div>
+      <div :class="['right', theme]" v-show="theme === 'primary'">
+        <span id="footer-plan-name" class="plan-name"></span>
       </div>
     </div>
   </footer>
@@ -86,6 +89,13 @@ export default {
           .look-wx_imag {
             display: inline-block;
           }
+        }
+      }
+      &.primary {
+        .plan-name {
+          font-size: 12px;
+          font-weight: 700;
+          color: #fff;
         }
       }
     }
