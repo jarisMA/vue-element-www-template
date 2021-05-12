@@ -6,16 +6,26 @@
         <span>新建方案</span>
       </el-button>
     </div> -->
-    <div class="container-1200 container-head">
-      <span class="container-title">工作台</span>
-      <div class="container-searchbar">
-        <div class="search-icon"></div>
+    <div class="container-1200 my-container-head">
+      <span class="my-container-title">工作台</span>
+      <!--searchicon-->
+      <div class="blacksearch" v-show="searchBlack">
+        <img
+          src="~images/my/blacksearch.svg"
+          class="black-search-icon"
+          @click="searchBlackClick"
+        />
+      </div>
+      <div class="my-container-searchbar" v-show="searchGray">
+        <div class="gray-search-icon"></div>
         <input
           placeholder="在工作台搜索..."
-          class="search-input"
-          placeholder-class="search-input-placeholder"
+          class="my-search-input"
+          placeholder-class="my-input-placeholder"
           v-model="keyword"
           @keyup.enter="getPlan()"
+          @blur="blurInput()"
+          ref="searchInput"
         />
       </div>
     </div>
@@ -88,7 +98,11 @@ export default {
       },
       btnLoading: false,
       count: 0,
-      editType: 1 // 1为编辑，2为复制
+      editType: 1, // 1为编辑，2为复制
+
+      // showORhide:false,
+      searchBlack: true,
+      searchGray: false
     };
   },
   computed: {
@@ -223,6 +237,25 @@ export default {
             this.btnLoading = false;
           });
       }
+    },
+
+    blurInput() {
+      console.log("blur");
+      if (this.keyword == "") {
+        this.searchGray = false;
+        this.searchBlack = true;
+      }
+    },
+    searchBlackClick() {
+      if (this.searchBlack == true) {
+        this.searchBlack = false;
+        this.searchGray = true;
+      }
+      if (this.searchGray == true) {
+        this.$nextTick(() => {
+          this.$refs["searchInput"].focus();
+        });
+      }
     }
   }
 };
@@ -231,38 +264,57 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable.less";
 .my-plan-container {
-  .container-head {
+  .my-container-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 34px;
-    padding-bottom: 16px;
-    .container-title {
+    padding: 34px 0 16px 0;
+    .my-container-title {
       font-weight: 600;
       font-size: 20px;
       line-height: 28px;
       color: #2c3330;
     }
-    .container-searchbar {
+    .blacksearch {
       display: flex;
       align-items: center;
       width: 280px;
       height: 40px;
       padding-left: 13px;
-      background: rgba(0, 0, 0, 0.03);
-      .search-icon {
+      .black-search-icon {
+        position: relative;
+        left: 240px;
+        height: 16px;
+        width: 16px;
+      }
+    }
+    .my-container-searchbar {
+      display: flex;
+      align-items: center;
+      width: 280px;
+      height: 40px;
+      padding-left: 13px;
+      background-color: rgba(0, 0, 0, 0.03);
+      .black-search-icon {
+        height: 16px;
+        width: 16px;
+        // margin-bottom: 8px;
+      }
+      .gray-search-icon {
         height: 24px;
         width: 24px;
         background-size: cover;
         background: url("~images/my/search.svg");
       }
-      .search-input {
+      .my-search-input {
+        width: 280px;
+        height: 40px;
         padding-left: 15px;
         outline: none;
         border: 0;
         background: rgba(0, 0, 0, 0);
       }
-      .search-input-placeholder {
+      .my-input-placeholder {
         font-size: 14px;
         line-height: 20px;
         color: rgba(153, 153, 153);
