@@ -8,15 +8,14 @@
     </div> -->
     <div class="container-1200 my-container-head">
       <span class="my-container-title">工作台</span>
-      <!--searchicon-->
-      <div class="blacksearch" v-show="searchBlack">
+      <div class="black-search" v-show="!showSearch">
         <img
           src="~images/my/blacksearch.svg"
           class="black-search-icon"
-          @click="searchBlackClick"
+          @click="handleToggleShowSearch"
         />
       </div>
-      <div class="my-container-searchbar" v-show="!searchBlack">
+      <div class="my-container-searchbar" v-show="showSearch">
         <div class="gray-search-icon"></div>
         <input
           placeholder="在工作台搜索..."
@@ -24,7 +23,7 @@
           placeholder-class="my-input-placeholder"
           v-model="keyword"
           @keyup.enter="getPlan()"
-          @blur="blurInput()"
+          @blur="handleToggleShowSearch()"
           ref="searchInput"
         />
       </div>
@@ -99,9 +98,7 @@ export default {
       btnLoading: false,
       count: 0,
       editType: 1, // 1为编辑，2为复制
-
-      // showORhide:false,
-      searchBlack: true
+      showSearch: false
     };
   },
   computed: {
@@ -238,18 +235,16 @@ export default {
           });
       }
     },
-
-    blurInput() {
-      if (this.keyword == "") {
-        this.searchBlack = true;
-      }
-    },
-    searchBlackClick() {
-      if (this.searchBlack) {
-        this.searchBlack = false;
+    handleToggleShowSearch() {
+      if (!this.showSearch) {
+        this.showSearch = true;
         this.$nextTick(() => {
           this.$refs["searchInput"].focus();
         });
+      } else {
+        if (this.keyword == "") {
+          this.showSearch = false;
+        }
       }
     }
   }
@@ -270,7 +265,7 @@ export default {
       line-height: 28px;
       color: #2c3330;
     }
-    .blacksearch {
+    .black-search {
       display: flex;
       align-items: center;
       width: 280px;
@@ -281,6 +276,7 @@ export default {
         left: 240px;
         height: 16px;
         width: 16px;
+        cursor: pointer;
       }
     }
     .my-container-searchbar {
