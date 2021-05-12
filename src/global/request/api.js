@@ -62,7 +62,7 @@ export default {
   commodities: `${WEB_PREFIX}/commodity`,
   commodityAttrs: `${WEB_PREFIX}/commodity/attr`,
   commodityCatAttrs: catId => `${WEB_PREFIX}/commodity/cat/${catId}/attrs`,
-
+  commoditySkuFeedback: id => `${WEB_PREFIX}/commodity-sku/${id}/feedback`,
   course: id => `${WEB_PREFIX}/course/${id}`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,

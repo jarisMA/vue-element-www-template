@@ -9,6 +9,10 @@
           :key="sku.id"
           @click="handleAddModel(sku.kjl_sku_id)"
         >
+          <i
+            class="sku-feedback_icon"
+            @click.stop="handleShowFeedback(sku)"
+          ></i>
           <the-loading-image :width="145" :height="145" :url="sku.img_id" />
           <label class="sku-price"> ¥{{ sku.unit_price || "0.00" }} </label>
           <div class="sku-size">
@@ -33,6 +37,9 @@ export default {
   },
   components: { TheLoadingImage },
   methods: {
+    handleShowFeedback(sku) {
+      this.$emit("showFeedback", sku);
+    },
     handleAddModel(goodId) {
       this.$emit("addModel", goodId);
     },
@@ -79,6 +86,20 @@ export default {
         }
         & + .sku-item {
           margin-top: 10px;
+        }
+        .sku-feedback_icon {
+          position: absolute;
+          right: 2px;
+          top: 2px;
+          width: 24px;
+          height: 24px;
+          mask-image: url("~images/commodity/feedback.svg");
+          mask-repeat: no-repeat;
+          mask-size: cover;
+          background: rgba(0, 0, 0, 0.3);
+          &:hover {
+            background: rgba(0, 0, 0, 0.5);
+          }
         }
         .sku-price {
           position: absolute;

@@ -19,6 +19,9 @@ const commodityService = {
   },
   catAttrs: catId => {
     return request.get(API.commodityCatAttrs(catId));
+  },
+  skuFeedback: (id, params) => {
+    return request.post(API.commoditySkuFeedback(id), params);
   }
 };
 
