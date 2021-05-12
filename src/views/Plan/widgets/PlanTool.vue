@@ -460,7 +460,7 @@ export default {
         if (index > -1) {
           this.values.splice(index, 1);
         }
-        this.name = "";
+        !value.value.name && (flag = false);
       } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
         flag = true;
       } else if (value.type === "price") {
