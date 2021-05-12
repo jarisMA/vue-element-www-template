@@ -175,10 +175,9 @@
               }mm`
             : item.value.name
         }}
-        <label
-          class="bgImg close-icon pointer"
-          @click="handleValueRemove(key)"
-        ></label>
+        <label class="close-icon-wrapper" @click="handleValueRemove(key)">
+          <i class="bgImg close-icon pointer"></i>
+        </label>
       </li>
     </ul>
     <div
@@ -429,6 +428,45 @@ export default {
       this.isSearch = false;
     },
     handleValueAdd(value) {
+      let flag = true;
+      const valueIds = this.values
+        .filter(item => item.value.id)
+        .map(item => item.value.id);
+      const existIndex = this.values.findIndex(
+        item =>
+          item.type === value.type &&
+          JSON.stringify(item.value) === JSON.stringify(value.value)
+      );
+      if (["brand", "value"].indexOf(value.type) > -1 && existIndex > -1) {
+        this.values.splice(existIndex, 1);
+        return;
+      }
+      if (value.type === "search") {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        this.name = "";
+      } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
+        flag = true;
+      } else if (value.type === "price") {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+      } else if (["size_x", "size_y", "size_z"].indexOf(value.type) > -1) {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        flag = false;
+        for (let key in value.value) {
+          if (value.value[key]) {
+            flag = true;
+            break;
+          }
+        }
+      }
       if (this.values.length === 15) {
         this.$notice({
           type: "warning",
@@ -436,38 +474,7 @@ export default {
         });
         return;
       }
-      const valueIds = this.values
-        .filter(item => item.value.id)
-        .map(item => item.value.id);
-      if (value.type === "search") {
-        const index = this.values.findIndex(item => item.type === value.type);
-        if (index > -1) {
-          this.values.splice(index, 1);
-        }
-        this.values.push(value);
-        this.name = "";
-      } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
-        this.values.push(value);
-      } else if (value.type === "price") {
-        const index = this.values.findIndex(item => item.type === value.type);
-        if (index > -1) {
-          this.values.splice(index, 1);
-        }
-        this.values.push(value);
-      } else if (["size_x", "size_y", "size_z"].indexOf(value.type) > -1) {
-        const index = this.values.findIndex(item => item.type === value.type);
-        if (index > -1) {
-          this.values.splice(index, 1);
-        }
-        let flag = false;
-        for (let key in value.value) {
-          if (value.value[key]) {
-            flag = true;
-          }
-          break;
-        }
-        flag && this.values.push(value);
-      }
+      flag && this.values.push(value);
     },
     handleValueRemove(key) {
       this.values.splice(key, 1);
@@ -807,6 +814,7 @@ export default {
       padding: 5px 8px;
       color: #14af64;
       background-color: #eaf9f2;
+      cursor: auto;
       &::before {
         position: absolute;
         top: 0;
@@ -818,18 +826,21 @@ export default {
         z-index: -1;
       }
       &:hover {
-        .close-icon {
+        .close-icon-wrapper {
           display: block;
         }
       }
-      .close-icon {
+      .close-icon-wrapper {
         position: absolute;
         top: 0;
         right: 0;
-        width: 10px;
-        height: 10px;
-        background-image: url("~images/common/close.svg");
+        padding: 0 0 10px 10px;
         display: none;
+        .close-icon {
+          width: 10px;
+          height: 10px;
+          background-image: url("~images/common/close.svg");
+        }
       }
     }
   }
