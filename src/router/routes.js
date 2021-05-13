@@ -4,10 +4,10 @@ import routesBible from "./routesBible";
 import routesQuestion from "./routesQuestion";
 import routesError from "./routesError";
 import routesAcademy from "./routesAcademy";
+import routesMy from "./routesMy";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
-import My from "@/views/My/Index";
 import Protocol from "@/views/Protocol";
 import Profile from "@/views/Profile";
 import Course from "@/views/Term/Course";
@@ -25,14 +25,6 @@ const routes = [
         component: Home
       },
       {
-        path: "/my",
-        name: "My",
-        component: My,
-        meta: {
-          auth: true
-        }
-      },
-      {
         path: "/profile",
         name: "Profile",
         component: Profile,
@@ -45,6 +37,7 @@ const routes = [
       ...routesBible,
       ...routesQuestion,
       ...routesAcademy,
+      ...routesMy,
       ...routesError
     ]
   },

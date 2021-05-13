@@ -70,7 +70,7 @@ import Attach from "./widgets/Attach";
 
 import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
-import { goDrawPlan, goMy } from "utils/routes";
+import { goDrawPlan, goMyPlan } from "utils/routes";
 import Feedback from "./widgets/Feedback.vue";
 import TheEmpty from "components/TheEmpty.vue";
 
@@ -126,7 +126,7 @@ export default {
           this.attaches = attaches;
         })
         .catch(() => {
-          goMy("replace");
+          goMyPlan("replace");
         })
         .finally(() => {
           this.loading = false;

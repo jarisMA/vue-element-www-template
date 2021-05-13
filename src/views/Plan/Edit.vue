@@ -74,7 +74,7 @@
 import kujialeService from "service/kujiale";
 import commodityService from "service/commodity";
 
-import { goMy } from "utils/routes";
+import { goMyPlan } from "utils/routes";
 import { mapMutations, mapState } from "vuex";
 import PlanTool from "./widgets/PlanTool";
 
@@ -193,7 +193,7 @@ export default {
       }
     },
     exit() {
-      goMy();
+      goMyPlan();
     },
     addModel(goodId) {
       const iframe = this.$refs["iframe"];

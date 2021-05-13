@@ -56,11 +56,7 @@
         leave-active-class="animated fadeOut"
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
-          <div
-            class="plan-go-enter"
-            v-if="userInfo"
-            @click="handlePlanGoDraw()"
-          ></div>
+          <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
           <div class="user-handle-container">
             <el-button
               class="login-button"
@@ -93,9 +89,6 @@
                   </p>
                 </div>
                 <ul class="login-operation">
-                  <li @click="goMy()" class="workbench">
-                    <span>工作台</span>
-                  </li>
                   <li @click="goProfile()" class="setting">
                     <span>我的资料</span>
                   </li>
@@ -113,17 +106,9 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import {
-  goHome,
-  goMy,
-  goProfile,
-  goBible,
-  goQuestion,
-  goDrawPlan
-} from "utils/routes";
+import { goHome, goMyPlan, goProfile, goBible, goQuestion } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
-import kujialeService from "service/kujiale";
 
 export default {
   name: "BasicLayoutHeader",
@@ -178,11 +163,11 @@ export default {
         goHome();
       }
     },
-    goMy() {
+    goMyPlan() {
       if (this.theme === "primary") {
-        goMy("_blank");
+        goMyPlan("_blank");
       } else {
-        goMy();
+        goMyPlan();
       }
     },
     goProfile() {
@@ -203,24 +188,6 @@ export default {
     },
     handleLogout() {
       this.$store.commit("LOGOUT");
-    },
-    handlePlanGoDraw() {
-      kujialeService
-        .designList({
-          page: 1,
-          page_size: 2
-        })
-        .then(res => {
-          this.plans = res.result;
-          if (this.plans.length > 0 && !isVip()) {
-            this.$notice({
-              type: "warning",
-              title: "oops～方案创建数量已达上限"
-            });
-          } else {
-            goDrawPlan();
-          }
-        });
     }
   }
 };
@@ -414,20 +381,6 @@ export default {
               align-items: center;
               padding: 9px 20px;
               cursor: pointer;
-              &.workbench {
-                span {
-                  position: relative;
-                  &::before {
-                    content: "";
-                    display: inline-block;
-                    width: 24px;
-                    height: 24px;
-                    background: url("~images/workbench.svg") no-repeat center;
-                    vertical-align: -7px;
-                    margin-right: 12px;
-                  }
-                }
-              }
               &.setting {
                 span {
                   position: relative;
@@ -445,13 +398,6 @@ export default {
               &:hover {
                 color: #fff;
                 background: @primaryColor;
-                &.workbench {
-                  span {
-                    &::before {
-                      background-image: url("~images/workbench_hover.svg");
-                    }
-                  }
-                }
                 &.setting {
                   span {
                     &::before {

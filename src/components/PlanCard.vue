@@ -7,8 +7,8 @@
       <!-- <i class="el-icon-delete" v-if="canDelete" @click="deleteItem"></i> -->
       <the-loading-image
         class="image-wrapper"
-        :width="theme === 'my' ? 245 : theme === 'homework' ? 150 : 258"
-        :height="theme === 'my' ? 245 : theme === 'homework' ? 150 : 258"
+        :width="theme === 'my' ? 264 : theme === 'homework' ? 150 : 258"
+        :height="theme === 'my' ? 264 : theme === 'homework' ? 150 : 258"
         :url="detail.planPic || defaultCoverImg"
       />
     </div>
@@ -17,7 +17,7 @@
         v-if="theme === 'my' || theme === 'homework'"
         class="plan-name-wrapper"
       >
-        <span class="plan-name">
+        <span class="plan-name ellipsis">
           {{ detail.name }}
         </span>
         <!-- <i class="el-icon-edit"
@@ -139,8 +139,8 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding-top: 8px;
-  width: 261px;
+  padding: 7px 7px 15px;
+  width: 100%;
   border: 1px solid #efefef;
   background: #fff;
   box-sizing: border-box;
@@ -172,6 +172,7 @@ export default {
   }
   .plan-card-top {
     position: relative;
+    width: 100%;
     text-align: center;
     &.homework {
       height: 170px;
@@ -194,7 +195,7 @@ export default {
     display: flex;
     flex-direction: column;
     width: 100%;
-    padding: 0px 8px 17px 8px;
+    margin-top: 8px;
     &.homework {
       padding: 10px 10px;
     }
@@ -215,6 +216,7 @@ export default {
     }
     .dropdown-wrapper {
       .el-icon-more {
+        margin-left: 8px;
         padding: 4px;
         color: @primaryColor;
         cursor: pointer;
@@ -233,7 +235,7 @@ export default {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin: 38px 2px 0 2px;
+      margin-top: 16px;
       .house-address-wrapper {
         display: flex;
         align-items: center;
@@ -255,7 +257,7 @@ export default {
     .house-type-wrapper {
       display: flex;
       align-items: center;
-      margin: 10px 2px 0 2px;
+      margin-top: 8px;
     }
     .house-type {
       display: inline-block;

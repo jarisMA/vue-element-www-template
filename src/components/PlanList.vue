@@ -143,8 +143,8 @@ export default {
     flex-direction: column;
     align-items: center;
     height: 380px;
-    width: 261px;
-    padding: 7px 8px;
+    width: 100%;
+    padding: 7px;
     border: 1px solid #efefef;
     background: #fff;
     cursor: pointer;
@@ -154,7 +154,7 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      width: 245px;
+      width: 100%;
       height: 300px;
       margin-bottom: 16px;
       color: @primaryColor;
@@ -171,7 +171,7 @@ export default {
       }
     }
     .add-plan-button {
-      width: 245px;
+      width: 100%;
       height: 48px;
       display: flex;
       justify-content: center;

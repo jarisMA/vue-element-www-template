@@ -6,10 +6,10 @@ export const goHome = () => {
   });
 };
 
-export const goMy = (type = "_self") => {
+export const goMyPlan = (type = "_self") => {
   return goRoute(
     {
-      name: "My"
+      name: "MyPlan"
     },
     type
   );

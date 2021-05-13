@@ -1,49 +1,40 @@
 <template>
-  <div class="my-plan-container">
-    <!-- <div class="add-btn-wrapper">
-      <el-button class="add-btn" type="primary" @click="addPlan">
-        <icon-svg svg-class="add-icon" svg-name="add" />
-        <span>新建方案</span>
-      </el-button>
-    </div> -->
-    <div class="container-1200 my-container-head">
-      <span class="my-container-title">工作台</span>
-      <div class="black-search" v-show="!showSearch">
-        <img
-          src="~images/my/blacksearch.svg"
-          class="black-search-icon"
-          @click="handleToggleShowSearch"
-        />
+  <div class="my-plan-page" v-loading="loading">
+    <div class="container-1180">
+      <div class="page-header">
+        <span class="page-header-title">工作台</span>
+        <div :class="['page-header-search_wrapper', !showSearch ? 'hide' : '']">
+          <div class="page-header-search_bar">
+            <label class="search-icon" @click="handleToggleShowSearch"></label>
+            <input
+              placeholder="在工作台搜索..."
+              class="page-header-search_input"
+              placeholder-class="page-header-search_input_placeholder"
+              v-model="keyword"
+              @keyup.enter="getPlan()"
+              @blur="handleToggleShowSearch()"
+              ref="searchInput"
+            />
+          </div>
+        </div>
       </div>
-      <div class="my-container-searchbar" v-show="showSearch">
-        <div class="gray-search-icon"></div>
-        <input
-          placeholder="在工作台搜索..."
-          class="my-search-input"
-          placeholder-class="my-input-placeholder"
-          v-model="keyword"
-          @keyup.enter="getPlan()"
-          @blur="handleToggleShowSearch()"
-          ref="searchInput"
-        />
-      </div>
-    </div>
 
-    <plan-list
-      canDelete
-      :showNoTips="false"
-      :plans="plans"
-      :size="planCount"
-      :page="planPage"
-      :total="planTotalCount"
-      theme="my"
-      @itemClick="editPlan"
-      @copyClick="copyPlan"
-      @editClick="isEditPlanInfo"
-      @delete="delelePlan"
-      @pageChange="getPlan"
-      @add="addPlan"
-    />
+      <plan-list
+        canDelete
+        :showNoTips="false"
+        :plans="plans"
+        :size="planCount"
+        :page="planPage"
+        :total="planTotalCount"
+        theme="my"
+        @itemClick="editPlan"
+        @copyClick="copyPlan"
+        @editClick="isEditPlanInfo"
+        @delete="delelePlan"
+        @pageChange="getPlan"
+        @add="addPlan"
+      />
+    </div>
     <edit-plan-name-dialog
       :visible.sync="addVisible"
       :plan="plan"
@@ -69,18 +60,10 @@ export default {
     PlanList,
     EditPlanNameDialog
   },
-  props: {
-    loading: {
-      type: Boolean,
-      default: true
-    },
-    pardon: {
-      type: Boolean,
-      required: true
-    }
-  },
   data() {
     return {
+      loading: true,
+      pardon: false,
       keyword: "",
       plans: [],
       planCount: 11,
@@ -101,6 +84,13 @@ export default {
       showSearch: false
     };
   },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      if (["EditPlan", "DrawPlan"].indexOf(from.name) > -1) {
+        vm.pardon = true;
+      }
+    });
+  },
   computed: {
     ...mapState(["userInfo"])
   },
@@ -116,7 +106,7 @@ export default {
   methods: {
     goDrawPlan,
     getPlan(start = 1) {
-      this.$emit("update:loading", true);
+      this.loading = true;
       kujialeService
         .designList({
           keyword: this.keyword || null,
@@ -129,7 +119,7 @@ export default {
           this.planPage = start;
         })
         .finally(() => {
-          this.$emit("update:loading", false);
+          this.loading = false;
         });
     },
     addPlan() {
@@ -253,81 +243,65 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable.less";
-.my-plan-container {
-  .my-container-head {
+.my-plan-page {
+  width: 100%;
+  height: 100%;
+  .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 34px 0 16px 0;
-    .my-container-title {
+    .page-header-title {
       font-weight: 600;
       font-size: 20px;
       line-height: 28px;
       color: #2c3330;
     }
-    .black-search {
-      display: flex;
-      align-items: center;
+    .page-header-search_wrapper {
       width: 280px;
-      height: 40px;
-      padding-left: 13px;
-      .black-search-icon {
-        position: relative;
-        left: 240px;
-        height: 16px;
-        width: 16px;
-        cursor: pointer;
+      transition: width 0.2s;
+      overflow: hidden;
+      &.hide {
+        width: 34px;
+        .page-header-search_bar {
+          background-color: transparent;
+          .search-icon {
+            background-color: #2c3330;
+            cursor: pointer;
+          }
+        }
       }
-    }
-    .my-container-searchbar {
-      display: flex;
-      align-items: center;
-      width: 280px;
-      height: 40px;
-      padding-left: 13px;
-      background-color: rgba(0, 0, 0, 0.03);
-      .black-search-icon {
-        height: 16px;
-        width: 16px;
-        // margin-bottom: 8px;
-      }
-      .gray-search-icon {
-        height: 24px;
-        width: 24px;
-        background-size: cover;
-        background: url("~images/my/search.svg");
-      }
-      .my-search-input {
+      .page-header-search_bar {
+        display: flex;
+        align-items: center;
         width: 280px;
         height: 40px;
-        padding-left: 15px;
-        outline: none;
-        border: 0;
-        background: rgba(0, 0, 0, 0);
+        padding: 8px;
+        background-color: rgba(0, 0, 0, 0.03);
+        .search-icon {
+          display: inline-block;
+          height: 24px;
+          width: 24px;
+          mask-image: url("~images/my/search.svg");
+          mask-repeat: no-repeat;
+          mask-size: cover;
+          background: #81948b;
+        }
+        .page-header-search_input {
+          width: 280px;
+          height: 100%;
+          margin-left: 10px;
+          line-height: 20px;
+          color: #2c3330;
+          outline: none;
+          border: 0;
+          background: rgba(0, 0, 0, 0);
+        }
+        .page-header-search_input_placeholder {
+          font-size: 14px;
+          color: #999999;
+        }
       }
-      .my-input-placeholder {
-        font-size: 14px;
-        line-height: 20px;
-        color: rgba(153, 153, 153);
-      }
-    }
-  }
-}
-.add-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin: 20px 0;
-  .add-btn {
-    width: 118px;
-    height: 32px;
-    line-height: 32px;
-    padding: 0;
-    font-size: 14px;
-    font-weight: 500;
-    border-radius: unset;
-    .add-icon {
-      font-size: 12px;
-      margin: 0 4px 1px 0;
     }
   }
 }
