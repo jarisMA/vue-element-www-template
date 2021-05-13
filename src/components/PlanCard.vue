@@ -20,9 +20,6 @@
         <span class="plan-name ellipsis">
           {{ detail.name }}
         </span>
-        <!-- <i class="el-icon-edit"
-           @click="editClick"
-           v-if="theme === 'my'"></i> -->
         <el-dropdown class="dropdown-wrapper" v-if="theme === 'my'">
           <i class="el-icon-more" @click.stop></i>
           <el-dropdown-menu slot="dropdown">
@@ -36,21 +33,19 @@
           </el-dropdown-menu>
         </el-dropdown>
       </div>
-      <div class="house-type-wrapper">
-        <img src="~images/plan/area.svg" class="house-type-img" alt="" />
+      <div class="house-type-wrapper" v-if="theme !== 'homework'">
+        <img src="~images/plan/area.svg" class="house-type-img" />
         <span class="house-type"> {{ parseInt(detail.srcArea) }}㎡ </span>
-        <img src="~images/plan/structure.svg" class="house-type-img" alt="" />
+        <img src="~images/plan/structure.svg" class="house-type-img" />
         <span class="house-type">{{ detail.specName }}</span>
       </div>
-
+      <span class="house-type" v-else
+        >{{ parseInt(detail.srcArea) }}㎡ | {{ detail.specName }}</span
+      >
       <div class="house-desc" v-if="theme !== 'homework'">
         <div class="house-address-wrapper">
-          <img
-            src="~images/plan/location.svg"
-            class="house-type-img_address"
-            alt=""
-          />
-          <span class="house-address">
+          <img src="~images/plan/location.svg" class="house-type-img_address" />
+          <span class="house-address ellipsis">
             {{ filterCity }} · {{ detail.commName }}
           </span>
         </div>
@@ -147,6 +142,7 @@ export default {
   cursor: pointer;
   &.homework {
     height: 224px;
+    padding: 0;
   }
   &.active {
     position: relative;
@@ -198,6 +194,19 @@ export default {
     margin-top: 8px;
     &.homework {
       padding: 10px 10px;
+      border-top: 1px solid #e6e6e6;
+      .plan-name {
+        margin: 0;
+        height: 18px;
+        line-height: 18px;
+        font-size: 12px;
+        text-shadow: 0 0 12px #ccc;
+      }
+      .house-type {
+        padding: 0;
+        height: 13px;
+        line-height: 13px;
+      }
     }
     .plan-name {
       flex: 1;
@@ -237,18 +246,26 @@ export default {
       justify-content: space-between;
       margin-top: 16px;
       .house-address-wrapper {
+        flex: 1;
         display: flex;
         align-items: center;
       }
       .house-address {
+        flex: 1;
         display: inline-block;
         padding-left: 2px;
+        width: 5px;
         line-height: 12px;
         font-size: 12px;
         color: #81948b;
       }
+      .house-type-img_address {
+        flex: none;
+      }
       .plan-date {
+        flex: none;
         display: inline-block;
+        margin-left: 5px;
         font-size: 12px;
         line-height: 12px;
         color: #81948b;
