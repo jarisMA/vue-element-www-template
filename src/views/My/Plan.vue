@@ -5,12 +5,15 @@
         <span class="page-header-title">工作台</span>
         <div :class="['page-header-search_wrapper', !showSearch ? 'hide' : '']">
           <div class="page-header-search_bar">
-            <label class="search-icon" @click="handleToggleShowSearch"></label>
+            <label
+              class="search-icon"
+              @click="!showSearch ? handleToggleShowSearch() : null"
+            ></label>
             <input
               placeholder="在工作台搜索..."
               class="page-header-search_input"
               placeholder-class="page-header-search_input_placeholder"
-              v-model="keyword"
+              v-model.trim="keyword"
               @keyup.enter="getPlan()"
               @blur="handleToggleShowSearch()"
               ref="searchInput"
@@ -231,10 +234,8 @@ export default {
         this.$nextTick(() => {
           this.$refs["searchInput"].focus();
         });
-      } else {
-        if (this.keyword == "") {
-          this.showSearch = false;
-        }
+      } else if (!this.keyword) {
+        this.showSearch = false;
       }
     }
   }
