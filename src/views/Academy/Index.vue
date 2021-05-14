@@ -1,5 +1,5 @@
 <template>
-  <div class="academy-page">
+  <div class="academy-page" v-loading="loading">
     <div class="academy-banner" ref="banner">
       <day-logo-svg
         ref="dayLogoSvg"
@@ -100,60 +100,60 @@
     </div>
 
     <div class="academy-content">
-      <div class="academy-content-card" v-for="camp of camps" :key="camp.id">
-        <img :src="backroundImage" class="academy-card-img" />
-        <div class="academy-card-main">
-          <span class="academy-card-label">// CAMP:</span>
-          <span
-            class="academy-card-title"
-            :style="{ color: camp.titleColor }"
-            >{{ camp.title }}</span
-          >
-          <div class="academy-desc-wrapper">
+      <div class="academy-content-list container-1180">
+        <div class="academy-content-card" v-for="camp of camps" :key="camp.id">
+          <the-loading-image
+            :url="camp.cover_file_url"
+            class="academy-card-cover"
+          />
+          <div class="academy-card-content">
+            <span class="academy-card-label">// CAMP:</span>
+            <h3
+              class="academy-card-title ellipsis"
+              :style="{ color: camp.title_color }"
+            >
+              {{ camp.name }}
+            </h3>
             <div class="academy-card-desc">
-              <div>
-                <span
-                  class="academy-card-desc_fontstyle academy-card-desc_camp"
-                  >{{ camp.campName }}</span
-                >
-                <span
-                  class="academy-card-desc_fontstyle academy-card-desc_stage"
-                  >{{ camp.termName }}</span
-                >
-              </div>
+              <h4 class="academy-card-desc_camp">{{ camp.term.name }}</h4>
               <span
-                class="academy-card-desc_fontstyle academy-card-desc_status"
-                :style="{ color: camp.statusColor }"
+                class="academy-card-desc_status"
+                :style="{ color: camp.price_color }"
                 >{{
-                  campStatus(camp.register_at, camp.open_at) === 1
+                  campStatus(camp.term) === 1
                     ? "热招中"
-                    : campStatus(camp.register_at, camp.open_at) === 2
+                    : campStatus(camp.term) === 2
                     ? "已开课"
                     : "敬请期待"
                 }}</span
               >
             </div>
           </div>
-        </div>
-
-        <div class="academy-card-footer">
-          <span class="academy-card-price" :style="{ color: camp.color }"
-            >￥{{ camp.price }}</span
-          >
-          <button class="academy-card-btn" :style="{ background: camp.color }">
-            {{
-              campStatus(camp.register_at, camp.open_at) === 1
-                ? "开始报名"
-                : campStatus(camp.register_at, camp.open_at) === 2
-                ? "查看详情"
-                : "敬请期待"
-            }}
-            <img
-              src="~images/academy/vector.svg"
-              v-if="campStatus(camp.register_at, camp.open_at) === 1"
-              class="academy-card-btn_vector"
-            />
-          </button>
+          <div class="academy-card-footer">
+            <span
+              class="academy-card-price"
+              :style="{ color: camp.price_color }"
+              >￥{{ camp.term.price }}</span
+            >
+            <button
+              class="academy-card-btn"
+              :style="{ background: camp.price_color }"
+              @click="goAcademyCamp(camp.id)"
+            >
+              {{
+                campStatus(camp.term) === 1
+                  ? "开始报名"
+                  : campStatus(camp.term) === 2
+                  ? "查看详情"
+                  : "敬请期待"
+              }}
+              <img
+                src="~images/academy/vector.svg"
+                v-if="campStatus(camp.term) === 1"
+                class="academy-card-btn_vector"
+              />
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -177,8 +177,15 @@ import XgSvg from "./widgets/svg/XgSvg.vue";
 import YzSvg from "./widgets/svg/YzSvg.vue";
 import ZwjSvg from "./widgets/svg/ZwjSvg.vue";
 import ZzSvg from "./widgets/svg/ZzSvg.vue";
+
+import campService from "service/camp";
+import TheLoadingImage from "components/TheLoadingImage";
+import { goAcademyCamp } from "utils/routes";
+import { campMixin } from "./widgets/mixin";
+
 export default {
   name: "Academy",
+  mixins: [campMixin],
   components: {
     DayLogoSvg,
     DoceeSvg,
@@ -195,64 +202,22 @@ export default {
     XgSvg,
     YzSvg,
     ZwjSvg,
-    ZzSvg
+    ZzSvg,
+    TheLoadingImage
   },
   data() {
     return {
+      loading: true,
       moveDom: null,
       left: 0,
       top: 0,
       startX: 0,
       startY: 0,
-      camps: [
-        {
-          id: 1,
-          cover_url: "",
-          title: "妙笔生花 软装训练",
-          titleColor: "#FF9100",
-          campName: "超软装设计·训练营",
-          termName: "一期班",
-          price: "4999",
-          color: "#9B00FF",
-          statusColor: "#9B00FF",
-          backroundImage: "",
-          register_at: "2021-05-10",
-          open_at: "2021-05-12"
-        },
-        {
-          id: 2,
-          cover_url: "",
-          title: "户型大改造",
-          titleColor: "#14AF64",
-          campName: "户型大改造·训练营",
-          termName: "一期班",
-          price: "4999",
-          color: "#14AF64",
-          statusColor: "#606C66",
-          backroundImage: "",
-          register_at: "2021-05-08",
-          open_at: "2021-05-09"
-        }
-      ]
+      camps: []
     };
   },
-  computed: {
-    campStatus() {
-      return (register_at, open_at) => {
-        const now = new Date().valueOf();
-        const open = new Date(open_at).valueOf();
-        const register = new Date(register_at).valueOf();
-        if (now < register) {
-          return 3; //敬请期待
-        }
-        if (now >= open) {
-          return 2; // 开课了
-        }
-        if (now >= register) {
-          return 1; // 开始报名了
-        }
-      };
-    }
+  created() {
+    this.getData();
   },
   mounted() {
     this.$nextTick(() => {
@@ -270,6 +235,17 @@ export default {
     window.removeEventListener("mousemove", this.mousemove);
   },
   methods: {
+    goAcademyCamp,
+    getData() {
+      campService
+        .camps()
+        .then(res => {
+          this.camps = res;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     mouseup() {
       this.moveDom = null;
     },
@@ -341,6 +317,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 @baseLeft: calc((100vw - 1200px) / 2);
 .academy-banner {
   position: relative;
@@ -434,29 +411,32 @@ export default {
 }
 
 .academy-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  min-height: 750px;
-  background-color: white;
+  .academy-content-list {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    padding-bottom: 80px;
+  }
   .academy-content-card {
     width: 540px;
-    padding: 16px 16px 24px 16px;
+    margin-top: 80px;
+    padding: 15px 15px 23px;
     border: 1px solid #efefef;
-    & + .academy-content-card {
+    &:nth-child(even) {
       margin-left: 100px;
     }
     &:hover {
       box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
     }
-    .academy-card-img {
+    .academy-card-cover {
       width: 508px;
       height: 286px;
     }
-    .academy-card-main {
+    .academy-card-content {
       width: 100%;
-      padding-top: 16px;
+      margin-top: 16px;
       .academy-card-label {
         display: block;
         font-size: 24px;
@@ -466,45 +446,34 @@ export default {
         cursor: default;
       }
       .academy-card-title {
-        display: block;
-        padding: 10px 0 0 0;
+        margin-top: 10px;
+        line-height: 1;
         font-size: 40px;
         font-weight: 800;
-        color: #ff9100;
+        color: @primaryColor;
         cursor: default;
       }
-      .academy-desc-wrapper {
+      .academy-card-desc {
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: space-between;
         margin-top: 24px;
-        .academy-card-desc {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 508px;
-          padding: 12px;
-          background-color: #fafafa;
-          .academy-card-desc_fontstyle {
-            font-size: 14px;
-            font-weight: 400;
-            line-height: 24px;
-            color: #606c66;
-          }
-          .academy-card-desc_camp {
-            text-transform: uppercase;
-            cursor: default;
-          }
-          .academy-card-desc_stage {
-            padding-left: 8px;
-            font-weight: 500;
-            text-transform: uppercase;
-            cursor: default;
-          }
-          .academy-card-desc_status {
-            color: #9b00ff;
-            cursor: default;
-          }
+        width: 100%;
+        padding: 12px;
+        background: #fafafa;
+        .academy-card-desc_camp {
+          line-height: 24px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #606c66;
+          cursor: default;
+        }
+        .academy-card-desc_status {
+          line-height: 24px;
+          font-size: 14px;
+          font-weight: 400;
+          color: #606c66;
+          cursor: default;
         }
       }
     }
@@ -518,7 +487,7 @@ export default {
       font-weight: 800;
       font-size: 40px;
       line-height: 40px;
-      color: #9b00ff;
+      color: @primaryColor;
       cursor: default;
     }
     .academy-card-btn {
@@ -532,7 +501,7 @@ export default {
       border: 0;
       outline: none;
       color: white;
-      background-color: #9b00ff;
+      background-color: @primaryColor;
       cursor: pointer;
     }
     .academy-card-btn_vector {

@@ -6,6 +6,12 @@ export const goHome = () => {
   });
 };
 
+export const goAcademy = () => {
+  return goRoute({
+    name: "Academy"
+  });
+};
+
 export const goMyPlan = (type = "_self") => {
   return goRoute(
     {
@@ -107,6 +113,18 @@ export const goQuestionDetail = (id, type = "_blank") => {
   return goRoute(
     {
       name: "QuestionDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
+export const goAcademyCamp = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCamp",
       params: {
         id
       }

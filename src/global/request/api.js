@@ -29,7 +29,10 @@ export default {
     `${WEB_PREFIX}/kujiale/design/${designId}/basic`,
   ossToken: `${PREFIX}/api/file/alioss-token`,
   ossStore: `${PREFIX}/api/file/alioss-store`,
+  camps: `${WEB_PREFIX}/camps`,
+  camp: id => `${WEB_PREFIX}/camp/${id}`,
   campTerms: `${WEB_PREFIX}/camp/terms`,
+  myCampTerms: `${WEB_PREFIX}/camp/terms/mine`,
   campTerm: id => `${WEB_PREFIX}/camp/term/${id}`,
   campTermFeedback: id => `${WEB_PREFIX}/camp/term/${id}/feedback`,
   campHomework: (campId, termId, homeworkId) =>

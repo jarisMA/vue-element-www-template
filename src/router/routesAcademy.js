@@ -1,5 +1,5 @@
 import AcademyIndex from "@/views/Academy/Index";
-import AcademyCategory from "@/views/Academy/Category";
+import AcademyCamp from "@/views/Academy/Camp";
 
 const routes = [
   {
@@ -8,9 +8,9 @@ const routes = [
     component: AcademyIndex
   },
   {
-    path: "academy/:id",
-    name: "AcademyCategory",
-    component: AcademyCategory
+    path: "academy/camp/:id",
+    name: "AcademyCamp",
+    component: AcademyCamp
   }
 ];
 

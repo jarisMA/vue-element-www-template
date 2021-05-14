@@ -26,7 +26,7 @@
         <nav class="header-nav">
           <span
             class="header-nav-item My"
-            @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
+            @click="(visible || theme !== 'primary') && goAcademy()"
             >斗西学社</span
           >
           <span
@@ -106,7 +106,14 @@
 </template>
 <script type="text/javascript">
 import { mapMutations, mapState } from "vuex";
-import { goHome, goMyPlan, goProfile, goBible, goQuestion } from "utils/routes";
+import {
+  goHome,
+  goMyPlan,
+  goProfile,
+  goBible,
+  goQuestion,
+  goAcademy
+} from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
 
@@ -138,6 +145,15 @@ export default {
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
+    goAcademy() {
+      if (this.theme === "primary") {
+        this.$confirm(`是否确认离开当前页面?`).then(() => {
+          goAcademy();
+        });
+      } else {
+        goAcademy();
+      }
+    },
     goBible() {
       if (this.theme === "primary") {
         this.$confirm(`是否确认离开当前页面?`).then(() => {

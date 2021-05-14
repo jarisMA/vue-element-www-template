@@ -1,9 +1,9 @@
 import request from "request/axios.js";
 import API from "request/api.js";
 
-const termRequest = {
-  campTerms(params = {}) {
-    return request.get(API.campTerms, params);
+const termService = {
+  myCampTerms(params = {}) {
+    return request.get(API.myCampTerms, params);
   },
   campTerm(id) {
     return request.get(API.campTerm(id));
@@ -25,4 +25,4 @@ const termRequest = {
   }
 };
 
-export default termRequest;
+export default termService;
