@@ -319,6 +319,9 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @baseLeft: calc((100vw - 1200px) / 2);
+.academy-page {
+  background: #fff !important;
+}
 .academy-banner {
   position: relative;
   width: 100%;
