@@ -16,6 +16,12 @@ const userService = {
   },
   updateUserInfo(params) {
     return request.put(API.userInfo, params);
+  },
+  weekClock() {
+    return request.get(API.clock);
+  },
+  clock() {
+    return request.post(API.clock);
   }
 };
 

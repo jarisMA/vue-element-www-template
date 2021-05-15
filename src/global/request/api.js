@@ -72,5 +72,7 @@ export default {
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,
   ossVideoAuth: videoId => `${PREFIX}/api/file/alioss-video/${videoId}`,
-  ossVideoStatus: videoId => `${PREFIX}/api/file/alioss-video/${videoId}/status`
+  ossVideoStatus: videoId =>
+    `${PREFIX}/api/file/alioss-video/${videoId}/status`,
+  clock: `${WEB_PREFIX}/mine/clock`
 };
