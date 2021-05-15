@@ -1,128 +1,111 @@
 <template>
-  <div class="profile-container">
-    <div class="container-1200">
-      <div class="form-wrapper">
-        <div class="avatar-wrapper">
+  <div class="profile container-580">
+    <div class="form-wrapper">
+      <label class="form-label">头像</label>
+      <div class="avatar-wrapper">
+        <div class="avatar">
           <el-avatar
             :size="80"
             :src="form.avatar_url"
             v-loading="uploadingAvatar"
           ></el-avatar>
-          <div class="user-info">
-            <el-tooltip
-              v-if="userInfo && isVip()"
-              popper-class="vip-popper"
-              effect="light"
-              content="您已是尊柜会员啦！"
-              placement="bottom"
-              :visible-arrow="false"
-            >
-              <img class="user-icon" src="~images/vip.png" />
-            </el-tooltip>
-            <el-tooltip
-              v-else
-              popper-class="vip-popper"
-              effect="light"
-              content="您仍旧是一棵浮木……"
-              placement="bottom"
-              :visible-arrow="false"
-            >
-              <img class="user-icon" src="~images/user.png" />
-            </el-tooltip>
-
-            <div class="upload-avatar-wrapper">
-              <el-upload
-                ref="upload"
-                class="upload"
-                action=""
-                accept="image/*"
-                :before-upload="uploadAvatar"
-              >
-                <div class="upload-avatar">
-                  <icon-svg
-                    svg-class="replace-icon"
-                    svg-name="replace"
-                  ></icon-svg>
-                  <span>替换头像</span>
-                </div>
-                <label class="upload-tips">
-                  只能上传JPG/PNG/JPEG格式文件，且不超过2MB
-                </label>
-              </el-upload>
-            </div>
-          </div>
+          <el-upload
+            ref="upload"
+            class="avatar-upload"
+            action=""
+            accept="image/*"
+            :before-upload="uploadAvatar"
+            >更换头像</el-upload
+          >
         </div>
 
-        <el-form
-          ref="form"
-          class="form"
-          :model="form"
-          :rules="formRules"
-          @submit.native.prevent
-        >
-          <el-form-item label="昵称" prop="nickname">
-            <el-input
-              v-model="form.nickname"
-              placeholder="请设置你的昵称"
-            ></el-input>
-          </el-form-item>
-          <div class="inline-item">
-            <el-form-item label="手机号">
-              <el-input v-model="userInfo.phone" disabled></el-input>
-            </el-form-item>
-            <el-form-item class="phone-change-button">
+        <span class="avatar-tips">只能上传JPG/PNG格式文件，且不超过2MB</span>
+      </div>
+      <el-form
+        ref="form"
+        class="form"
+        :model="form"
+        :rules="formRules"
+        hide-required-asterisk
+        @submit.native.prevent
+      >
+        <el-form-item label="昵称" prop="nickname">
+          <el-input
+            v-model="form.nickname"
+            placeholder="请设置你的昵称"
+          ></el-input>
+        </el-form-item>
+        <div class="inline-item">
+          <el-form-item label="手机号">
+            <div class="phone-wrapper">
+              <el-input
+                class="phone-input"
+                v-model="userInfo.phone"
+                disabled
+              ></el-input>
               <el-button
-                type="primary"
-                size="small"
+                class="phone-btn"
+                type="plain"
                 @click="phoneVisible = true"
                 >更改手机号</el-button
               >
-            </el-form-item>
-          </div>
-          <div class="inline-item">
-            <el-form-item label="性别" prop="gender">
-              <el-select v-model="form.gender" placeholder="请选择">
-                <el-option
-                  v-for="item in GENDER"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="身份" prop="identity">
-              <el-select v-model="form.identity" placeholder="请选择">
-                <el-option
-                  v-for="(item, key) of IDENTITY"
-                  :key="key"
-                  :label="item"
-                  :value="key"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </div>
-          <el-form-item label="学习目的" prop="remark">
-            <el-input v-model="form.remark" placeholder="请输入内容"></el-input>
+            </div>
           </el-form-item>
-          <el-form-item label="个人介绍" prop="introduction">
-            <el-input
-              type="textarea"
-              v-model="form.introduction"
-              placeholder="请输入内容"
-              maxlength="100"
-              show-word-limit
-              resize="none"
-            ></el-input>
+        </div>
+        <div class="flex">
+          <el-form-item class="flex-1" label="性别" prop="gender">
+            <el-select class="w-280" v-model="form.gender" placeholder="请选择">
+              <el-option
+                v-for="item in GENDER"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
-          <el-form-item class="button-item">
-            <el-button type="primary" :loading="btnLoading" @click="save"
-              >保存</el-button
+          <el-form-item class="flex-1" label="身份" prop="identity">
+            <el-select
+              class="w-280"
+              v-model="form.identity"
+              placeholder="请选择"
             >
+              <el-option
+                v-for="(item, key) of IDENTITY"
+                :key="key"
+                :label="item"
+                :value="key"
+              >
+              </el-option>
+            </el-select>
           </el-form-item>
-        </el-form>
-      </div>
+        </div>
+        <el-form-item label="学习目的" prop="remark">
+          <el-input
+            v-model="form.remark"
+            placeholder="请输入学习目的"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="个人介绍" prop="introduction">
+          <el-input
+            type="textarea"
+            v-model="form.introduction"
+            placeholder="介绍一下自己"
+            maxlength="100"
+            show-word-limit
+            resize="none"
+          ></el-input>
+        </el-form-item>
+        <el-form-item align="right">
+          <el-button
+            class="submit-btn"
+            type="primary"
+            :loading="btnLoading"
+            @click="save"
+            >保存更改</el-button
+          >
+        </el-form-item>
+      </el-form>
     </div>
     <el-dialog
       class="phoneDialog"
@@ -152,7 +135,14 @@
         </el-form-item>
         <el-form-item label="验证码" prop="code">
           <el-input type="text" v-model="phoneForm.code" autocomplete="off">
-            <el-button slot="append" @click="sendVerifyCode">
+            <el-button
+              slot="append"
+              @click="
+                sendRequesting && sendPhoneCountDown > 0
+                  ? null
+                  : sendVerifyCode()
+              "
+            >
               {{
                 sendRequesting && sendPhoneCountDown > 0
                   ? `${sendPhoneCountDown}s`
@@ -176,15 +166,20 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
 import { GENDER, IDENTITY } from "utils/const";
-import userService from "service/user";
+import { mapMutations, mapState } from "vuex";
 import ossService from "service/oss";
 import smsService from "service/sms";
-import { isVip } from "utils/function";
+import userService from "service/user";
 
 export default {
-  name: "Profile",
+  name: "MyProfile",
+  props: {
+    loading: {
+      type: Boolean,
+      required: true
+    }
+  },
   data() {
     const validateRePhone = (rule, value, callback) => {
       if (value === this.userInfo.phone) {
@@ -256,13 +251,13 @@ export default {
       introduction,
       avatar_url
     };
+    this.$emit("update:loading", false);
   },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
     ...mapMutations(["USERINFO"]),
-    isVip,
     uploadAvatar(file) {
       this.uploadingAvatar = true;
       ossService.upload(
@@ -364,6 +359,7 @@ export default {
               });
               this.$store.commit("UPDATA_PHONE", phone);
               this.phoneVisible = false;
+              this.sendPhoneCountDown = 0;
               this.$refs.phoneForm.resetFields();
             })
             .finally(() => {
@@ -381,161 +377,122 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~styles/variable.less";
-.profile-container {
-  .form-wrapper {
-    margin: 12px 0;
-    padding: 80px 282px 30px;
-    min-height: calc(100vh - 120px - 24px);
-    background: #fff;
+@import "~styles/variable";
+.profile {
+  height: 100%;
+  .form-label {
+    display: block;
+    margin-bottom: 8px;
+    line-height: 24px;
+    font-size: 14px;
+    color: #606c66;
+  }
+  .flex {
+    display: flex;
+    .flex-1 {
+      flex: 1;
+      & + .flex-1 {
+        margin-left: 20px;
+      }
+    }
+  }
+  .w-280 {
+    width: 280px;
   }
   .avatar-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 60px;
-    .upload-avatar-wrapper {
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: center;
-      line-height: 1;
-      .upload-avatar {
-        display: flex;
-        align-items: center;
-        margin-bottom: 6px;
-        text-align: left;
-        color: @primaryColor;
-        font-size: 14px;
-        font-weight: 500;
-        .replace-icon {
-          font-size: 24px;
+    .avatar {
+      position: relative;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      cursor: pointer;
+      &:hover {
+        /deep/ .avatar-upload {
+          display: inline-block;
         }
-        cursor: pointer;
       }
-      .upload-tips {
-        margin-left: 4px;
+    }
+    /deep/ .avatar-upload {
+      display: none;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 30px;
+      background: rgba(0, 0, 0, 0.9);
+      overflow: hidden;
+      text-align: center;
+      .el-upload--text {
+        line-height: 30px;
+        font-weight: 500;
         font-size: 12px;
-        font-weight: 400;
-        color: #ababab;
+        color: #fff !important;
       }
+    }
+    .avatar-tips {
+      display: inline-block;
+      margin-left: 24px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #8ea098;
     }
   }
   /deep/ .form {
-    .el-form-item__label {
-      margin-bottom: 16px;
-      line-height: 1;
-      font-size: 14px;
-      font-weight: 500;
-      color: #333333;
+    margin-top: 32px;
+    .el-form-item {
+      margin-bottom: 32px;
     }
-    .phone-change-button {
-      display: flex;
-      align-items: flex-end;
+    .el-form-item__label {
+      margin-bottom: 8px;
+      line-height: 24px;
+      font-size: 14px;
+      color: #606c66;
+    }
+    .el-input__inner,
+    .el-textarea__inner {
+      border: 1px solid #efefef;
     }
     .el-input.is-disabled {
       .el-input__inner {
-        color: #cccccc;
-        background: #fafafa;
+        background: #f4f4f4;
+        border: 1px solid #efefef;
       }
     }
-    .el-textarea__inner,
-    .el-input__inner {
-      border-radius: unset;
-      font-size: 14px;
-      font-weight: 400;
-      &::placeholder {
-        color: #ccc;
-      }
-    }
-    .el-select {
-      width: 100%;
-    }
-    .el-input__inner {
-      padding: 9px 12px;
-      height: 32px;
-    }
-    .el-textarea__inner {
-      padding: 12px;
-      min-height: 76px;
-    }
-    .el-input__count {
-      line-height: 1;
-      bottom: 12px;
-      right: 12px;
-    }
-    .el-form-item {
-      margin-bottom: 50px;
-    }
-    .inline-item {
+    .phone-wrapper {
       display: flex;
-      .el-form-item {
-        width: 50%;
-        &:nth-child(odd) {
-          padding-right: 12px;
-        }
-        &:nth-child(even) {
-          padding-left: 12px;
-        }
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      .phone-input {
+        flex: 1;
+        width: 5px;
       }
-    }
-    .button-item {
-      margin: 0;
-      padding-top: 10px;
-      text-align: right;
-      .el-button {
-        width: 120px;
-        height: 32px;
-        padding: 0;
-        line-height: 32px;
-        border-radius: unset;
-      }
-    }
-  }
-  /deep/ .phoneDialog {
-    .el-dialog {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      margin-top: 0 !important;
-      transform: translate(-50%, -50%);
-      background: #f7f7f7ff;
-    }
-    .el-dialog__header {
-      text-align: center;
-      span {
+      .phone-btn {
+        flex: none;
+        margin-left: 8px;
+        padding: 8px 37px;
         color: @primaryColor;
+        line-height: 24px;
+        font-weight: 500;
+        font-size: 14px;
+        border: 1px solid #efefef;
       }
     }
-    .el-dialog__body {
-      padding: 30px;
-    }
-    .phoneConfirmBtn {
-      margin: 0;
-      text-align: right;
-      .el-form-item__content {
-        margin-left: 0 !important;
-      }
-      .el-button {
-        width: 80px;
-      }
-    }
-    .el-input-group__append {
-      .el-button {
-        width: 98px;
+    .submit-btn {
+      width: 146px;
+      height: 40px;
+      padding: 0;
+      border: 1px solid #efefef;
+      span {
+        line-height: 40px;
+        font-weight: 500;
+        font-size: 14px;
+        color: #fff;
       }
     }
-  }
-}
-.user-info {
-  margin-left: 24px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  .user-icon {
-    margin: 0 0 17px 4px;
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
   }
 }
 </style>

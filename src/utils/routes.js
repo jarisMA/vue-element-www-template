@@ -21,10 +21,10 @@ export const goMyPlan = (type = "_self") => {
   );
 };
 
-export const goProfile = (type = "_self") => {
+export const goMySetting = (type = "_self") => {
   return goRoute(
     {
-      name: "Profile"
+      name: "MySetting"
     },
     type
   );

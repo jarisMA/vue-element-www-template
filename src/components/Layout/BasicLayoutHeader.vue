@@ -89,7 +89,7 @@
                   </p>
                 </div>
                 <ul class="login-operation">
-                  <li @click="goProfile()" class="setting">
+                  <li @click="goMySetting()" class="setting">
                     <span>我的资料</span>
                   </li>
                 </ul>
@@ -109,7 +109,7 @@ import { mapMutations, mapState } from "vuex";
 import {
   goHome,
   goMyPlan,
-  goProfile,
+  goMySetting,
   goBible,
   goQuestion,
   goAcademy
@@ -186,11 +186,11 @@ export default {
         goMyPlan();
       }
     },
-    goProfile() {
+    goMySetting() {
       if (this.theme === "primary") {
-        goProfile("_blank");
+        goMySetting("_blank");
       } else {
-        goProfile();
+        goMySetting();
       }
     },
     loginDialogVisible(index) {

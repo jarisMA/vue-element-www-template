@@ -9,7 +9,6 @@ import routesMy from "./routesMy";
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
-import Profile from "@/views/Profile";
 import Course from "@/views/Term/Course";
 
 const routes = [
@@ -23,14 +22,6 @@ const routes = [
         path: "/",
         name: "Home",
         component: Home
-      },
-      {
-        path: "/profile",
-        name: "Profile",
-        component: Profile,
-        meta: {
-          auth: true
-        }
       },
       ...routesPlan,
       ...routesTerm,
