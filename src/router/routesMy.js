@@ -17,6 +17,14 @@ const routes = [
     meta: {
       auth: true
     }
+  },
+  {
+    path: "my/course",
+    name: "MyCourse",
+    component: Index,
+    meta: {
+      auth: true
+    }
   }
 ];
 

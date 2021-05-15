@@ -47,7 +47,7 @@
                 'page-menu-item',
                 activeTab === 'MySetting' ? 'active' : ''
               ]"
-              @click="goMySetting"
+              @click="goMySetting()"
             >
               我的资料
             </li>
@@ -56,6 +56,7 @@
                 'page-menu-item',
                 activeTab === 'MyCourse' ? 'active' : ''
               ]"
+              @click="goMyCourse()"
             >
               我的课程
             </li>
@@ -74,6 +75,7 @@
             v-if="activeTab === 'MySetting'"
             :loading.sync="loading"
           />
+          <my-course v-if="activeTab === 'MyCourse'" :loading.sync="loading" />
         </div>
       </div>
     </div>
@@ -85,13 +87,15 @@ import { mapState } from "vuex";
 import { isVip } from "utils/function";
 import TheAvatar from "components/TheAvatar";
 import MyProfile from "./widgets/Profile";
-import { goMySetting } from "utils/routes";
+import MyCourse from "./widgets/Course";
+import { goMySetting, goMyCourse } from "utils/routes";
 
 export default {
   name: "MyIndex",
   components: {
     TheAvatar,
-    MyProfile
+    MyProfile,
+    MyCourse
   },
   data() {
     return {
@@ -102,12 +106,18 @@ export default {
   created() {
     this.activeTab = this.$route.name;
   },
+  watch: {
+    ["$route"](val) {
+      this.activeTab = val.name;
+    }
+  },
   computed: {
     ...mapState(["userInfo"])
   },
   methods: {
     isVip,
-    goMySetting
+    goMySetting,
+    goMyCourse
   }
 };
 </script>
@@ -245,12 +255,13 @@ export default {
           font-size: 16px;
           text-align: center;
           cursor: pointer;
+          border-bottom: 2px solid transparent;
           & + .page-menu-item {
             margin-top: 24px;
           }
           &.active {
             color: @primaryColor;
-            border-bottom: 2px solid @primaryColor;
+            border-color: @primaryColor;
           }
           &:hover {
             color: @primaryColor;

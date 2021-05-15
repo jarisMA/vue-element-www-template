@@ -3,14 +3,22 @@
     <div class="term-card-top">
       <the-loading-image
         class="image-wrapper"
-        :width="284"
-        :height="212"
+        :width="300"
+        :height="170"
         :url="detail.cover_file_url || defaultCoverImg"
       />
     </div>
     <div :class="['term-card-bottom']">
       <div class="term-name-wrapper">
-        <h4 class="term-name">{{ detail.name }}</h4>
+        <h4 class="term-name ellipsis">{{ detail.name }}</h4>
+      </div>
+      <div class="term-time-wrapper">
+        <span class="term-start"
+          >{{ formatDate(detail.start_at, "YYYY-MM-DD") }} -
+          {{ formatDate(detail.end_at, "YYYY-MM-DD") }}</span
+        >
+      </div>
+      <div class="term-status-wrapper">
         <label
           :class="{
             'term-status': true,
@@ -20,14 +28,7 @@
           }"
           >{{ TERM_STATUS[detail.status] }}</label
         >
-      </div>
-      <div class="term-time-wrapper">
-        <span class="term-start">{{ formatDate(detail.start_at) }} 开课 </span>
-        |
-        <span class="term-start">{{ formatDate(detail.end_at) }} 前有效 </span>
-      </div>
-      <div class="enter-btn">
-        进入班级
+        <div class="enter-btn">进入班级<i class="arrow-icon"></i></div>
       </div>
     </div>
   </div>
@@ -75,58 +76,60 @@ export default {
   align-items: center;
   width: 100%;
   background: #fff;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
   cursor: pointer;
   &:hover {
-    box-shadow: 0px 0px 12px 0px #cccccc;
-    .term-card-bottom {
-      .enter-btn {
-        color: @primaryColor;
-        border-color: @primaryColor;
-      }
+    .enter-btn {
+      display: flex !important;
     }
   }
   .term-card-top {
     position: relative;
-    padding: @padding;
     width: 100%;
-    height: 232px;
+    height: 170px;
     text-align: center;
-    .image-wrapper {
-      position: absolute;
-      top: @padding;
-      left: @padding;
-      width: 100%;
-    }
   }
   .term-card-bottom {
     display: flex;
     flex-direction: column;
     width: 100%;
-    // height: 95px;
-    padding: 5px @padding @padding;
-    border-top: 1px solid #e6e6e6;
+    padding: 16px;
     .term-name-wrapper {
       display: flex;
       align-items: center;
       .term-name {
         flex: 1;
         margin-bottom: 0;
-        line-height: 20px;
-        font-size: 14px;
-        font-weight: 600;
-        color: #333333;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
+        font-size: 16px;
+        line-height: 24px;
+        font-size: 16px;
+        font-weight: normal;
+        color: #2c3330;
       }
+    }
+    .term-time-wrapper {
+      margin-top: 4px;
+      line-height: 16px;
+      font-size: 12px;
+      font-weight: 400;
+      color: #81948b;
+    }
+    .term-status-wrapper {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 24px;
       .term-status {
-        padding: 0 7px;
-        line-height: 20px;
+        display: inline-block;
+        padding: 2px 4px;
+        line-height: 1;
         font-size: 12px;
         font-weight: 400;
         color: #666666;
         background: #d8d8d8;
         border-radius: 10px;
+        cursor: pointer;
         &.unstart {
           color: #eab968ff;
           background: #ffedcfff;
@@ -140,30 +143,24 @@ export default {
           background: #d8d8d8ff;
         }
       }
-    }
-    .term-time-wrapper {
-      line-height: 1;
-      font-size: 12px;
-      font-weight: 400;
-      color: #ababab;
-    }
-    .enter-btn {
-      margin-top: 9px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      height: 38px;
-      line-height: 22px;
-      font-size: 16px;
-      font-weight: 500;
-      color: #666666;
-      border: 1px solid #e2e2e2;
-      cursor: pointer;
-      // &:hover {
-      //   color: @primaryColor;
-      //   border-color: @primaryColor;
-      // }
+      .enter-btn {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        line-height: 24px;
+        font-size: 16px;
+        color: #81948b;
+        cursor: pointer;
+        .arrow-icon {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          mask-image: url("~images/my/arrow.svg");
+          mask-size: cover;
+          mask-repeat: no-repeat;
+          background-color: #81948b;
+        }
+      }
     }
   }
 }

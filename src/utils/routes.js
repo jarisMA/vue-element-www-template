@@ -30,6 +30,15 @@ export const goMySetting = (type = "_self") => {
   );
 };
 
+export const goMyCourse = (type = "_self") => {
+  return goRoute(
+    {
+      name: "MyCourse"
+    },
+    type
+  );
+};
+
 export const goAddPlan = () => {
   return goRoute({
     name: "AddPlan"
