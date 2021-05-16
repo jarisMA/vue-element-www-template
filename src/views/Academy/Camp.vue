@@ -46,26 +46,28 @@
       </div>
     </div>
     <div class="camp-footer" v-if="!loading && term">
-      <div
-        class="camp-footer-left"
-        :style="{ backgroundColor: camp.price_color }"
-      >
-        <h3 class="camp-footer-name ellipsis">{{ camp.name }}</h3>
-        <div class="camp-footer-price">
-          <span class="camp-footer-price_text"
-            >¥{{ (term && term.price) || 0 }}</span
-          >
-          <span class="camp-footer-unit">元</span>
-        </div>
-      </div>
-      <div class="camp-footer-right">
+      <div class="camp-footer-wrapper">
         <div
-          :class="['camp-footer-btn', status !== 1 ? 'disabled' : '']"
-          :style="{ backgroundColor: camp.title_color }"
-          @click="status === 1 ? handleRegister() : null"
+          class="camp-footer-left"
+          :style="{ backgroundColor: camp.price_color }"
         >
-          {{ campBtnText }}
-          <i class="camp-footer-btn_icon" v-if="status === 1"></i>
+          <h3 class="camp-footer-name ellipsis">{{ camp.name }}</h3>
+          <div class="camp-footer-price">
+            <span class="camp-footer-price_text"
+              >¥{{ (term && term.price) || 0 }}</span
+            >
+            <span class="camp-footer-unit">元</span>
+          </div>
+        </div>
+        <div class="camp-footer-right">
+          <div
+            :class="['camp-footer-btn', status !== 1 ? 'disabled' : '']"
+            :style="{ backgroundColor: camp.title_color }"
+            @click="status === 1 ? handleRegister() : null"
+          >
+            {{ campBtnText }}
+            <i class="camp-footer-btn_icon" v-if="status === 1"></i>
+          </div>
         </div>
       </div>
     </div>
@@ -229,14 +231,19 @@ export default {
 }
 .camp-footer {
   position: sticky;
-  left: 50%;
+  left: 0;
   bottom: 0;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
-  width: 980px;
-  height: 60px;
-  transform: translateX(-50%);
+  justify-content: center;
+  width: 100%;
+  .camp-footer-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 980px;
+    height: 60px;
+  }
   .camp-footer-left {
     flex: 1;
     display: flex;
