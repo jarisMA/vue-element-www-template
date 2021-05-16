@@ -61,7 +61,7 @@
 
 <script>
 import { mapState } from "vuex";
-import TheAvatar from "../../../../../homeplan-admin/src/components/TheAvatar.vue";
+import TheAvatar from "components/TheAvatar";
 const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 export default {

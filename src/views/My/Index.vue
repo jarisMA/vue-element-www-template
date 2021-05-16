@@ -1,5 +1,5 @@
 <template>
-  <div class="my-page" v-loading="loading">
+  <div class="my-page" v-loading="loading || dataLoading">
     <div class="page-header">
       <div class="container-1180">
         <div class="page-header-left">
@@ -21,14 +21,20 @@
           </div>
         </div>
         <div class="page-header-right">
-          <div class="page-header-operate">
+          <div
+            class="page-header-operate"
+            @click="handleShowDialog('gainVisible')"
+          >
             <div class="operate-left">
               <i class="heart-icon"></i>
               <label class="operate-text">我的暖心</label>
             </div>
-            <div class="operate-right">97</div>
+            <div class="operate-right">{{ userInfo.mark_total }}</div>
           </div>
-          <div class="page-header-operate" @click="clockVisible = true">
+          <div
+            class="page-header-operate"
+            @click="handleShowDialog('clockVisible')"
+          >
             <div class="operate-left">
               <i class="calender-icon"></i>
               <label class="operate-text">连续签到</label>
@@ -79,6 +85,12 @@
         </div>
       </div>
     </div>
+    <gain-dialog
+      :visible.sync="gainVisible"
+      :weekClocks="weekClocks"
+      :shineCount="shineCount"
+      @showClock="handleShowDialog('clockVisible')"
+    />
     <clock-dialog
       :visible.sync="clockVisible"
       :weekClocks="weekClocks"
@@ -94,6 +106,7 @@ import TheAvatar from "components/TheAvatar";
 import MyProfile from "./widgets/Profile";
 import MyCourse from "./widgets/Course";
 import ClockDialog from "./widgets/ClockDialog";
+import GainDialog from './widgets/GainDialog';
 
 import { goMySetting, goMyCourse } from "utils/routes";
 import userService from "service/user";
@@ -105,29 +118,33 @@ export default {
     TheAvatar,
     MyProfile,
     MyCourse,
-    ClockDialog
+    ClockDialog,
+    GainDialog
   },
-  data() {
+  data () {
     return {
+      dataLoading: true,
       loading: true,
       activeTab: "MySetting",
       weekClocks: [],
+      shineCount: 0,
+      gainVisible: false,
       clockVisible: false,
       clocking: false
     };
   },
-  created() {
+  created () {
     this.activeTab = this.$route.name;
     this.getData();
   },
   watch: {
-    ["$route"](val) {
+    ["$route"] (val) {
       this.activeTab = val.name;
     }
   },
   computed: {
     ...mapState(["userInfo"]),
-    clocks() {
+    clocks () {
       const now = new Date();
       const index = now.getDay();
       let clocks = [];
@@ -166,7 +183,7 @@ export default {
       });
       return clocks;
     },
-    getClockCount() {
+    getClockCount () {
       const clocks = this.clocks;
       if (clocks.length < 1) {
         return 0;
@@ -190,12 +207,24 @@ export default {
     isVip,
     goMySetting,
     goMyCourse,
-    getData() {
-      userService.weekClock().then(res => {
-        this.weekClocks = res;
-      });
+    getData () {
+      this.dataLoading = true;
+      const year = new Date().getFullYear();
+      const month = new Date().getMonth() + 1;
+      const day = new Date().getDate();
+      const date = year + '-' + ('0' + month).substr(-2, 2) + '-' + ('0' + day).substr(-2, 2);
+      Promise.all([userService.weekClock(), userService.getShineCount({
+        start_at: date + ' 00:00:00',
+        end_at: date + ' 23:59:59',
+      })])
+        .then(([weekClocks, shineCount]) => {
+          this.weekClocks = weekClocks;
+          this.shineCount = shineCount;
+        }).finally(() => {
+          this.dataLoading = false
+        })
     },
-    handleClock() {
+    handleClock () {
       console.log("enter");
       if (this.clocking) {
         return;
@@ -226,6 +255,11 @@ export default {
         .finally(() => {
           this.clocking = false;
         });
+    },
+    handleShowDialog (param) {
+      this.gainVisible = false;
+      this.clockVisible = false;
+      this.[param] = true;
     }
   }
 };

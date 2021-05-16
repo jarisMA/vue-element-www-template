@@ -22,6 +22,12 @@ const userService = {
   },
   clock() {
     return request.post(API.clock);
+  },
+  getShineCount(params) {
+    return request.get(API.gainShineCount, params);
+  },
+  gainHistory(params) {
+    return request.get(API.gainHistory, params);
   }
 };
 
