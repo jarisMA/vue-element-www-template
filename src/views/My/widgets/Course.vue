@@ -4,18 +4,35 @@
       <div class="course-list-header">
         <h5 class="course-label">实战营班级</h5>
         <div class="course-pagination">
-          <i class="course-pagination-prev disabled"></i>
-          <span class="course-pagination-text"
+          <i
+            :class="['course-pagination-prev', page === 1 ? 'disabled' : '']"
+            @click="handleSwiperSlideTo(page - 1)"
+          ></i>
+          <span :class="['course-pagination-text']"
             >{{ page }}/{{ Math.ceil(terms.length / 3) }}</span
           >
-          <i class="course-pagination-next disabled"></i>
+          <i
+            :class="[
+              'course-pagination-next',
+              page == Math.ceil(terms.length / 3) ? 'disabled' : ''
+            ]"
+            @click="handleSwiperSlideTo(page + 1)"
+          ></i>
         </div>
       </div>
-      <ul class="course-list">
-        <li class="course-item" v-for="item of terms" :key="item.id">
-          <term-card :detail="item" @itemClick="goTerm(item.id)" />
-        </li>
-      </ul>
+      <div class="course-list">
+        <swiper
+          class="swiper-no-swiping"
+          ref="mySwiper"
+          :options="swiperOptions"
+        >
+          <swiper-slide v-for="item of terms" :key="item.id">
+            <div class="course-item">
+              <term-card :detail="item" @itemClick="goTerm(item.id)" />
+            </div>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
   </div>
 </template>
@@ -37,7 +54,12 @@ export default {
   data() {
     return {
       terms: [],
-      page: 1
+      page: 1,
+      swiperOptions: {
+        slidesPerView: 3,
+        spaceBetween: 20,
+        autoplay: false
+      }
     };
   },
   created() {
@@ -55,6 +77,11 @@ export default {
         .finally(() => {
           this.$emit("update:loading", false);
         });
+    },
+    handleSwiperSlideTo(page, speed = 300) {
+      const index = (page - 1) * 3;
+      this.$refs["mySwiper"].$swiper.slideTo(index, speed, false);
+      this.page = page;
     }
   }
 };
@@ -112,16 +139,15 @@ export default {
     }
   }
   .course-list {
-    display: flex;
-    flex-wrap: wrap;
+    // display: flex;
+    // flex-wrap: wrap;
     margin-top: 16px;
-    .course-item {
-      width: 300px;
-      &:nth-child(3n - 1) {
-        margin-left: 20px;
-      }
-      &:nth-child(3n) {
-        margin-left: 20px;
+    /deep/ .swiper-container {
+      height: 296px;
+      .swiper-slide {
+        .course-item {
+          width: 300px;
+        }
       }
     }
   }
