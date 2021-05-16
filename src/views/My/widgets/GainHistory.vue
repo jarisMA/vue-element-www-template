@@ -40,11 +40,12 @@
         </div>
       </div>
       <pagination
+        layout="prev, pager, next"
         :class="['pagination-wrapper']"
         :pageSize="pagination.size"
         :current-page="pagination.page"
         :total="pagination.total"
-        :layout="{ small: true }"
+        :paginationLayout="pagination.layout"
         @change-page="getData"
       />
     </div>
@@ -68,7 +69,8 @@ export default {
       pagination: {
         size: 5,
         page: 1,
-        total: 0
+        total: 0,
+        layout: { small: true }
       }
     };
   },

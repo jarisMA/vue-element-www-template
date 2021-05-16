@@ -66,14 +66,14 @@
             >
               我的课程
             </li>
-            <li
+            <!-- <li
               :class="[
                 'page-menu-item',
                 activeTab === 'MyQuestion' ? 'active' : ''
               ]"
             >
               我的提问
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="page-content-right">

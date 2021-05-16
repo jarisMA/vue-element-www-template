@@ -5,7 +5,9 @@
         <h5 class="course-label">实战营班级</h5>
         <div class="course-pagination">
           <i class="course-pagination-prev disabled"></i>
-          <span class="course-pagination-text">1/1</span>
+          <span class="course-pagination-text"
+            >{{ page }}/{{ Math.ceil(terms.length / 3) }}</span
+          >
           <i class="course-pagination-next disabled"></i>
         </div>
       </div>
@@ -35,7 +37,7 @@ export default {
   data() {
     return {
       terms: [],
-      showNoTips: false
+      page: 1
     };
   },
   created() {
@@ -43,16 +45,12 @@ export default {
   },
   methods: {
     goTerm,
-    getData(start = 1) {
+    getData() {
       this.$emit("update:loading", true);
       termService
-        .myCampTerms({
-          page: start,
-          page_size: 15
-        })
+        .myCampTerms()
         .then(res => {
-          this.terms = res.list;
-          this.showNoTips = true;
+          this.terms = res;
         })
         .finally(() => {
           this.$emit("update:loading", false);
