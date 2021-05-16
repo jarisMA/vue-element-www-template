@@ -105,7 +105,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { isVip } from "utils/function";
 import TheAvatar from "components/TheAvatar";
 import MyProfile from "./widgets/Profile";
@@ -209,6 +209,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['USERINFO']),
     isVip,
     goMySetting,
     goMyCourse,
@@ -230,7 +231,6 @@ export default {
         })
     },
     handleClock () {
-      console.log("enter");
       if (this.clocking) {
         return;
       }
@@ -238,14 +238,13 @@ export default {
       userService
         .clock()
         .then(res => {
-          console.log(res);
-
           const { weekClocks } = this;
           this.clockVisible = false;
           this.$notice({
             type: "success",
             title: `暖心+${res.number}`
           });
+          this.USERINFO({ ...this.userInfo, mark_total: this.userInfo.mark_total + res.number });
           weekClocks.push({
             created_at:
               new Date().getFullYear() +
