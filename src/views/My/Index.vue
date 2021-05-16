@@ -27,7 +27,9 @@
           >
             <div class="operate-left">
               <i class="heart-icon"></i>
-              <label class="operate-text">我的暖心</label>
+              <label class="operate-text"
+                >我的暖心<i class="arrow-icon"></i
+              ></label>
             </div>
             <div class="operate-right">{{ userInfo.mark_total }}</div>
           </div>
@@ -37,7 +39,10 @@
           >
             <div class="operate-left">
               <i class="calender-icon"></i>
-              <label class="operate-text">连续签到</label>
+              <label class="operate-text"
+                >连续签到<label class="operte-hover-text"
+                  >去签到<i class="arrow-icon"></i></label
+              ></label>
             </div>
             <div class="operate-right">{{ getClockCount }}</div>
           </div>
@@ -341,6 +346,12 @@ export default {
             &::after {
               width: 100%;
             }
+            .operte-hover-text {
+              display: inline-flex !important;
+            }
+            .arrow-icon {
+              display: inline-block !important;
+            }
           }
           & + .page-header-operate {
             margin-left: 120px;
@@ -351,12 +362,31 @@ export default {
             align-items: flex-start;
             justify-content: center;
             .operate-text {
-              display: inline-block;
+              display: inline-flex;
+              align-items: center;
               margin-top: 4px;
               line-height: 24px;
               font-size: 16px;
               color: #2c3330;
               cursor: pointer;
+              .operte-hover-text {
+                // display: inline-flex;
+                display: none;
+                align-items: center;
+                margin-left: 4px;
+                line-height: 1;
+                font-size: 12px;
+                color: #8ea098;
+                cursor: pointer;
+              }
+            }
+            .arrow-icon {
+              // display: inline-block;
+              display: none;
+              width: 24px;
+              height: 24px;
+              background-image: url("~images/my/arrow.svg");
+              background-size: cover;
             }
           }
           .operate-right {
