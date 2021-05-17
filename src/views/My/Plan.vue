@@ -3,23 +3,7 @@
     <div class="container-1180">
       <div class="page-header">
         <span class="page-header-title">工作台</span>
-        <div :class="['page-header-search_wrapper', !showSearch ? 'hide' : '']">
-          <div class="page-header-search_bar">
-            <label
-              class="search-icon"
-              @click="!showSearch ? handleToggleShowSearch() : null"
-            ></label>
-            <input
-              placeholder="在工作台搜索..."
-              class="page-header-search_input"
-              placeholder-class="page-header-search_input_placeholder"
-              v-model.trim="keyword"
-              @keyup.enter="getPlan()"
-              @blur="handleToggleShowSearch()"
-              ref="searchInput"
-            />
-          </div>
-        </div>
+        <the-search-bar @search="handleSearch" />
       </div>
 
       <plan-list
@@ -56,12 +40,14 @@ import kujialeService from "service/kujiale";
 import { goEditPlan, goDrawPlan } from "utils/routes";
 import { mapState } from "vuex";
 import { isVip } from "utils/function";
+import TheSearchBar from "components/TheSearchBar.vue";
 
 export default {
   name: "MyPlan",
   components: {
     PlanList,
-    EditPlanNameDialog
+    EditPlanNameDialog,
+    TheSearchBar
   },
   data() {
     return {
@@ -83,8 +69,7 @@ export default {
       },
       btnLoading: false,
       count: 0,
-      editType: 1, // 1为编辑，2为复制
-      showSearch: false
+      editType: 1 // 1为编辑，2为复制
     };
   },
   beforeRouteEnter(to, from, next) {
@@ -228,15 +213,9 @@ export default {
           });
       }
     },
-    handleToggleShowSearch() {
-      if (!this.showSearch) {
-        this.showSearch = true;
-        this.$nextTick(() => {
-          this.$refs["searchInput"].focus();
-        });
-      } else if (!this.keyword) {
-        this.showSearch = false;
-      }
+    handleSearch(keyword) {
+      this.keyword = keyword;
+      this.getPlan();
     }
   }
 };
@@ -257,52 +236,6 @@ export default {
       font-size: 20px;
       line-height: 28px;
       color: #2c3330;
-    }
-    .page-header-search_wrapper {
-      width: 280px;
-      transition: width 0.2s;
-      overflow: hidden;
-      &.hide {
-        width: 34px;
-        .page-header-search_bar {
-          background-color: transparent;
-          .search-icon {
-            background-color: #2c3330;
-            cursor: pointer;
-          }
-        }
-      }
-      .page-header-search_bar {
-        display: flex;
-        align-items: center;
-        width: 280px;
-        height: 40px;
-        padding: 8px;
-        background-color: rgba(0, 0, 0, 0.03);
-        .search-icon {
-          display: inline-block;
-          height: 24px;
-          width: 24px;
-          mask-image: url("~images/my/search.svg");
-          mask-repeat: no-repeat;
-          mask-size: cover;
-          background: #81948b;
-        }
-        .page-header-search_input {
-          width: 280px;
-          height: 100%;
-          margin-left: 10px;
-          line-height: 20px;
-          color: #2c3330;
-          outline: none;
-          border: 0;
-          background: rgba(0, 0, 0, 0);
-        }
-        .page-header-search_input_placeholder {
-          font-size: 14px;
-          color: #999999;
-        }
-      }
     }
   }
 }
