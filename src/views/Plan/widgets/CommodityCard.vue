@@ -222,6 +222,7 @@ export default {
     padding: 2px 4px;
     bottom: 7px;
     right: 7px;
+    line-height: 1;
     font-size: 12px;
     color: #666666;
     background: rgba(255, 255, 255, 0.8);

@@ -14,8 +14,8 @@
       </div>
       <div class="term-time-wrapper">
         <span class="term-start"
-          >{{ formatDate(detail.start_at, "YYYY-MM-DD") }} -
-          {{ formatDate(detail.end_at, "YYYY-MM-DD") }}</span
+          >{{ formatDate(detail.start_at, "YYYY.MM.DD") }} -
+          {{ formatDate(detail.end_at, "YYYY.MM.DD") }}</span
         >
       </div>
       <div class="term-status-wrapper">
@@ -123,7 +123,7 @@ export default {
       .term-status {
         display: inline-block;
         padding: 2px 4px;
-        line-height: 1;
+        line-height: 16px;
         font-size: 12px;
         font-weight: 400;
         color: #666666;
@@ -136,7 +136,7 @@ export default {
         }
         &.started {
           color: #ffffffff;
-          background: #18c20eff;
+          background: @primaryColor;
         }
         &.ended {
           color: #999999ff;

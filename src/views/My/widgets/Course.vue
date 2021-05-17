@@ -1,5 +1,5 @@
 <template>
-  <div class="course container-980">
+  <div class="course">
     <div class="course-list-wrapper">
       <div class="course-list-header">
         <h5 class="course-label">实战营班级</h5>
@@ -57,7 +57,7 @@ export default {
       page: 1,
       swiperOptions: {
         slidesPerView: 3,
-        spaceBetween: 20,
+        spaceBetween: 0,
         autoplay: false
       }
     };
@@ -90,7 +90,7 @@ export default {
 <style lang="less" scoped>
 .course {
   min-height: 100%;
-  padding: 0px 20px 40px;
+  padding: 0px 0px 40px;
   .course-list-wrapper {
     & + .course-list-wrapper {
       margin-top: 40px;
@@ -100,6 +100,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 0 20px;
     .course-label {
       line-height: 28px;
       font-weight: 500;
@@ -146,6 +147,7 @@ export default {
       height: 296px;
       .swiper-slide {
         .course-item {
+          margin-left: 20px;
           width: 300px;
         }
       }

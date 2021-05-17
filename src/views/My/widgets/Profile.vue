@@ -4,11 +4,11 @@
       <label class="form-label">头像</label>
       <div class="avatar-wrapper">
         <div class="avatar">
-          <el-avatar
+          <the-avatar
             :size="80"
-            :src="form.avatar_url"
+            :url="form.avatar_url"
             v-loading="uploadingAvatar"
-          ></el-avatar>
+          ></the-avatar>
           <el-upload
             ref="upload"
             class="avatar-upload"
@@ -168,12 +168,16 @@
 <script>
 import { GENDER, IDENTITY } from "utils/const";
 import { mapMutations, mapState } from "vuex";
+import TheAvatar from "components/TheAvatar";
 import ossService from "service/oss";
 import smsService from "service/sms";
 import userService from "service/user";
 
 export default {
   name: "MyProfile",
+  components: {
+    TheAvatar
+  },
   props: {
     loading: {
       type: Boolean,
@@ -453,7 +457,17 @@ export default {
     }
     .el-input__inner,
     .el-textarea__inner {
+      padding: 8px 10px;
       border: 1px solid #efefef;
+    }
+    .el-textarea__inner {
+      min-height: 88px !important;
+    }
+    .el-textarea {
+      .el-input__count {
+        line-height: 1;
+        bottom: 8px;
+      }
     }
     .el-input.is-disabled {
       .el-input__inner {

@@ -221,7 +221,7 @@ export default {
   z-index: 11;
   .gain-dialog {
     width: 780px;
-    min-height: 468px;
+    height: 468px;
     background: #ffffff;
     .dialog {
       display: flex;
@@ -387,7 +387,7 @@ export default {
     }
     .dialog-2 {
       width: 100%;
-      min-height: 520px;
+      height: 100%;
       padding: 40px;
     }
   }
