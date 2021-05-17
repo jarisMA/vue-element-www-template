@@ -387,6 +387,7 @@ export default {
     }
     .dialog-2 {
       width: 100%;
+      min-height: 520px;
       padding: 40px;
     }
   }

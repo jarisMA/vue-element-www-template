@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-loading="loading">
     <div class="header">
       <div class="header-left">
         <h5 class="header-title">
@@ -30,23 +30,32 @@
       </div>
     </div>
     <div class="content">
-      <div class="gain" v-for="gain of gains" :key="gain.id">
-        <div class="gain-left">
-          <span class="gain-title">{{ gain.remark }}</span>
-          <span class="gain-time">{{ gain.created_at }}</span>
+      <template v-if="gains.length > 0">
+        <div class="gain-list">
+          <div class="gain" v-for="gain of gains" :key="gain.id">
+            <div class="gain-left">
+              <span class="gain-title">{{ gain.remark }}</span>
+              <span class="gain-time">{{ gain.created_at }}</span>
+            </div>
+            <div :class="['gain-right', gain.number > 0 ? '' : 'sub']">
+              <span>{{ gain.number > 0 ? "+" : "" }}{{ gain.number }}</span>
+            </div>
+          </div>
         </div>
-        <div :class="['gain-right', gain.number > 0 ? '' : 'sub']">
-          <span>{{ gain.number > 0 ? "+" : "" }}{{ gain.number }}</span>
-        </div>
-      </div>
-      <pagination
-        layout="prev, pager, next"
-        :class="['pagination-wrapper']"
-        :pageSize="pagination.size"
-        :current-page="pagination.page"
-        :total="pagination.total"
-        :paginationLayout="pagination.layout"
-        @change-page="getData"
+        <pagination
+          layout="prev, pager, next"
+          :class="['pagination-wrapper']"
+          :pageSize="pagination.size"
+          :current-page="pagination.page"
+          :total="pagination.total"
+          :paginationLayout="pagination.layout"
+          @change-page="getData"
+        />
+      </template>
+      <the-empty
+        v-else-if="!loading"
+        noText="这里还没有内容"
+        :noPic="douxiSvg"
       />
     </div>
   </div>
@@ -55,17 +64,20 @@
 <script>
 import Pagination from "components/Pagination";
 import userService from "service/user";
-
+import TheEmpty from "components/TheEmpty";
+import douxiSvg from "images/common/douxi.svg";
 export default {
   name: "MyGainHistory",
-  components: { Pagination },
+  components: { Pagination, TheEmpty },
   data() {
     return {
+      douxiSvg,
       date:
         new Date().getFullYear() +
         "-" +
         ("0" + (new Date().getMonth() + 1)).substr(-2),
       gains: [],
+      loading: true,
       pagination: {
         size: 5,
         page: 1,
@@ -96,6 +108,7 @@ export default {
   },
   methods: {
     getData(start = 1) {
+      this.loading = true;
       userService
         .gainHistory({
           date: this.date,
@@ -107,6 +120,9 @@ export default {
           this.gains = res.list;
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
+        })
+        .finally(() => {
+          this.loading = false;
         });
     },
     handleBack() {
@@ -119,6 +135,19 @@ export default {
 <style lang="less" scoped>
 .container {
   width: 100%;
+  /deep/ .empty-wrapper {
+    padding: 143px 0;
+    img {
+      width: 33px;
+    }
+    span {
+      margin-top: 20px;
+      line-height: 24px;
+      font-size: 14px;
+      text-align: center;
+      color: #8ea098;
+    }
+  }
 }
 .header {
   display: flex;
@@ -189,7 +218,9 @@ export default {
   width: 100%;
   padding: 0 20px 0 52px;
 }
-
+.gain-list {
+  min-height: 340px;
+}
 .gain {
   display: flex;
   align-items: center;
