@@ -66,3 +66,34 @@ export const COURSE_TYPE = {
     label: "直播"
   }
 };
+
+// 问题类型
+export const QUESTION_TYPE_QUESTION = 1;
+export const QUESTION_TYPE_HELP = 2;
+export const QUESTION_TYPE_VOTE = 3;
+
+export const QUESTION_TYPE = {
+  QUESTION: {
+    value: QUESTION_TYPE_QUESTION,
+    label: "图文求助"
+  },
+  HELP: {
+    value: QUESTION_TYPE_HELP,
+    label: "布局求助"
+  },
+  VOTE: {
+    value: QUESTION_TYPE_VOTE,
+    label: "投票"
+  }
+};
+
+// 投票类型
+export const VOTE_TYPE_SINGLE = 0; // 单选
+export const VOTE_TYPE_MULTI = 1; // 多选
+
+// 投票选项序号
+export const VOTE_OPTION_INDEX = ["A", "B", "C", "D", "E", "F"];
+
+// 回复/评论的格式类型
+export const REPLY_TYPE_SIMPLE = 1; // 普通图文
+export const REPLY_TYPE_COMPLEX = 2; // 复杂富文本
