@@ -9,22 +9,28 @@
     :id="`commodity-${commodity.id}`"
   >
     <label
-      class="bgImg multi-icon"
+      class="bgImg multi"
       v-if="skus.length > 1"
       @click.stop="handleSkusClick"
       @mouseover="handleSkusClick"
-    ></label>
+    >
+      <i class="multi-icon"></i>
+    </label>
     <label
-      class="bgImg info-icon"
+      class="bgImg info"
       @click.stop="handleDetailClick"
       @mouseover="handleClearTimer"
       @mouseout="handleDetailClick"
+      ><i class="info-icon"></i
     ></label>
     <the-loading-image
       :width="columns > 4 ? 93 : 145"
       :height="columns > 4 ? 93 : 145"
       :url="(skus.length > 0 && skus[0].img_id) || ''"
     />
+    <label class="bgImg feedback" @click.stop="handleShowFeedback(skus[0])">
+      <i class="feedback-icon"></i>
+    </label>
     <label class="price-label"
       >¥{{ skus.length > 0 && (skus[0].unit_price || "0.00") }}</label
     >
@@ -129,6 +135,9 @@ export default {
     },
     handleClearTimer() {
       this.$emit("clearTimer");
+    },
+    handleShowFeedback(sku) {
+      this.$emit("showFeedback", sku);
     }
   }
 };
@@ -150,7 +159,7 @@ export default {
       display: block;
     }
     .bgImg {
-      display: inline-block;
+      display: flex;
     }
   }
   &.multi {
@@ -161,21 +170,52 @@ export default {
     }
   }
   .bgImg {
-    display: none;
     position: absolute;
-    top: 5px;
-    width: 24px;
-    height: 24px;
+    display: flex;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.8);
+    opacity: 0.8;
     cursor: pointer;
+    &:hover {
+      opacity: 1;
+    }
+    &.multi {
+      top: 5px;
+      left: 5px;
+      .multi-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("~images/commodity/multi-model.svg");
+      }
+    }
+    &.info {
+      top: 5px;
+      right: 5px;
+      .info-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("~images/commodity/info.svg");
+      }
+    }
+    &.feedback {
+      bottom: 26px;
+      left: 5px;
+      .feedback-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        background-image: url("~images/commodity/feedback.svg");
+      }
+    }
   }
-  .multi-icon {
-    left: 5px;
-    background-image: url("~images/commodity/multi-model.svg");
-  }
-  .info-icon {
-    right: 5px;
-    background-image: url("~images/commodity/info.svg");
-  }
+
   .price-label {
     position: absolute;
     display: inline-block;

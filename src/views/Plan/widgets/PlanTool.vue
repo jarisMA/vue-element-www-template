@@ -131,6 +131,7 @@
                   @clearTimer="handleCommodityDetail(commodity, false)"
                   @showSkus="skus => handleShowSkus(commodity.id, skus)"
                   @addModel="handleAddModel"
+                  @showFeedback="handleShowFeedback"
                 />
               </div>
             </div>

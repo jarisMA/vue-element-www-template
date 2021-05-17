@@ -9,10 +9,12 @@
           :key="sku.id"
           @click="handleAddModel(sku.kjl_sku_id)"
         >
-          <i
-            class="sku-feedback_icon"
+          <div
+            class="sku-feedback_icon-wrapper"
             @click.stop="handleShowFeedback(sku)"
-          ></i>
+          >
+            <i class="sku-feedback_icon"></i>
+          </div>
           <the-loading-image :width="145" :height="145" :url="sku.img_id" />
           <label class="sku-price"> ¥{{ sku.unit_price || "0.00" }} </label>
           <div class="sku-size">
@@ -87,20 +89,30 @@ export default {
         & + .sku-item {
           margin-top: 10px;
         }
-        .sku-feedback_icon {
+        .sku-feedback_icon-wrapper {
           position: absolute;
-          right: 2px;
-          top: 2px;
-          width: 24px;
-          height: 24px;
-          mask-image: url("~images/commodity/feedback.svg");
-          mask-repeat: no-repeat;
-          mask-size: cover;
-          background: rgba(0, 0, 0, 0.3);
-          &:hover {
-            background: rgba(0, 0, 0, 0.5);
+          right: 6px;
+          top: 6px;
+          width: 16px;
+          height: 16px;
+          background: rgba(255, 255, 255, 0.8);
+          border-radius: 50%;
+          cursor: pointer;
+          .sku-feedback_icon {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            mask-image: url("~images/commodity/feedback.svg");
+            mask-repeat: no-repeat;
+            mask-size: cover;
+            background: rgba(0, 0, 0, 0.8);
+            cursor: pointer;
+            &:hover {
+              background: rgba(0, 0, 0, 1);
+            }
           }
         }
+
         .sku-price {
           position: absolute;
           right: 5px;
