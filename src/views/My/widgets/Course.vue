@@ -144,7 +144,7 @@ export default {
     // flex-wrap: wrap;
     margin-top: 16px;
     /deep/ .swiper-container {
-      height: 296px;
+      height: 300px;
       .swiper-slide {
         .course-item {
           margin-left: 20px;
