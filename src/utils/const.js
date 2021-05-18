@@ -91,6 +91,10 @@ export const QUESTION_TYPE = {
 export const VOTE_TYPE_SINGLE = 0; // 单选
 export const VOTE_TYPE_MULTI = 1; // 多选
 
+// 投票选项类型
+export const VOTE_RESOURCE_TYPE_WORD = 1; // 文字投票
+export const VOTE_RESOURCE_TYPE_PIC = 2; // 图文投票
+
 // 投票选项序号
 export const VOTE_OPTION_INDEX = ["A", "B", "C", "D", "E", "F"];
 

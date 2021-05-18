@@ -34,6 +34,38 @@
           {{ question.content }}
         </div>
       </template>
+      <template v-if="question.type === QUESTION_TYPE_VOTE">
+        <div
+          class="card-vote-list word"
+          v-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_WORD"
+        >
+          <div
+            class="card-vote_word-item"
+            v-for="(item, key) of question.vote_options"
+            :key="item.id"
+          >
+            <div class="card-vote-icon">{{ VOTE_OPTION_INDEX[key] }}</div>
+            <div class="card-vote-content ellipsis">{{ item.title }}</div>
+          </div>
+        </div>
+        <div
+          class="card-vote-list pic"
+          v-else-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC"
+        >
+          <div
+            class="card-vote_pic-item"
+            v-for="(item, key) of question.vote_options"
+            :key="item.id"
+          >
+            <div class="card-vote-icon">{{ VOTE_OPTION_INDEX[key] }}</div>
+            <the-loading-image
+              :width="109"
+              :height="109"
+              :url="item.image_url"
+            />
+          </div>
+        </div>
+      </template>
     </div>
     <div class="card-footer">
       <div class="card-footer-left">
@@ -65,10 +97,13 @@
 import {
   QUESTION_TYPE_QUESTION,
   QUESTION_TYPE_HELP,
-  QUESTION_TYPE_VOTE
+  QUESTION_TYPE_VOTE,
+  VOTE_RESOURCE_TYPE_WORD,
+  VOTE_RESOURCE_TYPE_PIC,
+  VOTE_OPTION_INDEX
 } from "utils/const";
 import TheLoadingImage from "components/TheLoadingImage";
-import TheAvatar from "../../../../../homeplan-admin/src/components/TheAvatar.vue";
+import TheAvatar from "components/TheAvatar";
 
 export default {
   name: "QuestionCard",
@@ -86,7 +121,10 @@ export default {
     return {
       QUESTION_TYPE_QUESTION,
       QUESTION_TYPE_HELP,
-      QUESTION_TYPE_VOTE
+      QUESTION_TYPE_VOTE,
+      VOTE_RESOURCE_TYPE_WORD,
+      VOTE_RESOURCE_TYPE_PIC,
+      VOTE_OPTION_INDEX
     };
   },
   computed: {
@@ -114,10 +152,15 @@ export default {
   cursor: pointer;
   .card-header {
     .card-header-title {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      max-height: 48px;
       line-height: 24px;
       font-weight: 600;
       font-size: 16px;
       color: #2c3330;
+      overflow: hidden;
     }
   }
   .card-content {
@@ -134,6 +177,77 @@ export default {
       font-size: 14px;
       color: #8ea098;
       overflow: hidden;
+    }
+    .card-vote-list {
+      position: relative;
+      width: 100%;
+      padding: 4px;
+      height: 88px;
+      background: #fafafa;
+      overflow: hidden;
+      &::after {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        content: "";
+        background: linear-gradient(
+          180deg,
+          rgba(250, 250, 250, 0) 48.96%,
+          #fafafa 100%
+        );
+      }
+      &.word {
+        .card-vote_word-item {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          width: 100%;
+          height: 40px;
+          padding: 0 6px;
+          background: #efefef;
+          .card-vote-icon {
+            flex: none;
+            margin-right: 7px;
+          }
+          .card-vote-content {
+            flex: 1;
+            width: 5px;
+            font-size: 12px;
+            line-height: 18px;
+            color: #2c3330;
+          }
+          & + .card-vote_word-item {
+            margin-top: 4px;
+          }
+        }
+      }
+      &.pic {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        .card-vote_pic-item {
+          position: relative;
+          .card-vote-icon {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+          }
+        }
+      }
+      .card-vote-icon {
+        width: 17px;
+        height: 17px;
+        line-height: 17px;
+        font-weight: 500;
+        font-size: 12px;
+        color: #fff;
+        text-align: center;
+        background: #333;
+        border-radius: 50%;
+      }
     }
   }
   .card-footer {
