@@ -120,16 +120,21 @@ export default {
       Promise.all(promiseArr)
         .then(([res]) => {
           if (!isPreview) {
-            if (res.bible.status === 0 || res.bible.is_online !== 1) {
+            if (
+              res.bible.status === 0 ||
+              res.bible.is_online !== 1 ||
+              res.children.length < 1
+            ) {
               this.$notice({
                 type: "warning",
                 title: "暂未开放~"
               });
               goBible("replace");
+              this.loading = false;
               return;
             }
             bibleService
-              .bibleNode(res.children[0].id)
+              .bibleNode(id, res.children[0].id)
               .then(children => {
                 this.root = res;
                 this.detail = res.bible;
@@ -146,6 +151,9 @@ export default {
               })
               .catch(() => {
                 goBible("replace");
+              })
+              .finally(() => {
+                this.loading = false;
               });
           } else {
             this.root = res;
@@ -160,6 +168,7 @@ export default {
               this.menus[0] ||
               {};
             this.depth = this.getDepth(this.menus, 0);
+            this.loading = false;
           }
         })
         .catch(error => {
@@ -167,8 +176,6 @@ export default {
           if (response && response.status === 403) {
             goBible("replace");
           }
-        })
-        .finally(() => {
           this.loading = false;
         });
     },
@@ -188,11 +195,18 @@ export default {
       window.scrollTo(0, 0);
       this.activeNav = nav;
       if (!nav.children) {
-        bibleService.bibleNode(nav.id).then(children => {
-          this.menus = children || [];
-          this.depth = this.getDepth(this.menus, 0);
-          this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
-        });
+        this.loading = true;
+        bibleService
+          .bibleNode(this.$route.params.id, nav.id)
+          .then(children => {
+            this.menus = children || [];
+            this.depth = this.getDepth(this.menus, 0);
+            this.activeSubMenu =
+              ((this.menus[0] || {}).children || [])[0] || {};
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       } else {
         this.menus = this.activeNav.children || [];
         this.depth = this.getDepth(this.menus, 0);
