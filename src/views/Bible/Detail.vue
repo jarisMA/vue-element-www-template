@@ -70,7 +70,6 @@ import DetailMenu from "./widgets/DetailMenu";
 import DetailNav from "./widgets/DetailNav";
 import DetailContent from "./widgets/DetailContent";
 
-import { isVip } from "utils/function";
 import { goBible } from "utils/routes";
 import { detailMixin } from "./mixin";
 
@@ -121,11 +120,7 @@ export default {
       Promise.all(promiseArr)
         .then(([res]) => {
           if (!isPreview) {
-            if (
-              res.bible.status === 0 ||
-              (res.bible.status === 2 && !isVip()) ||
-              res.bible.is_online !== 1
-            ) {
+            if (res.bible.status === 0 || res.bible.is_online !== 1) {
               this.$notice({
                 type: "warning",
                 title: "暂未开放~"
@@ -133,42 +128,39 @@ export default {
               goBible("replace");
               return;
             }
-            // bibleService.bibleNode(res.children[0].id).then(children => {
-            //   this.root = res;
-            //   this.detail = res.bible;
-            //   this.color = res.bible.color || "";
-            //   this.activeNav = res.children[0] || {};
-            //   this.menus = children || [];
-            //   this.activeSubMenu =
-            //     (this.menus[0] &&
-            //       this.menus[0].children &&
-            //       this.menus[0].children[0]) ||
-            //     this.menus[0] ||
-            //     {};
-            //   this.depth = this.getDepth(this.menus, 0);
-            // });
+            bibleService
+              .bibleNode(res.children[0].id)
+              .then(children => {
+                this.root = res;
+                this.detail = res.bible;
+                this.color = res.bible.color || "";
+                this.activeNav = res.children[0] || {};
+                this.menus = children || [];
+                this.activeSubMenu =
+                  (this.menus[0] &&
+                    this.menus[0].children &&
+                    this.menus[0].children[0]) ||
+                  this.menus[0] ||
+                  {};
+                this.depth = this.getDepth(this.menus, 0);
+              })
+              .catch(() => {
+                goBible("replace");
+              });
           } else {
-            // this.root = res;
-            // this.detail = res.bible;
-            // this.color = res.bible.color || "";
-            // this.activeNav = res.children[0] || {};
-            // this.menus = this.activeNav.children || [];
-            // this.activeSubMenu =
-            //   (this.menus[0] &&
-            //     this.menus[0].children &&
-            //     this.menus[0].children[0]) ||
-            //   this.menus[0] ||
-            //   {};
-            // this.depth = this.getDepth(this.menus, 0);
+            this.root = res;
+            this.detail = res.bible;
+            this.color = res.bible.color || "";
+            this.activeNav = res.children[0] || {};
+            this.menus = this.activeNav.children || [];
+            this.activeSubMenu =
+              (this.menus[0] &&
+                this.menus[0].children &&
+                this.menus[0].children[0]) ||
+              this.menus[0] ||
+              {};
+            this.depth = this.getDepth(this.menus, 0);
           }
-          this.root = res;
-          this.detail = res.bible;
-          this.color = res.bible.color || "";
-          this.activeNav = res.children[0] || {};
-          this.menus = this.activeNav.children || [];
-          this.activeSubMenu =
-            (this.menus[0] && this.menus[0].children[0]) || this.menus[0] || {};
-          this.depth = this.getDepth(this.menus, 0);
         })
         .catch(error => {
           const { response } = error;
