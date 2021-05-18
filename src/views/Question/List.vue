@@ -64,6 +64,7 @@
         <i class="ask-icon"></i>
       </div>
     </div>
+    <question-type-dialog />
   </div>
 </template>
 
@@ -72,13 +73,16 @@ import { QUESTION_TYPE } from "utils/const";
 // import TheSearchBar from "components/TheSearchBar";
 import questionService from "service/question";
 import QuestionCard from "./widgets/QuestionCard";
-import End from "./widgets/End.vue";
+import End from "./widgets/End";
+import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
+
 export default {
   name: "QuestionList",
   components: {
     // TheSearchBar,
     QuestionCard,
-    End
+    End,
+    QuestionTypeDialog
   },
   data() {
     return {
