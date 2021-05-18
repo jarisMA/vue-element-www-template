@@ -97,13 +97,14 @@ export const goBible = (type = "_self") => {
   );
 };
 
-export const goBibleDetail = (id, type = "_self") => {
+export const goBibleDetail = (id, query = {}, type = "_self") => {
   return goRoute(
     {
       name: "BibleDetail",
       params: {
         id
-      }
+      },
+      query
     },
     type
   );

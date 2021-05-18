@@ -1,16 +1,7 @@
 <template>
   <div
-    :class="[
-      'category-card',
-      new Date().valueOf() < new Date(category.start_at).valueOf()
-        ? 'disabled'
-        : 'pointer'
-    ]"
-    @click.prevent="
-      new Date().valueOf() >= new Date(category.start_at).valueOf()
-        ? handleCardClick()
-        : null
-    "
+    :class="['category-card', isDisabled ? 'disabled' : 'pointer']"
+    @click.prevent="!isDisabled ? handleCardClick() : null"
   >
     <el-collapse>
       <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
@@ -121,6 +112,23 @@ export default {
     };
   },
   computed: {
+    isDisabled() {
+      const category = this.category;
+      const { type, resource, resource_id, start_at } = category;
+      if (type === COURSE_TYPE_BIBLE) {
+        const { parent } = resource;
+        if (
+          (resource_id && resource.is_block === 1) ||
+          parent.is_online !== 1 ||
+          parent.status === 0
+        ) {
+          return true;
+        }
+      }
+      return (
+        start_at && new Date().valueOf() < new Date(category.start_at).valueOf()
+      );
+    },
     courseDuration() {
       const { category } = this;
       const { type, resource } = category;
@@ -219,29 +227,25 @@ export default {
     formatDate,
     formatSeconds,
     handleCardClick() {
-      const { type, resource, resource_id, bible_id, start_at } = this.category;
-      if (type === COURSE_TYPE_BIBLE) {
-        const { parent } = resource;
-        if (
-          (resource_id && resource.is_block === 1) ||
-          parent.is_online !== 1 ||
-          parent.status === 0 ||
-          (start_at && new Date().valueOf() < new Date(start_at).valueOf())
-        ) {
-          this.$notice({
-            type: "warning",
-            title: "暂未开放~"
-          });
-          return;
-        }
-        goBibleDetail(resource_id ? resource.bible_id : bible_id, "_blank");
+      const { resource, resource_id, bible_id } = this.category;
+      if (this.isDisabled) {
+        return;
       }
-    },
-    handleLessonClick(index) {
-      const { type, resource } = this.category;
-      if (type === COURSE_TYPE_COURSE) {
-        goCourse(resource.id, index + 1);
-      }
+      goBibleDetail(
+        resource_id ? resource.bible_id : bible_id,
+        resource_id
+          ? {
+              tab: resource_id
+            }
+          : null,
+        "_blank"
+      );
+    }
+  },
+  handleLessonClick(index) {
+    const { type, resource } = this.category;
+    if (type === COURSE_TYPE_COURSE) {
+      goCourse(resource.id, index + 1);
     }
   }
 };

@@ -133,13 +133,17 @@ export default {
               this.loading = false;
               return;
             }
+            const tabId = this.$route.query.tab;
+            const tabIndex =
+              (tabId && res.children.findIndex(item => item.id == tabId)) || -1;
+            this.activeNav = res.children[tabIndex] || res.children[0] || {};
+
             bibleService
-              .bibleNode(id, res.children[0].id)
+              .bibleNode(id, this.activeNav.id)
               .then(children => {
                 this.root = res;
                 this.detail = res.bible;
                 this.color = res.bible.color || "";
-                this.activeNav = res.children[0] || {};
                 this.menus = children || [];
                 this.activeSubMenu =
                   (this.menus[0] &&
