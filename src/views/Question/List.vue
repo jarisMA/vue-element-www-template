@@ -105,7 +105,7 @@ export default {
       pagination: {
         page: 1,
         total: 0,
-        size: 50
+        size: 30
       },
       col: 6
     };
@@ -160,7 +160,10 @@ export default {
     },
     scroll() {
       const dom = document.querySelector("html");
-      if (dom.scrollHeight - dom.scrollTop === dom.clientHeight) {
+      if (
+        dom.scrollHeight - dom.scrollTop === dom.clientHeight &&
+        this.questions.length < this.pagination.total
+      ) {
         this.getData(this.pagination.page + 1);
       }
     },
