@@ -155,9 +155,7 @@ export default {
         this.visible = true;
         return;
       }
-      if ((bible.status === 2 && isVip()) || bible.status === 1) {
-        goBibleDetail(bible.id);
-      }
+      goBibleDetail(bible.id);
     }
   }
 };
