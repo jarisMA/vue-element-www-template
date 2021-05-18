@@ -1,6 +1,6 @@
 <template>
   <div class="course">
-    <div class="course-list-wrapper">
+    <div class="course-list-wrapper" v-if="terms.length > 0">
       <div class="course-list-header">
         <h5 class="course-label">实战营班级</h5>
         <div class="course-pagination">
@@ -34,6 +34,7 @@
         </swiper>
       </div>
     </div>
+    <the-empty v-else-if="!loading" noText="暂无任何课程" />
   </div>
 </template>
 
@@ -41,9 +42,10 @@
 import termService from "service/term";
 import TermCard from "./TermCard.vue";
 import { goTerm } from "utils/routes";
+import TheEmpty from "components/TheEmpty";
 
 export default {
-  components: { TermCard },
+  components: { TermCard, TheEmpty },
   name: "MyCourse",
   props: {
     loading: {
