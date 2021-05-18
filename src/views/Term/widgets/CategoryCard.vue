@@ -227,25 +227,24 @@ export default {
     formatDate,
     formatSeconds,
     handleCardClick() {
-      const { resource, resource_id, bible_id } = this.category;
-      if (this.isDisabled) {
-        return;
+      const { resource, resource_id, bible_id, type } = this.category;
+      if (!this.isDisabled && type === COURSE_TYPE_BIBLE) {
+        goBibleDetail(
+          resource_id ? resource.bible_id : bible_id,
+          resource_id
+            ? {
+                tab: resource_id
+              }
+            : null,
+          "_blank"
+        );
       }
-      goBibleDetail(
-        resource_id ? resource.bible_id : bible_id,
-        resource_id
-          ? {
-              tab: resource_id
-            }
-          : null,
-        "_blank"
-      );
-    }
-  },
-  handleLessonClick(index) {
-    const { type, resource } = this.category;
-    if (type === COURSE_TYPE_COURSE) {
-      goCourse(resource.id, index + 1);
+    },
+    handleLessonClick(index) {
+      const { type, resource } = this.category;
+      if (type === COURSE_TYPE_COURSE) {
+        goCourse(resource.id, index + 1);
+      }
     }
   }
 };
