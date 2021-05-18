@@ -219,9 +219,22 @@ export default {
     formatDate,
     formatSeconds,
     handleCardClick() {
-      const { type, resource } = this.category;
+      const { type, resource, resource_id, bible_id, start_at } = this.category;
       if (type === COURSE_TYPE_BIBLE) {
-        goBibleDetail(resource.bible_id, "_blank");
+        const { parent } = resource;
+        if (
+          (resource_id && resource.is_block === 1) ||
+          parent.is_online !== 1 ||
+          parent.status === 0 ||
+          (start_at && new Date().valueOf() < new Date(start_at).valueOf())
+        ) {
+          this.$notice({
+            type: "warning",
+            title: "暂未开放~"
+          });
+          return;
+        }
+        goBibleDetail(resource_id ? resource.bible_id : bible_id, "_blank");
       }
     },
     handleLessonClick(index) {

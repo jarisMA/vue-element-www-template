@@ -42,7 +42,7 @@ export default {
 
   bibles: `${WEB_PREFIX}/bible`,
   bible: id => `${WEB_PREFIX}/bible/${id}`,
-  bibleNode: id => `${WEB_PREFIX}/bible-node/${id}`,
+  bibleNode: (bibleId, id) => `${WEB_PREFIX}/bible/${bibleId}/node/${id}`,
   biblePreview: id => `${PREFIX}/api/admin/bible/${id}/preview`,
 
   questionChannels: `${WEB_PREFIX}/question/channels`,
