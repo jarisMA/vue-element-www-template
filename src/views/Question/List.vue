@@ -60,11 +60,11 @@
       <div class="page-operate-top" @click="goTop">
         <i class="back_to_top-icon"></i>
       </div>
-      <div class="page-operate-add">
+      <div class="page-operate-add" @click="showQuestionTypeSelect = true">
         <i class="ask-icon"></i>
       </div>
     </div>
-    <question-type-dialog />
+    <question-type-dialog :visible.sync="showQuestionTypeSelect" />
   </div>
 </template>
 
@@ -111,7 +111,8 @@ export default {
         total: 0,
         size: 30
       },
-      col: 6
+      col: 6,
+      showQuestionTypeSelect: false
     };
   },
   created() {
