@@ -1,6 +1,7 @@
 <template>
   <el-dialog
     custom-class="dialog-wrapper"
+    lock-scroll
     :show-close="false"
     :visible="visible"
     :before-close="handleClose"
