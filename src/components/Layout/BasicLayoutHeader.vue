@@ -90,6 +90,9 @@
                   </p>
                 </div>
                 <ul class="login-operation">
+                  <li @click="goMyPlan()" class="workbench">
+                    <span>工作台</span>
+                  </li>
                   <li @click="goMyCourse()" class="setting">
                     <span>个人中心</span>
                   </li>
@@ -398,6 +401,21 @@ export default {
               align-items: center;
               padding: 9px 20px;
               cursor: pointer;
+              &.workbench {
+                span {
+                  position: relative;
+                  &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    background: url("~images/header/workbench.svg") no-repeat
+                      center;
+                    vertical-align: -7px;
+                    margin-right: 12px;
+                  }
+                }
+              }
               &.setting {
                 span {
                   position: relative;
@@ -406,7 +424,8 @@ export default {
                     display: inline-block;
                     width: 24px;
                     height: 24px;
-                    background: url("~images/setting.svg") no-repeat center;
+                    background: url("~images/header/setting.svg") no-repeat
+                      center;
                     vertical-align: -7px;
                     margin-right: 12px;
                   }
@@ -415,10 +434,17 @@ export default {
               &:hover {
                 color: #fff;
                 background: @primaryColor;
+                &.workbench {
+                  span {
+                    &::before {
+                      background-image: url("~images/header/workbench_hover.svg");
+                    }
+                  }
+                }
                 &.setting {
                   span {
                     &::before {
-                      background-image: url("~images/setting_hover.svg");
+                      background-image: url("~images/header/setting_hover.svg");
                     }
                   }
                 }
@@ -441,7 +467,7 @@ export default {
                 display: inline-block;
                 width: 24px;
                 height: 24px;
-                background: url("~images/logout.svg") no-repeat center;
+                background: url("~images/header/logout.svg") no-repeat center;
                 background-size: cover;
                 vertical-align: -7px;
                 margin-right: 12px;
@@ -451,7 +477,7 @@ export default {
               color: @primaryColor;
               span {
                 &::before {
-                  background-image: url("~images/logout_hover.png");
+                  background-image: url("~images/header/logout_hover.png");
                 }
               }
             }
