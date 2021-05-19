@@ -22,10 +22,10 @@
       </div>
       <div class="total">
         <div class="total-item">
-          <span>增加 {{ getAddTotal }}</span>
+          <span>增加 {{ addTotal }}</span>
         </div>
         <div class="total-item">
-          <span>消耗 {{ getSubTotal }}</span>
+          <span>消耗 {{ subTotal }}</span>
         </div>
       </div>
     </div>
@@ -83,7 +83,9 @@ export default {
         page: 1,
         total: 0,
         layout: { small: true }
-      }
+      },
+      addTotal: 0,
+      subTotal: 0
     };
   },
   created() {
@@ -94,16 +96,6 @@ export default {
       return date => {
         return new Date(date).getMonth() + 1 + "月";
       };
-    },
-    getAddTotal() {
-      return this.gains.reduce(function(pre, cur) {
-        return pre + (cur.number > 0 ? cur.number : 0);
-      }, 0);
-    },
-    getSubTotal() {
-      return this.gains.reduce(function(pre, cur) {
-        return pre + (cur.number < 0 ? Math.abs(cur.number) : 0);
-      }, 0);
     }
   },
   methods: {
@@ -118,6 +110,8 @@ export default {
         })
         .then(res => {
           this.gains = res.list;
+          this.addTotal = res.params.add_total;
+          this.subTotal = res.params.sub_total;
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
         })
@@ -136,7 +130,7 @@ export default {
 .container {
   width: 100%;
   /deep/ .empty-wrapper {
-    padding: 143px 0;
+    padding: 115px 0;
     img {
       width: 33px;
     }
@@ -219,14 +213,14 @@ export default {
   padding: 0 20px 0 52px;
 }
 .gain-list {
-  min-height: 340px;
+  min-height: 290px;
 }
 .gain {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  padding: 15px 0;
+  padding: 10px 0;
 }
 .gain-left {
   display: flex;

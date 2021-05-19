@@ -56,20 +56,20 @@
             <li
               :class="[
                 'page-menu-item',
-                activeTab === 'MySetting' ? 'active' : ''
-              ]"
-              @click="goMySetting()"
-            >
-              我的资料
-            </li>
-            <li
-              :class="[
-                'page-menu-item',
                 activeTab === 'MyCourse' ? 'active' : ''
               ]"
               @click="goMyCourse()"
             >
               我的课程
+            </li>
+            <li
+              :class="[
+                'page-menu-item',
+                activeTab === 'MySetting' ? 'active' : ''
+              ]"
+              @click="goMySetting()"
+            >
+              我的资料
             </li>
             <!-- <li
               :class="[
@@ -130,7 +130,7 @@ export default {
     return {
       dataLoading: true,
       loading: true,
-      activeTab: "MySetting",
+      activeTab: "MyCourse",
       weekClocks: [],
       shineCount: 0,
       gainVisible: false,

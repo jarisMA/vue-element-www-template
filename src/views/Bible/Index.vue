@@ -84,7 +84,7 @@
           <p>随着学习的精进，</p>
           <p>宝典会渐渐打开的....</p>
         </div>
-        <div v-if="activeBible.status === 2 && !isVip()">
+        <div v-if="activeBible.status === 2 || !this.authBibleIds">
           <p>对不起少年，</p>
           <p>此宝典只对门下学徒开放....</p>
         </div>
@@ -113,7 +113,8 @@ export default {
       loading: true,
       bibles: [],
       visible: false,
-      activeBible: {}
+      activeBible: {},
+      authBibleIds: null
     };
   },
   computed: {
@@ -129,8 +130,9 @@ export default {
       this.loading = true;
       bibleService
         .bibles()
-        .then(bibles => {
-          this.bibles = bibles;
+        .then(res => {
+          this.bibles = res.bibles;
+          this.authBibleIds = res.auth_bible_ids;
         })
         .finally(() => {
           this.loading = false;
@@ -141,17 +143,19 @@ export default {
         this.UPDATA_LOGINDIAL_VISIBLE(1);
       }
       this.activeBible = bible;
+      const authBibleIds = this.authBibleIds;
       if (bible.status === 0) {
         this.visible = true;
         return;
       }
-      if ((bible.status === 2 && isVip()) || bible.status === 1) {
-        goBibleDetail(bible.id);
-      }
-      if (bible.status === 2 && !isVip()) {
+      if (
+        !authBibleIds ||
+        (bible.status === 2 && authBibleIds.indexOf(bible.id) < 0)
+      ) {
         this.visible = true;
         return;
       }
+      goBibleDetail(bible.id);
     }
   }
 };

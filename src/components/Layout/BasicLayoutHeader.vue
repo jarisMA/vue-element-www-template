@@ -26,7 +26,7 @@
         <nav class="header-nav">
           <span
             class="header-nav-item My"
-            @click="(visible || theme !== 'primary') && goAcademy()"
+            @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
             >斗西学社</span
           >
           <span
@@ -72,6 +72,7 @@
               class="el-avatar-border"
               :size="48"
               :url="userInfo.avatar_url"
+              @click.native="goMyCourse()"
             ></the-avatar>
             <div class="user-handle_show" v-if="userInfo">
               <div class="show-container landing">
@@ -89,8 +90,11 @@
                   </p>
                 </div>
                 <ul class="login-operation">
-                  <li @click="goMySetting()" class="setting">
-                    <span>我的资料</span>
+                  <li @click="goMyPlan()" class="workbench">
+                    <span>工作台</span>
+                  </li>
+                  <li @click="goMyCourse()" class="setting">
+                    <span>个人中心</span>
                   </li>
                 </ul>
                 <div class="logout" @click="handleLogout">
@@ -109,7 +113,7 @@ import { mapMutations, mapState } from "vuex";
 import {
   goHome,
   goMyPlan,
-  goMySetting,
+  goMyCourse,
   goBible,
   goQuestion,
   goAcademy
@@ -186,11 +190,11 @@ export default {
         goMyPlan();
       }
     },
-    goMySetting() {
+    goMyCourse() {
       if (this.theme === "primary") {
-        goMySetting("_blank");
+        goMyCourse("_blank");
       } else {
-        goMySetting();
+        goMyCourse();
       }
     },
     loginDialogVisible(index) {
@@ -397,6 +401,21 @@ export default {
               align-items: center;
               padding: 9px 20px;
               cursor: pointer;
+              &.workbench {
+                span {
+                  position: relative;
+                  &::before {
+                    content: "";
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    background: url("~images/header/workbench.svg") no-repeat
+                      center;
+                    vertical-align: -7px;
+                    margin-right: 12px;
+                  }
+                }
+              }
               &.setting {
                 span {
                   position: relative;
@@ -405,7 +424,8 @@ export default {
                     display: inline-block;
                     width: 24px;
                     height: 24px;
-                    background: url("~images/setting.svg") no-repeat center;
+                    background: url("~images/header/setting.svg") no-repeat
+                      center;
                     vertical-align: -7px;
                     margin-right: 12px;
                   }
@@ -414,10 +434,17 @@ export default {
               &:hover {
                 color: #fff;
                 background: @primaryColor;
+                &.workbench {
+                  span {
+                    &::before {
+                      background-image: url("~images/header/workbench_hover.svg");
+                    }
+                  }
+                }
                 &.setting {
                   span {
                     &::before {
-                      background-image: url("~images/setting_hover.svg");
+                      background-image: url("~images/header/setting_hover.svg");
                     }
                   }
                 }
@@ -440,7 +467,7 @@ export default {
                 display: inline-block;
                 width: 24px;
                 height: 24px;
-                background: url("~images/logout.svg") no-repeat center;
+                background: url("~images/header/logout.svg") no-repeat center;
                 background-size: cover;
                 vertical-align: -7px;
                 margin-right: 12px;
@@ -450,7 +477,7 @@ export default {
               color: @primaryColor;
               span {
                 &::before {
-                  background-image: url("~images/logout_hover.png");
+                  background-image: url("~images/header/logout_hover.png");
                 }
               }
             }

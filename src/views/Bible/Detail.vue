@@ -70,7 +70,6 @@ import DetailMenu from "./widgets/DetailMenu";
 import DetailNav from "./widgets/DetailNav";
 import DetailContent from "./widgets/DetailContent";
 
-import { isVip } from "utils/function";
 import { goBible } from "utils/routes";
 import { detailMixin } from "./mixin";
 
@@ -123,60 +122,64 @@ export default {
           if (!isPreview) {
             if (
               res.bible.status === 0 ||
-              (res.bible.status === 2 && !isVip()) ||
-              res.bible.is_online !== 1
+              res.bible.is_online !== 1 ||
+              res.children.length < 1
             ) {
               this.$notice({
                 type: "warning",
                 title: "暂未开放~"
               });
               goBible("replace");
+              this.loading = false;
               return;
             }
-            // bibleService.bibleNode(res.children[0].id).then(children => {
-            //   this.root = res;
-            //   this.detail = res.bible;
-            //   this.color = res.bible.color || "";
-            //   this.activeNav = res.children[0] || {};
-            //   this.menus = children || [];
-            //   this.activeSubMenu =
-            //     (this.menus[0] &&
-            //       this.menus[0].children &&
-            //       this.menus[0].children[0]) ||
-            //     this.menus[0] ||
-            //     {};
-            //   this.depth = this.getDepth(this.menus, 0);
-            // });
+            const tabId = this.$route.query.tab;
+            const tabIndex =
+              (tabId && res.children.findIndex(item => item.id == tabId)) || -1;
+            this.activeNav = res.children[tabIndex] || res.children[0] || {};
+
+            bibleService
+              .bibleNode(id, this.activeNav.id)
+              .then(children => {
+                this.root = res;
+                this.detail = res.bible;
+                this.color = res.bible.color || "";
+                this.menus = children || [];
+                this.activeSubMenu =
+                  (this.menus[0] &&
+                    this.menus[0].children &&
+                    this.menus[0].children[0]) ||
+                  this.menus[0] ||
+                  {};
+                this.depth = this.getDepth(this.menus, 0);
+              })
+              .catch(() => {
+                goBible("replace");
+              })
+              .finally(() => {
+                this.loading = false;
+              });
           } else {
-            // this.root = res;
-            // this.detail = res.bible;
-            // this.color = res.bible.color || "";
-            // this.activeNav = res.children[0] || {};
-            // this.menus = this.activeNav.children || [];
-            // this.activeSubMenu =
-            //   (this.menus[0] &&
-            //     this.menus[0].children &&
-            //     this.menus[0].children[0]) ||
-            //   this.menus[0] ||
-            //   {};
-            // this.depth = this.getDepth(this.menus, 0);
+            this.root = res;
+            this.detail = res.bible;
+            this.color = res.bible.color || "";
+            this.activeNav = res.children[0] || {};
+            this.menus = this.activeNav.children || [];
+            this.activeSubMenu =
+              (this.menus[0] &&
+                this.menus[0].children &&
+                this.menus[0].children[0]) ||
+              this.menus[0] ||
+              {};
+            this.depth = this.getDepth(this.menus, 0);
+            this.loading = false;
           }
-          this.root = res;
-          this.detail = res.bible;
-          this.color = res.bible.color || "";
-          this.activeNav = res.children[0] || {};
-          this.menus = this.activeNav.children || [];
-          this.activeSubMenu =
-            (this.menus[0] && this.menus[0].children[0]) || this.menus[0] || {};
-          this.depth = this.getDepth(this.menus, 0);
         })
         .catch(error => {
           const { response } = error;
           if (response && response.status === 403) {
             goBible("replace");
           }
-        })
-        .finally(() => {
           this.loading = false;
         });
     },
@@ -196,11 +199,18 @@ export default {
       window.scrollTo(0, 0);
       this.activeNav = nav;
       if (!nav.children) {
-        bibleService.bibleNode(nav.id).then(children => {
-          this.menus = children || [];
-          this.depth = this.getDepth(this.menus, 0);
-          this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
-        });
+        this.loading = true;
+        bibleService
+          .bibleNode(this.$route.params.id, nav.id)
+          .then(children => {
+            this.menus = children || [];
+            this.depth = this.getDepth(this.menus, 0);
+            this.activeSubMenu =
+              ((this.menus[0] || {}).children || [])[0] || {};
+          })
+          .finally(() => {
+            this.loading = false;
+          });
       } else {
         this.menus = this.activeNav.children || [];
         this.depth = this.getDepth(this.menus, 0);

@@ -198,6 +198,7 @@ export default {
       cursor: pointer;
       .menu-header-icon {
         transition: all 0.2s;
+        cursor: pointer;
       }
       .menu-header-border {
         position: absolute;
