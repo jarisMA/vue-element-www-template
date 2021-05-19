@@ -25,13 +25,10 @@
               {{ item.title }}
             </h4>
             <div class="dialog-content-item_content">
-              <div class="dialog-content-item_image">
-                <the-loading-image
-                  :width="158"
-                  :height="180"
-                  :url="item.image"
-                />
-              </div>
+              <div
+                class="dialog-content-item_image"
+                :style="{ backgroundImage: `url(${item.image})` }"
+              ></div>
               <p class="dialog-content-item_desc">
                 {{ item.desc }}
               </p>
@@ -54,21 +51,18 @@
 </template>
 
 <script>
-import questionTypeImg from "images/question/question_type_1.jpg";
-import helpTypeImg from "images/question/question_type_2.jpg";
-import voteTypeImg from "images/question/question_type_3.jpg";
+import questionTypeImg from "images/question/question_type_1.png";
+import helpTypeImg from "images/question/question_type_2.png";
+import voteTypeImg from "images/question/question_type_3.png";
 import {
   QUESTION_TYPE_QUESTION,
   QUESTION_TYPE_HELP,
   QUESTION_TYPE_VOTE
 } from "utils/const";
-import TheLoadingImage from "components/TheLoadingImage";
 
 export default {
   name: "QuestionTypeDialog",
-  components: {
-    TheLoadingImage
-  },
+  components: {},
   props: {
     visible: {
       type: Boolean,
@@ -183,6 +177,8 @@ export default {
             .dialog-content-item_image {
               width: 100%;
               height: 180px;
+              background-size: cover;
+              background-repeat: no-repeat;
             }
             .dialog-content-item_desc {
               height: 60px;
