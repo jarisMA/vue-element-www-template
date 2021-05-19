@@ -14,7 +14,11 @@
         <div class="page-content">
           <div class="page-content-basic">
             <div class="form-title-wrapper">
-              <the-avatar :size="40" :url="userInfo.avatar_url" />
+              <the-avatar
+                class="avatar-wrapper"
+                :size="40"
+                :url="userInfo.avatar_url"
+              />
               <el-input
                 class="form-title"
                 placeholder="投票标题"
@@ -214,7 +218,7 @@
           </div>
         </div>
       </div>
-      <i class="page-close-icon close-icon" @click="handleClose"></i>
+      <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
     </div>
   </el-dialog>
 </template>
@@ -248,8 +252,8 @@ const resourceTypes = [
 ];
 
 export default {
-  components: { TheAvatar, UploadImage },
   name: "QuestionVoteTypeAdd",
+  components: { TheAvatar, UploadImage },
   props: {
     visible: {
       type: Boolean,
@@ -307,6 +311,21 @@ export default {
       questionService.channels().then(channels => {
         this.channels = channels;
       });
+    },
+    handleBeforeClose () {
+      if (this.form.title) {
+        this.$confirm('是否保存草稿', '', {
+          confirmButtonText: '保存',
+          cancelButtonText: '不保存',
+          type: 'none'
+        }).then(() => {
+          this.handlePublish(QUESTION_SAVE_STATUS)
+        }).catch(() => {
+          this.handleClose();
+        });
+      } else {
+        this.handleClose();
+      }
     },
     handleClose () {
       this.$emit("update:visible", false);
@@ -386,7 +405,7 @@ export default {
           questionService.updateQuestion(id, params).then(() => {
             this.$notice({
               type: 'success',
-              title: '发布成功'
+              title: status === QUESTION_SAVE_STATUS ? '保存成功' : '发布成功'
             })
             if (status === QUESTION_PUBLISH_STATUS) {
               this.$emit('refresh')
@@ -399,7 +418,7 @@ export default {
           questionService.addQuestion(params).then(() => {
             this.$notice({
               type: 'success',
-              title: '发布成功'
+              title: status === QUESTION_SAVE_STATUS ? '保存成功' : '发布成功'
             })
             if (status === QUESTION_PUBLISH_STATUS) {
               this.$emit('refresh')
@@ -473,7 +492,12 @@ export default {
               display: flex;
               align-items: center;
               justify-content: flex-start;
+              .avatar-wrapper {
+                flex: none;
+              }
               .form-title {
+                flex: 1;
+                width: 5px;
                 .el-input__inner {
                   padding: 0 10px;
                   line-height: 28px;

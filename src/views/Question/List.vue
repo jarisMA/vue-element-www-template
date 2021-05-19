@@ -68,6 +68,11 @@
       :visible.sync="showQuestionTypeSelect"
       @select="handleQuestionTypeSelect"
     />
+    <question-type-add
+      v-if="questionAddVisble"
+      :visible.sync="questionAddVisble"
+      @refresh="getData()"
+    />
     <vote-type-add
       v-if="voteAddVisble"
       :visible.sync="voteAddVisble"
@@ -88,6 +93,7 @@ import questionService from "service/question";
 import QuestionCard from "./widgets/QuestionCard";
 import End from "./widgets/End";
 import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
+import QuestionTypeAdd from "./widgets/QuestionTypeAdd";
 import VoteTypeAdd from "./widgets/VoteTypeAdd";
 
 export default {
@@ -97,14 +103,13 @@ export default {
     QuestionCard,
     End,
     QuestionTypeDialog,
+    QuestionTypeAdd,
     VoteTypeAdd
   },
   data() {
     return {
       QUESTION_TYPE,
-      QUESTION_TYPE_QUESTION,
       QUESTION_TYPE_HELP,
-      QUESTION_TYPE_VOTE,
       channels: [
         {
           name: "户型布局"
@@ -131,6 +136,7 @@ export default {
       },
       col: 6,
       showQuestionTypeSelect: false,
+      questionAddVisble: false,
       voteAddVisble: false
     };
   },
@@ -199,6 +205,9 @@ export default {
     },
     handleQuestionTypeSelect(type) {
       switch (type) {
+        case QUESTION_TYPE_QUESTION:
+          this.questionAddVisble = true;
+          break;
         case QUESTION_TYPE_VOTE:
           this.voteAddVisble = true;
           break;
