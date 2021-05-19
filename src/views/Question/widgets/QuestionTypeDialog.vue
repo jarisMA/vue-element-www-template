@@ -42,7 +42,10 @@
         </div>
       </div>
       <div class="dialog-footer">
-        <div :class="['dialog-footer-btn', !activeTypeValue ? 'disabled' : '']">
+        <div
+          :class="['dialog-footer-btn', !activeTypeValue ? 'disabled' : '']"
+          @click="activeTypeValue ? handleSubmit() : null"
+        >
           去求助<i class="arrow-icon"></i>
         </div>
       </div>
@@ -103,6 +106,10 @@ export default {
     handleClose() {
       this.activeTypeValue = null;
       this.$emit("update:visible", false);
+    },
+    handleSubmit() {
+      this.$emit("select", this.activeTypeValue);
+      this.handleClose();
     }
   }
 };

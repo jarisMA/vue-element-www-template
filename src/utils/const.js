@@ -87,6 +87,10 @@ export const QUESTION_TYPE = {
   }
 };
 
+// 问题发布类型
+export const QUESTION_SAVE_STATUS = 1; // 保存草稿
+export const QUESTION_PUBLISH_STATUS = 2; // 发布问题
+
 // 投票类型
 export const VOTE_TYPE_SINGLE = 0; // 单选
 export const VOTE_TYPE_MULTI = 1; // 多选

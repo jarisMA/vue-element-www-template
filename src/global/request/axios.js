@@ -9,7 +9,13 @@ axiosInstance.defaults.timeout = 20000;
 
 axiosInstance.interceptors.request.use(
   config => {
-    const newConfig = { ...config };
+    const newConfig = {
+      ...config,
+      params: {
+        ...config.params,
+        app_id: 1
+      }
+    };
     const TOKEN = cookies.get("web_token");
     if (TOKEN) {
       newConfig["headers"]["Authorization"] = "Bearer " + TOKEN;

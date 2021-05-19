@@ -64,17 +64,31 @@
         <i class="ask-icon"></i>
       </div>
     </div>
-    <question-type-dialog :visible.sync="showQuestionTypeSelect" />
+    <question-type-dialog
+      :visible.sync="showQuestionTypeSelect"
+      @select="handleQuestionTypeSelect"
+    />
+    <vote-type-add
+      v-if="voteAddVisble"
+      :visible.sync="voteAddVisble"
+      @refresh="getData()"
+    />
   </div>
 </template>
 
 <script>
-import { QUESTION_TYPE } from "utils/const";
+import {
+  QUESTION_TYPE,
+  QUESTION_TYPE_QUESTION,
+  QUESTION_TYPE_HELP,
+  QUESTION_TYPE_VOTE
+} from "utils/const";
 // import TheSearchBar from "components/TheSearchBar";
 import questionService from "service/question";
 import QuestionCard from "./widgets/QuestionCard";
 import End from "./widgets/End";
 import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
+import VoteTypeAdd from "./widgets/VoteTypeAdd";
 
 export default {
   name: "QuestionList",
@@ -82,11 +96,15 @@ export default {
     // TheSearchBar,
     QuestionCard,
     End,
-    QuestionTypeDialog
+    QuestionTypeDialog,
+    VoteTypeAdd
   },
   data() {
     return {
       QUESTION_TYPE,
+      QUESTION_TYPE_QUESTION,
+      QUESTION_TYPE_HELP,
+      QUESTION_TYPE_VOTE,
       channels: [
         {
           name: "户型布局"
@@ -112,7 +130,8 @@ export default {
         size: 30
       },
       col: 6,
-      showQuestionTypeSelect: false
+      showQuestionTypeSelect: false,
+      voteAddVisble: false
     };
   },
   created() {
@@ -177,6 +196,15 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+    },
+    handleQuestionTypeSelect(type) {
+      switch (type) {
+        case QUESTION_TYPE_VOTE:
+          this.voteAddVisble = true;
+          break;
+        default:
+          break;
+      }
     }
   }
 };

@@ -40,3 +40,16 @@ export const formatSeconds = second => {
   }
   return result;
 };
+
+// 计算指定日期加减天数后的日期
+export const getCalDate = (start, day) => {
+  let date = new Date(start);
+  date.setDate(new Date(start).getDate() + day);
+  return (
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).substr(-2, 2) +
+    "-" +
+    ("0" + date.getDate()).substr(-2, 2)
+  );
+};
