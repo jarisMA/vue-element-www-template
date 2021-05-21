@@ -1,9 +1,6 @@
 <template>
   <div class="player-container">
     <div class="prism-player ali-player-container" :id="id"></div>
-    <div class="phone-container" v-if="status && !loading">
-      {{ userInfo.phone }}{{ userInfo.nickname }}
-    </div>
     <div v-if="!status && !loading">{{ vid }} 视频转码中 ～</div>
   </div>
 </template>
@@ -11,7 +8,23 @@
 <script>
 import vodService from "service/vod";
 import { mapState } from "vuex";
+import Store from "@/store/index";
 
+class PhoneNumberComponent {
+  constructor() {}
+
+  createEl(el) {
+    const userInfo = Store.state.userInfo;
+    const div = document.createElement("div");
+    div.innerHTML = userInfo.phone + userInfo.nickname;
+    div.className = "phone-container";
+    div.id = "phone-container";
+    setInterval(() => {
+      div.style.top = Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%";
+    }, 10 * 1000);
+    el.appendChild(div);
+  }
+}
 export default {
   name: "VideoPlayer",
   props: {
@@ -109,7 +122,8 @@ export default {
             cover: VideoMeta.CoverURL,
             encryptType: 1, //当播放私有加密流时需要设置。
             definition: "FD,LD,SD,HD",
-            defaultDefinition: "HD"
+            defaultDefinition: "HD",
+            components: [PhoneNumberComponent]
           },
           player => {
             window.player = player;
@@ -219,13 +233,10 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 
-@randomTop: `Math.floor(Math.random() * (80 - 20 + 1)) + 20 + "%" `;
+@randomTop: `Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%" `;
 @keyframes phoneMove {
   0% {
-    right: -100%;
-  }
-  50% {
-    right: -100%;
+    right: 0;
   }
   100% {
     right: 100%;
@@ -238,22 +249,24 @@ export default {
   overflow: hidden;
   word-break: keep-all;
   background: #272c30;
-  .phone-container {
-    position: absolute;
-    top: calc(~"@{randomTop}");
-    right: -100%;
-    padding: 5px 10px;
-    color: rgba(255, 255, 255, 0.3);
-    line-height: 24px;
-    font-size: 14px;
-    z-index: 1;
-    animation: phoneMove 20s linear 2s infinite;
-  }
   /deep/ .prism-player {
     position: relative;
     background-color: #000;
     width: 100%;
     height: 100% !important;
+    .phone-container {
+      position: absolute;
+      top: calc(~"@{randomTop}");
+      right: -100%;
+      line-height: 1;
+      padding: 4px;
+      font-weight: 600;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.8);
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      animation: phoneMove 10s linear infinite;
+    }
     video {
       background: #000;
     }
