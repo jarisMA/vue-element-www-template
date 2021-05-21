@@ -49,6 +49,7 @@
               <upload-image
                 v-if="form.images.length < 3"
                 ref="uploadImage"
+                folder="question"
                 :class="['upload-image']"
                 @added="handleAddImage"
               />

@@ -41,6 +41,7 @@
               <upload-image
                 v-if="!form.images"
                 ref="uploadImage"
+                foloder="question"
                 :class="['upload-image']"
                 @added="handleAddImage"
               />

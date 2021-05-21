@@ -76,5 +76,6 @@ export default {
     `${PREFIX}/api/file/alioss-video/${videoId}/status`,
   clock: `${WEB_PREFIX}/mine/clock`,
   gainShineCount: `${WEB_PREFIX}/mine/gain-history/shine-count`,
-  gainHistory: `${WEB_PREFIX}/mine/gain-history`
+  gainHistory: `${WEB_PREFIX}/mine/gain-history`,
+  districts: `${PREFIX}/api/districts/all`
 };

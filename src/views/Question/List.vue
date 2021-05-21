@@ -73,6 +73,11 @@
       :visible.sync="questionAddVisble"
       @refresh="getData()"
     />
+    <help-type-add
+      v-if="helpAddVisible"
+      :visible.sync="helpAddVisible"
+      @refresh="getData()"
+    />
     <vote-type-add
       v-if="voteAddVisble"
       :visible.sync="voteAddVisble"
@@ -94,6 +99,7 @@ import QuestionCard from "./widgets/QuestionCard";
 import End from "./widgets/End";
 import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
 import QuestionTypeAdd from "./widgets/QuestionTypeAdd";
+import HelpTypeAdd from "./widgets/HelpTypeAdd";
 import VoteTypeAdd from "./widgets/VoteTypeAdd";
 
 export default {
@@ -104,12 +110,12 @@ export default {
     End,
     QuestionTypeDialog,
     QuestionTypeAdd,
+    HelpTypeAdd,
     VoteTypeAdd
   },
   data() {
     return {
       QUESTION_TYPE,
-      QUESTION_TYPE_HELP,
       channels: [
         {
           name: "户型布局"
@@ -137,6 +143,7 @@ export default {
       col: 6,
       showQuestionTypeSelect: false,
       questionAddVisble: false,
+      helpAddVisible: false,
       voteAddVisble: false
     };
   },
@@ -207,6 +214,9 @@ export default {
       switch (type) {
         case QUESTION_TYPE_QUESTION:
           this.questionAddVisble = true;
+          break;
+        case QUESTION_TYPE_HELP:
+          this.helpAddVisible = true;
           break;
         case QUESTION_TYPE_VOTE:
           this.voteAddVisble = true;
