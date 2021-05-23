@@ -47,6 +47,7 @@
               v-for="item of questions"
               :key="item.id"
               :question="item"
+              @click.native="handleShowDetail(item.id)"
             />
           </template>
         </waterfall>
@@ -83,6 +84,7 @@
       :visible.sync="voteAddVisble"
       @refresh="getData()"
     />
+    <detail v-if="detailVisible" :visible.sync="detailVisible" :id="detailId" />
   </div>
 </template>
 
@@ -101,6 +103,7 @@ import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
 import QuestionTypeAdd from "./widgets/QuestionTypeAdd";
 import HelpTypeAdd from "./widgets/HelpTypeAdd";
 import VoteTypeAdd from "./widgets/VoteTypeAdd";
+import Detail from "./widgets/Detail";
 
 export default {
   name: "QuestionList",
@@ -111,7 +114,8 @@ export default {
     QuestionTypeDialog,
     QuestionTypeAdd,
     HelpTypeAdd,
-    VoteTypeAdd
+    VoteTypeAdd,
+    Detail
   },
   data() {
     return {
@@ -144,8 +148,15 @@ export default {
       showQuestionTypeSelect: false,
       questionAddVisble: false,
       helpAddVisible: false,
-      voteAddVisble: false
+      voteAddVisble: false,
+      detailVisible: false,
+      detailId: null
     };
+  },
+  watch: {
+    questionAddVisble(val) {
+      this.handleToggleLockScroll(val);
+    }
   },
   created() {
     this.calcCol();
@@ -160,6 +171,13 @@ export default {
     window.removeEventListener("scroll", this.scroll);
   },
   methods: {
+    handleToggleLockScroll(flag) {
+      if (flag) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
+      }
+    },
     calcCol() {
       const maxWidth = Math.max(window.innerWidth - 200, 1200 - 200);
       this.col = Math.floor(maxWidth / (262 + 15));
@@ -209,6 +227,10 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+    },
+    handleShowDetail(id) {
+      this.detailId = id;
+      this.detailVisible = true;
     },
     handleQuestionTypeSelect(type) {
       switch (type) {

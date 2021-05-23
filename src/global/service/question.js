@@ -43,6 +43,15 @@ const questionService = {
   },
   deleteComment: id => {
     return request.delete(API.questionComment(id));
+  },
+  questionFavoriteAdd(params) {
+    return request.post(API.questionFavoriteAdd, params);
+  },
+  questionFavoriteDelete(type, resourceId) {
+    return request.delete(API.questionFavoriteDelete(type, resourceId));
+  },
+  acceptAnswer(id) {
+    return request.put(API.questionAnswerAccept(id));
   }
 };
 

@@ -105,3 +105,8 @@ export const VOTE_OPTION_INDEX = ["A", "B", "C", "D", "E", "F"];
 // 回复/评论的格式类型
 export const REPLY_TYPE_SIMPLE = 1; // 普通图文
 export const REPLY_TYPE_COMPLEX = 2; // 复杂富文本
+
+// 类型
+export const TYPE_QUESTION = 1;
+export const TYPE_ANSWER = 2;
+export const TYPE_COMMENT = 3;

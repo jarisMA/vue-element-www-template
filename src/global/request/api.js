@@ -58,6 +58,11 @@ export default {
     `${WEB_PREFIX}/question/answer/${answerId}/comment`,
   questionComment: id => `${WEB_PREFIX}/question/answer/comment/${id}`,
   questionLikeAdd: `${WEB_PREFIX}/question-like`,
+  questionFavoriteAdd: `${WEB_PREFIX}/question-favorite`,
+  questionFavoriteDelete: (type, resourceId) =>
+    `${WEB_PREFIX}/question-favorite/${type}/${resourceId}`,
+  questionAnswerAccept: id => `${WEB_PREFIX}/question/answer/${id}/accepted`,
+
   commodityCats: `${WEB_PREFIX}/commodity/cat`,
   commodityCat: id => `${WEB_PREFIX}/commodity/cat/${id}`,
   commodityBrands: `${WEB_PREFIX}/commodity/brand`,

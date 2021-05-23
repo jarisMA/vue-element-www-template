@@ -3,17 +3,34 @@
     <div class="answer-card" :style="{ maxHeight: fold ? '363px' : 'unset' }">
       <div class="card-wrapper" ref="card">
         <div class="card-top">
-          <the-avatar :size="40" :url="answer.user.avatar_url" />
-          <div class="user-content">
-            <span
-              :class="[
-                'user-name',
-                userInfo && userInfo.id === answer.user.id ? 'active' : ''
-              ]"
-              >{{ answer.user.nickname }}</span
-            >
-            <div class="create-time">
-              {{ formatDate(answer.created_at, "YYYY-MM-DD hh:mm:ss") }}
+          <div class="card-top-left">
+            <the-avatar :size="40" :url="answer.user.avatar_url" />
+            <div class="user-content">
+              <span
+                :class="[
+                  'user-name',
+                  userInfo && userInfo.id === answer.user.id ? 'active' : ''
+                ]"
+                >{{ answer.user.nickname }}</span
+              >
+              <div class="create-time">
+                {{ formatDate(answer.created_at, "YYYY-MM-DD hh:mm:ss") }}
+              </div>
+            </div>
+          </div>
+          <div
+            class="card-top-right"
+            v-if="
+              !answer.has_accepted &&
+                userInfo.id === answer.question_author.id &&
+                !answer.question_accept_id &&
+                answer.user.id !== userInfo.id &&
+                answer.question_type !== QUESTION_TYPE_VOTE
+            "
+          >
+            <div class="card-accept-wrapper" @click="handleAccept">
+              <i class="card-accept-icon"></i>
+              采纳回答
             </div>
           </div>
         </div>
@@ -30,27 +47,10 @@
     </div>
     <div class="answer-operate">
       <div class="operate-left">
-        <div class="claps-wrapper" @mousedown="startClap">
-          <transition name="fade">
-            <div class="count-tip" v-show="isClap">+ {{ clapCount }}</div>
-          </transition>
-          <transition name="fadeFlower1">
-            <img
-              v-show="isClap"
-              class="flower1-icon"
-              src="~images/question/flower1.svg"
-            />
-          </transition>
-          <transition name="fadeFlower2">
-            <img
-              v-show="isClap"
-              class="flower2-icon"
-              src="~images/question/flower2.svg"
-            />
-          </transition>
+        <div class="claps-wrapper" @click="handleToggleClap">
           <img
-            :class="['clap-icon', isClap ? 'active' : '']"
-            v-if="answer.auth_like_count || isClap"
+            :class="['clap-icon']"
+            v-if="answer.auth_like_count"
             src="~images/question/claped.svg"
           />
           <img class="clap-icon" v-else src="~images/question/claps.svg" />
@@ -128,6 +128,7 @@ import Comment from "./Comment";
 import { formatDate } from "utils/moment";
 import { mapState } from "vuex";
 import questionService from "service/question";
+import { TYPE_ANSWER, QUESTION_TYPE_VOTE } from "utils/const";
 
 export default {
   name: "QuestionAnswerCard",
@@ -148,26 +149,24 @@ export default {
   },
   data() {
     return {
+      QUESTION_TYPE_VOTE,
       loading: false,
       fold: true,
       showUnfoldBtn: false,
       showComment: false,
       maxHeight: 363,
       commentMaxHeight: 0,
-      isClap: false,
-      clapCount: this.answerData.auth_like_count,
-      timer: null,
       claping: false,
       answer: this.answerData || {
         user: {}
       },
-      observer: null
+      observer: null,
+      accepting: false
     };
   },
   watch: {
     answerData: {
       handler(val) {
-        this.clapCount = val.auth_like_count;
         this.answer = val;
         this.initDom();
       },
@@ -237,43 +236,45 @@ export default {
     deletedSecondaryComment() {
       this.updateCommentCount(-1);
     },
-    startClap() {
+    handleToggleClap() {
       if (!this.claping) {
-        this.isClap = true;
-        if (this.clapCount < 50) {
-          this.clapCount++;
-          this.timer = setInterval(() => {
-            if (this.clapCount >= 50) {
-              clearInterval(this.timer);
-              this.timer = null;
-            } else {
-              this.clapCount++;
-            }
-          }, 300);
-        }
-      }
-    },
-    handleMouseUp() {
-      clearInterval(this.timer);
-      this.timer = null;
-      if (this.isClap) {
         this.claping = true;
+        let clapCount = 1;
+        if (this.answer.auth_like_count) {
+          clapCount = 0;
+        }
         questionService
           .addLike({
-            type: 2,
+            type: TYPE_ANSWER,
             resource_id: this.answer.id,
-            count: this.clapCount
+            count: clapCount
           })
           .then(() => {
-            const dis = this.clapCount - this.answer.auth_like_count;
-            this.answer.auth_like_count = this.clapCount;
-            this.answer.like_count += dis;
+            this.answer.auth_like_count = clapCount;
+            this.answer.like_count += clapCount ? 1 : -1;
           })
           .finally(() => {
             this.claping = false;
           });
       }
-      this.isClap = false;
+    },
+    handleAccept() {
+      if (!this.accepting) {
+        this.accepting = true;
+        questionService
+          .acceptAnswer(this.answer.id)
+          .then(() => {
+            this.$notice({
+              title: "采纳回答成功",
+              type: "success"
+            });
+            this.answer.has_accepted = 1;
+            this.$emit("accepted", this.answer.id);
+          })
+          .finally(() => {
+            this.accepting = false;
+          });
+      }
     },
     initDom() {
       this.$nextTick(() => {
@@ -300,55 +301,7 @@ export default {
 
 <style lang="less" scoped>
 @padding: 20px;
-@duration: 0.3s;
 @import "~styles/variable";
-
-@keyframes clap {
-  0% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes flower {
-  0% {
-    opacity: 1;
-    transform: scale(0.3);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1);
-  }
-}
-@keyframes flower2 {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.3);
-  }
-}
-@keyframes tip {
-  0% {
-    transform: scale(0.9);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-.fade-leave-active {
-  transition: all 0.5s;
-}
-.fade-leave-to {
-  transform: translateY(-50px);
-  opacity: 0;
-}
 
 .answer-card-wrapper {
   background: #fff;
@@ -362,24 +315,49 @@ export default {
   .card-top {
     display: flex;
     align-items: center;
-    .user-content {
+    justify-content: space-between;
+    .card-top-left {
       display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      margin-left: 14px;
-      .user-name {
-        line-height: 24px;
-        font-weight: 500;
-        font-size: 16px;
-        color: @hoverColor;
-        &.active {
-          color: @primaryColor;
+      align-items: center;
+      .user-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-left: 14px;
+        .user-name {
+          line-height: 24px;
+          font-weight: 500;
+          font-size: 16px;
+          color: @hoverColor;
+          &.active {
+            color: @primaryColor;
+          }
+        }
+        .create-time {
+          line-height: 18px;
+          font-size: 12px;
+          color: #c8d0cc;
         }
       }
-      .create-time {
-        line-height: 18px;
+    }
+    .card-top-right {
+      .card-accept-wrapper {
+        display: flex;
+        align-items: center;
+        padding: 2px 8px;
+        line-height: 16px;
         font-size: 12px;
-        color: #c8d0cc;
+        color: @primaryColor;
+        border: 1px solid @primaryColor;
+        border-radius: 14px;
+        cursor: pointer;
+        .card-accept-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          margin-right: 2px;
+          background: url("~images/question/modal.svg") no-repeat center;
+        }
       }
     }
   }
@@ -591,40 +569,6 @@ export default {
       background: #e9fff4;
       cursor: pointer;
       z-index: 2;
-      .count-tip {
-        position: absolute;
-        top: -50px;
-        left: 10px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
-        border-radius: 50%;
-        background: @primaryColor;
-        color: #fff;
-        z-index: 2;
-        animation: tip @duration infinite;
-      }
-      .clap-icon {
-        &.active {
-          animation: clap @duration infinite;
-        }
-      }
-      .flower1-icon,
-      .flower2-icon {
-        position: absolute;
-        left: 3px;
-        top: -8px;
-        width: 50px;
-      }
-      .flower1-icon {
-        animation: flower 0.3s infinite;
-      }
-      .flower2-icon {
-        animation: flower2 0.3s infinite;
-      }
       span {
         color: @primaryColor;
       }
