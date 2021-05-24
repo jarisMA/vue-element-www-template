@@ -22,6 +22,7 @@
             class="card-top-right"
             v-if="
               !answer.has_accepted &&
+                userInfo &&
                 userInfo.id === answer.question_author.id &&
                 !answer.question_accept_id &&
                 answer.user.id !== userInfo.id &&
@@ -129,9 +130,11 @@ import { formatDate } from "utils/moment";
 import { mapState } from "vuex";
 import questionService from "service/question";
 import { TYPE_ANSWER, QUESTION_TYPE_VOTE } from "utils/const";
+import commonMixins from "./mixins";
 
 export default {
   name: "QuestionAnswerCard",
+  mixins: [commonMixins],
   components: {
     TheAvatar,
     CommentCard,
@@ -195,6 +198,9 @@ export default {
   methods: {
     formatDate,
     deleteAnswer() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       this.loading = true;
       questionService
         .deleteAnswer(this.answer.id)
@@ -209,6 +215,9 @@ export default {
         });
     },
     reportAnswer() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       this.$notice({
         type: "warning",
         title: "等待开放..."
@@ -237,6 +246,9 @@ export default {
       this.updateCommentCount(-1);
     },
     handleToggleClap() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (!this.claping) {
         this.claping = true;
         let clapCount = 1;
@@ -259,6 +271,9 @@ export default {
       }
     },
     handleAccept() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (!this.accepting) {
         this.accepting = true;
         questionService

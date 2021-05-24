@@ -146,9 +146,9 @@
           <div class="page-detail-footer">
             <div class="page-detail-footer-content">
               <div class="page-detail-footer-left">
-                <the-avatar :size="24" :url="userInfo.avatar_url" />
+                <the-avatar :size="24" :url="userInfo && userInfo.avatar_url" />
                 <span class="page-detail-nickname">{{
-                  userInfo.nickname
+                  userInfo && userInfo.nickname
                 }}</span>
               </div>
               <div class="page-detail-footer-right">
@@ -167,7 +167,7 @@
                     >{{
                       detail.is_like
                         ? "已擦亮"
-                        : detail.user.id === userInfo.id
+                        : detail.user.id === (userInfo && userInfo.id)
                         ? "擦亮"
                         : "帮擦亮"
                     }}
@@ -196,7 +196,7 @@
                   class="page-detail-footer-dropdown-wrapper"
                   placement="top-end"
                   trigger="click"
-                  v-if="userInfo.id === detail.user.id"
+                  v-if="(userInfo && userInfo.id) === detail.user.id"
                 >
                   <i class="el-icon-more"></i>
                   <el-dropdown-menu slot="dropdown" class="page-dropdown">
@@ -284,7 +284,7 @@
           <span>{{
             detail.is_like
               ? "已擦亮"
-              : detail.user.id === userInfo.id
+              : detail.user.id === (userInfo && userInfo.id)
               ? "擦亮"
               : "帮擦亮"
           }}</span>
@@ -321,9 +321,11 @@ import {
   QUESTION_TYPE_VOTE,
   TYPE_QUESTION
 } from "utils/const";
+import commonMixins from "./mixins";
 
 export default {
   name: "QuestionDetail",
+  mixins: [commonMixins],
   components: {
     TheLoadingImage,
     TheAvatar,
@@ -448,6 +450,9 @@ export default {
       this.activePointIndex = index;
     },
     goReply() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       const editorDom = this.$refs["editor"];
       const scrollDom = this.$refs["scroll"];
       scrollDom.scrollTo({
@@ -459,6 +464,9 @@ export default {
       this.$emit("update:visible", false);
     },
     handleDeleteQuestion() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       this.loading = true;
       questionService
         .deleteQuestion(this.id)
@@ -471,6 +479,9 @@ export default {
         });
     },
     handleLikeAdd() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       const detail = this.detail;
       const { id, is_like, like_count } = detail;
       if (is_like) {
@@ -510,6 +521,9 @@ export default {
       }
     },
     handleFavoriteClick() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (this.favoriteRequesting) {
         return;
       }
@@ -555,6 +569,9 @@ export default {
       this.answers.splice(key, 1);
     },
     handleVote(option_ids) {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (this.voting) {
         return;
       }
