@@ -244,6 +244,34 @@
             </div>
           </div>
           <div class="page-content-answers">
+            <div class="page-answers-header">
+              <div class="page-answers-header-left">
+                回答
+                <span class="page-answers-count">{{
+                  detail.answer_count
+                }}</span>
+              </div>
+              <div class="page-answers-header-right">
+                <div
+                  :class="[
+                    'page-answer-order',
+                    answerOrder === 1 ? 'active' : ''
+                  ]"
+                  @click="answerOrder = 1"
+                >
+                  热门
+                </div>
+                <div
+                  :class="[
+                    'page-answer-order',
+                    answerOrder === 2 ? 'active' : ''
+                  ]"
+                  @click="answerOrder = 2"
+                >
+                  最新
+                </div>
+              </div>
+            </div>
             <ul class="page-answer-list" v-if="detail.answer_count > 0">
               <li
                 class="answer-item"
@@ -354,6 +382,7 @@ export default {
       favoriteRequesting: false,
       voting: false,
       answers: [],
+      answerOrder: 1,
       pagination: {
         size: 10,
         page: 1,
@@ -368,6 +397,11 @@ export default {
       },
       showOperate: false
     };
+  },
+  watch: {
+    answerOrder() {
+      this.getAnswers();
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -392,7 +426,8 @@ export default {
         questionService.question(this.id),
         questionService.answers(this.id, {
           page: 1,
-          page_size: this.pagination.size
+          page_size: this.pagination.size,
+          hot: this.answerOrder === 1
         })
       ])
         .then(([detail, res]) => {
@@ -426,7 +461,8 @@ export default {
       questionService
         .answers(this.id, {
           page: start,
-          page_size: this.pagination.size
+          page_size: this.pagination.size,
+          hot: this.answerOrder === 1
         })
         .then(res => {
           this.answers = res.list;
@@ -1045,6 +1081,46 @@ export default {
           }
         }
         .page-content-answers {
+          .page-answers-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 60px;
+            padding: 0 20px;
+            background: #fff;
+            border-bottom: 1px solid #efefef;
+            .page-answers-header-left {
+              font-weight: 500;
+              font-size: 16px;
+              color: #2c3330;
+              .page-answers-count {
+                font-weight: normal;
+                color: #606c66;
+              }
+            }
+            .page-answers-header-right {
+              display: flex;
+              align-items: center;
+              .page-answer-order {
+                width: 34px;
+                height: 25px;
+                line-height: 25px;
+                font-size: 12px;
+                color: #606c66;
+                text-align: center;
+                background: #fafafa;
+                border: 1px solid #fafafa;
+                cursor: pointer;
+                &.active {
+                  font-weight: 500;
+                  color: #2c3330;
+                  border-color: #efefef;
+                  background: #fff;
+                }
+              }
+            }
+          }
           .pagination-wrapper {
             margin-top: 20px;
           }
