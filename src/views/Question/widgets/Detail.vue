@@ -6,8 +6,13 @@
     :visible="visible"
   >
     <div class="page" v-loading="loading">
-      <div class="container-980" v-if="detail">
-        <div class="page-detail">
+      <div
+        class="container-980"
+        v-if="detail"
+        ref="scroll"
+        @scroll="handleScroll"
+      >
+        <div class="page-detail" ref="detail">
           <i class="page-accept-icon" v-if="detail.accept_id"></i>
           <div class="page-detail-top">
             <div class="page-detail-title">{{ detail.title }}</div>
@@ -214,7 +219,10 @@
         </div>
         <div class="page-content">
           <div class="page-content-main">
-            <div :class="['rich-text-wrapper', largerRichText ? 'large' : '']">
+            <div
+              :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
+              ref="editor"
+            >
               <h3 class="content-title" v-if="largerRichText">
                 {{ detail.title }}
               </h3>
@@ -259,6 +267,38 @@
           </div>
         </div>
       </div>
+      <ul class="page-operate-wrapper" v-if="detail && showOperate">
+        <li class="page-operate-item" @click="goReply">
+          <div class="operate-icon reply">
+            <i class="reply-icon"></i>
+          </div>
+          <span>写回答</span>
+        </li>
+        <li
+          :class="['page-operate-item', detail.is_like ? 'active' : '']"
+          @click="handleLikeAdd"
+        >
+          <div class="operate-icon">
+            <i class="brighten-icon"></i>
+          </div>
+          <span>{{
+            detail.is_like
+              ? "已擦亮"
+              : detail.user.id === userInfo.id
+              ? "擦亮"
+              : "帮擦亮"
+          }}</span>
+        </li>
+        <li
+          :class="['page-operate-item', detail.is_favorite ? 'active' : '']"
+          @click="handleFavoriteClick"
+        >
+          <div class="operate-icon">
+            <i class="like-icon"></i>
+          </div>
+          <span>收藏</span>
+        </li>
+      </ul>
     </div>
     <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
   </el-dialog>
@@ -323,7 +363,8 @@ export default {
         slidesPerView: 1,
         spaceBetween: 0,
         autoplay: false
-      }
+      },
+      showOperate: false
     };
   },
   computed: {
@@ -394,9 +435,25 @@ export default {
           this.loading = false;
         });
     },
+    handleScroll(e) {
+      const detailDom = this.$refs["detail"];
+      if (e.target.scrollTop > detailDom.offsetTop + detailDom.clientHeight) {
+        this.showOperate = true;
+      } else {
+        this.showOperate = false;
+      }
+    },
     handleSwiperSlideTo(index, speed = 200) {
       this.$refs["mySwiper"].$swiper.slideTo(index, speed, false);
       this.activePointIndex = index;
+    },
+    goReply() {
+      const editorDom = this.$refs["editor"];
+      const scrollDom = this.$refs["scroll"];
+      scrollDom.scrollTo({
+        top: editorDom.offsetTop,
+        behaviour: "smooth"
+      });
     },
     handleBeforeClose() {
       this.$emit("update:visible", false);
@@ -612,6 +669,7 @@ export default {
     }
   }
   .page {
+    position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -973,6 +1031,66 @@ export default {
           .pagination-wrapper {
             margin-top: 20px;
           }
+        }
+      }
+    }
+    .page-operate-wrapper {
+      position: absolute;
+      right: 0;
+      top: 0;
+      .page-operate-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        & + .page-operate-item {
+          margin-top: 20px;
+        }
+        &.active {
+          .operate-icon {
+            .brighten-icon {
+              background-image: url("~images/question/brighten_active.svg");
+            }
+            .like-icon {
+              background-image: url("~images/question/collection_active.svg");
+            }
+          }
+        }
+        .operate-icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 50px;
+          height: 50px;
+          margin-bottom: 10px;
+          background: #fff;
+          border-radius: 50%;
+          cursor: pointer;
+          &.reply {
+            background: @primaryColor;
+          }
+          .reply-icon,
+          .brighten-icon,
+          .like-icon {
+            width: 24px;
+            height: 24px;
+            background-repeat: no-repeat;
+            background-size: cover;
+          }
+          .reply-icon {
+            background-image: url("~images/question/write.svg");
+          }
+          .brighten-icon {
+            background-image: url("~images/question/brighten.svg");
+          }
+          .like-icon {
+            background-image: url("~images/question/collection.svg");
+          }
+        }
+        span {
+          line-height: 1;
+          font-size: 12px;
+          color: #ffffff;
         }
       }
     }
