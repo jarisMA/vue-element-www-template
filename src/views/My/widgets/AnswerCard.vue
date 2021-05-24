@@ -101,7 +101,6 @@ export default {
     width: 100%;
     box-sizing: border-box;
     border-bottom: 1px solid #efefef;
-    cursor: pointer;
     .card-header {
       display: flex;
       align-items: center;

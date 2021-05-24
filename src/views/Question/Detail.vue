@@ -1,5 +1,7 @@
 <template>
-  <detail class="page-wrapper" :id="id" />
+  <div class="detail-page">
+    <detail :id="id" />
+  </div>
 </template>
 
 <script>
@@ -21,7 +23,7 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-.page-wrapper {
-  background: #fff !important;
+.detail-page {
+  background: #f4f6f8 !important;
 }
 </style>
