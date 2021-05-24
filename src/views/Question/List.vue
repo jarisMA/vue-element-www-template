@@ -84,7 +84,12 @@
       :visible.sync="voteAddVisble"
       @refresh="getData()"
     />
-    <detail v-if="detailVisible" :visible.sync="detailVisible" :id="detailId" />
+    <detail
+      v-if="detailVisible"
+      :visible.sync="detailVisible"
+      :id="detailId"
+      @deleted="handleDeleteQuestion"
+    />
   </div>
 </template>
 
@@ -246,6 +251,11 @@ export default {
         default:
           break;
       }
+    },
+    handleDeleteQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      this.questions.splice(index, 1);
+      this.detailVisible = false;
     }
   }
 };

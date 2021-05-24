@@ -383,7 +383,18 @@ export default {
     handleBeforeClose() {
       this.$emit("update:visible", false);
     },
-    handleDeleteQuestion() {},
+    handleDeleteQuestion() {
+      this.loading = true;
+      questionService
+        .deleteQuestion(this.id)
+        .then(() => {
+          this.$notice("删除问题成功");
+          this.$emit("deleted");
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
     handleLikeAdd() {
       const detail = this.detail;
       const { id, is_like, like_count } = detail;
