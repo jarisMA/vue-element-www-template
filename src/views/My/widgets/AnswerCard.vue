@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper">
+  <div class="card-wrapper" @click="goQuestionAnswer(answer.id)">
     <div class="card">
       <div class="card-header">
         <div class="card-header-left">
@@ -29,7 +29,7 @@
           <el-dropdown
             class="page-detail-footer-dropdown-wrapper"
             placement="top-end"
-            trigger="click"
+            trigger="hover"
           >
             <i class="el-icon-more"></i>
             <el-dropdown-menu slot="dropdown" class="page-dropdown">
@@ -68,6 +68,7 @@
 
 <script>
 import { QUESTION_TYPE_VOTE, VOTE_OPTION_INDEX } from "utils/const";
+import { goQuestionAnswer } from "utils/routes";
 
 export default {
   name: "MyAnswerCard",
@@ -84,6 +85,7 @@ export default {
     };
   },
   methods: {
+    goQuestionAnswer,
     handleDelete() {
       this.$emit("delete");
     }
@@ -95,6 +97,7 @@ export default {
 .card-wrapper {
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
   .card {
     position: relative;
     padding: 15px 0;

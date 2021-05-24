@@ -139,6 +139,17 @@ export const goQuestionDetail = (id, type = "_blank") => {
     type
   );
 };
+export const goQuestionAnswer = (id, type = "_blank") => {
+  return goRoute(
+    {
+      name: "QuestionAnswer",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
 
 export const goAcademyCamp = (id, type = "_self") => {
   return goRoute(
@@ -147,6 +158,15 @@ export const goAcademyCamp = (id, type = "_self") => {
       params: {
         id
       }
+    },
+    type
+  );
+};
+
+export const go404 = (type = "replace") => {
+  return goRoute(
+    {
+      name: "NotFound"
     },
     type
   );
