@@ -11,6 +11,26 @@
           <i class="page-accept-icon" v-if="detail.accept_id"></i>
           <div class="page-detail-top">
             <div class="page-detail-title">{{ detail.title }}</div>
+            <div
+              class="page-detail-info"
+              v-if="detail.type === QUESTION_TYPE_HELP"
+            >
+              <div class="page-detail-info-item">
+                <i class="page-location-icon"></i>
+                <span
+                  >{{ detail.informations.cityName }} ·
+                  {{ detail.informations.neighbourhood }}</span
+                >
+              </div>
+              <div class="page-detail-info-item">
+                <i class="page-area-icon"></i>
+                <span>{{ detail.informations.area }}m²</span>
+              </div>
+              <div class="page-detail-info-item">
+                <i class="page-structure-icon"></i>
+                <span>{{ detail.informations.houseType }}</span>
+              </div>
+            </div>
             <p class="page-detail-desc" v-if="detail.content">
               {{ detail.content }}
             </p>
@@ -36,6 +56,71 @@
                   <the-loading-image :width="600" :height="600" :url="image" />
                 </el-carousel-item>
               </el-carousel>
+            </div>
+            <div
+              class="page-detail-help_layout-wrapper"
+              v-if="
+                detail.type === QUESTION_TYPE_HELP && detail.layouts.length > 0
+              "
+            >
+              <div class="layout-image-wrapper">
+                <el-carousel
+                  height="600px"
+                  arrow="always"
+                  :autoplay="false"
+                  :loop="false"
+                >
+                  <el-carousel-item
+                    v-for="(layout, key) in detail.layouts"
+                    :key="key"
+                  >
+                    <layout-show
+                      class="layout-wrapper"
+                      :layout="layout"
+                      :edit="false"
+                    />
+                  </el-carousel-item>
+                </el-carousel>
+              </div>
+              <div class="layout-point-wrapper" v-if="points.length > 0">
+                <div class="layout-point-header">
+                  <div class="point-label-wrapper">
+                    问题
+                    <label class="point-label">{{
+                      activePointIndex + 1
+                    }}</label>
+                  </div>
+                  <div class="point-pagination">
+                    <i
+                      :class="[
+                        'point-pagination-prev',
+                        activePointIndex === 0 ? 'disabled' : ''
+                      ]"
+                      @click="handleSwiperSlideTo(activePointIndex - 1)"
+                    ></i>
+                    <i
+                      :class="[
+                        'point-pagination-next',
+                        activePointIndex === points.length - 1 ? 'disabled' : ''
+                      ]"
+                      @click="handleSwiperSlideTo(activePointIndex + 1)"
+                    ></i>
+                  </div>
+                </div>
+                <div class="point-list">
+                  <swiper
+                    class="swiper-no-swiping"
+                    ref="mySwiper"
+                    :options="swiperOptions"
+                  >
+                    <swiper-slide v-for="item of points" :key="item.id">
+                      <div class="point-item">
+                        {{ item.value }}
+                      </div>
+                    </swiper-slide>
+                  </swiper>
+                </div>
+              </div>
             </div>
           </div>
           <div class="page-detail-footer">
@@ -171,6 +256,7 @@ import TheAvatar from "components/TheAvatar";
 import AnswerCard from "./AnswerCard";
 import Pagination from "components/Pagination";
 import AnswerRichText from "./AnswerRichText";
+import LayoutShow from "./layout-show";
 
 import { mapState } from "vuex";
 import {
@@ -187,7 +273,8 @@ export default {
     TheAvatar,
     AnswerCard,
     Pagination,
-    AnswerRichText
+    AnswerRichText,
+    LayoutShow
   },
   props: {
     visible: {
@@ -212,11 +299,28 @@ export default {
         page: 1,
         total: 0
       },
-      largerRichText: false
+      largerRichText: false,
+      activePointIndex: 0,
+      swiperOptions: {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        autoplay: false
+      }
     };
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
+    points() {
+      let points = [];
+      const { layouts } = this.detail;
+      (layouts || []).forEach((layout, index) => {
+        layout.points.forEach(point => {
+          point.imgIndex = index;
+          points.push(point);
+        });
+      });
+      return points;
+    }
   },
   created() {
     this.getData();
@@ -231,6 +335,22 @@ export default {
         })
       ])
         .then(([detail, res]) => {
+          detail.informations = detail.informations
+            ? JSON.parse(detail.informations)
+            : {};
+          let index = 1;
+          let layouts = detail.layouts;
+          layouts = layouts
+            ? (layouts || []).forEach(layout => {
+                layout.points = JSON.parse(layout.points);
+                layout.points.forEach(point => {
+                  point.index = index;
+                  index++;
+                });
+              })
+            : [];
+          // detail.layouts = layouts;
+          console.log(layouts);
           this.detail = detail;
           this.answers = res.list;
           this.pagination.page = 1;
@@ -255,6 +375,10 @@ export default {
         .finally(() => {
           this.loading = false;
         });
+    },
+    handleSwiperSlideTo(index, speed = 200) {
+      this.$refs["mySwiper"].$swiper.slideTo(index, speed, false);
+      this.activePointIndex = index;
     },
     handleBeforeClose() {
       this.$emit("update:visible", false);
@@ -453,6 +577,40 @@ export default {
             font-size: 20px;
             color: #111111;
           }
+          .page-detail-info {
+            display: flex;
+            align-items: center;
+            margin-top: 8px;
+            .page-detail-info-item {
+              display: flex;
+              align-items: center;
+              line-height: 1;
+              font-size: 12px;
+              color: #81948b;
+              & + .page-detail-info-item {
+                margin-left: 12px;
+              }
+            }
+            .page-location-icon,
+            .page-area-icon,
+            .page-structure-icon {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              margin-right: 2px;
+              background-repeat: no-repeat;
+              background-size: cover;
+            }
+            .page-location-icon {
+              background-image: url("~images/question/location.svg");
+            }
+            .page-area-icon {
+              background-image: url("~images/question/area.svg");
+            }
+            .page-structure-icon {
+              background-image: url("~images/question/structure.svg");
+            }
+          }
           .page-detail-desc {
             margin-top: 16px;
             line-height: 24px;
@@ -461,32 +619,104 @@ export default {
           }
         }
         .page-detail-content {
+          /deep/ .el-carousel {
+            .el-carousel__item {
+              display: flex;
+              justify-content: center;
+            }
+            .el-carousel__indicators--horizontal {
+              display: none;
+            }
+            .el-carousel__arrow {
+              background: rgba(0, 0, 0, 0.2);
+              i {
+                font-size: 24px;
+                font-weight: bold;
+              }
+              &.el-carousel__arrow--left {
+                left: 0;
+              }
+              &.el-carousel__arrow--right {
+                right: 0;
+              }
+            }
+          }
           .page-detail-question_image-wrapper {
             width: 100%;
             height: 600px;
             margin: 24px auto 0;
             padding: 0 40px;
-
-            /deep/ .el-carousel {
-              .el-carousel__item {
+          }
+          .page-detail-help_layout-wrapper {
+            .layout-image-wrapper {
+              width: 100%;
+              height: 600px;
+              margin: 24px auto 0;
+              padding: 0 40px;
+            }
+            .layout-wrapper {
+              display: flex;
+              align-items: center;
+              width: 600px;
+              height: 600px;
+            }
+            .layout-point-wrapper {
+              width: 100%;
+              margin-top: 20px;
+              padding: 0 100px;
+              .layout-point-header {
                 display: flex;
-                justify-content: center;
+                align-items: center;
+                .point-label-wrapper {
+                  line-height: 1;
+                  font-weight: 500;
+                  font-size: 16px;
+                  color: #2c3330;
+                  .point-label {
+                    display: inline-block;
+                    width: 16px;
+                    height: 16px;
+                    margin-left: 4px;
+                    line-height: 16px;
+                    font-weight: 500;
+                    font-size: 14px;
+                    text-align: center;
+                    color: #fff;
+                    background: @primaryColor;
+                    border-radius: 50%;
+                  }
+                }
+                .point-pagination {
+                  display: flex;
+                  align-items: center;
+                  margin-left: 16px;
+                  .point-pagination-prev,
+                  .point-pagination-next {
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    mask-size: cover;
+                    mask-repeat: no-repeat;
+                    background-color: #2c3330;
+                    cursor: pointer;
+                    &.disabled {
+                      background-color: #c8d0cc;
+                      cursor: default;
+                    }
+                  }
+                  .point-pagination-prev {
+                    mask-image: url("~images/my/left.svg");
+                  }
+                  .point-pagination-next {
+                    mask-image: url("~images/my/right.svg");
+                  }
+                }
               }
-              .el-carousel__indicators--horizontal {
-                display: none;
-              }
-              .el-carousel__arrow {
-                background: rgba(0, 0, 0, 0.2);
-                i {
-                  font-size: 24px;
-                  font-weight: bold;
-                }
-                &.el-carousel__arrow--left {
-                  left: 0;
-                }
-                &.el-carousel__arrow--right {
-                  right: 0;
-                }
+              .point-list {
+                margin-top: 4px;
+                line-height: 28px;
+                font-size: 16px;
+                color: #606c66;
               }
             }
           }
