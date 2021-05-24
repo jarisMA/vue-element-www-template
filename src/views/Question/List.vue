@@ -91,7 +91,12 @@
       :show-close="false"
       :visible.sync="detailVisible"
     >
-      <detail :id="detailId" @deleted="handleDeleteQuestion" />
+      <detail
+        :id="detailId"
+        @deleted="handleDeleteQuestion"
+        @next="handleNextQuestion"
+        @prev="handlePrevQuestion"
+      />
     </el-dialog>
   </div>
 </template>
@@ -259,6 +264,28 @@ export default {
       const index = this.questions.findIndex(item => item.id === this.detailId);
       this.questions.splice(index, 1);
       this.detailVisible = false;
+    },
+    handlePrevQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      if (this.questions[index - 1]) {
+        this.detailId = this.questions[index - 1].id;
+      } else {
+        this.$notice({
+          type: "warning",
+          title: "没有更多的了"
+        });
+      }
+    },
+    handleNextQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      if (this.questions[index + 1]) {
+        this.detailId = this.questions[index + 1].id;
+      } else {
+        this.$notice({
+          type: "warning",
+          title: "没有更多的了"
+        });
+      }
     }
   }
 };

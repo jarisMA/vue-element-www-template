@@ -322,6 +322,18 @@
           <span>收藏</span>
         </li>
       </ul>
+      <div class="page-left-operate" @click="handlePrev">
+        <div class="operate-icon left">
+          <i class="left-icon"></i>
+        </div>
+        <span>上一个</span>
+      </div>
+      <div class="page-right-operate" @click="handleNext">
+        <div class="operate-icon right">
+          <i class="right-icon"></i>
+        </div>
+        <span>下一个</span>
+      </div>
     </div>
     <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
   </div>
@@ -396,6 +408,9 @@ export default {
   watch: {
     answerOrder() {
       this.getAnswers();
+    },
+    id() {
+      this.getData();
     }
   },
   computed: {
@@ -655,6 +670,12 @@ export default {
     recover() {
       this.largerRichText = false;
       document.querySelector("html").style.overflow = "auto";
+    },
+    handlePrev() {
+      this.$emit("prev");
+    },
+    handleNext() {
+      this.$emit("next");
     }
   }
 };
@@ -1167,6 +1188,55 @@ export default {
           font-size: 12px;
           color: #ffffff;
         }
+      }
+    }
+    .page-left-operate {
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+    }
+    .page-right-operate {
+      position: absolute;
+      bottom: 40px;
+      right: 0;
+    }
+    .page-left-operate,
+    .page-right-operate {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      .operate-icon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50px;
+        height: 50px;
+        margin-bottom: 10px;
+        background: rgba(255, 255, 255, 0.2);
+        opacity: 0.2;
+        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .left-icon,
+      .right-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+      .left-icon {
+        background-image: url("~images/question/previous.svg");
+      }
+      .right-icon {
+        background-image: url("~images/question/next.svg");
+      }
+      span {
+        line-height: 1;
+        font-size: 12px;
+        color: #fff;
       }
     }
   }
