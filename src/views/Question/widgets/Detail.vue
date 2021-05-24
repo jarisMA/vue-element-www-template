@@ -122,6 +122,21 @@
                 </div>
               </div>
             </div>
+            <div
+              class="page-detail-vote-wrapper"
+              v-if="detail.type === QUESTION_TYPE_VOTE"
+            >
+              <div class="vote-image-wrapper" v-if="detail.images">
+                <the-loading-image
+                  :width="600"
+                  :height="600"
+                  :url="detail.images"
+                />
+              </div>
+              <div class="vote-wrapper">
+                <vote :question="detail" @vote="handleVote" />
+              </div>
+            </div>
           </div>
           <div class="page-detail-footer">
             <div class="page-detail-footer-content">
@@ -257,6 +272,7 @@ import AnswerCard from "./AnswerCard";
 import Pagination from "components/Pagination";
 import AnswerRichText from "./AnswerRichText";
 import LayoutShow from "./layout-show";
+import Vote from "./Vote";
 
 import { mapState } from "vuex";
 import {
@@ -274,7 +290,8 @@ export default {
     AnswerCard,
     Pagination,
     AnswerRichText,
-    LayoutShow
+    LayoutShow,
+    Vote
   },
   props: {
     visible: {
@@ -293,6 +310,7 @@ export default {
       detail: null,
       brightening: false,
       favoriteRequesting: false,
+      voting: false,
       answers: [],
       pagination: {
         size: 10,
@@ -478,6 +496,39 @@ export default {
     deleteAnswerSucc(key) {
       this.detail.answer_count--;
       this.answers.splice(key, 1);
+    },
+    handleVote(option_ids) {
+      if (this.voting) {
+        return;
+      }
+      const detail = this.detail;
+      const params = {
+        question_id: detail.id,
+        vote_id: detail.vote.id,
+        option_ids
+      };
+      this.voting = true;
+      questionService
+        .vote(params)
+        .then(res => {
+          detail.authVote = {
+            ...res,
+            ...params
+          };
+          detail.vote_user_count++;
+          detail.vote_options.forEach(option => {
+            if (option_ids.indexOf(option.id) > -1) {
+              option.vote_count++;
+            }
+          });
+          this.$notice({
+            title: "投票成功",
+            type: "success"
+          });
+        })
+        .finally(() => {
+          this.voting = false;
+        });
     },
     handleAccepted(id) {
       this.detail.answer_id = id;
@@ -729,6 +780,22 @@ export default {
                 font-size: 16px;
                 color: #606c66;
               }
+            }
+          }
+          .page-detail-vote-wrapper {
+            .vote-image-wrapper {
+              width: 600px;
+              height: 600px;
+              margin: 24px auto 0;
+              /deep/ .cover-img {
+                background: #f4f4f4;
+                .cover {
+                  background-size: contain;
+                }
+              }
+            }
+            .vote-wrapper {
+              margin-top: 40px;
             }
           }
         }

@@ -52,6 +52,9 @@ const questionService = {
   },
   acceptAnswer(id) {
     return request.put(API.questionAnswerAccept(id));
+  },
+  vote(params) {
+    return request.post(API.questionVote, params);
   }
 };
 

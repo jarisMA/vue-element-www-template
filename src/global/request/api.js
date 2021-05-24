@@ -62,6 +62,7 @@ export default {
   questionFavoriteDelete: (type, resourceId) =>
     `${WEB_PREFIX}/question-favorite/${type}/${resourceId}`,
   questionAnswerAccept: id => `${WEB_PREFIX}/question/answer/${id}/accepted`,
+  questionVote: `${WEB_PREFIX}/question-vote-user`,
 
   commodityCats: `${WEB_PREFIX}/commodity/cat`,
   commodityCat: id => `${WEB_PREFIX}/commodity/cat/${id}`,
