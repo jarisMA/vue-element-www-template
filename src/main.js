@@ -12,8 +12,10 @@ import animate from "animate.css";
 import MessageBox from "components/MessageBox/index";
 import Notification from "components/Notification/index";
 import VueAwesomeSwiper from "vue-awesome-swiper";
+import waterfall from "vue-waterfall2";
 
 Vue.use(VueAwesomeSwiper);
+Vue.use(waterfall);
 Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(MessageBox);

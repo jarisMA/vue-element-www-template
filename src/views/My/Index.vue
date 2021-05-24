@@ -71,14 +71,15 @@
             >
               我的资料
             </li>
-            <!-- <li
+            <li
               :class="[
                 'page-menu-item',
                 activeTab === 'MyQuestion' ? 'active' : ''
               ]"
+              @click="goMyQuestion()"
             >
               我的提问
-            </li> -->
+            </li>
           </ul>
         </div>
         <div class="page-content-right">
@@ -87,6 +88,10 @@
             :loading.sync="loading"
           />
           <my-course v-if="activeTab === 'MyCourse'" :loading.sync="loading" />
+          <my-question
+            v-if="activeTab === 'MyQuestion'"
+            :loading.sync="loading"
+          />
         </div>
       </div>
     </div>
@@ -110,10 +115,12 @@ import { isVip } from "utils/function";
 import TheAvatar from "components/TheAvatar";
 import MyProfile from "./widgets/Profile";
 import MyCourse from "./widgets/Course";
+import MyQuestion from "./widgets/Question";
+
 import ClockDialog from "./widgets/ClockDialog";
 import GainDialog from './widgets/GainDialog';
 
-import { goMySetting, goMyCourse } from "utils/routes";
+import { goMySetting, goMyCourse, goMyQuestion } from "utils/routes";
 import userService from "service/user";
 const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
@@ -123,6 +130,7 @@ export default {
     TheAvatar,
     MyProfile,
     MyCourse,
+    MyQuestion,
     ClockDialog,
     GainDialog
   },
@@ -213,6 +221,7 @@ export default {
     isVip,
     goMySetting,
     goMyCourse,
+    goMyQuestion,
     getData () {
       this.dataLoading = true;
       const year = new Date().getFullYear();

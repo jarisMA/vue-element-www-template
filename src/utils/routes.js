@@ -39,6 +39,15 @@ export const goMyCourse = (type = "_self") => {
   );
 };
 
+export const goMyQuestion = (type = "_self") => {
+  return goRoute(
+    {
+      name: "MyQuestion"
+    },
+    type
+  );
+};
+
 export const goAddPlan = () => {
   return goRoute({
     name: "AddPlan"

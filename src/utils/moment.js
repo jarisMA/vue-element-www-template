@@ -40,3 +40,23 @@ export const formatSeconds = second => {
   }
   return result;
 };
+
+// 计算指定日期加减天数后的日期
+export const getCalDate = (start, day) => {
+  let date = new Date(start);
+  date.setDate(new Date(start).getDate() + day);
+  return (
+    date.getFullYear() +
+    "-" +
+    ("0" + (date.getMonth() + 1)).substr(-2, 2) +
+    "-" +
+    ("0" + date.getDate()).substr(-2, 2)
+  );
+};
+
+// 判断两个日期时间戳相差多少天,参数为时间戳
+export const dateCompare = (dateTime1, dateTime2) => {
+  const dateTimeStamp1 = new Date(dateTime1).valueOf();
+  const dateTimeStamp2 = new Date(dateTime2).valueOf();
+  return Math.ceil((dateTimeStamp1 - dateTimeStamp2) / (1000 * 60 * 60 * 24));
+};

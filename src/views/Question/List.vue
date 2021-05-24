@@ -1,402 +1,291 @@
 <template>
-  <div class="question-wrapper">
-    <div class="container-1200">
-      <div class="operate-container" v-if="userInfo">
-        <ul class="filter-container">
-          <li :class="[isAll ? 'active' : '']" @click="getAllData()">
+  <div class="page" v-loading="loading">
+    <div
+      class="page-header"
+      :style="{ width: col * 262 + (col - 1) * 30 + 'px' }"
+    >
+      <div class="page-header-left">
+        <el-select v-model="activeType" @change="getData()">
+          <el-option :value="0" label="全部"></el-option>
+          <el-option
+            v-for="item of QUESTION_TYPE"
+            :key="item.value"
+            :value="item.value"
+            :label="item.label"
+          ></el-option>
+        </el-select>
+      </div>
+      <!-- <div class="page-header-middle">
+        <ul class="page-header-channels">
+          <li :class="[
+              'page-header-channel',
+              activeChannel === 0 ? 'active' : ''
+            ]"
+              @click="activeChannel = 0">
             全部
           </li>
-          <li :class="[!isAll ? 'active' : '']" @click="getMyQuestions()">
-            只看我的
+          <li :class="[
+              'page-header-channel',
+              activeChannel === index + 1 ? 'active' : ''
+            ]"
+              v-for="(item, index) of channels"
+              :key="index"
+              @click="activeChannel = index + 1">
+            {{ item.name }}
           </li>
         </ul>
-        <el-button class="add-btn" type="primary" @click="addVisible = true"
-          >我要提问</el-button
-        >
       </div>
-      <div class="question-container" v-loading="loading">
-        <template v-if="questions.length > 0">
-          <ul class="question-list">
-            <li
-              class="question-item"
-              v-for="(item, key) of questions"
+      <div class="page-header-right">
+        <the-search-bar />
+      </div> -->
+    </div>
+    <div class="page-content">
+      <div class="page-content-list">
+        <waterfall :col="col" :width="262" :gutterWidth="30" :data="questions">
+          <template>
+            <question-card
+              v-for="item of questions"
               :key="item.id"
-            >
-              <question-card
-                :question="item"
-                @like="toggleLike(item.id, key, true)"
-                @unlike="toggleLike(item.id, key, false)"
-                @detail="goDetail(key)"
-              />
-            </li>
-          </ul>
-          <pagination
-            class="pagination-wrapper"
-            :pageSize="pagination.size"
-            :current-page="pagination.page"
-            :total="pagination.total"
-            @change-page="getData"
-          />
-          <div class="question-more" v-if="userInfo">
-            <p>没有想了解的内容？</p>
-            <p>
-              你还可以
-              <span class="primary" @click="addVisible = true">去提问</span>
-            </p>
-          </div>
-        </template>
-        <div v-else-if="!loading" class="empty-container">
-          <the-empty noText="还没有人提出过问题" />
-          <el-button
-            v-if="userInfo"
-            class="add-btn"
-            type="primary"
-            @click="addVisible = true"
-            >我要提问</el-button
-          >
-        </div>
+              :question="item"
+              @click.native="handleShowDetail(item.id)"
+            />
+          </template>
+        </waterfall>
+        <end
+          :total="pagination.total"
+          v-if="pagination.total === questions.length"
+        />
       </div>
     </div>
+    <div class="page-operate">
+      <div class="page-operate-top" @click="goTop">
+        <i class="back_to_top-icon"></i>
+      </div>
+      <div class="page-operate-add" @click="showQuestionTypeSelect = true">
+        <i class="ask-icon"></i>
+      </div>
+    </div>
+    <question-type-dialog
+      :visible.sync="showQuestionTypeSelect"
+      @select="handleQuestionTypeSelect"
+    />
+    <question-type-add
+      v-if="questionAddVisble"
+      :visible.sync="questionAddVisble"
+      @refresh="getData()"
+    />
+    <help-type-add
+      v-if="helpAddVisible"
+      :visible.sync="helpAddVisible"
+      @refresh="getData()"
+    />
+    <vote-type-add
+      v-if="voteAddVisble"
+      :visible.sync="voteAddVisble"
+      @refresh="getData()"
+    />
     <el-dialog
-      v-if="userInfo"
-      class="add-dialog"
-      :visible.sync="addVisible"
-      width="580px"
-      :before-close="handleClose"
+      v-if="detailVisible"
+      class="detail-dialog"
+      width="1120px"
+      :show-close="false"
+      :visible.sync="detailVisible"
     >
-      <el-form :model="addForm" ref="addForm" @submit.native.prevent>
-        <el-form-item class="title-container" prop="title">
-          <the-avatar :size="40" :url="userInfo.avatar_url" />
-          <el-input
-            ref="titleInput"
-            type="textarea"
-            v-model.trim="addForm.title"
-            resize="none"
-            :rows="2"
-            :autosize="{ minRows: 2, maxRows: 2 }"
-            placeholder="写下你的问题，准确地描述问题更容易得到解答"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item class="content-container" prop="content">
-          <el-input
-            type="textarea"
-            placeholder="对问题的补充描述（选填）"
-            resize="none"
-            :rows="3"
-            :autosize="{ minRows: 3, maxRows: 3 }"
-            v-model="addForm.content"
-          >
-          </el-input>
-        </el-form-item>
-        <el-form-item class="image-container" prop="images">
-          <div class="image-tips">
-            <icon-svg
-              :svg-class="[
-                'pic-icon',
-                addForm.images.length > 0 ? 'active' : ''
-              ]"
-              svg-name="pic"
-            />
-            <span class="tips" v-if="addForm.images.length > 0">
-              已选择{{ addForm.images.length }}张，还可以选择{{
-                3 - addForm.images.length
-              }}张
-            </span>
-          </div>
-          <ul class="image-list">
-            <li
-              class="image-wrapper"
-              v-for="(item, key) of addForm.images"
-              :key="item"
-            >
-              <img class="uploaded-img" :src="item" />
-              <span class="delete-icon-wrapper" @click="deleteImage(key)">
-                <icon-svg svg-class="delete-icon" svg-name="delete_2" />
-              </span>
-            </li>
-            <li v-if="addForm.images.length < 3">
-              <upload-image @added="addImage" theme="question" />
-            </li>
-          </ul>
-        </el-form-item>
-        <el-form-item class="select-container" prop="channel_id">
-          <el-select
-            v-model="addForm.channel_id"
-            placeholder="选择一个家装领域"
-          >
-            <el-option
-              class="question-select"
-              v-for="item of channels"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            >
-              <label class="question-select-option">{{ item.name }}</label>
-            </el-option>
-          </el-select>
-          <el-button
-            class="submit-btn"
-            type="primary"
-            @click="addQuestion"
-            :loading="submiting"
-            >发布问题</el-button
-          >
-        </el-form-item>
-      </el-form>
-    </el-dialog>
-    <el-drawer
-      :visible.sync="drawer"
-      size="1000px"
-      direction="rtl"
-      custom-class="question-drawer"
-      ref="drawer"
-    >
-      <question-detail
-        v-if="drawer"
-        :id="questionId"
-        @backTop="drawerBackTop"
-        @update="updateQuestion"
-        @deleted="deleteQuestion"
+      <detail
+        :id="detailId"
+        @deleted="handleDeleteQuestion"
+        @next="handleNextQuestion"
+        @prev="handlePrevQuestion"
       />
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import TheAvatar from "components/TheAvatar";
-import UploadImage from "components/UploadImage";
-import QuestionCard from "./widgets/QuestionCard";
-import Pagination from "components/Pagination";
-import TheEmpty from "components/TheEmpty";
-import QuestionDetail from "@/views/Question/Detail";
-
-import { mapState } from "vuex";
+import {
+  QUESTION_TYPE,
+  QUESTION_TYPE_QUESTION,
+  QUESTION_TYPE_HELP,
+  QUESTION_TYPE_VOTE
+} from "utils/const";
+// import TheSearchBar from "components/TheSearchBar";
 import questionService from "service/question";
+import QuestionCard from "./widgets/QuestionCard";
+import End from "./widgets/End";
+import QuestionTypeDialog from "./widgets/QuestionTypeDialog";
+import QuestionTypeAdd from "./widgets/QuestionTypeAdd";
+import HelpTypeAdd from "./widgets/HelpTypeAdd";
+import VoteTypeAdd from "./widgets/VoteTypeAdd";
+import Detail from "./widgets/Detail";
 
 export default {
-  name: "Question",
+  name: "QuestionList",
   components: {
-    TheAvatar,
-    UploadImage,
+    // TheSearchBar,
     QuestionCard,
-    Pagination,
-    TheEmpty,
-    QuestionDetail
+    End,
+    QuestionTypeDialog,
+    QuestionTypeAdd,
+    HelpTypeAdd,
+    VoteTypeAdd,
+    Detail
   },
   data() {
     return {
+      QUESTION_TYPE,
+      channels: [
+        {
+          name: "户型布局"
+        },
+        {
+          name: "软装搭配"
+        },
+        {
+          name: "家电设备"
+        },
+        {
+          name: "施工经验"
+        }
+      ],
       loading: true,
-      isAll: true,
-      addVisible: false,
-      submiting: false,
+      activeType: 0,
+      activeChannel: 0,
+      keyword: "",
+      questions: [],
       pagination: {
         page: 1,
-        size: 15,
-        total: 0
+        total: 0,
+        size: 30
       },
-      channels: [],
-      addForm: {
-        title: "",
-        content: "",
-        images: [],
-        channel_id: null
-      },
-      questions: [],
-      liking: false,
-      drawer: false,
-      questionId: null,
-      questionIndex: null
+      col: 6,
+      showQuestionTypeSelect: false,
+      questionAddVisble: false,
+      helpAddVisible: false,
+      voteAddVisble: false,
+      detailVisible: false,
+      detailId: null
     };
   },
   watch: {
-    addVisible(val) {
-      if (val) {
-        this.$nextTick(() => {
-          this.$refs["titleInput"].focus();
-        });
-      }
+    questionAddVisble(val) {
+      this.handleToggleLockScroll(val);
     }
   },
-  computed: {
-    ...mapState(["userInfo"])
-  },
   created() {
-    this.getConst();
+    this.calcCol();
     this.getData();
   },
+  mounted() {
+    window.addEventListener("resize", this.calcCol);
+    window.addEventListener("scroll", this.scroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("resize", this.calcCol);
+    window.removeEventListener("scroll", this.scroll);
+  },
   methods: {
-    getConst() {
-      if (this.userInfo) {
-        questionService.channels().then(res => {
-          this.channels = res;
-        });
+    handleToggleLockScroll(flag) {
+      if (flag) {
+        document.body.style.overflow = "hidden";
+      } else {
+        document.body.style.overflow = "auto";
       }
     },
-    getAllData(flag) {
-      if (this.isAll === flag) {
-        return;
-      }
-      this.isAll = flag;
-      this.getData();
+    calcCol() {
+      const maxWidth = Math.max(window.innerWidth - 200, 1200 - 200);
+      this.col = Math.floor(maxWidth / (262 + 15));
     },
     getData(start = 1) {
       this.loading = true;
-      this.isAll = true;
       let params = {
         page: start,
-        page_size: this.pagination.size,
-        type: 1
+        page_size: this.pagination.size
       };
+      this.activeType ? (params.type = this.activeType) : "";
       questionService
         .questions(params)
         .then(res => {
-          this.questions = res.list;
-          this.pagination.page = start;
-          this.pagination.total = res.pagination.total;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    getMyQuestions(start = 1) {
-      this.loading = true;
-      this.isAll = false;
-      let params = {
-        page: start,
-        page_size: this.pagination.size,
-        type: 1,
-        status: 2
-      };
-      questionService
-        .myQuestions(params)
-        .then(res => {
-          this.questions = res.list;
-          this.pagination.page = start;
-          this.pagination.total = res.pagination.total;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    goDetail(index) {
-      if (this.userInfo) {
-        this.drawer = true;
-        this.questionIndex = index;
-        this.questionId = this.questions[index].id;
-        const dom = document.querySelector(".question-drawer .el-drawer__body");
-        if (dom) {
-          this.$nextTick(() => {
-            dom.scrollTo(0, 0);
-          });
-        }
-      }
-    },
-    addQuestion() {
-      const { title, content, images, channel_id } = this.addForm;
-      if (!title) {
-        this.$notice({
-          type: "danger",
-          title: "问题不能为空"
-        });
-        return;
-      }
-      if (!channel_id) {
-        this.$notice({
-          type: "danger",
-          title: "请选择家装领域"
-        });
-        return;
-      }
-      this.submiting = true;
-      questionService
-        .addQuestion({
-          title,
-          content,
-          images: images.join(","),
-          channel_id,
-          type: 1,
-          status: 2
-        })
-        .then(res => {
-          this.handleClose();
-          const { id, nickname, avatar_url } = this.userInfo;
-          let channel = {};
-          this.channels.some(item => {
-            if (channel_id === item.id) {
-              channel = item;
-              return true;
-            }
-          });
-          this.questions.unshift({
-            id: res.id,
-            like_count: 0,
-            is_like: false,
-            answer_count: 0,
-            title,
-            content,
-            images: images,
-            channel,
-            user: { id, nickname, avatar_url }
-          });
-          window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-          });
-        })
-        .finally(() => {
-          this.submiting = false;
-        });
-    },
-    addImage(url) {
-      this.addForm.images.push(url);
-    },
-    deleteImage(key) {
-      this.addForm.images.splice(key, 1);
-    },
-    handleClose(done) {
-      this.$refs["addForm"].resetFields();
-      done && done();
-      this.addVisible = false;
-    },
-    toggleLike(id, key, flag = true) {
-      if (!this.liking) {
-        this.liking = true;
-        questionService
-          .addLike({
-            type: 1,
-            resource_id: id,
-            count: flag ? 1 : 0
-          })
-          .then(() => {
-            const count = flag ? 1 : -1;
-            this.$set(this.questions, key, {
-              ...this.questions[key],
-              like_count: this.questions[key].like_count + count,
-              is_like: flag
+          if (start === 1) {
+            this.questions = [];
+            this.$nextTick(() => {
+              this.questions = res.list;
+              this.$waterfall.forceUpdate();
             });
-          })
-          .finally(() => {
-            this.liking = false;
-          });
+          } else {
+            this.questions = this.questions.concat(res.list);
+          }
+
+          this.pagination.page = start;
+          this.pagination.total = res.pagination.total;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleSearch(keyword) {
+      this.keyword = keyword;
+      this.getData();
+    },
+    scroll() {
+      const dom = document.querySelector("html");
+      if (
+        dom.scrollHeight - dom.scrollTop === dom.clientHeight &&
+        this.questions.length < this.pagination.total
+      ) {
+        this.getData(this.pagination.page + 1);
       }
     },
-    drawerBackTop() {
-      const drawer = this.$refs["drawer"].$el.children[0].children[0]
-        .children[1];
-      drawer.scrollTo({
+    goTop() {
+      window.scrollTo({
         top: 0,
-        behaviour: "smooth"
+        behavior: "smooth"
       });
     },
-    updateQuestion(data) {
-      this.$set(this.questions, this.questionIndex, {
-        ...data
-      });
+    handleShowDetail(id) {
+      this.detailId = id;
+      this.detailVisible = true;
     },
-    deleteQuestion() {
-      this.questions.splice(this.questionIndex, 1);
-      this.drawer = false;
+    handleQuestionTypeSelect(type) {
+      switch (type) {
+        case QUESTION_TYPE_QUESTION:
+          this.questionAddVisble = true;
+          break;
+        case QUESTION_TYPE_HELP:
+          this.helpAddVisible = true;
+          break;
+        case QUESTION_TYPE_VOTE:
+          this.voteAddVisble = true;
+          break;
+        default:
+          break;
+      }
+    },
+    handleDeleteQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      this.questions.splice(index, 1);
+      this.detailVisible = false;
+    },
+    handlePrevQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      if (this.questions[index - 1]) {
+        this.detailId = this.questions[index - 1].id;
+      } else {
+        this.$notice({
+          type: "warning",
+          title: "没有更多的了"
+        });
+      }
+    },
+    handleNextQuestion() {
+      const index = this.questions.findIndex(item => item.id === this.detailId);
+      if (this.questions[index + 1]) {
+        this.detailId = this.questions[index + 1].id;
+      } else {
+        this.$notice({
+          type: "warning",
+          title: "没有更多的了"
+        });
+      }
     }
   }
 };
@@ -404,303 +293,118 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-@baseColor: #8ea098;
-.question-wrapper {
-  padding: 0 10px;
-  .container-1200 {
-    margin-top: 20px;
-  }
-  .question-container {
-    min-height: calc(100vh - 528px - 50px);
-  }
-  .rz-icon {
-    font-size: 24px;
-  }
-  .operate-container {
+.page {
+  width: 100%;
+  padding: 30px 100px;
+  .page-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    .filter-container {
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    .page-header-left {
+      width: 116px;
+      /deep/ .el-select {
+        .el-input__inner {
+          padding-left: 10px;
+          font-size: 14px;
+          color: #2c3330;
+          border: 1px solid #efefef;
+        }
+      }
+    }
+    .page-header-middle {
+      .page-header-channels {
+        display: flex;
+        align-items: center;
+        .page-header-channel {
+          line-height: 24px;
+          font-weight: 500;
+          font-size: 14px;
+          color: #606c66;
+          cursor: pointer;
+          &.active {
+            color: #2c3330;
+          }
+          & + .page-header-channel {
+            margin-left: 32px;
+          }
+        }
+      }
+    }
+    .page-header-right {
       display: flex;
-      li {
-        line-height: 18px;
-        font-weight: 400;
-        font-size: 12px;
-        color: #81948b;
-        cursor: pointer;
-        &:not(:last-child) {
-          margin-right: 20px;
-        }
-        &.active,
-        &:hover {
-          color: @primaryColor;
-        }
-      }
+      align-items: center;
+      justify-content: flex-end;
+      width: 280px;
     }
   }
-  .question-list {
-    margin-top: 20px;
-    .question-item {
-      position: relative;
-      &:not(:last-child) {
-        &::after {
-          position: absolute;
-          bottom: 0;
-          left: 20px;
-          width: calc(100% - 40px);
-          height: 1px;
-          content: "";
-          background: #efefef;
-        }
-      }
-    }
-  }
-  .question-more {
-    position: relative;
+  .page-content {
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    margin: 30px auto 60px;
-    width: 108px;
-    line-height: 18px;
-    font-size: 12px;
-    text-align: center;
-    color: #8ea098;
-    &::before,
-    &::after {
-      position: absolute;
-      top: 50%;
-      width: 60px;
-      height: 1px;
-      background: #efefef;
-      content: "";
-      transform: translateY(-50%);
+    margin-top: 20px;
+    .page-content-list {
+      height: 100%;
+      overflow: auto;
+      /deep/ .question-card {
+        margin-bottom: 30px;
+      }
     }
-    &::before {
-      left: -80px;
-    }
-    &::after {
-      right: -80px;
-    }
-    .primary {
-      color: @primaryColor;
+  }
+  .page-operate {
+    position: fixed;
+    right: 35px;
+    bottom: 120px;
+    .page-operate-top,
+    .page-operate-add {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
       cursor: pointer;
     }
-  }
-  /deep/ .add-btn {
-    height: 30px;
-    padding: 8px 24px;
-    border: unset;
-    span {
-      font-weight: 400;
-      font-size: 14px;
-      line-height: 14px;
+    .page-operate-top {
+      background: rgba(0, 0, 0, 0.3);
+    }
+    .page-operate-add {
+      background: @primaryColor;
+    }
+    .back_to_top-icon,
+    .ask-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      mask-size: cover;
+      mask-repeat: no-repeat;
+      background-color: #fff;
+    }
+    .back_to_top-icon {
+      mask-image: url("~images/question/back_to_top.svg");
+    }
+    .ask-icon {
+      mask-image: url("~images/question/ask.svg");
     }
   }
-  /deep/ .add-dialog {
+}
+.detail-dialog {
+  /deep/ .el-dialog {
+    height: 100%;
+    margin: 0 auto !important;
+    background: transparent;
+    box-shadow: unset;
+    overflow: hidden;
     .el-dialog__header {
-      padding: 0;
+      display: none;
     }
     .el-dialog__body {
-      padding: 44px 20px 30px;
-    }
-    .title-container {
-      margin-bottom: 20px;
-      .el-form-item__content {
-        display: flex;
-        align-items: center;
-        .el-textarea__inner {
-          padding: 0 24px 0 16px;
-          height: 52px;
-          line-height: 26px;
-          font-weight: bold;
-          font-size: 20px;
-          color: #111111;
-          border: unset;
-          overflow: hidden;
-          &::placeholder {
-            color: @baseColor;
-          }
-        }
-      }
-    }
-    .content-container {
-      margin-bottom: 13px;
-      .el-textarea__inner {
-        padding: 14px;
-        line-height: 21px;
-        font-weight: 400;
-        font-size: 15px;
-        line-height: 1.67;
-        color: #2c3330;
-        border: 1px solid #efefef;
-        &::placeholder {
-          color: @baseColor;
-        }
-        &:focus {
-          border-color: @primaryColor;
-        }
-      }
-    }
-    .image-container {
-      margin-bottom: 20px;
-      .image-tips {
-        display: flex;
-        align-items: center;
-        margin-bottom: 13px;
-        .pic-icon {
-          font-size: 24px;
-          color: #8ea098;
-          &.active {
-            color: @primaryColor;
-          }
-        }
-        .tips {
-          display: inline-block;
-          margin-left: 12px;
-          line-height: 18px;
-          font-size: 12px;
-          color: @baseColor;
-        }
-      }
-      .image-list {
-        display: flex;
-        li.image-wrapper {
-          position: relative;
-          width: 80px;
-          height: 80px;
-          .uploaded-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
-          &:not(:last-child) {
-            margin-right: 20px;
-          }
-          .delete-icon {
-            position: absolute;
-            top: 0;
-            right: 0;
-            display: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #fff;
-            opacity: 0.5;
-            cursor: pointer;
-            z-index: 2;
-            &:hover {
-              opacity: 0.8;
-            }
-          }
-          &:hover {
-            &::after {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 100%;
-              height: 100%;
-              content: "";
-              background: rgba(0, 0, 0, 0.3);
-            }
-            .delete-icon {
-              display: inline-block;
-            }
-          }
-        }
-      }
-    }
-    .select-container {
-      margin-bottom: 0;
-      .el-form-item__content {
-        width: 100%;
-      }
-      .el-select {
-        .el-select__caret {
-          color: #606c66;
-        }
-        .el-input__inner {
-          height: 30px;
-          padding: 0 30px 0 0;
-          line-height: 30px;
-          font-size: 14px;
-          border: unset;
-          border-bottom: 1px solid #efefef;
-          color: #2c3330;
-          &::placeholder {
-            color: #c8d0cc;
-          }
-        }
-      }
-      .submit-btn {
-        float: right;
-        height: 30px;
-        padding: 8px 24px;
-        border: unset;
-        span {
-          font-weight: 400;
-          font-size: 14px;
-          line-height: 14px;
-        }
-      }
+      width: 100%;
+      height: 100%;
+      padding: 40px 0;
+      overflow: hidden;
     }
   }
-  /deep/ .question-drawer {
-    background: #fafafa !important;
-    outline: unset;
-    .el-drawer__header {
-      height: 60px;
-      padding: 20px;
-      margin: 0;
-    }
-    .el-drawer__body {
-      overflow: auto;
-    }
-  }
-}
-.empty-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 20px 0 40px;
-  width: 100%;
-  height: 515px;
-  background: #fff;
-  /deep/ .empty-wrapper {
-    padding: 0 0 20px;
-    img {
-      width: 260px;
-    }
-    span {
-      margin-top: 27px;
-      line-height: 21px;
-      font-size: 14px;
-      color: #8ea098;
-    }
-  }
-}
-</style>
-<style lang="less">
-.el-select-dropdown {
-  /deep/ .question-select {
-    .question-select-option {
-      position: relative;
-      padding-left: 17px;
-      &::before {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 17px;
-        height: 17px;
-        background: url("~images/question/rz.svg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        content: "";
-      }
-    }
-  }
-}
-.pagination-wrapper {
-  margin-top: 10px;
 }
 </style>
