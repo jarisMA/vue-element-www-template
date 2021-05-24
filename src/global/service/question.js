@@ -29,6 +29,9 @@ const questionService = {
   answers: (questionId, params = {}) => {
     return request.get(API.questionAnswers(questionId), params);
   },
+  answer(id) {
+    return request.get(API.questionAnswer(id));
+  },
   addAnswer: (questionId, params = {}) => {
     return request.post(API.questionAnswerAdd(questionId), params);
   },

@@ -60,3 +60,29 @@ export const dateCompare = (dateTime1, dateTime2) => {
   const dateTimeStamp2 = new Date(dateTime2).valueOf();
   return Math.ceil((dateTimeStamp1 - dateTimeStamp2) / (1000 * 60 * 60 * 24));
 };
+
+export const formatDateTime = dateTime => {
+  // dateTime = dateTime.replace('年', '-').replace('月', '-').replace('日','');
+  let oneYear = 1000 * 60 * 60 * 24 * 365;
+  const now = new Date().valueOf();
+  const date = new Date(dateTime);
+  const dateValue = date.valueOf();
+  let year = date.getFullYear();
+  let month = date.getMonth() + 1;
+  let day = date.getDate();
+  let hour = date.getHours();
+  let minute = date.getMinutes();
+  let result = "";
+  if (now - dateValue > oneYear) {
+    result += year + "-";
+  }
+  result +=
+    ("0" + month).substr(-2, 2) +
+    "-" +
+    ("0" + day).substr(-2, 2) +
+    " " +
+    ("0" + hour).substr(-2, 2) +
+    ":" +
+    ("0" + minute).substr(-2, 2);
+  return result;
+};

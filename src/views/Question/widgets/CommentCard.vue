@@ -151,11 +151,6 @@ export default {
   data() {
     return {
       loading: false,
-      images:
-        (this.commentData &&
-          this.commentData.images &&
-          this.commentData.images.split(",")) ||
-        [],
       commentVisible: false,
       comment: this.commentData || {
         user: {},
@@ -163,17 +158,15 @@ export default {
       }
     };
   },
-  watch: {
-    commentData: {
-      handler(val) {
-        this.images = (val.images && val.images.split(",")) || [];
-        this.comment = val;
-      },
-      deep: true
-    }
-  },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
+    images() {
+      const { images } = this.commentData;
+      if (!(images instanceof Array)) {
+        return (images && images.split(",")) || [];
+      }
+      return [];
+    }
   },
   methods: {
     fromNow,

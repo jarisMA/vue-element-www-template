@@ -357,6 +357,7 @@ import {
   TYPE_QUESTION
 } from "utils/const";
 import commonMixins from "./mixins";
+import { go404 } from "utils/routes";
 
 export default {
   name: "QuestionDetail",
@@ -441,6 +442,10 @@ export default {
         })
       ])
         .then(([detail, res]) => {
+          if (detail.deleted_at) {
+            go404();
+            return;
+          }
           detail.informations = detail.informations
             ? JSON.parse(detail.informations)
             : {};
