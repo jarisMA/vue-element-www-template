@@ -83,5 +83,8 @@ export default {
   clock: `${WEB_PREFIX}/mine/clock`,
   gainShineCount: `${WEB_PREFIX}/mine/gain-history/shine-count`,
   gainHistory: `${WEB_PREFIX}/mine/gain-history`,
-  districts: `${PREFIX}/api/districts/all`
+  districts: `${PREFIX}/api/districts/all`,
+  myAnswer: `${WEB_PREFIX}/mine/question-answer`,
+  myQuestion: `${WEB_PREFIX}/mine/question`,
+  myFavorite: `${WEB_PREFIX}/mine/question-favorite`
 };
