@@ -1,10 +1,5 @@
 <template>
-  <el-dialog
-    class="page-wrapper"
-    width="1120px"
-    :show-close="false"
-    :visible="visible"
-  >
+  <div class="page-wrapper">
     <div class="page" v-loading="loading">
       <div
         class="container-980"
@@ -329,7 +324,7 @@
       </ul>
     </div>
     <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
-  </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -668,22 +663,9 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 .page-wrapper {
-  /deep/ .el-dialog {
-    height: 100%;
-    margin: 0 auto !important;
-    background: transparent;
-    box-shadow: unset;
-    overflow: hidden;
-    .el-dialog__header {
-      display: none;
-    }
-    .el-dialog__body {
-      width: 100%;
-      height: 100%;
-      padding: 40px 0;
-      overflow: hidden;
-    }
-  }
+  width: 1120px;
+  height: 100%;
+  margin: auto;
   .page-close-icon {
     position: fixed;
     top: 15px;

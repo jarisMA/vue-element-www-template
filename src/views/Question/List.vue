@@ -84,12 +84,15 @@
       :visible.sync="voteAddVisble"
       @refresh="getData()"
     />
-    <detail
+    <el-dialog
       v-if="detailVisible"
+      class="detail-dialog"
+      width="1120px"
+      :show-close="false"
       :visible.sync="detailVisible"
-      :id="detailId"
-      @deleted="handleDeleteQuestion"
-    />
+    >
+      <detail :id="detailId" @deleted="handleDeleteQuestion" />
+    </el-dialog>
   </div>
 </template>
 
@@ -356,6 +359,24 @@ export default {
     }
     .ask-icon {
       mask-image: url("~images/question/ask.svg");
+    }
+  }
+}
+.detail-dialog {
+  /deep/ .el-dialog {
+    height: 100%;
+    margin: 0 auto !important;
+    background: transparent;
+    box-shadow: unset;
+    overflow: hidden;
+    .el-dialog__header {
+      display: none;
+    }
+    .el-dialog__body {
+      width: 100%;
+      height: 100%;
+      padding: 40px 0;
+      overflow: hidden;
     }
   }
 }

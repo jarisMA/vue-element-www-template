@@ -1,4 +1,4 @@
-// import QuestionDetail from "@/views/Question/Detail";
+import QuestionDetail from "@/views/Question/Detail";
 import QuestionList from "@/views/Question/List";
 
 const routes = [
@@ -9,15 +9,15 @@ const routes = [
     meta: {
       auth: false
     }
+  },
+  {
+    path: "/question/:id",
+    name: "QuestionDetail",
+    component: QuestionDetail,
+    meta: {
+      auth: false
+    }
   }
-  // {
-  //   path: "/question/:id",
-  //   name: "QuestionDetail",
-  //   component: QuestionDetail,
-  //   meta: {
-  //     auth: true
-  //   }
-  // }
 ];
 
 export default routes;
