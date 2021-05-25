@@ -37,6 +37,18 @@
         </div>
         <div class="card-content">
           <div class="content" v-html="answer.content"></div>
+          <ul
+            class="image-list"
+            v-if="answer.images && answer.images.length > 0"
+          >
+            <li
+              class="image-item"
+              v-for="(image, index) of answer.images"
+              :key="index"
+            >
+              <img :src="image" />
+            </li>
+          </ul>
         </div>
         <div class="unfold-wrapper" v-if="showUnfoldBtn && fold">
           <label class="unfold-btn" @click="fold = false">
@@ -520,6 +532,17 @@ export default {
         padding-left: 3em;
       }
     }
+    .image-list {
+      display: flex;
+      .image-item {
+        margin: 8px 8px 0 0;
+        img {
+          width: 60px;
+          height: 60px;
+          object-fit: cover;
+        }
+      }
+    }
   }
   .unfold-wrapper {
     position: absolute;
@@ -549,8 +572,8 @@ export default {
   }
 }
 .answer-operate {
-  position: sticky;
-  bottom: 0;
+  // position: sticky;
+  // bottom: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;

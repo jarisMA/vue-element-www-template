@@ -231,6 +231,7 @@
               <div
                 :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
                 ref="editor"
+                v-if="detail.type !== QUESTION_TYPE_VOTE"
               >
                 <h3 class="content-title" v-if="largerRichText">
                   {{ detail.title }}
@@ -250,6 +251,9 @@
                 >
                   <span>退出全屏</span>
                 </div>
+              </div>
+              <div class="simple-reply-wrapper" v-else>
+                <simple-reply :id="id" @submited="addAnswerSucc" />
               </div>
             </div>
             <div class="page-content-answers">
@@ -366,7 +370,8 @@ import Pagination from "components/Pagination";
 import AnswerRichText from "./AnswerRichText";
 import LayoutShow from "./layout-show";
 import Vote from "./Vote";
-import TheEmpty from "components/TheEmpty.vue";
+import TheEmpty from "components/TheEmpty";
+import SimpleReply from "./SimpleReply";
 
 import { mapState } from "vuex";
 import {
@@ -389,7 +394,8 @@ export default {
     AnswerRichText,
     LayoutShow,
     Vote,
-    TheEmpty
+    TheEmpty,
+    SimpleReply
   },
   props: {
     visible: {
@@ -1018,8 +1024,8 @@ export default {
         padding: 0 100px;
         .page-content-main {
           width: 100%;
+          margin-bottom: 16px;
           .rich-text-wrapper {
-            margin-bottom: 16px;
             background: #fff;
             &.large {
               position: fixed;
@@ -1112,6 +1118,8 @@ export default {
                 }
               }
             }
+          }
+          .simple-reply-wrapper {
           }
         }
         .page-content-answers {
