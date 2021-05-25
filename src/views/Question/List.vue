@@ -93,6 +93,7 @@
     >
       <detail
         :id="detailId"
+        :visible.sync="detailVisible"
         @deleted="handleDeleteQuestion"
         @next="handleNextQuestion"
         @prev="handlePrevQuestion"
