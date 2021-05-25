@@ -280,6 +280,7 @@
                 />
               </li>
             </ul>
+            <the-empty v-else noText="暂无回答" />
             <pagination
               class="pagination-wrapper"
               :pageSize="pagination.size"
@@ -348,6 +349,7 @@ import Pagination from "components/Pagination";
 import AnswerRichText from "./AnswerRichText";
 import LayoutShow from "./layout-show";
 import Vote from "./Vote";
+import TheEmpty from "components/TheEmpty.vue";
 
 import { mapState } from "vuex";
 import {
@@ -369,7 +371,8 @@ export default {
     Pagination,
     AnswerRichText,
     LayoutShow,
-    Vote
+    Vote,
+    TheEmpty
   },
   props: {
     visible: {
@@ -1089,6 +1092,7 @@ export default {
           }
         }
         .page-content-answers {
+          background: #fff;
           .page-answers-header {
             display: flex;
             align-items: center;

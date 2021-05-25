@@ -117,7 +117,7 @@ import commonMixins from "./widgets/mixins";
 import { TYPE_ANSWER } from "utils/const";
 import Comment from "./widgets/Comment";
 import CommentCard from "./widgets/CommentCard";
-import ClapCard from "./widgets/clapCard.vue";
+import ClapCard from "./widgets/ClapCard";
 import TheEmpty from "components/TheEmpty";
 export default {
   name: "QuestionAnswer",
