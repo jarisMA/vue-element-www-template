@@ -309,7 +309,7 @@ export default {
                 </tr>
                 <tr>
                   <td>区域</td>
-                  <td width="100">产品图</td>
+                  <td width="80">产品图</td>
                   <td>产品名称</td>
                   <td>品牌</td>
                   <td>尺寸(mm)</td>
@@ -328,8 +328,10 @@ export default {
           if (good.sku) {
             str += `<tr>
                     <td>${list.typeName}\t</td>
-                    <td height="60">
-                      <img height="20" src="${good.sku.img_id}" />\t
+                    <td height="80">
+                      <img width="100%" height="100%" src="${
+                        good.sku.img_id
+                      }" />\t
                     </td>
                     <td>${good.sku.name}\t</td>
                     <td>${(good.sku.brand && good.sku.brand.name) || "-"}\t</td>
