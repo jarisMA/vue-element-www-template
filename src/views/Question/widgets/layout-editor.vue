@@ -3,9 +3,6 @@
     <div
       class="editor-img-wrapper"
       v-show="!showCompass"
-      @mousemove="handleMouseMove"
-      @mouseup="handleMouseUp"
-      @mouseout="handleMouseUp"
       ref="wrapper"
       :style="{ width: width + 'px', height: height + 'px' }"
     >
@@ -217,6 +214,8 @@ export default {
       this.startY = e.clientY;
       this.pointX = point.x;
       this.pointY = point.y;
+      window.addEventListener("mousemove", this.handleMouseMove);
+      window.addEventListener("mouseup", this.handleMouseUp);
     },
     handleMouseMove(e) {
       if (this.dragging) {
@@ -229,7 +228,7 @@ export default {
         const width = dom.width;
         const height = dom.height;
         point.x = x < 0 ? 0 : x > width - 70 ? width - 70 : x;
-        point.y = y < 0 ? 0 : y > height ? height : y;
+        point.y = y < 0 ? 0 : y > height - 40 ? height - 40 : y;
         this.updateLayout({
           points: this.layout.points
         });
@@ -237,6 +236,8 @@ export default {
     },
     handleMouseUp() {
       this.dragging = false;
+      window.removeEventListener("mousemove", this.handleMouseMove);
+      window.removeEventListener("mouseup", this.handleMouseUp);
     },
     updateLayout(params) {
       this.$emit("update", {
