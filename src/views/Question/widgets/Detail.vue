@@ -73,8 +73,10 @@
                   <el-carousel
                     height="600px"
                     arrow="always"
+                    ref="layoutCarousel"
                     :autoplay="false"
                     :loop="false"
+                    @change="handleLayoutCarouselChange"
                   >
                     <el-carousel-item
                       v-for="(layout, key) in detail.layouts"
@@ -84,6 +86,8 @@
                         class="layout-wrapper"
                         :layout="layout"
                         :edit="false"
+                        :activePointIndex="activePointIndex + 1"
+                        @pointClick="index => handleSwiperSlideTo(index - 1)"
                       />
                     </el-carousel-item>
                   </el-carousel>
@@ -527,7 +531,16 @@ export default {
         this.showOperate = false;
       }
     },
+    handleLayoutCarouselChange(imgIndex) {
+      const point = this.points[this.activePointIndex];
+      if (point.imgIndex !== imgIndex) {
+        const index = this.points.findIndex(item => item.imgIndex === imgIndex);
+        this.handleSwiperSlideTo(index);
+      }
+    },
     handleSwiperSlideTo(index, speed = 200) {
+      const point = this.points[index];
+      this.$refs["layoutCarousel"].setActiveItem(point.imgIndex);
       this.$refs["mySwiper"].$swiper.slideTo(index, speed, false);
       this.activePointIndex = index;
     },

@@ -18,7 +18,13 @@
         }"
         @mousedown="e => handleMouseDown(e, index)"
       >
-        <label class="editor-point-label">{{ item.index }}</label>
+        <label
+          :class="[
+            'editor-point-label',
+            pointIndex === item.index ? 'active' : ''
+          ]"
+          >{{ item.index }}</label
+        >
       </div>
       <template v-if="layout.is_south">
         <div
@@ -84,6 +90,10 @@ export default {
     pointLen: {
       type: Number,
       required: true
+    },
+    pointIndex: {
+      type: Number,
+      default: 0
     }
   },
   data() {
@@ -349,11 +359,16 @@ export default {
         line-height: 40px;
         font-weight: 500;
         font-size: 20px;
-        color: #fff;
+        color: @primaryColor;
         text-align: center;
-        background: @primaryColor;
+        background: #fff;
         border-radius: 50%;
+        border: 1px solid @primaryColor;
         cursor: pointer;
+        &.active {
+          color: #fff;
+          background: @primaryColor;
+        }
         &::before {
           position: absolute;
           top: calc(50% - 1px);

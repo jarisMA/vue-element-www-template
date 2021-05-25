@@ -72,6 +72,7 @@
                     <layout-editor
                       :layout="layout"
                       :pointLen="pointLen"
+                      :pointIndex="pointValueFocusIndex"
                       @update="params => handleUpdateLayout(index, params)"
                     />
                   </div>
