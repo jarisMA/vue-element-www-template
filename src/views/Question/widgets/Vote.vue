@@ -175,9 +175,11 @@ export default {
     getSelected() {
       const question = this.question;
       if (question && question.authVote) {
-        this.selected = question.authVote.option_ids
-          .split(",")
-          .map(item => parseInt(item));
+        const option_ids =
+          question.authVote.option_ids instanceof Array
+            ? question.authVote.option_ids
+            : question.authVote.option_ids.split(",");
+        this.selected = option_ids.map(item => parseInt(item));
       } else {
         this.selected = [];
       }
@@ -384,7 +386,7 @@ export default {
         width: 100%;
         padding: 15px;
         background: #fafafa;
-        border: 1px solid #efefef;
+        border-bottom: 1px solid #efefef;
         .vote-img {
           width: 40px;
           height: 40px;

@@ -284,12 +284,14 @@ export default {
       this.handleCloseCompass();
     },
     handleDelete() {
-      this.updateLayout({
-        image_url: "",
-        points: [],
-        is_south: null,
-        width: null,
-        height: null
+      this.$confirm(`确认删除?`).then(() => {
+        this.updateLayout({
+          image_url: "",
+          points: [],
+          is_south: null,
+          width: null,
+          height: null
+        });
       });
     }
   }

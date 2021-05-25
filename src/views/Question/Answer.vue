@@ -236,6 +236,7 @@ export default {
   }
   .page-header-title {
     flex: 1;
+    margin-right: 20px;
     line-height: 28px;
     font-weight: 600;
     font-size: 20px;
@@ -285,12 +286,150 @@ export default {
       }
     }
     .content-main-desc {
-      .content-main-content {
+      /deep/ .content-main-content {
         margin-top: 16px;
         line-height: 28px;
         font-size: 16px;
         color: #2c3330;
+        img {
+          margin: 0 auto !important;
+          display: block !important;
+          max-width: 100%;
+        }
+        ul li {
+          list-style: disc;
+        }
+        ul,
+        ol {
+          margin-left: 20px;
+        }
+        ol,
+        ol li {
+          list-style: decimal;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+          font-weight: 700;
+          font-size: 0.67em;
+        }
+
+        h5 {
+          font-size: 0.83em;
+        }
+
+        h4 {
+          font-size: 1em;
+        }
+
+        h3 {
+          font-size: 1.17em;
+        }
+
+        h2 {
+          font-size: 1.5em;
+        }
+
+        h1 {
+          font-size: 2em;
+        }
+        a {
+          text-decoration: none;
+        }
+        p {
+          margin-bottom: 1em;
+        }
+        .ql-syntax {
+          background-color: #23241f;
+          color: #f8f8f2;
+          overflow: visible;
+          white-space: pre-wrap;
+          margin-bottom: 5px;
+          margin-top: 5px;
+          padding: 5px 10px;
+          border-radius: 3px;
+        }
+
+        blockquote {
+          border-left: 4px solid #ccc;
+          margin-bottom: 5px;
+          margin-top: 5px;
+          padding-left: 16px;
+        }
+
+        .ql-align-justify {
+          text-align: justify;
+        }
+
+        .ql-align-right {
+          text-align: right;
+        }
+
+        .ql-align-center {
+          text-align: center;
+        }
+
+        .ql-size-huge {
+          font-size: 2.5em;
+        }
+
+        .ql-size-large {
+          font-size: 1.5em;
+        }
+
+        .ql-size-small {
+          font-size: 0.75em;
+        }
+
+        .ql-direction-rtl {
+          direction: rtl;
+        }
+
+        .ql-font-serif {
+          font-family: Georgia, Times New Roman, serif;
+        }
+
+        .ql-font-monospace {
+          font-family: Monaco, Courier New, monospace;
+        }
+
+        .ql-indent-8 {
+          padding-left: 24em;
+        }
+
+        .ql-indent-7 {
+          padding-left: 21em;
+        }
+
+        .ql-indent-6 {
+          padding-left: 18em;
+        }
+
+        .ql-indent-5 {
+          padding-left: 15em;
+        }
+
+        .ql-indent-4 {
+          padding-left: 12em;
+        }
+
+        .ql-indent-3 {
+          padding-left: 9em;
+        }
+
+        .ql-indent-2 {
+          padding-left: 6em;
+        }
+
+        .ql-indent-1 {
+          padding-left: 3em;
+        }
       }
+
       .content-main-image-wrapper {
         .content-main-image {
           width: 80px;
