@@ -361,7 +361,7 @@ export default {
     handleAddVoteOption () {
       this.form.vote_options.push({
         image_url: "",
-        tilte: ""
+        title: ""
       });
     },
     handleRemoveVoteOption (index) {
