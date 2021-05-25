@@ -76,6 +76,11 @@ const questionService = {
       ...params
       // type: 2
     });
+  },
+  myDraft() {
+    return request.get(API.myDraft, {
+      // type: 2
+    });
   }
 };
 

@@ -240,7 +240,7 @@ import {
   QUESTION_SAVE_STATUS,
   QUESTION_PUBLISH_STATUS
 } from "utils/const";
-import { getCalDate } from 'utils/moment';
+import { formatDate, getCalDate } from 'utils/moment';
 
 const resourceTypes = [
   {
@@ -260,6 +260,9 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    id: {
+      type: Number
     }
   },
   data () {
@@ -310,9 +313,29 @@ export default {
   },
   methods: {
     getData () {
-      questionService.channels().then(channels => {
-        this.channels = channels;
-      });
+      let promiseArr = [questionService.channels()];
+      if (this.id) {
+        promiseArr.push(questionService.question(this.id))
+      }
+      Promise.all(promiseArr)
+        .then(([channels, detail]) => {
+          this.channels = channels;
+          if (detail) {
+            const { id, title, content, images, vote, vote_options, channel } = detail;
+            const { resource_type, vote_closed_at, vote_type } = vote;
+            this.form = {
+              id,
+              title,
+              content,
+              images,
+              resource_type,
+              vote_closed_at: formatDate(new Date(vote_closed_at), 'yyyy-MM-DD'),
+              vote_type,
+              vote_options,
+              channel_id: channel ? channel.id : null
+            }
+          }
+        });
     },
     handleBeforeClose () {
       if (this.form.title) {

@@ -25,6 +25,12 @@
       >
         优质回答
       </div>
+      <div
+        :class="['tab-item', activeTabIndex === 5 ? 'active' : '']"
+        @click="handleTabChange(5)"
+      >
+        我的草稿
+      </div>
     </div>
     <div class="page-content">
       <template v-if="activeTabIndex === 1">
@@ -103,7 +109,37 @@
           <the-empty noText="这里还没有内容" />
         </div>
       </template>
+      <template v-if="activeTabIndex === 5">
+        <draft-card
+          v-for="(draft, index) of myDrafts"
+          :key="draft.id"
+          :draft="draft"
+          @delete="handleDraftDelete(index)"
+          @edit="handleDraftEdit(index)"
+        />
+        <div class="end-wrapper" v-if="!loading && myDrafts.length < 1">
+          <the-empty noText="这里还没有内容" />
+        </div>
+      </template>
     </div>
+    <question-type-add
+      v-if="questionVisible && draftId"
+      :visible.sync="questionVisible"
+      :id="draftId"
+      @refresh="handleQuestionPublished"
+    />
+    <help-type-add
+      v-if="helpVisible && draftId"
+      :visible.sync="helpVisible"
+      :id="draftId"
+      @refresh="handleQuestionPublished"
+    />
+    <vote-type-add
+      v-if="voteVisible && draftId"
+      :visible.sync="voteVisible"
+      :id="draftId"
+      @refresh="handleQuestionPublished"
+    />
   </div>
 </template>
 
@@ -113,7 +149,16 @@ import AnswerCard from './AnswerCard';
 import QuestionCard from './QuestionCard';
 import TheEmpty from "components/TheEmpty";
 import Pagination from "components/Pagination";
-import { TYPE_QUESTION } from 'utils/const';
+import {
+  TYPE_QUESTION, QUESTION_TYPE_QUESTION,
+  QUESTION_TYPE_HELP,
+  QUESTION_TYPE_VOTE
+} from 'utils/const';
+
+import DraftCard from './DraftCard.vue';
+import HelpTypeAdd from '@/views/Question/widgets/HelpTypeAdd';
+import QuestionTypeAdd from '@/views/Question/widgets/QuestionTypeAdd.vue';
+import VoteTypeAdd from '@/views/Question/widgets/VoteTypeAdd.vue';
 
 export default {
   name: 'MyQuestion',
@@ -122,6 +167,10 @@ export default {
     QuestionCard,
     TheEmpty,
     Pagination,
+    DraftCard,
+    HelpTypeAdd,
+    QuestionTypeAdd,
+    VoteTypeAdd,
   },
   props: {
     loading: {
@@ -131,6 +180,10 @@ export default {
   },
   data () {
     return {
+      questionVisible: false,
+      helpVisible: false,
+      voteVisible: false,
+      draftId: null,
       activeTabIndex: 1,
       pageSize: 15,
       myAnswers: {
@@ -160,7 +213,8 @@ export default {
           page: 1,
           total: 0
         }
-      }
+      },
+      myDrafts: []
     }
   },
   created () {
@@ -175,8 +229,9 @@ export default {
         questionService.myAnswer({ page_size, page }),
         questionService.myQuestion({ page_size, page, status: 2 }),
         questionService.myFavorite({ page_size, page }),
-        questionService.myAnswer({ page_size, page, high_quality })
-      ]).then(([myAnswers, myQuestions, myFavorites, myPerfectAnswers]) => {
+        questionService.myAnswer({ page_size, page, high_quality }),
+        questionService.myDraft()
+      ]).then(([myAnswers, myQuestions, myFavorites, myPerfectAnswers, myDrafts]) => {
         myAnswers.pagination = {
           page,
           size: page_size,
@@ -201,6 +256,7 @@ export default {
         this.myQuestions = myQuestions;
         this.myFavorites = myFavorites;
         this.myPerfectAnswers = myPerfectAnswers;
+        this.myDrafts = myDrafts;
       }).finally(() => {
         this.$emit('update:loading', false);
       })
@@ -305,8 +361,42 @@ export default {
       }).finally(() => {
         this.$emit('update:loading', false);
       });
+    },
+    handleDraftDelete (index) {
+      const { id } = this.myDrafts[index];
+      this.$emit('update:loading', true);
+      questionService
+        .deleteQuestion(id)
+        .then(() => {
+          this.$notice({
+            title: "删除草稿成功",
+            type: 'success'
+          });
+          this.myDrafts.splice(index, 1)
+        })
+        .finally(() => {
+          this.$emit('update:loading', false);
+        });
+    },
+    handleDraftEdit (index) {
+      const { id, type } = this.myDrafts[index];
+      this.draftId = id;
+      switch (type) {
+        case QUESTION_TYPE_QUESTION:
+          this.questionVisible = true;
+          break;
+        case QUESTION_TYPE_HELP:
+          this.helpVisible = true;
+          break;
+        case QUESTION_TYPE_VOTE:
+          this.voteVisible = true;
+          break;
+      }
+    },
+    handleQuestionPublished () {
+      const index = this.myDrafts.findIndex(item => item.id === this.draftId);
+      this.myDrafts.splice(index, 1);
     }
-
   }
 }
 </script>

@@ -282,6 +282,9 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    id: {
+      type: Number
     }
   },
   data () {
@@ -361,7 +364,11 @@ export default {
   },
   methods: {
     getData () {
-      Promise.all([questionService.channels(), commonService.districts()]).then(([channels, districts]) => {
+      let promiseArr = [questionService.channels(), commonService.districts()];
+      if (this.id) {
+        promiseArr.push(questionService.question(this.id))
+      }
+      Promise.all(promiseArr).then(([channels, districts, detail]) => {
         this.channels = channels;
         this.districts = districts.map(item => {
           const children = (item.children && item.children.map(child => {
@@ -375,6 +382,44 @@ export default {
             children: children
           };
         });
+        if (detail) {
+          detail.informations = JSON.parse(detail.informations);
+          const { area, cityArr, cityId, cityName, houseType, houseTypeArr, neighbourhood } = detail.informations;
+          detail.informations = {
+            area,
+            cityArr: cityArr || [],
+            cityId,
+            cityName,
+            houseType,
+            neighbourhood,
+            houseType1: houseTypeArr[0] || null,
+            houseType2: houseTypeArr[1] || null,
+            houseType3: houseTypeArr[2] || null
+          };
+          detail.layouts = detail.layouts.map(item => {
+            const points = JSON.parse(item.points);
+            return {
+              ...item,
+              points
+            };
+          });
+          if (detail.layouts.length < 3) {
+            const max = 3 - detail.layouts.length;
+            for (let i = 0; i < max; i++) {
+              detail.layouts.push({
+                image_url: '',
+                points: [],
+                is_south: null,
+                width: null,
+                height: null
+              })
+            }
+          }
+          this.form = {
+            ...this.form,
+            ...detail
+          };
+        }
       });
     },
     handleBeforeClose () {

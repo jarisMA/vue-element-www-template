@@ -114,6 +114,9 @@ export default {
     visible: {
       type: Boolean,
       default: false
+    },
+    id: {
+      type: Number
     }
   },
   data () {
@@ -140,9 +143,17 @@ export default {
   },
   methods: {
     getData () {
-      questionService.channels().then(channels => {
-        this.channels = channels;
-      });
+      let promiseArr = [questionService.channels()];
+      if (this.id) {
+        promiseArr.push(questionService.question(this.id))
+      }
+      Promise.all(promiseArr)
+        .then(([channels, detail]) => {
+          this.channels = channels;
+          if (detail) {
+            this.form = detail;
+          }
+        });
     },
     handleAddImage (url) {
       this.form.images.push(url);

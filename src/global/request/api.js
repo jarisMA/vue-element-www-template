@@ -86,5 +86,6 @@ export default {
   districts: `${PREFIX}/api/districts/all`,
   myAnswer: `${WEB_PREFIX}/mine/question-answer`,
   myQuestion: `${WEB_PREFIX}/mine/question`,
-  myFavorite: `${WEB_PREFIX}/mine/question-favorite`
+  myFavorite: `${WEB_PREFIX}/mine/question-favorite`,
+  myDraft: `${WEB_PREFIX}/mine/question/draft`
 };

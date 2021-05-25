@@ -6,6 +6,8 @@
       @mousemove="handleMouseMove"
       @mouseup="handleMouseUp"
       @mouseout="handleMouseUp"
+      ref="wrapper"
+      :style="{ width: width + 'px', height: height + 'px' }"
     >
       <img class="editor-img" ref="editorImg" :src="layout.image_url" />
       <div
@@ -130,13 +132,17 @@ export default {
       startY: null,
       pointX: null,
       pointY: null,
-      showCompass: false
+      showCompass: false,
+      width: null,
+      height: null
     };
   },
   watch: {
     layout(val, oldVal) {
       if (val.image_url !== oldVal.image_url) {
-        this.getImgSize();
+        this.$nextTick(() => {
+          this.getImgSize();
+        });
       }
       this.points = val.points;
     }
@@ -144,9 +150,8 @@ export default {
   computed: {
     pos() {
       return point => {
-        const dom = this.$refs["editorImg"];
-        const imgWidth = dom.width;
-        const imgHeight = dom.height;
+        const imgWidth = this.width;
+        const imgHeight = this.height;
         return {
           x: (point.x / point.moveWidth) * imgWidth,
           y: (point.y / point.moveHeight) * imgHeight
@@ -154,28 +159,55 @@ export default {
       };
     }
   },
-  created() {
-    this.getImgSize();
+  mounted() {
+    this.$nextTick(() => {
+      this.getImgSize();
+    });
   },
   methods: {
     getImgSize() {
       const { image_url } = this.layout;
       const image = new Image();
       image.src = image_url;
+      const wrapper = this.$refs["wrapper"];
+
       // 判断是否有缓存
       if (image.complete) {
+        this.getImageWH(
+          image.width,
+          image.height,
+          wrapper.clientWidth,
+          wrapper.clientHeight
+        );
         this.updateLayout({
           width: image.width,
           height: image.height
         });
       } else {
         image.onload = () => {
+          this.getImageWH(
+            image.width,
+            image.height,
+            wrapper.clientWidth,
+            wrapper.clientHeight
+          );
           this.updateLayout({
             width: image.width,
             height: image.height
           });
         };
       }
+    },
+    getImageWH(width, height, maxWidth, maxHeight) {
+      const rate = width / height;
+      let calWidth = maxWidth;
+      let calHeight = maxWidth / rate;
+      if (rate < maxWidth / maxHeight) {
+        calWidth = maxHeight * rate;
+        calHeight = maxHeight;
+      }
+      this.width = calWidth;
+      this.height = calHeight;
     },
     handleMouseDown(e, index) {
       this.dragging = true;
