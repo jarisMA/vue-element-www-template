@@ -308,6 +308,7 @@ export default {
 }
 .vote-pic-wrapper {
   .vote-list {
+    justify-content: flex-start;
     .vote-item {
       width: 238px;
       background: #fafafa;

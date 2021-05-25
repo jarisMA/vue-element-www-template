@@ -1,69 +1,49 @@
 <template>
   <div class="page-wrapper">
-    <div class="page" v-loading="loading">
+    <div class="page">
       <div
         class="container-980"
-        v-if="detail"
+        v-loading="loading"
         ref="scroll"
         @scroll="handleScroll"
       >
-        <div class="page-detail" ref="detail">
-          <i class="page-accept-icon" v-if="detail.accept_id"></i>
-          <div class="page-detail-top">
-            <div class="page-detail-title">{{ detail.title }}</div>
-            <div
-              class="page-detail-info"
-              v-if="detail.type === QUESTION_TYPE_HELP"
-            >
-              <div class="page-detail-info-item">
-                <i class="page-location-icon"></i>
-                <span
-                  >{{ detail.informations.cityName }} ·
-                  {{ detail.informations.neighbourhood }}</span
-                >
-              </div>
-              <div class="page-detail-info-item">
-                <i class="page-area-icon"></i>
-                <span>{{ detail.informations.area }}m²</span>
-              </div>
-              <div class="page-detail-info-item">
-                <i class="page-structure-icon"></i>
-                <span>{{ detail.informations.houseType }}</span>
-              </div>
-            </div>
-            <p class="page-detail-desc" v-if="detail.content">
-              {{ detail.content }}
-            </p>
-          </div>
-          <div class="page-detail-content">
-            <div
-              class="page-detail-question_image-wrapper"
-              v-if="
-                detail.type === QUESTION_TYPE_QUESTION &&
-                  detail.images.length > 0
-              "
-            >
-              <el-carousel
-                height="600px"
-                arrow="always"
-                :autoplay="false"
-                :loop="false"
+        <template v-if="detail">
+          <div class="page-detail" ref="detail">
+            <i class="page-accept-icon" v-if="detail.accept_id"></i>
+            <div class="page-detail-top">
+              <div class="page-detail-title">{{ detail.title }}</div>
+              <div
+                class="page-detail-info"
+                v-if="detail.type === QUESTION_TYPE_HELP"
               >
-                <el-carousel-item
-                  v-for="(image, key) in detail.images"
-                  :key="key"
-                >
-                  <the-loading-image :width="600" :height="600" :url="image" />
-                </el-carousel-item>
-              </el-carousel>
+                <div class="page-detail-info-item">
+                  <i class="page-location-icon"></i>
+                  <span
+                    >{{ detail.informations.cityName }} ·
+                    {{ detail.informations.neighbourhood }}</span
+                  >
+                </div>
+                <div class="page-detail-info-item">
+                  <i class="page-area-icon"></i>
+                  <span>{{ detail.informations.area }}m²</span>
+                </div>
+                <div class="page-detail-info-item">
+                  <i class="page-structure-icon"></i>
+                  <span>{{ detail.informations.houseType }}</span>
+                </div>
+              </div>
+              <p class="page-detail-desc" v-if="detail.content">
+                {{ detail.content }}
+              </p>
             </div>
-            <div
-              class="page-detail-help_layout-wrapper"
-              v-if="
-                detail.type === QUESTION_TYPE_HELP && detail.layouts.length > 0
-              "
-            >
-              <div class="layout-image-wrapper">
+            <div class="page-detail-content">
+              <div
+                class="page-detail-question_image-wrapper"
+                v-if="
+                  detail.type === QUESTION_TYPE_QUESTION &&
+                    detail.images.length > 0
+                "
+              >
                 <el-carousel
                   height="600px"
                   arrow="always"
@@ -71,225 +51,260 @@
                   :loop="false"
                 >
                   <el-carousel-item
-                    v-for="(layout, key) in detail.layouts"
+                    v-for="(image, key) in detail.images"
                     :key="key"
                   >
-                    <layout-show
-                      class="layout-wrapper"
-                      :layout="layout"
-                      :edit="false"
+                    <the-loading-image
+                      :width="600"
+                      :height="600"
+                      :url="image"
                     />
                   </el-carousel-item>
                 </el-carousel>
               </div>
-              <div class="layout-point-wrapper" v-if="points.length > 0">
-                <div class="layout-point-header">
-                  <div class="point-label-wrapper">
-                    问题
-                    <label class="point-label">{{
-                      activePointIndex + 1
-                    }}</label>
-                  </div>
-                  <div class="point-pagination">
-                    <i
-                      :class="[
-                        'point-pagination-prev',
-                        activePointIndex === 0 ? 'disabled' : ''
-                      ]"
-                      @click="handleSwiperSlideTo(activePointIndex - 1)"
-                    ></i>
-                    <i
-                      :class="[
-                        'point-pagination-next',
-                        activePointIndex === points.length - 1 ? 'disabled' : ''
-                      ]"
-                      @click="handleSwiperSlideTo(activePointIndex + 1)"
-                    ></i>
-                  </div>
-                </div>
-                <div class="point-list">
-                  <swiper
-                    class="swiper-no-swiping"
-                    ref="mySwiper"
-                    :options="swiperOptions"
-                  >
-                    <swiper-slide v-for="item of points" :key="item.id">
-                      <div class="point-item">
-                        {{ item.value }}
-                      </div>
-                    </swiper-slide>
-                  </swiper>
-                </div>
-              </div>
-            </div>
-            <div
-              class="page-detail-vote-wrapper"
-              v-if="detail.type === QUESTION_TYPE_VOTE"
-            >
-              <div class="vote-image-wrapper" v-if="detail.images">
-                <the-loading-image
-                  :width="600"
-                  :height="600"
-                  :url="detail.images"
-                />
-              </div>
-              <div class="vote-wrapper">
-                <vote :question="detail" @vote="handleVote" />
-              </div>
-            </div>
-          </div>
-          <div class="page-detail-footer">
-            <div class="page-detail-footer-content">
-              <div class="page-detail-footer-left">
-                <the-avatar :size="24" :url="userInfo && userInfo.avatar_url" />
-                <span class="page-detail-nickname">{{
-                  userInfo && userInfo.nickname
-                }}</span>
-              </div>
-              <div class="page-detail-footer-right">
-                <div class="page-detail-footer-operate" @click="handleLikeAdd">
-                  <i
-                    :class="[
-                      'page-brighten-icon',
-                      detail.is_like ? 'active' : ''
-                    ]"
-                  ></i>
-                  <span
-                    :class="[
-                      'page-detail-footer-count',
-                      detail.is_like ? 'active' : ''
-                    ]"
-                    >{{
-                      detail.is_like
-                        ? "已擦亮"
-                        : detail.user.id === (userInfo && userInfo.id)
-                        ? "擦亮"
-                        : "帮擦亮"
-                    }}
-                    {{ detail.like_count }}</span
-                  >
-                </div>
-                <div
-                  class="page-detail-footer-operate"
-                  @click="handleFavoriteClick"
-                >
-                  <i
-                    :class="[
-                      'page-collection-icon',
-                      detail.is_favorite ? 'active' : ''
-                    ]"
-                  ></i>
-                  <span
-                    :class="[
-                      'page-detail-footer-count',
-                      detail.is_favorite ? 'active' : ''
-                    ]"
-                    >{{ detail.favorite_count }}</span
-                  >
-                </div>
-                <el-dropdown
-                  class="page-detail-footer-dropdown-wrapper"
-                  placement="top-end"
-                  trigger="click"
-                  v-if="(userInfo && userInfo.id) === detail.user.id"
-                >
-                  <i class="el-icon-more"></i>
-                  <el-dropdown-menu slot="dropdown" class="page-dropdown">
-                    <el-dropdown-item>
-                      <el-popconfirm
-                        @confirm="handleDeleteQuestion"
-                        title="确定删除此问题吗？"
-                      >
-                        <div slot="reference">
-                          <i class="el-icon-delete"></i>
-                          <span class="delete-tip">删除</span>
-                        </div>
-                      </el-popconfirm>
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </el-dropdown>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="page-content">
-          <div class="page-content-main">
-            <div
-              :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
-              ref="editor"
-            >
-              <h3 class="content-title" v-if="largerRichText">
-                {{ detail.title }}
-              </h3>
-              <answer-rich-text
-                v-if="userInfo"
-                class="answer-rich-text"
-                ref="answerRichText"
-                :id="id"
-                @submited="addAnswerSucc"
-                @larger="larger"
-              />
               <div
-                class="recover-operate"
-                v-if="largerRichText"
-                @click="recover"
+                class="page-detail-help_layout-wrapper"
+                v-if="
+                  detail.type === QUESTION_TYPE_HELP &&
+                    detail.layouts.length > 0
+                "
               >
-                <span>退出全屏</span>
+                <div class="layout-image-wrapper">
+                  <el-carousel
+                    height="600px"
+                    arrow="always"
+                    :autoplay="false"
+                    :loop="false"
+                  >
+                    <el-carousel-item
+                      v-for="(layout, key) in detail.layouts"
+                      :key="key"
+                    >
+                      <layout-show
+                        class="layout-wrapper"
+                        :layout="layout"
+                        :edit="false"
+                      />
+                    </el-carousel-item>
+                  </el-carousel>
+                </div>
+                <div class="layout-point-wrapper" v-if="points.length > 0">
+                  <div class="layout-point-header">
+                    <div class="point-label-wrapper">
+                      问题
+                      <label class="point-label">{{
+                        activePointIndex + 1
+                      }}</label>
+                    </div>
+                    <div class="point-pagination">
+                      <i
+                        :class="[
+                          'point-pagination-prev',
+                          activePointIndex === 0 ? 'disabled' : ''
+                        ]"
+                        @click="handleSwiperSlideTo(activePointIndex - 1)"
+                      ></i>
+                      <i
+                        :class="[
+                          'point-pagination-next',
+                          activePointIndex === points.length - 1
+                            ? 'disabled'
+                            : ''
+                        ]"
+                        @click="handleSwiperSlideTo(activePointIndex + 1)"
+                      ></i>
+                    </div>
+                  </div>
+                  <div class="point-list">
+                    <swiper
+                      class="swiper-no-swiping"
+                      ref="mySwiper"
+                      :options="swiperOptions"
+                    >
+                      <swiper-slide v-for="item of points" :key="item.id">
+                        <div class="point-item">
+                          {{ item.value }}
+                        </div>
+                      </swiper-slide>
+                    </swiper>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="page-detail-vote-wrapper"
+                v-if="detail.type === QUESTION_TYPE_VOTE"
+              >
+                <div class="vote-image-wrapper" v-if="detail.images">
+                  <the-loading-image
+                    :width="600"
+                    :height="600"
+                    :url="detail.images"
+                  />
+                </div>
+                <div class="vote-wrapper">
+                  <vote :question="detail" @vote="handleVote" />
+                </div>
+              </div>
+            </div>
+            <div class="page-detail-footer">
+              <div class="page-detail-footer-content">
+                <div class="page-detail-footer-left">
+                  <the-avatar
+                    :size="24"
+                    :url="userInfo && userInfo.avatar_url"
+                  />
+                  <span class="page-detail-nickname">{{
+                    userInfo && userInfo.nickname
+                  }}</span>
+                </div>
+                <div class="page-detail-footer-right">
+                  <div
+                    class="page-detail-footer-operate"
+                    @click="handleLikeAdd"
+                  >
+                    <i
+                      :class="[
+                        'page-brighten-icon',
+                        detail.is_like ? 'active' : ''
+                      ]"
+                    ></i>
+                    <span
+                      :class="[
+                        'page-detail-footer-count',
+                        detail.is_like ? 'active' : ''
+                      ]"
+                      >{{
+                        detail.is_like
+                          ? "已擦亮"
+                          : detail.user.id === (userInfo && userInfo.id)
+                          ? "擦亮"
+                          : "帮擦亮"
+                      }}
+                      {{ detail.like_count }}</span
+                    >
+                  </div>
+                  <div
+                    class="page-detail-footer-operate"
+                    @click="handleFavoriteClick"
+                  >
+                    <i
+                      :class="[
+                        'page-collection-icon',
+                        detail.is_favorite ? 'active' : ''
+                      ]"
+                    ></i>
+                    <span
+                      :class="[
+                        'page-detail-footer-count',
+                        detail.is_favorite ? 'active' : ''
+                      ]"
+                      >{{ detail.favorite_count }}</span
+                    >
+                  </div>
+                  <el-dropdown
+                    class="page-detail-footer-dropdown-wrapper"
+                    placement="top-end"
+                    trigger="click"
+                    v-if="(userInfo && userInfo.id) === detail.user.id"
+                  >
+                    <i class="el-icon-more"></i>
+                    <el-dropdown-menu slot="dropdown" class="page-dropdown">
+                      <el-dropdown-item>
+                        <el-popconfirm
+                          @confirm="handleDeleteQuestion"
+                          title="确定删除此问题吗？"
+                        >
+                          <div slot="reference">
+                            <i class="el-icon-delete"></i>
+                            <span class="delete-tip">删除</span>
+                          </div>
+                        </el-popconfirm>
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </el-dropdown>
+                </div>
               </div>
             </div>
           </div>
-          <div class="page-content-answers">
-            <div class="page-answers-header">
-              <div class="page-answers-header-left">
-                回答
-                <span class="page-answers-count">{{
-                  detail.answer_count
-                }}</span>
-              </div>
-              <div class="page-answers-header-right">
-                <div
-                  :class="[
-                    'page-answer-order',
-                    answerOrder === 1 ? 'active' : ''
-                  ]"
-                  @click="answerOrder = 1"
-                >
-                  热门
-                </div>
-                <div
-                  :class="[
-                    'page-answer-order',
-                    answerOrder === 2 ? 'active' : ''
-                  ]"
-                  @click="answerOrder = 2"
-                >
-                  最新
-                </div>
-              </div>
-            </div>
-            <ul class="page-answer-list" v-if="detail.answer_count > 0">
-              <li
-                class="answer-item"
-                v-for="(item, key) of answers"
-                :key="item.id"
+          <div class="page-content">
+            <div class="page-content-main">
+              <div
+                :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
+                ref="editor"
               >
-                <answer-card
-                  :answerData="item"
-                  @deleted="deleteAnswerSucc(key)"
-                  @accepted="handleAccepted"
+                <h3 class="content-title" v-if="largerRichText">
+                  {{ detail.title }}
+                </h3>
+                <answer-rich-text
+                  v-if="userInfo"
+                  class="answer-rich-text"
+                  ref="answerRichText"
+                  :id="id"
+                  @submited="addAnswerSucc"
+                  @larger="larger"
                 />
-              </li>
-            </ul>
-            <the-empty v-else noText="暂无回答" />
-            <pagination
-              class="pagination-wrapper"
-              :pageSize="pagination.size"
-              :current-page="pagination.page"
-              :total="pagination.total"
-              @change-page="getAnswers"
-            />
+                <div
+                  class="recover-operate"
+                  v-if="largerRichText"
+                  @click="recover"
+                >
+                  <span>退出全屏</span>
+                </div>
+              </div>
+            </div>
+            <div class="page-content-answers">
+              <div class="page-answers-header">
+                <div class="page-answers-header-left">
+                  回答
+                  <span class="page-answers-count">{{
+                    detail.answer_count
+                  }}</span>
+                </div>
+                <div class="page-answers-header-right">
+                  <div
+                    :class="[
+                      'page-answer-order',
+                      answerOrder === 1 ? 'active' : ''
+                    ]"
+                    @click="answerOrder = 1"
+                  >
+                    热门
+                  </div>
+                  <div
+                    :class="[
+                      'page-answer-order',
+                      answerOrder === 2 ? 'active' : ''
+                    ]"
+                    @click="answerOrder = 2"
+                  >
+                    最新
+                  </div>
+                </div>
+              </div>
+              <ul class="page-answer-list" v-if="detail.answer_count > 0">
+                <li
+                  class="answer-item"
+                  v-for="(item, key) of answers"
+                  :key="item.id"
+                >
+                  <answer-card
+                    :answerData="item"
+                    @deleted="deleteAnswerSucc(key)"
+                    @accepted="handleAccepted"
+                  />
+                </li>
+              </ul>
+              <the-empty v-else noText="暂无回答" />
+              <pagination
+                class="pagination-wrapper"
+                :pageSize="pagination.size"
+                :current-page="pagination.page"
+                :total="pagination.total"
+                @change-page="getAnswers"
+              />
+            </div>
           </div>
-        </div>
+        </template>
       </div>
       <ul class="page-operate-wrapper" v-if="detail && showOperate">
         <li class="page-operate-item" @click="goReply">
@@ -323,18 +338,20 @@
           <span>收藏</span>
         </li>
       </ul>
-      <div class="page-left-operate" @click="handlePrev">
-        <div class="operate-icon left">
-          <i class="left-icon"></i>
+      <template v-if="showNavigation">
+        <div class="page-left-operate" @click="handlePrev">
+          <div class="operate-icon left">
+            <i class="left-icon"></i>
+          </div>
+          <span>上一个</span>
         </div>
-        <span>上一个</span>
-      </div>
-      <div class="page-right-operate" @click="handleNext">
-        <div class="operate-icon right">
-          <i class="right-icon"></i>
+        <div class="page-right-operate" @click="handleNext">
+          <div class="operate-icon right">
+            <i class="right-icon"></i>
+          </div>
+          <span>下一个</span>
         </div>
-        <span>下一个</span>
-      </div>
+      </template>
     </div>
     <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
   </div>
@@ -380,6 +397,10 @@ export default {
     },
     id: {
       type: Number
+    },
+    showNavigation: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -436,6 +457,9 @@ export default {
   },
   methods: {
     getData() {
+      this.loading = true;
+      this.detail = null;
+      this.answers = [];
       Promise.all([
         questionService.question(this.id),
         questionService.answers(this.id, {
@@ -454,7 +478,7 @@ export default {
             : {};
           let index = 1;
           let layouts = detail.layouts;
-          layouts = layouts
+          layouts
             ? (layouts || []).forEach(layout => {
                 layout.points = JSON.parse(layout.points);
                 layout.points.forEach(point => {
@@ -463,8 +487,6 @@ export default {
                 });
               })
             : [];
-          // detail.layouts = layouts;
-          console.log(layouts);
           this.detail = detail;
           this.answers = res.list;
           this.pagination.page = 1;
@@ -841,6 +863,7 @@ export default {
             .layout-wrapper {
               display: flex;
               align-items: center;
+              justify-content: center;
               width: 600px;
               height: 600px;
             }
@@ -1223,7 +1246,6 @@ export default {
         height: 50px;
         margin-bottom: 10px;
         background: rgba(255, 255, 255, 0.2);
-        opacity: 0.2;
         box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
         border-radius: 50%;
         cursor: pointer;

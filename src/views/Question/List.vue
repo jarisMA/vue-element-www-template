@@ -92,6 +92,7 @@
       :visible.sync="detailVisible"
     >
       <detail
+        showNavigation
         :id="detailId"
         :visible.sync="detailVisible"
         @deleted="handleDeleteQuestion"
@@ -391,6 +392,7 @@ export default {
   }
 }
 .detail-dialog {
+  background: rgba(0, 0, 0, 0.9);
   /deep/ .el-dialog {
     height: 100%;
     margin: 0 auto !important;
