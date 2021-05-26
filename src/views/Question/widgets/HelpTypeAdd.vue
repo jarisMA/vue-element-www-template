@@ -863,7 +863,7 @@ export default {
           top: 184px;
           right: calc(50vw - 1144px / 2);
           width: 384px;
-          max-height: calc(100vh - 184px * 2);
+          max-height: calc(100vh - 184px - 40px);
           padding: 0 20px;
           overflow: auto;
           .page-point-tips {

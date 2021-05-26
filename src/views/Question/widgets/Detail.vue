@@ -1,12 +1,11 @@
 <template>
-  <div :class="['page-wrapper', !showNavigation ? 'padding' : '']">
+  <div
+    :class="['page-wrapper', !showNavigation ? 'padding' : '']"
+    ref="scroll"
+    @scroll="handleScroll"
+  >
     <div class="page">
-      <div
-        class="container-980"
-        v-loading="loading"
-        ref="scroll"
-        @scroll="handleScroll"
-      >
+      <div class="container-980" v-loading="loading">
         <template v-if="detail">
           <div class="page-detail" ref="detail">
             <i class="page-accept-icon" v-if="detail.accept_id"></i>
@@ -528,11 +527,16 @@ export default {
         });
     },
     handleScroll(e) {
-      const detailDom = this.$refs["detail"];
-      if (e.target.scrollTop > detailDom.offsetTop + detailDom.clientHeight) {
-        this.showOperate = true;
-      } else {
-        this.showOperate = false;
+      if (this.detail) {
+        const detailDom = this.$refs["detail"];
+        if (
+          e.target.scrollTop >
+          detailDom.offsetTop + detailDom.clientHeight + 40
+        ) {
+          this.showOperate = true;
+        } else {
+          this.showOperate = false;
+        }
       }
     },
     handleLayoutCarouselChange(imgIndex) {
@@ -737,11 +741,14 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 .page-wrapper {
-  width: 1120px;
+  width: 100%;
   height: 100%;
-  margin: auto;
+  overflow: auto;
   &.padding {
     padding-top: 20px;
+    .page {
+      padding-top: 0;
+    }
   }
   .page-close-icon {
     position: fixed;
@@ -782,12 +789,12 @@ export default {
   }
   .page {
     position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
+    width: 1120px;
+    margin: auto;
+    padding: 40px 0;
+    min-height: 100%;
     .container-980 {
-      height: 100%;
-      overflow-y: auto;
+      min-height: calc(100vh - 80px);
       background: #f4f6f8;
       .page-detail {
         position: relative;
@@ -1040,8 +1047,7 @@ export default {
         }
       }
       .page-content {
-        margin: 16px 0 40px;
-        padding: 0 100px;
+        padding: 16px 100px 40px;
         .page-content-main {
           width: 100%;
           margin-bottom: 16px;
@@ -1191,9 +1197,9 @@ export default {
       }
     }
     .page-operate-wrapper {
-      position: absolute;
-      right: 0;
-      top: 0;
+      position: fixed;
+      right: calc(50vw - 1120px / 2);
+      top: 40px;
       .page-operate-item {
         display: flex;
         flex-direction: column;
@@ -1251,14 +1257,14 @@ export default {
       }
     }
     .page-left-operate {
-      position: absolute;
-      bottom: 40px;
-      left: 0;
+      position: fixed;
+      bottom: 80px;
+      left: calc(50vw - 1120px / 2);
     }
     .page-right-operate {
-      position: absolute;
-      bottom: 40px;
-      right: 0;
+      position: fixed;
+      bottom: 80px;
+      right: calc(50vw - 1120px / 2);
     }
     .page-left-operate,
     .page-right-operate {
