@@ -606,7 +606,7 @@ export default {
         margin: auto;
         padding: 80px 0;
         .page-header {
-          margin-bottom: 34px;
+          margin-bottom: 72px;
           .page-header-title {
             line-height: 32px;
             font-weight: 600;

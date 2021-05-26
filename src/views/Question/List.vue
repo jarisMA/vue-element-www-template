@@ -365,7 +365,7 @@ export default {
   .page-operate {
     position: fixed;
     right: 35px;
-    bottom: 120px;
+    bottom: 80px;
     .page-operate-top,
     .page-operate-add {
       display: flex;
