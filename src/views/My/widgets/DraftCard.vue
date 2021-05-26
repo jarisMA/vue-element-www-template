@@ -1,5 +1,5 @@
 <template>
-  <div class="card-wrapper">
+  <div class="card-wrapper" @click="handleEdit">
     <div class="card">
       <div class="card-top">
         <div class="card-top-left">
@@ -58,6 +58,7 @@ export default {
 <style lang="less" scoped>
 .card-wrapper {
   width: 100%;
+  cursor: pointer;
   .card {
     padding: 16px 0;
     border-bottom: 1px solid #efefef;
