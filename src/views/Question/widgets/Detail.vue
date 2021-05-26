@@ -154,10 +154,10 @@
                 <div class="page-detail-footer-left">
                   <the-avatar
                     :size="24"
-                    :url="userInfo && userInfo.avatar_url"
+                    :url="detail && detail.user && detail.user.avatar_url"
                   />
                   <span class="page-detail-nickname">{{
-                    userInfo && userInfo.nickname
+                    detail && detail.user && detail.user.nickname
                   }}</span>
                 </div>
                 <div class="page-detail-footer-right">
