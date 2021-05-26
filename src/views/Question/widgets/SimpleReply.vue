@@ -200,10 +200,12 @@ export default {
         justify-content: center;
         width: 104px;
         height: 38px;
+        padding: 0;
         line-height: 1;
         font-weight: 500;
         font-size: 14px;
         color: #ffffff;
+        border: unset;
         background: @primaryColor;
         cursor: pointer;
       }
