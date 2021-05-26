@@ -113,7 +113,7 @@ import { goQuestionDetail } from "utils/routes";
 import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
 import { formatDateTime } from "utils/moment";
-import commonMixins from "./widgets/mixins";
+import commonMixins from "mixins/common";
 import { TYPE_ANSWER } from "utils/const";
 import Comment from "./widgets/Comment";
 import CommentCard from "./widgets/CommentCard";

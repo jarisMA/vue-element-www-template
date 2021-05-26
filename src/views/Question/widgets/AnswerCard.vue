@@ -142,7 +142,7 @@ import { formatDate } from "utils/moment";
 import { mapState } from "vuex";
 import questionService from "service/question";
 import { TYPE_ANSWER, QUESTION_TYPE_VOTE } from "utils/const";
-import commonMixins from "./mixins";
+import commonMixins from "mixins/common";
 
 export default {
   name: "QuestionAnswerCard",

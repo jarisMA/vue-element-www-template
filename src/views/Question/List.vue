@@ -67,7 +67,7 @@
       <div class="page-operate-top" @click="goTop">
         <i class="back_to_top-icon"></i>
       </div>
-      <div class="page-operate-add" @click="showQuestionTypeSelect = true">
+      <div class="page-operate-add" @click="handleShowQuestionTypeSelect">
         <i class="ask-icon"></i>
       </div>
     </div>
@@ -125,9 +125,11 @@ import QuestionTypeAdd from "./widgets/QuestionTypeAdd";
 import HelpTypeAdd from "./widgets/HelpTypeAdd";
 import VoteTypeAdd from "./widgets/VoteTypeAdd";
 import Detail from "./widgets/Detail";
+import commonMixins from "mixins/common";
 
 export default {
   name: "QuestionList",
+  mixins: [commonMixins],
   components: {
     // TheSearchBar,
     QuestionCard,
@@ -266,6 +268,12 @@ export default {
         top: 0,
         behavior: "smooth"
       });
+    },
+    handleShowQuestionTypeSelect() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
+      this.showQuestionTypeSelect = true;
     },
     handleShowDetail(id) {
       this.detailId = id;

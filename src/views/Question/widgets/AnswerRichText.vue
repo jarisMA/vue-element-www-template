@@ -36,9 +36,11 @@ import TheRichText from "components/TheRichText";
 import TheAvatar from "components/TheAvatar";
 import questionService from "service/question";
 import { mapState } from "vuex";
+import commonMixins from "mixins/common";
 
 export default {
   name: "AnswerRichText",
+  mixins: [commonMixins],
   components: {
     TheRichText,
     TheAvatar
@@ -78,6 +80,9 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (!this.isEmpty(this.content)) {
         this.submiting = true;
         if (this.isEdit) {

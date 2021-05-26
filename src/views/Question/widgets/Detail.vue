@@ -230,7 +230,7 @@
             </div>
           </div>
           <div class="page-content">
-            <div class="page-content-main">
+            <div class="page-content-main" v-if="userInfo">
               <div
                 :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
                 ref="editor"
@@ -240,7 +240,6 @@
                   {{ detail.title }}
                 </h3>
                 <answer-rich-text
-                  v-if="userInfo"
                   class="answer-rich-text"
                   ref="answerRichText"
                   :id="id"
@@ -387,7 +386,7 @@ import {
   QUESTION_TYPE_VOTE,
   TYPE_QUESTION
 } from "utils/const";
-import commonMixins from "./mixins";
+import commonMixins from "mixins/common";
 import { go404 } from "utils/routes";
 
 export default {

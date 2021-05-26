@@ -22,9 +22,11 @@
 
 <script>
 import ossService from "service/oss";
+import commonMixins from "mixins/common";
 
 export default {
   name: "UploadImage",
+  mixins: [commonMixins],
   props: {
     theme: {
       type: String
@@ -58,6 +60,10 @@ export default {
       return true;
     },
     upload(file) {
+      if (!this.checkIsLogin()) {
+        this.$refs.upload.clearFiles();
+        return;
+      }
       if (!this.validateFile(file)) {
         return false;
       }

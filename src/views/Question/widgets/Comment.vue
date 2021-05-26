@@ -64,7 +64,7 @@ import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
 import { mapState } from "vuex";
 import questionService from "service/question";
-import commonMixins from "./mixins";
+import commonMixins from "mixins/common";
 
 export default {
   name: "QuestionComment",

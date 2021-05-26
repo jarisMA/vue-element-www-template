@@ -64,6 +64,7 @@ module.exports = {
       .set("plugins", resolve("src/plugins"))
       .set("utils", resolve("src/utils"))
       .set("request", resolve("src/global/request"))
-      .set("service", resolve("src/global/service"));
+      .set("service", resolve("src/global/service"))
+      .set("mixins", resolve("src/mixins"));
   }
 };

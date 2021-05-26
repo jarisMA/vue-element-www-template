@@ -45,9 +45,11 @@ import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
 import UploadImage from "components/UploadImage.vue";
 import questionService from "service/question";
+import commonMixins from "mixins/common";
 
 export default {
   name: "QuestionSimpleReply",
+  mixins: [commonMixins],
   components: { TheAvatar, UploadImage },
   props: {
     id: {
@@ -75,6 +77,9 @@ export default {
       this.form.images.splice(index, 1);
     },
     handleSubmit() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       const { content, images } = this.form;
       if (!content) {
         this.$notice({
