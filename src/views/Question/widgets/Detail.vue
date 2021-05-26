@@ -884,8 +884,11 @@ export default {
             height: 600px;
             margin: 24px auto 0;
             padding: 0 40px;
-            /deep/ .cover {
-              background-size: contain;
+            /deep/ .cover-img {
+              background: #f4f4f4;
+              .cover {
+                background-size: contain;
+              }
             }
           }
           .page-detail-help_layout-wrapper {
