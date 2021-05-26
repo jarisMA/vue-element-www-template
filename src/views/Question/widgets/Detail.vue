@@ -884,6 +884,9 @@ export default {
             height: 600px;
             margin: 24px auto 0;
             padding: 0 40px;
+            /deep/ .cover {
+              background-size: contain;
+            }
           }
           .page-detail-help_layout-wrapper {
             .layout-image-wrapper {
