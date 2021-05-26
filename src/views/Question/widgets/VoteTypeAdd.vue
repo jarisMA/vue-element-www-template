@@ -479,6 +479,7 @@ export default {
       position: relative;
       width: 100%;
       height: 100%;
+      overflow: auto;
       background: #fff;
       .close-icon {
         display: inline-block;
@@ -498,7 +499,6 @@ export default {
       }
       .container-540 {
         width: 540px;
-        height: 100%;
         margin: auto;
         padding: 80px 0;
         .page-header {

@@ -171,6 +171,15 @@ export default {
   watch: {
     questionAddVisble(val) {
       this.handleToggleLockScroll(val);
+    },
+    helpAddVisible(val) {
+      this.handleToggleLockScroll(val);
+    },
+    voteAddVisble(val) {
+      this.handleToggleLockScroll(val);
+    },
+    detailVisible(val) {
+      this.handleToggleLockScroll(val);
     }
   },
   created() {

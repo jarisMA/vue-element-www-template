@@ -256,7 +256,7 @@
                   <span>退出全屏</span>
                 </div>
               </div>
-              <div class="simple-reply-wrapper" v-else>
+              <div class="simple-reply-wrapper" ref="editor" v-else>
                 <simple-reply :id="id" @submited="addAnswerSucc" />
               </div>
             </div>
