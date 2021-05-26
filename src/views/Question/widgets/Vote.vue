@@ -44,10 +44,12 @@
             :key="option.id"
             @click="handleOptionSelect(option.id)"
           >
-            <div
+            <the-preview-image
               class="vote-item-top"
-              :style="{ backgroundImage: `url(${option.image_url})` }"
-            ></div>
+              width="238px"
+              height="236px"
+              :srcList="[option.image_url]"
+            />
             <div class="vote-item-bottom">
               <label class="vote-label">{{ VOTE_OPTION_INDEX[key] }}</label>
               <span class="vote-value">{{ option.title }}</span>
@@ -70,11 +72,13 @@
             <label class="vote-label">
               {{ VOTE_OPTION_INDEX[key] }}
             </label>
-            <div
-              v-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC"
+            <the-preview-image
               class="vote-img"
-              :style="{ backgroundImage: `url(${option.image_url})` }"
-            ></div>
+              v-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC"
+              width="40px"
+              height="40px"
+              :srcList="[option.image_url]"
+            />
             <span class="vote-value">{{ option.title }}</span>
           </div>
           <div class="vote-item-footer">
@@ -119,9 +123,13 @@ import {
   VOTE_RESOURCE_TYPE_PIC
 } from "utils/const";
 import { getCalDate, dateCompare } from "utils/moment";
+import ThePreviewImage from "components/ThePreviewImage";
 
 export default {
   name: "QuestionVote",
+  components: {
+    ThePreviewImage
+  },
   props: {
     question: {
       type: Object,
@@ -344,13 +352,6 @@ export default {
           background: url("~images/question/selected1.svg") no-repeat;
         }
       }
-      .vote-item-top {
-        width: 100%;
-        height: 236px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        background-position: center;
-      }
       .vote-item-bottom {
         display: flex;
         align-items: center;
@@ -387,14 +388,6 @@ export default {
         padding: 15px;
         background: #fafafa;
         border-bottom: 1px solid #efefef;
-        .vote-img {
-          width: 40px;
-          height: 40px;
-          margin-right: 8px;
-          background-size: cover;
-          background-repeat: no-repeat;
-          background-position: center;
-        }
       }
       .vote-item-footer {
         position: relative;

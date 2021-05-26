@@ -37,18 +37,16 @@
         </div>
         <div class="card-content">
           <div class="content" v-html="answer.content"></div>
-          <ul
+          <div
             class="image-list"
             v-if="answer.images && answer.images.length > 0"
           >
-            <li
-              class="image-item"
-              v-for="(image, index) of answer.images"
-              :key="index"
-            >
-              <img :src="image" />
-            </li>
-          </ul>
+            <the-preview-image
+              width="60px"
+              height="60px"
+              :srcList="answer.images"
+            />
+          </div>
         </div>
         <div class="unfold-wrapper" v-if="showUnfoldBtn && fold">
           <label class="unfold-btn" @click="fold = false">
@@ -143,6 +141,7 @@ import { mapState } from "vuex";
 import questionService from "service/question";
 import { TYPE_ANSWER, QUESTION_TYPE_VOTE } from "utils/const";
 import commonMixins from "mixins/common";
+import ThePreviewImage from "components/ThePreviewImage";
 
 export default {
   name: "QuestionAnswerCard",
@@ -150,7 +149,8 @@ export default {
   components: {
     TheAvatar,
     CommentCard,
-    Comment
+    Comment,
+    ThePreviewImage
   },
   props: {
     answerData: {
@@ -337,7 +337,6 @@ export default {
   position: relative;
   overflow: hidden;
   padding: @padding;
-  z-index: 1;
   background: #fff;
   .card-top {
     display: flex;
@@ -534,14 +533,7 @@ export default {
     }
     .image-list {
       display: flex;
-      .image-item {
-        margin: 8px 8px 0 0;
-        img {
-          width: 60px;
-          height: 60px;
-          object-fit: cover;
-        }
-      }
+      margin-top: 8px;
     }
   }
   .unfold-wrapper {
@@ -606,7 +598,6 @@ export default {
       position: relative;
       background: #e9fff4;
       cursor: pointer;
-      z-index: 2;
       span {
         color: @primaryColor;
       }
