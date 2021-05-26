@@ -7,7 +7,7 @@
         </div>
         <p class="title">请问您的身份是?</p>
         <div class="content">
-          <el-radio-group v-model="studyObjectiveDisplay">
+          <el-radio-group class="content-list" v-model="studyObjectiveDisplay">
             <div class="content-item">
               <el-radio-button label="家居爱好者"></el-radio-button>
             </div>
@@ -169,7 +169,7 @@ export default {
     text-align: center;
     margin: 0 auto;
     padding-bottom: 74px;
-    /deep/ .el-radio-group {
+    .content-list {
       width: 326px;
       .content-item {
         width: 100%;
