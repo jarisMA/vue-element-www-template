@@ -51,9 +51,15 @@
             />
           </template>
         </waterfall>
+        <div
+          class="loading-wrapper"
+          ref="loading"
+          v-if="moreLoading"
+          v-loading="moreLoading"
+        ></div>
         <end
           :total="pagination.total"
-          v-if="pagination.total === questions.length"
+          v-else-if="!loading && pagination.total === questions.length"
         />
       </div>
     </div>
@@ -150,6 +156,7 @@ export default {
         }
       ],
       loading: true,
+      moreLoading: false,
       activeType: 0,
       activeChannel: 0,
       keyword: "",
@@ -207,31 +214,39 @@ export default {
       this.col = Math.floor(maxWidth / (262 + 15));
     },
     getData(start = 1) {
-      this.loading = true;
-      let params = {
-        page: start,
-        page_size: this.pagination.size
-      };
-      this.activeType ? (params.type = this.activeType) : "";
-      questionService
-        .questions(params)
-        .then(res => {
-          if (start === 1) {
-            this.questions = [];
-            this.$nextTick(() => {
-              this.questions = res.list;
-              this.$waterfall.forceUpdate();
-            });
-          } else {
-            this.questions = this.questions.concat(res.list);
-          }
-
-          this.pagination.page = start;
-          this.pagination.total = res.pagination.total;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (!this.moreLoading) {
+        let loadingName = "loading";
+        if (start > 1) {
+          loadingName = "moreLoading";
+        }
+        this[loadingName] = true;
+        let params = {
+          page: start,
+          page_size: this.pagination.size
+        };
+        this.activeType ? (params.type = this.activeType) : "";
+        questionService
+          .questions(params)
+          .then(res => {
+            setTimeout(() => {
+              this[loadingName] = false;
+              if (start === 1) {
+                this.questions = [];
+                this.$nextTick(() => {
+                  this.questions = res.list;
+                  this.$waterfall.forceUpdate();
+                });
+              } else {
+                this.questions = this.questions.concat(res.list);
+              }
+              this.pagination.page = start;
+              this.pagination.total = res.pagination.total;
+            }, 1000);
+          })
+          .catch(() => {
+            this[loadingName] = false;
+          });
+      }
     },
     handleSearch(keyword) {
       this.keyword = keyword;
@@ -417,6 +432,13 @@ export default {
       padding: 40px 0;
       overflow: hidden;
     }
+  }
+}
+.loading-wrapper {
+  width: 100%;
+  height: 120px;
+  /deep/ .el-loading-mask {
+    background: transparent;
   }
 }
 </style>
