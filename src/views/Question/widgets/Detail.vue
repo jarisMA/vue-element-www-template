@@ -472,6 +472,9 @@ export default {
       this.loading = true;
       this.detail = null;
       this.answers = [];
+      this.answerOrder = 1;
+      this.activePointIndex = 0;
+      this.showOperate = false;
       Promise.all([
         questionService.question(this.id),
         questionService.answers(this.id, {
