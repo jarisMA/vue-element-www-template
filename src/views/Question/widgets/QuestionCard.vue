@@ -19,7 +19,10 @@
           "
           :width="230"
           :height="230"
-          :url="question.layouts[0].image_url"
+          :url="
+            question.layouts[0].image_url +
+              '?x-oss-process=style/miniprogram_index_360w'
+          "
         />
         <the-loading-image
           v-if="
@@ -28,7 +31,9 @@
           "
           :width="230"
           :height="230"
-          :url="question.images[0]"
+          :url="
+            question.images[0] + '?x-oss-process=style/miniprogram_index_360w'
+          "
         />
         <div class="card-content-desc" v-else-if="question.content">
           {{ question.content }}
@@ -61,7 +66,9 @@
             <the-loading-image
               :width="109"
               :height="109"
-              :url="item.image_url"
+              :url="
+                item.image_url + '?x-oss-process=style/miniprogram_index_360w'
+              "
             />
           </div>
         </div>
