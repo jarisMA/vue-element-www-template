@@ -12,16 +12,12 @@
                   answer.question.authVote
               "
             >
-              <img
-                class="card-header-vote_icon"
-                src="~images/question/vote.svg"
-              />
-              <span
-                v-for="(option, index) of answer.question.vote_options"
-                :key="option.id"
-              >
-                {{ VOTE_OPTION_INDEX[index] }}
-              </span>
+              已投
+              <template v-for="(option, index) of answer.question.vote_options">
+                <span :key="option.id" v-if="checkIsVote(option.id)">
+                  {{ VOTE_OPTION_INDEX[index] }}
+                </span>
+              </template>
             </div>
           </div>
         </div>
@@ -83,6 +79,16 @@ export default {
       QUESTION_TYPE_VOTE,
       VOTE_OPTION_INDEX
     };
+  },
+  computed: {
+    authOptionIds() {
+      return this.answer.question.authVote.option_ids.split(",");
+    },
+    checkIsVote() {
+      return id => {
+        return this.authOptionIds.indexOf(id + "") > -1;
+      };
+    }
   },
   methods: {
     goQuestionAnswer,

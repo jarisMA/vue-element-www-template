@@ -1,5 +1,5 @@
 <template>
-  <div class="page-wrapper">
+  <div :class="['page-wrapper', !showNavigation ? 'padding' : '']">
     <div class="page">
       <div
         class="container-980"
@@ -361,7 +361,11 @@
         </div>
       </template>
     </div>
-    <i class="page-close-icon close-icon" @click="handleBeforeClose"></i>
+    <i
+      class="page-close-icon close-icon"
+      v-if="showNavigation"
+      @click="handleBeforeClose"
+    ></i>
   </div>
 </template>
 
@@ -736,6 +740,9 @@ export default {
   width: 1120px;
   height: 100%;
   margin: auto;
+  &.padding {
+    padding-top: 20px;
+  }
   .page-close-icon {
     position: fixed;
     top: 15px;
