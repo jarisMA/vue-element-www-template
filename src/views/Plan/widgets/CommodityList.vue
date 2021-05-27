@@ -2,10 +2,16 @@
   <div :class="['list-wrapper', full_screen ? 'full_screen' : '']">
     <div class="brief" v-show="!full_screen">
       <div class="list-header">
-        <label class="price" v-if="!up">¥{{ totalPrice }}</label>
+        <label class="price-wrapper" v-if="!up">
+          <label class="price">¥{{ totalPrice }}</label>
+          <label class="refresh-price ellipsis" @click="handleRefreshPrice">
+            <i class="refresh-icon"></i>更新总价</label
+          >
+        </label>
         <label v-else class="header-title">已选商品清单</label>
         <div class="operate-wrapper">
           <label
+            v-if="up"
             class="full_screen-icon bgImg"
             @click="toggleFullScreen"
           ></label>
@@ -46,7 +52,7 @@
                   </div>
                   <div class="sku-footer">
                     <label class="sku-price">
-                      {{ `¥${good.sku.unit_price}` }}
+                      {{ `¥${good.sku.unit_price || "-"}` }}
                     </label>
                     <label class="sku-number"> ×{{ good.number }} </label>
                   </div>
@@ -57,7 +63,12 @@
         </div>
       </div>
       <div class="list-footer">
-        <label class="price">¥{{ totalPrice }}</label>
+        <label class="price-wrapper">
+          <label class="price">¥{{ totalPrice }}</label>
+          <label class="refresh-price ellipsis" @click="handleRefreshPrice">
+            <i class="refresh-icon"></i>更新总价</label
+          >
+        </label>
       </div>
     </div>
     <div :class="['full', headerUnfold ? 'unfold' : '']" v-show="full_screen">
@@ -186,8 +197,12 @@
       </div>
       <div class="list-footer">
         <div class="footer-content">
-          <label class="price"> ¥{{ totalPrice }} </label>
-          当前总价
+          <label class="price-wrapper">
+            <label class="price">¥{{ totalPrice }}</label>
+            <label class="refresh-price ellipsis" @click="handleRefreshPrice">
+              <i class="refresh-icon"></i>更新总价</label
+            >
+          </label>
           <label class="number"> 共{{ totalNumber }}件商品 </label>
         </div>
         <div class="footer-operate" @click="download">
@@ -406,6 +421,9 @@ export default {
       eleLink.click();
       document.body.removeChild(eleLink);
       window.URL.revokeObjectURL(eleLink.href);
+    },
+    handleRefreshPrice() {
+      this.$emit("refreshPrice");
     }
   }
 };
@@ -434,7 +452,30 @@ export default {
       width: 100%;
       height: 48px;
       background: @primaryColor;
+      .price-wrapper {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        .refresh-price {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          margin-left: 8px;
+          font-size: 12px;
+          color: #ffffff;
+          cursor: pointer;
+          .refresh-icon {
+            display: inline-block;
+            margin-right: 2px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            mask: url("~images/common/refresh.svg") no-repeat center;
+          }
+        }
+      }
       .price {
+        flex: none;
         line-height: 30px;
         font-weight: 600;
         font-size: 30px;
@@ -446,8 +487,10 @@ export default {
         color: #fff;
       }
       .operate-wrapper {
+        flex: none;
         display: flex;
         align-items: center;
+        margin-left: 4px;
         .bgImg {
           width: 24px;
           height: 24px;
@@ -549,11 +592,31 @@ export default {
       height: 48px;
       border-top: 1px solid #efefef;
       padding: 0 @padding;
-      .price {
-        line-height: 48px;
-        font-weight: 600;
-        font-size: 30px;
-        color: @primaryColor;
+      .price-wrapper {
+        display: flex;
+        align-items: center;
+        .price {
+          line-height: 48px;
+          font-weight: 600;
+          font-size: 30px;
+          color: @primaryColor;
+        }
+        .refresh-price {
+          display: flex;
+          align-items: center;
+          margin-left: 8px;
+          font-size: 12px;
+          color: @primaryColor;
+          cursor: pointer;
+          .refresh-icon {
+            display: inline-block;
+            margin-right: 2px;
+            width: 16px;
+            height: 16px;
+            background: @primaryColor;
+            mask: url("~images/common/refresh.svg") no-repeat center;
+          }
+        }
       }
     }
   }
@@ -583,6 +646,9 @@ export default {
         flex: 1;
         padding: 60px 0;
         .list-title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
           margin-bottom: 30px;
           line-height: 1;
           font-weight: 600;
@@ -750,12 +816,34 @@ export default {
         font-size: 12px;
         line-height: 12px;
         color: #ffffff;
-        .price {
-          display: inline-block;
-          margin-right: 10px;
-          font-weight: 600;
-          font-size: 30px;
+        .price-wrapper {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          .price {
+            display: inline-block;
+            font-weight: 600;
+            font-size: 30px;
+          }
+          .refresh-price {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            margin-left: 8px;
+            font-size: 12px;
+            color: #ffffff;
+            cursor: pointer;
+            .refresh-icon {
+              display: inline-block;
+              margin-right: 2px;
+              width: 16px;
+              height: 16px;
+              background: #fff;
+              mask: url("~images/common/refresh.svg") no-repeat center;
+            }
+          }
         }
+
         .number {
           display: inline-block;
           margin-left: 10px;

@@ -24,6 +24,7 @@
             :design="design"
             @addModel="addModel"
             @showFeedback="handleShowFeedback"
+            @refreshPrice="handleIframeSave"
           />
         </transition>
         <!-- <div class="toolbar-mask"
@@ -211,6 +212,10 @@ export default {
         },
         "*"
       );
+    },
+    handleIframeSave() {
+      const iframe = this.$refs["iframe"];
+      iframe.contentWindow.postMessage("save_kjl", "*");
     },
     listingSync() {
       if (this.listingId) {
