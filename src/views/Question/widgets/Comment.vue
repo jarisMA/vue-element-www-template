@@ -1,6 +1,6 @@
 <template>
   <div class="comment-wrapper">
-    <the-avatar :size="32" :url="userInfo.avatar_url" />
+    <the-avatar :size="32" :url="userInfo && userInfo.avatar_url" />
     <el-form
       class="add-form"
       ref="addForm"
@@ -64,9 +64,11 @@ import TheAvatar from "components/TheAvatar";
 import UploadImage from "components/UploadImage";
 import { mapState } from "vuex";
 import questionService from "service/question";
+import commonMixins from "mixins/common";
 
 export default {
   name: "QuestionComment",
+  mixins: [commonMixins],
   props: {
     parent: {
       type: Object,
@@ -99,6 +101,9 @@ export default {
   },
   methods: {
     submit() {
+      if (!this.checkIsLogin()) {
+        return;
+      }
       if (!this.addForm.content) {
         this.$notice({
           type: "danger",

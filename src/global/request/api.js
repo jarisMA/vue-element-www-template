@@ -58,6 +58,12 @@ export default {
     `${WEB_PREFIX}/question/answer/${answerId}/comment`,
   questionComment: id => `${WEB_PREFIX}/question/answer/comment/${id}`,
   questionLikeAdd: `${WEB_PREFIX}/question-like`,
+  questionFavoriteAdd: `${WEB_PREFIX}/question-favorite`,
+  questionFavoriteDelete: (type, resourceId) =>
+    `${WEB_PREFIX}/question-favorite/${type}/${resourceId}`,
+  questionAnswerAccept: id => `${WEB_PREFIX}/question/answer/${id}/accepted`,
+  questionVote: `${WEB_PREFIX}/question-vote-user`,
+
   commodityCats: `${WEB_PREFIX}/commodity/cat`,
   commodityCat: id => `${WEB_PREFIX}/commodity/cat/${id}`,
   commodityBrands: `${WEB_PREFIX}/commodity/brand`,
@@ -76,5 +82,10 @@ export default {
     `${PREFIX}/api/file/alioss-video/${videoId}/status`,
   clock: `${WEB_PREFIX}/mine/clock`,
   gainShineCount: `${WEB_PREFIX}/mine/gain-history/shine-count`,
-  gainHistory: `${WEB_PREFIX}/mine/gain-history`
+  gainHistory: `${WEB_PREFIX}/mine/gain-history`,
+  districts: `${PREFIX}/api/districts/all`,
+  myAnswer: `${WEB_PREFIX}/mine/question-answer`,
+  myQuestion: `${WEB_PREFIX}/mine/question`,
+  myFavorite: `${WEB_PREFIX}/mine/question-favorite`,
+  myDraft: `${WEB_PREFIX}/mine/question/draft`
 };

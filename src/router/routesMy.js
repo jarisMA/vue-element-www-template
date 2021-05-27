@@ -25,6 +25,14 @@ const routes = [
     meta: {
       auth: true
     }
+  },
+  {
+    path: "my/question",
+    name: "MyQuestion",
+    component: Index,
+    meta: {
+      auth: true
+    }
   }
 ];
 

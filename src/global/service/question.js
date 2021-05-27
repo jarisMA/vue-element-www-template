@@ -29,6 +29,9 @@ const questionService = {
   answers: (questionId, params = {}) => {
     return request.get(API.questionAnswers(questionId), params);
   },
+  answer(id) {
+    return request.get(API.questionAnswer(id));
+  },
   addAnswer: (questionId, params = {}) => {
     return request.post(API.questionAnswerAdd(questionId), params);
   },
@@ -43,6 +46,41 @@ const questionService = {
   },
   deleteComment: id => {
     return request.delete(API.questionComment(id));
+  },
+  questionFavoriteAdd(params) {
+    return request.post(API.questionFavoriteAdd, params);
+  },
+  questionFavoriteDelete(type, resourceId) {
+    return request.delete(API.questionFavoriteDelete(type, resourceId));
+  },
+  acceptAnswer(id) {
+    return request.put(API.questionAnswerAccept(id));
+  },
+  vote(params) {
+    return request.post(API.questionVote, params);
+  },
+  myAnswer(params) {
+    return request.get(API.myAnswer, {
+      ...params
+      // type: 2
+    });
+  },
+  myQuestion(params) {
+    return request.get(API.myQuestion, {
+      ...params
+      // type: 2
+    });
+  },
+  myFavorite(params) {
+    return request.get(API.myFavorite, {
+      ...params
+      // type: 2
+    });
+  },
+  myDraft() {
+    return request.get(API.myDraft, {
+      // type: 2
+    });
   }
 };
 
