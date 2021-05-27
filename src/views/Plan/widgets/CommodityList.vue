@@ -39,7 +39,8 @@
                     </label>
                     <label class="sku-size">
                       {{
-                        `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z} mm`
+                        `${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
+                          .sku.size_z || 0} mm`
                       }}
                     </label>
                   </div>
@@ -129,7 +130,8 @@
                         (good.sku.brand && good.sku.brand.name) || "-"
                       }}</label>
                       <label class="size-label">{{
-                        `${good.sku.size_x}*${good.sku.size_y}*${good.sku.size_z}`
+                        `${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
+                          .sku.size_z || 0}`
                       }}</label>
                       <label class="unit-label">{{ good.unit }}</label>
                       <label class="number-label">{{ good.number }}</label>
@@ -137,10 +139,10 @@
                         good.sku.product_number
                       }}</label>
                       <label class="amount-label"
-                        >¥{{ good.sku.cashback_amount }}</label
+                        >¥{{ good.sku.cashback_amount || "-" }}</label
                       >
                       <label class="price-label"
-                        >¥{{ good.sku.unit_price }}</label
+                        >¥{{ good.sku.unit_price || "-" }}</label
                       >
                       <label class="total-label"
                         >¥{{
@@ -150,11 +152,14 @@
                       <label
                         :class="[
                           'link-label',
-                          good.sku.tb_purchase_url ? 'bgImg' : ''
+                          purchase_url(good.sku.purchase_url) ? 'bgImg' : ''
                         ]"
                         @click="
-                          good.sku.tb_purchase_url
-                            ? goRoute(good.sku.tb_purchase_url, '_blank')
+                          purchase_url(good.sku.purchase_url)
+                            ? goRoute(
+                                purchase_url(good.sku.purchase_url),
+                                '_blank'
+                              )
                             : ''
                         "
                       >
@@ -281,6 +286,18 @@ export default {
         }
       });
       return total;
+    },
+    purchase_url() {
+      return url => {
+        if (!url) {
+          return false;
+        }
+        url = JSON.parse(url);
+        if (url.length > 0) {
+          return url[0].url;
+        }
+        return false;
+      };
     }
   },
   created() {},
@@ -340,13 +357,15 @@ export default {
                     <td>${good.unit}\t</td>
                     <td>${good.number}\t</td>
                     <td>${good.sku.product_number || "-"}\t</td>
-                    <td>¥${good.sku.cashback_amount + ""}\t</td>
-                    <td>¥${good.sku.unit_price + ""}\t</td>
+                    <td>¥${good.sku.cashback_amount || "-" + ""}\t</td>
+                    <td>¥${good.sku.unit_price || "-" + ""}\t</td>
                     <td>
                       ${
-                        good.sku.tb_purchase_url
-                          ? `<a href='${good.sku.tb_purchase_url}'>
-                        ${good.sku.tb_purchase_url}
+                        this.purchase_url(good.sku.purchase_url)
+                          ? `<a href='${this.purchase_url(
+                              good.sku.purchase_url
+                            )}'>
+                        ${this.purchase_url(good.sku.purchase_url)}
                         </a>`
                           : "-"
                       }\t
