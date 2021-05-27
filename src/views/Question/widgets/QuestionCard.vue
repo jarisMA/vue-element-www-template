@@ -12,6 +12,7 @@
         "
       >
         <img
+          oncontextmenu="return false;"
           v-if="
             question.type === QUESTION_TYPE_HELP &&
               question.layouts.length > 0 &&
@@ -25,6 +26,7 @@
           "
         />
         <img
+          oncontextmenu="return false;"
           v-if="
             question.type === QUESTION_TYPE_QUESTION &&
               question.images.length > 0
@@ -64,6 +66,7 @@
           >
             <div class="card-vote-icon">{{ VOTE_OPTION_INDEX[key] }}</div>
             <img
+              oncontextmenu="return false;"
               :width="109"
               :height="109"
               :src="
