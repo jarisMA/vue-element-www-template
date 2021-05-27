@@ -41,13 +41,7 @@
     </div>
     <div class="page-content">
       <div class="page-content-list">
-        <waterfall
-          lazy-src
-          :col="col"
-          :width="262"
-          :gutterWidth="30"
-          :data="questions"
-        >
+        <waterfall :col="col" :width="262" :gutterWidth="30" :data="questions">
           <template>
             <question-card
               v-for="item of questions"
@@ -225,7 +219,7 @@ export default {
       this.timer = setTimeout(() => {
         const maxWidth = Math.max(window.innerWidth - 200, 1200 - 200);
         this.col = Math.floor(maxWidth / (262 + 15));
-      }, 1000 * 10);
+      }, 300);
     },
     getData(start = 1) {
       if (!this.moreLoading) {

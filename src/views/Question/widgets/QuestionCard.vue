@@ -11,7 +11,7 @@
           )
         "
       >
-        <the-loading-image
+        <img
           v-if="
             question.type === QUESTION_TYPE_HELP &&
               question.layouts.length > 0 &&
@@ -19,19 +19,19 @@
           "
           :width="230"
           :height="230"
-          :url="
+          :src="
             question.layouts[0].image_url +
               '?x-oss-process=style/miniprogram_index_360w'
           "
         />
-        <the-loading-image
+        <img
           v-if="
             question.type === QUESTION_TYPE_QUESTION &&
               question.images.length > 0
           "
           :width="230"
           :height="230"
-          :url="
+          :src="
             question.images[0] + '?x-oss-process=style/miniprogram_index_360w'
           "
         />
@@ -63,10 +63,10 @@
             :key="item.id"
           >
             <div class="card-vote-icon">{{ VOTE_OPTION_INDEX[key] }}</div>
-            <the-loading-image
+            <img
               :width="109"
               :height="109"
-              :url="
+              :src="
                 item.image_url + '?x-oss-process=style/miniprogram_index_360w'
               "
             />
@@ -109,13 +109,13 @@ import {
   VOTE_RESOURCE_TYPE_PIC,
   VOTE_OPTION_INDEX
 } from "utils/const";
-import TheLoadingImage from "components/TheLoadingImage";
+// import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
 
 export default {
   name: "QuestionCard",
   components: {
-    TheLoadingImage,
+    // TheLoadingImage,
     TheAvatar
   },
   props: {
@@ -173,6 +173,9 @@ export default {
   .card-content {
     min-height: 64px;
     margin-top: 8px;
+    img {
+      object-fit: cover;
+    }
     .card-content-desc {
       position: relative;
       z-index: 1;
