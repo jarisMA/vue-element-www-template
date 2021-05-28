@@ -129,15 +129,90 @@ export default {
             encryptType: 1, //当播放私有加密流时需要设置。
             definition: "FD,LD,SD,HD",
             defaultDefinition: "HD",
-            components: [PhoneNumberComponent]
+            components: [PhoneNumberComponent],
+            playsinline: true,
+            preload: true,
+            controlBarVisibility: "hover",
+            useH5Prism: true,
+            skinLayout: [
+              {
+                name: "bigPlayButton",
+                align: "blabs",
+                x: 30,
+                y: 80
+              },
+              {
+                name: "H5Loading",
+                align: "cc"
+              },
+              {
+                name: "errorDisplay",
+                align: "tlabs",
+                x: 0,
+                y: 0
+              },
+              {
+                name: "infoDisplay"
+              },
+              {
+                name: "tooltip",
+                align: "blabs",
+                x: 0,
+                y: 56
+              },
+              {
+                name: "thumbnail"
+              },
+              {
+                name: "controlBar",
+                align: "blabs",
+                x: 0,
+                y: 0,
+                children: [
+                  {
+                    name: "progress",
+                    align: "blabs",
+                    x: 0,
+                    y: 44
+                  },
+                  {
+                    name: "playButton",
+                    align: "tl",
+                    x: 15,
+                    y: 12
+                  },
+                  {
+                    name: "timeDisplay",
+                    align: "tl",
+                    x: 10,
+                    y: 7
+                  },
+                  {
+                    name: "fullScreenButton",
+                    align: "tr",
+                    x: 10,
+                    y: 12
+                  },
+                  {
+                    name: "setting",
+                    align: "tr",
+                    x: 15,
+                    y: 12
+                  },
+                  {
+                    name: "volume",
+                    align: "tr",
+                    x: 5,
+                    y: 10
+                  }
+                ]
+              }
+            ]
           },
           player => {
             document.addEventListener("keydown", this.handleKeydown);
-            document
-              .querySelector("#videoPlayer video")
-              .addEventListener("click", this.handleTogglePlay);
-            player.on("canplaythrough", this.handleCanplaythrough);
-            // player.on("canplay", this.handleCanplay);
+            // player.on("canplaythrough", this.handleCanplaythrough);
+            player.on("canplay", this.handleCanplay);
             // player.on("ready", this.handleReady);
             player.on("play", this.handlePlay);
             // player.on("playing", this.handlePlaying);
@@ -165,23 +240,30 @@ export default {
       this.timer && clearInterval(this.timer);
       this.timer = null;
     },
-    // handleCanplay () {
-    //   console.log("canplay");
-    // },
-    handleCanplaythrough() {
-      // console.log("canplaythrough");
+    handleCanplay() {
       if (!this.seeked) {
-        this.seeked = true;
-        const startTime =
-          this.startTime > this.duration * 0.9 ? 0 : this.startTime;
-        this.player.seek(startTime);
+        this.$nextTick(() => {
+          document
+            .querySelector("#videoPlayer video")
+            .addEventListener("click", this.handleTogglePlay);
+          this.seeked = true;
+          // this.handleTogglePlay();
+          const startTime =
+            this.startTime > this.duration * 0.9 ? 0 : this.startTime;
+          this.player.seek(startTime);
+          this.player.play();
+        });
       }
     },
+    // handleCanplaythrough () {
+    //   // console.log("canplaythrough");
+    // },
     // handleReady() {
-    //   console.log("ready");
+    //   // console.log("ready");
     // },
     handlePlay() {
       // console.log("play");
+      this.handleClearTimer();
       this.timestamp = new Date().valueOf();
       this.timer = setInterval(() => {
         this.handleSetRecord();
@@ -218,16 +300,18 @@ export default {
       }
     },
     handleTogglePlay() {
-      // const status = this.player && this.player.getStatus();
-      // // console.log(status);
-      // if (status === "playing" || this.playing) {
-      //   this.playing = false;
-      //   this.player.pause();
-      // } else if (status === "pause" || !this.playing) {
-      //   this.playing = true;
-      //   this.player.play();
-      // }
-      document.querySelector(".player-container .prism-play-btn").click();
+      const status = this.player && this.player.getStatus();
+      if (["playing"].indexOf(status) > -1 || this.playing) {
+        this.playing = false;
+        this.player.pause();
+      } else if (
+        ["ready", "pause", "ended"].indexOf(status) > -1 ||
+        !this.playing
+      ) {
+        this.playing = true;
+        this.player.play();
+      }
+      // document.querySelector(".player-container .prism-play-btn").click();
     }
   }
 };
@@ -288,28 +372,28 @@ export default {
     .prism-info-display {
       display: none !important;
     }
-    .prism-big-play-btn {
-      height: 96px;
-      width: 96px;
-      left: 50% !important;
-      top: 50%;
-      margin-left: -48px;
-      margin-top: -48px;
-      font-size: 10px;
-      border: 0;
-      opacity: 0.5;
-      z-index: 99999;
-      display: none !important;
-      &:hover {
-        opacity: 1;
-      }
-      .outter {
-        display: none;
-      }
-      .vjs-button-icon .draw-fill {
-        fill: #00b38a;
-      }
-    }
+    // .prism-big-play-btn {
+    //   height: 96px;
+    //   width: 96px;
+    //   left: 50% !important;
+    //   top: 50%;
+    //   margin-left: -48px;
+    //   margin-top: -48px;
+    //   font-size: 10px;
+    //   border: 0;
+    //   opacity: 0.5;
+    //   z-index: 99999;
+    //   display: none !important;
+    //   &:hover {
+    //     opacity: 1;
+    //   }
+    //   .outter {
+    //     display: none;
+    //   }
+    //   .vjs-button-icon .draw-fill {
+    //     fill: #00b38a;
+    //   }
+    // }
     .prism-controlbar {
       height: 40px;
       // display: block !important;
