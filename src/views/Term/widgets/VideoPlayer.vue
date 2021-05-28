@@ -70,7 +70,9 @@ export default {
     ...mapState(["userInfo"])
   },
   mounted() {
-    this.checkTransformCodeStatus();
+    this.$nextTick(() => {
+      this.checkTransformCodeStatus();
+    });
   },
   beforeDestroy() {
     this.handleClearTimer();
