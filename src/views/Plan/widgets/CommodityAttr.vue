@@ -34,6 +34,9 @@
                   ? 'active'
                   : ''
               ]"
+              :style="{
+                cursor: allBrands.length > 0 ? 'pointer' : 'not-allowed'
+              }"
             ></label>
           </div>
         </el-tooltip>
@@ -133,7 +136,11 @@
                     ? `url(${attr.focus_icon})`
                     : hasValueSelectByAttr(attr.id)
                     ? `url(${attr.active_icon})`
-                    : `url(${attr.default_icon})`
+                    : `url(${attr.default_icon})`,
+                cursor:
+                  attr.children && attr.children.length > 0
+                    ? 'pointer'
+                    : 'not-allowed'
               }"
             ></label>
           </div>
