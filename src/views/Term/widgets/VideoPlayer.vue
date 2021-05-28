@@ -73,6 +73,10 @@ export default {
     this.checkTransformCodeStatus();
   },
   beforeDestroy() {
+    this.handleClearTimer();
+    document
+      .querySelector("#videoPlayer video")
+      .removeEventListener("click", this.handleTogglePlay);
     document.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
@@ -80,7 +84,7 @@ export default {
       if (this.player) {
         document
           .querySelector("#videoPlayer video")
-          .addEventListener("click", this.handleTogglePlay);
+          .removeEventListener("click", this.handleTogglePlay);
         this.player.dispose();
         this.player = null;
         this.playing = false;
@@ -172,9 +176,9 @@ export default {
         this.player.seek(startTime);
       }
     },
-    handleReady() {
-      console.log("ready");
-    },
+    // handleReady() {
+    //   console.log("ready");
+    // },
     handlePlay() {
       // console.log("play");
       this.timestamp = new Date().valueOf();
@@ -182,9 +186,9 @@ export default {
         this.handleSetRecord();
       }, 2000);
     },
-    handlePlaying() {
-      console.log("playing");
-    },
+    // handlePlaying() {
+    //   console.log("playing");
+    // },
     handlePause() {
       // console.log("pause");
       this.handleSetRecord();
@@ -202,13 +206,11 @@ export default {
       this.handleSetRecord();
     },
     handleEnded() {
-      console.log("ended");
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
       // this.$emit("ended");
     },
     handleKeydown(e) {
-      console.log(e);
       // 空格
       if (e.keyCode === 32) {
         this.handleTogglePlay();

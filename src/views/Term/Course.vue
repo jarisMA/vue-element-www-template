@@ -187,6 +187,12 @@ export default {
       if (lessons[index].id === lessons[activeLessonIndex].id) {
         return;
       }
+      this.$router.push({
+        params: {
+          id: this.$route.params.id,
+          lessonIndex: index + 1
+        }
+      });
       this.activeLessonIndex = index;
     },
     handleTimeUpdate(second) {

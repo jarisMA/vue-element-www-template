@@ -200,7 +200,7 @@ export default {
     });
     this.observer.observe(element);
   },
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener("mouseup", this.handleMouseUp);
     if (this.observer) {
       this.observer.disconnect();
