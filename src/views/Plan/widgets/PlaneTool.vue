@@ -1,55 +1,94 @@
 <template>
   <div class="tool-wrapper">
-    <div class="tool-left"></div>
-    <div class="tool-right">
+    <div class="tool-left">
+      <el-scrollbar class="scroll-section">
+        <ul class="tool-left-list">
+          <template v-for="(cat, index) of cats">
+            <li
+              v-show="index < 3 || showMore"
+              :class="['tool-left-item', index === activeIndex ? 'active' : '']"
+              :key="cat.id"
+              @click="handleToggleCat(index)"
+            >
+              {{ cat.name }}
+            </li>
+          </template>
+          <li
+            v-if="cats.length > 3"
+            class="tool-left-more"
+            @click="showMore = !showMore"
+          >
+            <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+          </li>
+        </ul>
+      </el-scrollbar>
+    </div>
+    <div class="tool-right" v-loading="loading">
       <div class="tool-main">
         <div class="tool-main-header">
           <el-input
             ref="nameSearch"
             class="name-search"
             type="text"
-            :placeholder="`在「布平面」下搜索`"
+            placeholder="在「布平面」下搜索"
             prefix-icon="search-icon bgImg"
             v-model="name"
-            autofocus
             clearable
-            @keyup.enter.native="handleNameInputConfirm"
           >
           </el-input>
         </div>
         <div class="tool-main-content">
-          <div class="scroll-section">
-            <ul class="tool-main-cat-list">
-              <li class="tool-main-cat-item" v-for="item of 10" :key="item">
-                <h4 class="tool-main-cat-title">
-                  <span>单人沙发</span>
-                </h4>
-                <ul class="tool-main-commodity-list">
-                  <li
-                    class="tool-main-commodity-item"
-                    v-for="item of 8"
-                    :key="item"
-                  >
-                    <div class="commodity-top">
-                      <the-loading-image
-                        :width="94"
-                        :height="94"
-                        url="https://homeplan-public.oss-cn-shanghai.aliyuncs.com/admin/2021/0526/commodity-cat/vPDUtlArqxforbGwR7AP3AuBIUV8NLYlPQspNcN7.svg"
-                      />
-                      <label
-                        class="bgImg feedback"
-                        @click.stop="handleShowFeedback()"
-                      >
-                        <i class="feedback-icon"></i>
-                      </label>
-                    </div>
-                    <div class="commodity-bottom">
-                      单人沙发
-                    </div>
-                  </li>
+          <div class="scroll-section" ref="mainScroll">
+            <div class="tool-scroll-wrapper">
+              <template v-for="cat of cats">
+                <ul
+                  class="tool-main-cat-list"
+                  v-if="cat.children && cat.children.length > 0"
+                  :key="cat.id"
+                  :id="`cat-${cat.id}`"
+                >
+                  <template v-for="subCat of cat.children">
+                    <li
+                      class="tool-main-cat-item"
+                      v-if="subCat.commodities && subCat.commodities.length > 0"
+                      :key="subCat.id"
+                    >
+                      <h4 class="tool-main-cat-title">
+                        <span>{{ subCat.name }}</span>
+                      </h4>
+                      <ul class="tool-main-commodity-list">
+                        <li
+                          class="tool-main-commodity-item"
+                          v-for="commodity of subCat.commodities"
+                          :key="commodity.id"
+                          :title="commodity.skus[0].name"
+                          @click="handleAddModel(commodity.skus[0].kjl_sku_id)"
+                        >
+                          <div class="commodity-top">
+                            <the-loading-image
+                              :width="94"
+                              :height="94"
+                              :url="commodity.skus[0].img_id"
+                            />
+                            <label
+                              class="bgImg feedback"
+                              @click.stop="
+                                handleShowFeedback(commodity.skus[0])
+                              "
+                            >
+                              <i class="feedback-icon"></i>
+                            </label>
+                          </div>
+                          <div class="commodity-bottom ellipsis">
+                            {{ commodity.skus[0].name }}
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                  </template>
                 </ul>
-              </li>
-            </ul>
+              </template>
+            </div>
           </div>
         </div>
       </div>
@@ -59,6 +98,7 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
+import commodityService from "service/commodity";
 
 export default {
   name: "PlaneTool",
@@ -67,17 +107,81 @@ export default {
   },
   data() {
     return {
-      name: ""
+      loading: true,
+      name: "",
+      activeIndex: 0,
+      showMore: false,
+      originalCats: []
     };
   },
+  computed: {
+    cats() {
+      const cats = this.originalCats;
+      const name = this.name;
+      if (!name) {
+        return cats;
+      }
+      return cats.map(cat => {
+        return {
+          id: cat.id,
+          name: cat.name,
+          children:
+            (cat.children &&
+              cat.children.map(subCat => {
+                return {
+                  id: subCat.id,
+                  name: subCat.name,
+                  commodities: (subCat.commodities || []).filter(
+                    commodity => commodity.skus[0].name.indexOf(name) > -1
+                  )
+                };
+              })) ||
+            null
+        };
+      });
+    }
+  },
+  created() {
+    this.getData();
+  },
   methods: {
-    handleNameInputConfirm() {},
-    handleShowFeedback() {}
+    getData() {
+      commodityService
+        .catCommodities(process.env.VUE_APP_PLANE_CAT_ID)
+        .then(res => {
+          this.originalCats = res;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleShowFeedback(sku) {
+      this.$emit("showFeedback", sku);
+    },
+    handleToggleCat(index) {
+      this.activeIndex = index;
+      this.$nextTick(() => {
+        const scrollDom = this.$refs["mainScroll"];
+        const cat = this.cats[index];
+        const catDom = document.getElementById(`cat-${cat.id}`);
+        if (catDom) {
+          scrollDom.scrollTo({
+            top: catDom.offsetTop - 76,
+            behavior: "smooth"
+          });
+        }
+      });
+    },
+    handleAddModel(goodId) {
+      this.$emit("addModel", goodId);
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 .tool-wrapper {
   display: flex;
   align-items: flex-start;
@@ -89,6 +193,40 @@ export default {
     width: 44px;
     max-height: 100%;
     overflow: auto;
+    .tool-left-list {
+      width: 100%;
+      padding: 8px 0;
+      background: #fff;
+      .tool-left-item {
+        width: 100%;
+        padding: 8px 0;
+        line-height: 16px;
+        font-weight: 600;
+        font-size: 12px;
+        text-align: center;
+        color: #2c3330;
+        cursor: pointer;
+        &.active {
+          color: @primaryColor;
+        }
+      }
+    }
+    .tool-left-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      .expand-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        background: url("~images/commodity/expand.svg") no-repeat center;
+        transition: transform 0.1s;
+        &.unexpand {
+          transform: rotate(180deg);
+        }
+      }
+    }
   }
   .tool-right {
     flex: 1;
@@ -115,6 +253,7 @@ export default {
           background: #fafafa;
           border: unset;
           border-radius: 2px;
+          color: #2c3330;
           &::placeholder {
             color: #999999;
           }
@@ -144,8 +283,11 @@ export default {
         &::-webkit-scrollbar {
           width: 15px;
         }
-        .tool-main-cat-list {
+        .tool-scroll-wrapper {
+          width: 300px;
           padding-bottom: 10px;
+        }
+        .tool-main-cat-list {
           .tool-main-cat-item {
             margin-top: 20px;
             .tool-main-cat-title {

@@ -15,7 +15,12 @@
           enter-active-class="animated slideInLeft"
           leave-active-class="animated slideOutLeft"
         >
-          <plane-tool v-if="toolIndex === 1" class="plane-tool" />
+          <plane-tool
+            v-if="toolIndex === 1"
+            class="plane-tool"
+            @addModel="addModel"
+            @showFeedback="handleShowFeedback"
+          />
           <plan-tool
             v-if="toolIndex === 2"
             class="plan-tool"
