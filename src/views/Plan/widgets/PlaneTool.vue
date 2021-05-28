@@ -202,7 +202,7 @@ export default {
       background: #fff;
       .tool-left-item {
         width: 100%;
-        padding: 8px 0;
+        padding: 8px 10px;
         line-height: 16px;
         font-weight: 600;
         font-size: 12px;
