@@ -4,9 +4,13 @@
       <div class="list-header">
         <label class="price-wrapper" v-if="!up">
           <label class="price">¥{{ totalPrice }}</label>
-          <label class="refresh-price ellipsis" @click="handleRefreshPrice">
-            <i class="refresh-icon"></i>更新总价</label
+          <label
+            class="refresh-price ellipsis"
+            @click="!refreshing ? handleRefreshPrice() : null"
           >
+            <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+            >更新总价
+          </label>
         </label>
         <label v-else class="header-title">已选商品清单</label>
         <div class="operate-wrapper">
@@ -65,9 +69,13 @@
       <div class="list-footer">
         <label class="price-wrapper">
           <label class="price">¥{{ totalPrice }}</label>
-          <label class="refresh-price ellipsis" @click="handleRefreshPrice">
-            <i class="refresh-icon"></i>更新总价</label
+          <label
+            class="refresh-price ellipsis"
+            @click="!refreshing ? handleRefreshPrice() : null"
           >
+            <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+            >更新总价
+          </label>
         </label>
       </div>
     </div>
@@ -199,9 +207,13 @@
         <div class="footer-content">
           <label class="price-wrapper">
             <label class="price">¥{{ totalPrice }}</label>
-            <label class="refresh-price ellipsis" @click="handleRefreshPrice">
-              <i class="refresh-icon"></i>更新总价</label
+            <label
+              class="refresh-price ellipsis"
+              @click="!refreshing ? handleRefreshPrice() : null"
             >
+              <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+              >更新总价
+            </label>
           </label>
           <label class="number"> 共{{ totalNumber }}件商品 </label>
         </div>
@@ -236,6 +248,10 @@ export default {
     design: {
       type: Object,
       required: true
+    },
+    refreshing: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -432,6 +448,15 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @padding: 10px;
+@keyframes refreshing {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@refreshingDuration: 0.7s;
 .list-wrapper {
   width: 100%;
   height: 100%;
@@ -471,6 +496,9 @@ export default {
             height: 16px;
             background: #fff;
             mask: url("~images/common/refresh.svg") no-repeat center;
+            &.refreshing {
+              animation: refreshing @refreshingDuration linear infinite;
+            }
           }
         }
       }
@@ -615,6 +643,9 @@ export default {
             height: 16px;
             background: @primaryColor;
             mask: url("~images/common/refresh.svg") no-repeat center;
+            &.refreshing {
+              animation: refreshing @refreshingDuration linear infinite;
+            }
           }
         }
       }
@@ -840,6 +871,9 @@ export default {
               height: 16px;
               background: #fff;
               mask: url("~images/common/refresh.svg") no-repeat center;
+              &.refreshing {
+                animation: refreshing @refreshingDuration linear infinite;
+              }
             }
           }
         }

@@ -146,6 +146,7 @@
             :full_screen.sync="isListFullScreen"
             :listingBrief="listingBrief"
             :design="design"
+            :refreshing="refreshingBrief"
             @refreshPrice="handleRefreshPrice"
           />
         </div>
@@ -283,6 +284,10 @@ export default {
     listingBrief: {
       type: Object,
       required: true
+    },
+    refreshingBrief: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
