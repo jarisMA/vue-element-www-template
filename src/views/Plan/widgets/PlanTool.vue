@@ -863,7 +863,7 @@ export default {
     }
     .value-item {
       position: relative;
-      padding: 5px 8px;
+      padding: 8px;
       line-height: 1;
       font-size: 12px;
       color: #14af64;

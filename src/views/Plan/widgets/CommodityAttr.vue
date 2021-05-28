@@ -8,6 +8,7 @@
           content="品牌"
           :open-delay="tipsDelay"
           placement="bottom"
+          :disabled="!(allBrands.length > 0)"
         >
           <div
             :class="[
@@ -19,7 +20,10 @@
                 ? 'active'
                 : ''
             ]"
-            @click="handleAttrFocusChange(-1)"
+            :style="{
+              cursor: allBrands.length > 0 ? 'pointer' : 'not-allowed'
+            }"
+            @click="allBrands.length > 0 ? handleAttrFocusChange(-1) : ''"
           >
             <label
               :class="[
@@ -103,14 +107,23 @@
           :open-delay="tipsDelay"
           :content="attr.name"
           placement="bottom"
+          :disabled="!(attr.children && attr.children.length > 0)"
         >
           <div
             :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
             :style="{
               backgroundColor:
-                attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null
+                attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null,
+              cursor:
+                attr.children && attr.children.length > 0
+                  ? 'pointer'
+                  : 'not-allowed'
             }"
-            @click="handleAttrFocusChange(attr.id)"
+            @click="
+              attr.children && attr.children.length > 0
+                ? handleAttrFocusChange(attr.id)
+                : ''
+            "
           >
             <label
               :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"

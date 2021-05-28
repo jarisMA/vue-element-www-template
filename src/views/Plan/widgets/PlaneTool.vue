@@ -322,7 +322,7 @@ export default {
                 left: 0;
                 top: calc(50% - 1px);
                 width: 100%;
-                border-top: 2px dotted #606c66;
+                border-top: 1px dotted #81948b;
                 content: "";
               }
               span {
