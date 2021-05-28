@@ -132,7 +132,6 @@ export default {
             components: [PhoneNumberComponent]
           },
           player => {
-            window.player = player;
             document.addEventListener("keydown", this.handleKeydown);
             document
               .querySelector("#videoPlayer video")
@@ -166,9 +165,9 @@ export default {
       this.timer && clearInterval(this.timer);
       this.timer = null;
     },
-    handleCanplay() {
-      console.log("canplay");
-    },
+    // handleCanplay () {
+    //   console.log("canplay");
+    // },
     handleCanplaythrough() {
       // console.log("canplaythrough");
       if (!this.seeked) {
