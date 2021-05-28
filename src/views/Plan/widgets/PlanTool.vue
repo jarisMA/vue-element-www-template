@@ -723,6 +723,7 @@ export default {
           height: 28px;
           background: #fafafa;
           border: unset;
+          font-size: 12px;
           border-radius: 2px;
           &::placeholder {
             color: #999999;

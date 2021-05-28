@@ -248,26 +248,42 @@ export default {
       flex: none;
       width: 100%;
       padding: 8px 0;
-      /deep/.name-search {
+      /deep/ .name-search {
+        margin-left: 10px;
+        width: calc(100% - 10px);
         .el-input__inner {
-          line-height: 1;
-          font-size: 12px;
-          color: #999999;
+          width: 100%;
+          height: 28px;
           background: #fafafa;
           border: unset;
+          font-size: 12px;
           border-radius: 2px;
-          color: #2c3330;
           &::placeholder {
             color: #999999;
           }
         }
-        .el-input__prefix {
-          display: flex;
-          align-items: center;
-          .search-icon {
+        .el-input__icon {
+          margin-top: 2px;
+          line-height: 24px;
+          &.search-icon {
             width: 24px;
             height: 24px;
-            background-image: url("~images/common/search.svg");
+            background: url("~images/common/search.svg");
+          }
+        }
+        .el-input__suffix {
+          right: 2px;
+          .el-input__suffix-inner {
+            .el-input__icon {
+              background: red;
+              width: 24px;
+              height: 24px;
+              background: url("~images/commodity/cancel.svg") no-repeat;
+              border: unset;
+              &::before {
+                display: none;
+              }
+            }
           }
         }
       }
@@ -304,9 +320,9 @@ export default {
               &::before {
                 position: absolute;
                 left: 0;
-                top: calc(50% - 0.5px);
+                top: calc(50% - 1px);
                 width: 100%;
-                border-top: 1px dashed #606c66;
+                border-top: 2px dotted #606c66;
                 content: "";
               }
               span {
