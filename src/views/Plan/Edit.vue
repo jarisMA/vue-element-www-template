@@ -23,8 +23,10 @@
             :rootCats="softCats"
             :listingBrief="listingBrief"
             :design="design"
+            :refreshingBrief="refreshingBrief"
             @addModel="addModel"
             @showFeedback="handleShowFeedback"
+            @refreshPrice="handleIframeSave"
           />
         </transition>
         <div class="toolbar">
@@ -98,6 +100,7 @@ export default {
       listingId: null,
       showTool: false,
       design: {},
+      refreshingBrief: false,
       listingBrief: {
         list: [],
         goods: [],
@@ -227,35 +230,55 @@ export default {
         "*"
       );
     },
+    handleIframeSave() {
+      const iframe = this.$refs["iframe"];
+      iframe.contentWindow.postMessage("save_kjl", "*");
+    },
     listingSync() {
       if (this.listingId) {
-        kujialeService.listingSync(this.listingId).then(() => {
-          if (this.listingTimer) {
-            clearInterval(this.listingTimer);
-            this.listingTimer = null;
-          }
-          this.listingTimer = setInterval(() => {
-            this.getListingState();
-          }, 1000);
-        });
+        this.refreshingBrief = true;
+        kujialeService
+          .listingSync(this.listingId)
+          .then(() => {
+            if (this.listingTimer) {
+              clearInterval(this.listingTimer);
+              this.listingTimer = null;
+            }
+            this.listingTimer = setInterval(() => {
+              this.getListingState();
+            }, 1000);
+          })
+          .catch(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     getListingState() {
       if (this.listingId) {
-        kujialeService.listingState(this.listingId).then(res => {
-          if (res === 3) {
-            this.getListingBrief();
-            clearInterval(this.listingTimer);
-            this.listingTimer = null;
-          }
-        });
+        kujialeService
+          .listingState(this.listingId)
+          .then(res => {
+            if (res === 3) {
+              this.getListingBrief();
+              clearInterval(this.listingTimer);
+              this.listingTimer = null;
+            }
+          })
+          .catch(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     getListingBrief() {
       if (this.listingId) {
-        kujialeService.listingBrief(this.listingId).then(res => {
-          this.listingBrief = res;
-        });
+        kujialeService
+          .listingBrief(this.listingId)
+          .then(res => {
+            this.listingBrief = res;
+          })
+          .finally(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     handleShowFeedback(sku) {

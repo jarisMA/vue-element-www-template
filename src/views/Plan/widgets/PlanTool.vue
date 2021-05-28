@@ -146,6 +146,8 @@
             :full_screen.sync="isListFullScreen"
             :listingBrief="listingBrief"
             :design="design"
+            :refreshing="refreshingBrief"
+            @refreshPrice="handleRefreshPrice"
           />
         </div>
       </transition>
@@ -153,6 +155,7 @@
     <ul class="value-list" v-if="values.length > 0">
       <li class="reset-wrapper pointer" @click="handleValueReset">
         <label class="reset-icon bgImg"></label>
+        重置
       </li>
       <li
         class="value-item"
@@ -281,6 +284,10 @@ export default {
     listingBrief: {
       type: Object,
       required: true
+    },
+    refreshingBrief: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -563,6 +570,9 @@ export default {
     },
     handleShowFeedback(sku) {
       this.$emit("showFeedback", sku);
+    },
+    handleRefreshPrice() {
+      this.$emit("refreshPrice");
     }
   }
 };
@@ -836,17 +846,25 @@ export default {
       margin-top: 1px;
     }
     .reset-wrapper {
+      display: flex;
+      align-items: center;
       padding: 8px;
+      font-size: 12px;
+      color: #666;
       background: #fafafa;
       .reset-icon {
-        width: 24px;
-        height: 24px;
+        display: inline-block;
+        margin-right: 2px;
+        width: 16px;
+        height: 16px;
         background-image: url("~images/common/reset.svg");
       }
     }
     .value-item {
       position: relative;
       padding: 5px 8px;
+      line-height: 1;
+      font-size: 12px;
       color: #14af64;
       background-color: #eaf9f2;
       cursor: auto;
