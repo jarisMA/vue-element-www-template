@@ -378,8 +378,7 @@ export default {
   .plane-tool {
     position: absolute;
     top: 52px;
-    left: 0;
-    width: 364px;
+    left: 44px;
     height: calc(100% - 52px - 8px);
     cursor: default;
     z-index: 1;

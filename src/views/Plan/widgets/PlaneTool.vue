@@ -183,13 +183,16 @@ export default {
 @import "~styles/variable";
 
 .tool-wrapper {
+  position: relative;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  width: 100%;
+  width: 345px;
   height: 100%;
   .tool-left {
-    flex: none;
+    position: absolute;
+    left: -44px;
+    top: 0;
     width: 44px;
     max-height: 100%;
     overflow: auto;
