@@ -9,7 +9,13 @@
 import vodService from "service/vod";
 import { mapState } from "vuex";
 import Store from "@/store/index";
-
+function randomTop(el) {
+  el.style.top = Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%";
+  const timer = setTimeout(() => {
+    randomTop(el);
+    clearTimeout(timer);
+  }, 10 * 1000);
+}
 class PhoneNumberComponent {
   constructor() {}
 
@@ -19,10 +25,8 @@ class PhoneNumberComponent {
     div.innerHTML = userInfo.phone + userInfo.nickname;
     div.className = "phone-container";
     div.id = "phone-container";
-    setInterval(() => {
-      div.style.top = Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%";
-    }, 10 * 1000);
     el.appendChild(div);
+    randomTop(div);
   }
 }
 export default {
@@ -353,6 +357,7 @@ export default {
       background: rgba(0, 0, 0, 0.4);
       z-index: 1;
       animation: phoneMove 10s linear infinite;
+      transform: translate3d(0, 0, 0);
     }
     video {
       background: #000;
