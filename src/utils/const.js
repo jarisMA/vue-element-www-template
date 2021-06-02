@@ -110,3 +110,15 @@ export const REPLY_TYPE_COMPLEX = 2; // 复杂富文本
 export const TYPE_QUESTION = 1;
 export const TYPE_ANSWER = 2;
 export const TYPE_COMMENT = 3;
+
+// 课程付费类型
+export const COURSE_PRICE_TYPE_FREE = 1;
+export const COURSE_PRICE_TYPE_PAY = 2;
+
+// 课程阶段
+export const COURSE_LEVEL = {
+  1: "入门",
+  2: "初阶",
+  3: "进阶",
+  4: "高阶"
+};

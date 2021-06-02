@@ -73,7 +73,9 @@ export default {
   commodityCatCommodities: catId =>
     `${WEB_PREFIX}/commodity/cat/${catId}/commodities`,
   commoditySkuFeedback: id => `${WEB_PREFIX}/commodity-sku/${id}/feedback`,
+  courseCategory: `${WEB_PREFIX}/course-category`,
   course: id => `${WEB_PREFIX}/course/${id}`,
+  courses: `${WEB_PREFIX}/course`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
