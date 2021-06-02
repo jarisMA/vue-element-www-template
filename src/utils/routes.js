@@ -172,10 +172,34 @@ export const goAcademyCourseList = (type = "_self") => {
   );
 };
 
+export const goAcademyCourseDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCourseDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
 export const goAcademySeriesList = (type = "_self") => {
   return goRoute(
     {
       name: "AcademySeriesList"
+    },
+    type
+  );
+};
+
+export const goAcademySeriesDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademySeriesDetail",
+      params: {
+        id
+      }
     },
     type
   );

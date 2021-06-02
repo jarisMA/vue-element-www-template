@@ -1,5 +1,5 @@
 <template>
-  <div class="card">
+  <div class="card" @click="goAcademySeriesDetail(series.id)">
     <div class="card-top">
       <the-loading-image :width="378" :height="224" :url="series.cover_url" />
     </div>
@@ -30,6 +30,8 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import { COURSE_LEVEL } from "utils/const";
+import { goAcademySeriesDetail } from "utils/routes";
+
 export default {
   name: "CourseCard",
   components: {
@@ -45,6 +47,9 @@ export default {
     return {
       COURSE_LEVEL
     };
+  },
+  methods: {
+    goAcademySeriesDetail
   }
 };
 </script>

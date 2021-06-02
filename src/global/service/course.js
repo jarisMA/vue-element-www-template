@@ -8,6 +8,9 @@ const courseService = {
   course(id) {
     return request.get(API.course(id));
   },
+  courseDetail(id) {
+    return request.get(API.courseDetail(id));
+  },
   setLessonRecord(courseId, lessonId, params = {}) {
     return request.post(API.lessonRecord(courseId, lessonId), params);
   },
