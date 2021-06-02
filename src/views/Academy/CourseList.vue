@@ -5,7 +5,7 @@
         <div class="page-header-left">
           <h3 class="page-header-title">
             家计划
-            <el-select v-model="value" placeholder="请选择">
+            <el-select v-model="value" @change="goAcademySeriesList()">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -107,6 +107,7 @@ import courseService from "service/course";
 import { COURSE_LEVEL } from "utils/const";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
+import { goAcademySeriesList } from "utils/routes";
 export default {
   name: "AcademyCourseList",
   components: { TheSearchBar, CourseCard, Pagination, TheEmpty },
@@ -150,6 +151,7 @@ export default {
     this.getData();
   },
   methods: {
+    goAcademySeriesList,
     getData() {
       Promise.all([
         courseService.courseCategory(),
@@ -242,6 +244,9 @@ export default {
           height: 40px;
           /deep/ .el-input {
             height: 100%;
+            .el-select__caret {
+              color: #81948b;
+            }
             .el-input__inner {
               padding: unset;
               line-height: 40px;

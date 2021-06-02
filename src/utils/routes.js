@@ -163,6 +163,24 @@ export const goAcademyCamp = (id, type = "_self") => {
   );
 };
 
+export const goAcademyCourseList = (type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCourseList"
+    },
+    type
+  );
+};
+
+export const goAcademySeriesList = (type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademySeriesList"
+    },
+    type
+  );
+};
+
 export const go404 = (type = "replace") => {
   return goRoute(
     {
