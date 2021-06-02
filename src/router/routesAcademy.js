@@ -1,6 +1,8 @@
 import AcademyIndex from "@/views/Academy/Index";
 import AcademyCamp from "@/views/Academy/Camp";
 import AcademyCourseList from "@/views/Academy/CourseList";
+import AcademySeriesList from "@/views/Academy/SeriesList";
+
 const routes = [
   {
     path: "academy",
@@ -16,6 +18,11 @@ const routes = [
     path: "academy/course",
     name: "AcademyCourseList",
     component: AcademyCourseList
+  },
+  {
+    path: "academy/series",
+    name: "AcademySeriesList",
+    component: AcademySeriesList
   }
 ];
 

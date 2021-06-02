@@ -129,7 +129,7 @@ export default {
       menuId: null,
       breadcrumb: "全部",
       pagination: {
-        size: 5,
+        size: 12,
         page: 1,
         total: 0
       },
@@ -154,7 +154,7 @@ export default {
       Promise.all([
         courseService.courseCategory(),
         courseService.courses({
-          size: this.pagination.size,
+          page_size: this.pagination.size,
           page: 1
         })
       ])
@@ -171,7 +171,7 @@ export default {
       this.loading = true;
       courseService
         .courses({
-          size: this.pagination.size,
+          page_size: this.pagination.size,
           page: start,
           cat_id: this.menuId,
           name: this.keyword,
@@ -339,8 +339,7 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 60px;
-          height: 36px;
+          padding: 8px 16px;
           line-height: 20px;
           font-size: 14px;
           color: #2c3330;

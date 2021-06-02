@@ -13,6 +13,12 @@ const courseService = {
   },
   courseCategory() {
     return request.get(API.courseCategory);
+  },
+  seriesCategory() {
+    return request.get(API.courseSeriesCategory);
+  },
+  series(params = {}) {
+    return request.get(API.courseSeries, params);
   }
 };
 

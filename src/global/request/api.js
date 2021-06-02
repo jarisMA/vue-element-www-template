@@ -78,6 +78,8 @@ export default {
   courses: `${WEB_PREFIX}/course`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
+  courseSeriesCategory: `${WEB_PREFIX}/series-category`,
+  courseSeries: `${WEB_PREFIX}/series`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,
