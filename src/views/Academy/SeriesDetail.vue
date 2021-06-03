@@ -3,7 +3,11 @@
     <div class="container-1180">
       <div class="page-main">
         <div class="page-main-left">
-          <the-loading-image :width="780" :height="439" />
+          <the-loading-image
+            :width="780"
+            :height="439"
+            :url="series.cover_url"
+          />
           <div class="page-main-info">
             <label class="page-main-price">
               {{ "¥" + series.current_price }}</label
@@ -108,7 +112,10 @@
               v-for="item of relations"
               :key="item.id"
             >
-              <set-card :series="item" />
+              <set-card
+                :series="item"
+                @click.native.prevent="goDetail(item.id)"
+              />
             </li>
           </ul>
         </div>
@@ -132,6 +139,11 @@ export default {
       series: {},
       relations: []
     };
+  },
+  watch: {
+    ["$route"]() {
+      this.getData();
+    }
   },
   computed: {
     lessonStatus() {
@@ -194,6 +206,7 @@ export default {
   methods: {
     formatSeconds,
     getData() {
+      this.loading = true;
       courseService
         .set(this.$route.params.id)
         .then(series => {
@@ -216,6 +229,13 @@ export default {
         .catch(() => {
           this.loading = false;
         });
+    },
+    goDetail(id) {
+      this.$router.push({
+        params: {
+          id
+        }
+      });
     }
   }
 };
