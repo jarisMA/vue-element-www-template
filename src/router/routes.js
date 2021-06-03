@@ -5,6 +5,7 @@ import routesQuestion from "./routesQuestion";
 import routesError from "./routesError";
 import routesAcademy from "./routesAcademy";
 import routesMy from "./routesMy";
+import routesVip from "./routesVip";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -29,6 +30,7 @@ const routes = [
       ...routesQuestion,
       ...routesAcademy,
       ...routesMy,
+      ...routesVip,
       ...routesError
     ]
   },
