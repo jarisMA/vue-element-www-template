@@ -1,9 +1,12 @@
 import router from "@/router";
 
-export const goHome = () => {
-  return goRoute({
-    name: "Home"
-  });
+export const goHome = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Home"
+    },
+    type
+  );
 };
 
 export const goAcademy = () => {

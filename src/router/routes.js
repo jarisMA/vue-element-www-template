@@ -11,6 +11,7 @@ import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
 import Course from "@/views/Term/Course";
+import Payment from "@/views/Payment";
 
 const routes = [
   {
@@ -43,6 +44,14 @@ const routes = [
     path: "/course/:id/lesson/:lessonIndex",
     name: "Course",
     component: Course,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: "/payment",
+    name: "Payment",
+    component: Payment,
     meta: {
       auth: true
     }
