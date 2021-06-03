@@ -14,8 +14,11 @@ const courseService = {
   setLessonRecord(courseId, lessonId, params = {}) {
     return request.post(API.lessonRecord(courseId, lessonId), params);
   },
-  courseCategory() {
-    return request.get(API.courseCategory);
+  courseCategories() {
+    return request.get(API.courseCategories);
+  },
+  courseCategory(id) {
+    return request.get(API.courseCategory(id));
   },
   seriesCategory() {
     return request.get(API.courseSeriesCategory);

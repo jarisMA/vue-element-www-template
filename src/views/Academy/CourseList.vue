@@ -5,7 +5,7 @@
         <div class="page-header-left">
           <h3 class="page-header-title">
             家计划
-            <el-select v-model="value" @change="goAcademySeriesList()">
+            <el-select v-model="value" @change="handleOptionSelect">
               <el-option
                 v-for="item in options"
                 :key="item.value"
@@ -107,25 +107,17 @@ import courseService from "service/course";
 import { COURSE_LEVEL } from "utils/const";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
-import { goAcademySeriesList } from "utils/routes";
+import { listMixin } from "./widgets/mixin";
+
 export default {
   name: "AcademyCourseList",
+  mixins: [listMixin],
   components: { TheSearchBar, CourseCard, Pagination, TheEmpty },
   data() {
     return {
       COURSE_LEVEL,
       loading: true,
       value: 1,
-      options: [
-        {
-          value: 1,
-          label: "视频课"
-        },
-        {
-          value: 2,
-          label: "体系课"
-        }
-      ],
       menus: [],
       menuId: null,
       breadcrumb: "全部",
@@ -148,19 +140,35 @@ export default {
     }
   },
   created() {
+    const { catId } = this.$route.query;
+    if (catId) {
+      this.menuId = parseInt(catId);
+    }
     this.getData();
   },
   methods: {
-    goAcademySeriesList,
     getData() {
       Promise.all([
-        courseService.courseCategory(),
+        courseService.courseCategories(),
         courseService.courses({
           page_size: this.pagination.size,
-          page: 1
+          page: 1,
+          cat_id: this.menuId
         })
       ])
         .then(([category, courses]) => {
+          if (this.menuId) {
+            category.some(menu => {
+              const submenu =
+                menu.children &&
+                menu.children.find(item => item.id === this.menuId);
+              if (submenu) {
+                menu.unFold = true;
+                this.breadcrumb = menu.name + " / " + submenu.name;
+                return true;
+              }
+            });
+          }
           this.menus = category;
           this.courses = courses.list;
           this.pagination.total = courses.pagination.total;
@@ -227,6 +235,7 @@ export default {
 
 .page {
   padding: 40px 0;
+  background: #fff !important;
   .page-header {
     display: flex;
     align-items: center;

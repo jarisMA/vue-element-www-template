@@ -73,7 +73,8 @@ export default {
   commodityCatCommodities: catId =>
     `${WEB_PREFIX}/commodity/cat/${catId}/commodities`,
   commoditySkuFeedback: id => `${WEB_PREFIX}/commodity-sku/${id}/feedback`,
-  courseCategory: `${WEB_PREFIX}/course-category`,
+  courseCategories: `${WEB_PREFIX}/course-category`,
+  courseCategory: id => `${WEB_PREFIX}/course-category/${id}`,
   course: id => `${WEB_PREFIX}/course/${id}`,
   courses: `${WEB_PREFIX}/course`,
   courseDetail: id => `${WEB_PREFIX}/course/${id}/detail`,

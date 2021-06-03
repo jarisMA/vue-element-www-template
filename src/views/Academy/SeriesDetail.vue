@@ -124,7 +124,7 @@ import { formatSeconds } from "utils/moment";
 import SetCard from "./widgets/SetCard";
 
 export default {
-  name: "AcademyCourseDetail",
+  name: "AcademySeriesDetail",
   components: { TheLoadingImage, SetCard },
   data() {
     return {

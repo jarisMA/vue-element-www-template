@@ -79,7 +79,7 @@ import campService from "service/camp";
 import { campMixin } from "./widgets/mixin";
 
 export default {
-  name: "AcademyCamp",
+  name: "AcademyCampDetail",
   mixins: [campMixin],
   data() {
     return {

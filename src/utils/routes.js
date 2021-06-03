@@ -151,22 +151,13 @@ export const goQuestionAnswer = (id, type = "_blank") => {
   );
 };
 
-export const goAcademyCamp = (id, type = "_self") => {
+export const goAcademyCourseList = (query = {}, type = "_self") => {
   return goRoute(
     {
-      name: "AcademyCamp",
-      params: {
-        id
+      name: "AcademyCourseList",
+      query: {
+        ...query
       }
-    },
-    type
-  );
-};
-
-export const goAcademyCourseList = (type = "_self") => {
-  return goRoute(
-    {
-      name: "AcademyCourseList"
     },
     type
   );
@@ -197,6 +188,27 @@ export const goAcademySeriesDetail = (id, type = "_self") => {
   return goRoute(
     {
       name: "AcademySeriesDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
+export const goAcademyCampList = (type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCampList"
+    },
+    type
+  );
+};
+
+export const goAcademyCampDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCampDetail",
       params: {
         id
       }

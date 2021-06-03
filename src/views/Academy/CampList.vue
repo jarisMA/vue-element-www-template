@@ -14,36 +14,19 @@
             </el-option>
           </el-select>
         </h3>
-        <the-search-bar @search="handleKeywordChange" />
       </div>
       <div class="page-content">
-        <div class="course-cat-list">
-          <div
-            :class="['course-cat-item', catId === null ? 'active' : '']"
-            @click="catId = null"
-          >
-            全部
-          </div>
-          <div
-            :class="['course-cat-item', catId === item.id ? 'active' : '']"
-            v-for="(item, key) of cats"
-            :key="key"
-            @click="catId = item.id"
-          >
-            {{ item.name }}
-          </div>
-        </div>
-        <template v-if="series.length > 0">
-          <ul class="series-list">
-            <li class="series-item" v-for="item of series" :key="item.id">
-              <set-card :series="item" />
+        <template v-if="camps.length > 0">
+          <ul class="camp-list">
+            <li class="camp-item" v-for="item of camps" :key="item.id">
+              <camp-card :camp="item" />
             </li>
           </ul>
           <pagination
             :pageSize="pagination.size"
             :current-page="pagination.page"
             :total="pagination.total"
-            @change-page="getSeries"
+            @change-page="getData"
           ></pagination>
         </template>
         <the-empty v-else-if="!loading" noText="暂无视频课" />
@@ -53,79 +36,47 @@
 </template>
 
 <script>
-import TheSearchBar from "components/TheSearchBar";
-import SetCard from "./widgets/SetCard";
-import courseService from "service/course";
+import CampCard from "./widgets/CampCard";
+import campService from "service/camp";
 import Pagination from "components/Pagination";
 import TheEmpty from "components/TheEmpty";
 import { listMixin } from "./widgets/mixin";
 
 export default {
-  name: "AcademySeriesList",
+  name: "AcademyCampList",
+  components: { CampCard, Pagination, TheEmpty },
   mixins: [listMixin],
-  components: { TheSearchBar, SetCard, Pagination, TheEmpty },
   data() {
     return {
       loading: true,
-      value: 2,
+      value: 3,
       pagination: {
         size: 12,
         page: 1,
         total: 0
       },
-      cats: [],
-      catId: null,
-      series: [],
-      keyword: null
+      camps: []
     };
-  },
-  watch: {
-    catId() {
-      this.getSeries();
-    }
   },
   created() {
     this.getData();
   },
   methods: {
-    getData() {
-      Promise.all([
-        courseService.seriesCategory(),
-        courseService.series({
-          page_size: this.pagination.size,
-          page: 1
-        })
-      ])
-        .then(([cats, series]) => {
-          this.cats = cats;
-          this.series = series.list;
-          this.pagination.total = series.pagination.total;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    getSeries(start = 1) {
+    getData(start = 1) {
       this.loading = true;
-      courseService
-        .series({
+      campService
+        .camps({
           page_size: this.pagination.size,
-          page: start,
-          name: this.keyword,
-          cat_id: this.catId
+          page: start
         })
-        .then(series => {
-          this.series = series.list;
-          this.pagination.total = series.pagination.total;
+        .then(camps => {
+          this.camps = camps.list;
+          this.pagination.total = camps.pagination.total;
           this.pagination.page = start;
         })
         .finally(() => {
           this.loading = false;
         });
-    },
-    handleKeywordChange(keyword) {
-      this.keyword = keyword;
-      this.getSeries();
     }
   }
 };
@@ -191,10 +142,10 @@ export default {
         }
       }
     }
-    .series-list {
+    .camp-list {
       display: flex;
       flex-wrap: wrap;
-      .series-item {
+      .camp-item {
         margin-bottom: 40px;
         &:nth-child(3n-1) {
           margin-left: 20px;
