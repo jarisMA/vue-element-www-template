@@ -18,10 +18,15 @@
         </div>
       </div>
       <div class="card-bottom-footer">
-        <label class="current-price">¥{{ series.current_price }}</label>
-        <label class="orgin-price" v-if="series.origin_price > 0"
-          >¥{{ series.origin_price }}</label
-        >
+        <div class="card-bottom-footer-left">
+          <label class="current-price">¥{{ series.current_price }}</label>
+          <label class="orgin-price" v-if="series.origin_price > 0"
+            >¥{{ series.origin_price }}</label
+          >
+        </div>
+        <div class="card-bottom-footer-right">
+          开始学习<i class="more-icon"></i>
+        </div>
       </div>
     </div>
   </div>
@@ -61,6 +66,12 @@ export default {
   width: 380px;
   border: 1px solid #efefef;
   cursor: pointer;
+  &:hover {
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    .card-bottom-footer-right {
+      display: flex !important;
+    }
+  }
   .card-bottom {
     display: flex;
     flex-direction: column;
@@ -119,6 +130,26 @@ export default {
       text-decoration-line: line-through;
       color: #8ea098;
       cursor: pointer;
+    }
+    .card-bottom-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .card-bottom-footer-right {
+        display: none;
+        align-items: center;
+        line-height: 24px;
+        font-weight: 600;
+        font-size: 16px;
+        color: @primaryColor;
+        .more-icon {
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          mask: url("~images/academy/vector.svg") no-repeat center;
+          background-color: @primaryColor;
+        }
+      }
     }
   }
 }
