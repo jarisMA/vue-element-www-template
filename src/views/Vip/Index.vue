@@ -10,10 +10,10 @@
         <ul class="page-content-list">
           <li class="page-content-item" v-for="item of vips" :key="item.id">
             <div class="content-item-top">
-              <h4 class="content-item-title">{{ item.title }}</h4>
+              <h4 class="content-item-title">{{ item.name }}</h4>
               <label class="content-item-price">
                 <span class="unit">¥</span>
-                <span class="primary">{{ item.price }}</span>
+                <span class="primary">{{ item.current_price }}</span>
               </label>
               <div class="content-item-desc">
                 <p v-for="(desc, key) of item.desc" :key="key">{{ desc }}</p>
@@ -31,34 +31,47 @@
 </template>
 
 <script>
+import vipService from "service/vip";
+
 export default {
   name: "VipIndex",
   data() {
     return {
-      vips: [
-        {
-          id: 1,
-          title: "1个月会员",
-          price: 99,
-          desc: ["付费课程免费看", "PlanGo工具开放使用"],
-          tips: "约3.3元/天"
-        },
-        {
-          id: 2,
-          title: "3个月会员",
-          price: 199,
-          desc: ["付费课程免费看", "PlanGo工具开放使用"],
-          tips: "约2.2元/天"
-        },
-        {
-          id: 3,
-          title: "12个月会员",
-          price: 699,
-          desc: ["付费课程免费看", "PlanGo工具开放使用"],
-          tips: "约1.9元/天"
-        }
-      ]
+      // vips: [
+      //   {
+      //     id: 1,
+      //     title: "1个月会员",
+      //     price: 99,
+      //     desc: ["付费课程免费看", "PlanGo工具开放使用"],
+      //     tips: "约3.3元/天"
+      //   },
+      //   {
+      //     id: 2,
+      //     title: "3个月会员",
+      //     price: 199,
+      //     desc: ["付费课程免费看", "PlanGo工具开放使用"],
+      //     tips: "约2.2元/天"
+      //   },
+      //   {
+      //     id: 3,
+      //     title: "12个月会员",
+      //     price: 699,
+      //     desc: ["付费课程免费看", "PlanGo工具开放使用"],
+      //     tips: "约1.9元/天"
+      //   }
+      // ]
+      vips: []
     };
+  },
+  created() {
+    this.getData();
+  },
+  methods: {
+    getData() {
+      vipService.vipSkus().then(res => {
+        this.vips = res;
+      });
+    }
   }
 };
 </script>
