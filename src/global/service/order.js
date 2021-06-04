@@ -15,7 +15,10 @@ const orderService = {
     return request.get(API.payByWechat(no));
   },
   payByAlipay(no, params = {}) {
-    return request.get(API.payByAlipay(no), params);
+    return window.open(
+      API.payByAlipay(no) + `?return_url=${params.return_url}`,
+      "_blank"
+    );
   }
 };
 

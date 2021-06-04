@@ -148,14 +148,12 @@ import orderService from "service/order";
 import {
   PAY_STATUS_PENDING,
   PAY_STATUS_SUCCESS,
-  PAY_STATUS_FAILED
-} from "utils/const";
-
-import {
+  PAY_STATUS_FAILED,
   ORDER_TYPE_COURSE,
   PAY_METHOD_WECHAT,
   PAY_METHOD_ALIPAY
 } from "utils/const";
+
 export default {
   name: "Payment",
   components: { TheAvatar, TheLoadingImage },
@@ -209,7 +207,6 @@ export default {
       }
       switch (this.payment) {
         case PAY_METHOD_WECHAT:
-          console.log("微信");
           this.loading = true;
           orderService
             .payByWechat(this.$route.params.no)
@@ -223,30 +220,25 @@ export default {
             });
           break;
         case PAY_METHOD_ALIPAY:
-          console.log("支付宝");
-          this.loading = true;
-          orderService
-            .payByAlipay(this.$route.params.no, {
-              // return_url: this.$router.resolve({
-              //   name: "AcademyCourseDetail",
-              //   params: {
-              //     id: this.order.resource.id
-              //   }
-              // }).href
-            })
-            .then(res => {
-              this.handlePayCheck();
-              console.log(res);
-            })
-            .finally(() => {
-              this.loading = false;
-            });
+          orderService.payByAlipay(this.$route.params.no, {
+            return_url:
+              window.location.protocol +
+              "//" +
+              window.location.host +
+              this.$router.resolve({
+                name: "AcademyCourseDetail",
+                params: {
+                  id: this.order.resource.id
+                }
+              }).href
+          });
+          this.handlePayCheck(true);
           break;
         default:
           break;
       }
     },
-    handlePayCheck() {
+    handlePayCheck(show = false) {
       orderService.orderCheck(this.$route.params.no).then(res => {
         if (res.status === PAY_STATUS_SUCCESS) {
           this.showWechatQrcode = false;
@@ -256,7 +248,13 @@ export default {
           const timer = setInterval(() => {
             this.routeCountDown--;
             if (this.routeCountDown <= 0) {
-              goAcademyCourseDetail(this.order.resource.id);
+              switch (this.order.type) {
+                case ORDER_TYPE_COURSE:
+                  goAcademyCourseDetail(this.order.resource.id);
+                  break;
+                default:
+                  break;
+              }
               clearInterval(timer);
             }
           }, 1000);
@@ -265,6 +263,10 @@ export default {
           this.status = PAY_STATUS_FAILED;
           this.showStatus = true;
         } else {
+          if (show) {
+            this.status = PAY_STATUS_PENDING;
+            this.showStatus = true;
+          }
           const timer = setTimeout(() => {
             this.handlePayCheck();
             clearTimeout(timer);
