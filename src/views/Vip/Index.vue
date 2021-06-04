@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-loading="loading">
     <div class="container-1180">
       <div class="page-header">
         <i class="page-badge-icon"></i>
@@ -21,7 +21,9 @@
             </div>
             <div class="content-item-bottom">
               <p class="content-item-tips">{{ item.tips }}</p>
-              <div class="content-item-btn">成为会员</div>
+              <div class="content-item-btn" @click="handleOrder(item)">
+                成为会员
+              </div>
             </div>
           </li>
         </ul>
@@ -32,11 +34,15 @@
 
 <script>
 import vipService from "service/vip";
+import orderService from "service/order";
+import { ORDER_TYPE_VIP } from "utils/const";
+import { goOrder } from "utils/routes";
 
 export default {
   name: "VipIndex",
   data() {
     return {
+      loading: true,
       // vips: [
       //   {
       //     id: 1,
@@ -68,9 +74,29 @@ export default {
   },
   methods: {
     getData() {
-      vipService.vipSkus().then(res => {
-        this.vips = res;
-      });
+      vipService
+        .vipSkus()
+        .then(res => {
+          this.vips = res;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleOrder(resource) {
+      this.loading = true;
+      orderService
+        .addOrder({
+          type: ORDER_TYPE_VIP,
+          resource_id: resource.id,
+          remark: resource.name + "充值"
+        })
+        .then(res => {
+          goOrder(res.no);
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     }
   }
 };

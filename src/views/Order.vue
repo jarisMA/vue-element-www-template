@@ -19,7 +19,9 @@
           <h4 class="page-content-title">商品信息</h4>
           <ul class="commodity-table">
             <li class="table-th">
-              <label class="tb-pic">商品图</label>
+              <label class="tb-pic" v-if="order.resource.cover_url"
+                >商品图</label
+              >
               <label class="tb-name">商品名称</label>
               <label class="tb-type">类型</label>
               <label class="tb-price">单价</label>
@@ -29,6 +31,7 @@
             <li class="table-tr">
               <the-loading-image
                 class="tb-pic"
+                v-if="order.resource.cover_url"
                 :width="80"
                 :height="80"
                 :url="order.resource.cover_url"
@@ -43,6 +46,8 @@
                   ? "视频课"
                   : order.type === ORDER_TYPE_COURSE_SERIES
                   ? "系列课"
+                  : order.type === ORDER_TYPE_VIP
+                  ? "VIP"
                   : "其他"
               }}</label>
               <label class="tb-price">¥{{ order.resource.price }}</label>
@@ -150,7 +155,8 @@ import {
   goHome,
   goMyCourse,
   goAcademyCourseDetail,
-  goAcademySeriesDetail
+  goAcademySeriesDetail,
+  goMySetting
 } from "utils/routes";
 import TheLoadingImage from "components/TheLoadingImage";
 import orderService from "service/order";
@@ -290,6 +296,9 @@ export default {
         case ORDER_TYPE_COURSE_SERIES:
           goAcademySeriesDetail(this.order.resource.id);
           break;
+        case ORDER_TYPE_VIP:
+          goMySetting();
+          break;
         default:
           break;
       }
@@ -318,6 +327,9 @@ export default {
           url += this.$router.resolve({
             name: "MySetting"
           }).href;
+          break;
+        default:
+          break;
       }
       return url;
     }
