@@ -99,5 +99,8 @@ export default {
   myDraft: `${WEB_PREFIX}/mine/question/draft`,
   vipSkus: `${WEB_PREFIX}/vip-skus`,
   orders: `${WEB_PREFIX}/order`,
-  order: no => `${WEB_PREFIX}/order/${no}`
+  order: no => `${WEB_PREFIX}/order/${no}`,
+  orderCheck: no => `${WEB_PREFIX}/order/${no}/check`,
+  payByWechat: no => `${WEB_PREFIX}/payment/wechat/${no}`,
+  payByAlipay: no => `${WEB_PREFIX}/payment/alipay/${no}`
 };

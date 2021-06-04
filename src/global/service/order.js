@@ -5,8 +5,17 @@ const orderService = {
   addOrder(params = {}) {
     return request.post(API.orders, params);
   },
-  order($no) {
-    return request.get(API.order($no));
+  order(no) {
+    return request.get(API.order(no));
+  },
+  orderCheck(no) {
+    return request.get(API.orderCheck(no));
+  },
+  payByWechat(no) {
+    return request.get(API.payByWechat(no));
+  },
+  payByAlipay(no, params = {}) {
+    return request.get(API.payByAlipay(no), params);
   }
 };
 

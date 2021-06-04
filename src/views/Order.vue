@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="page" v-loading="loading">
     <div class="page-header">
       <div class="page-header-left">
         <i class="page-header-logo" @click="goHome('_blank')"></i>
@@ -50,13 +50,21 @@
         <div class="page-content-pay">
           <h4 class="page-content-title">支付方式</h4>
           <div class="pay-list">
-            <el-radio class="pay-item" v-model="payment" label="1">
+            <el-radio
+              class="pay-item"
+              v-model="payment"
+              :label="PAY_METHOD_ALIPAY"
+            >
               <div class="pay-item-left">
                 <i class="alipay-icon"></i>
                 <span class="pay-item-name">支付宝</span>
               </div>
             </el-radio>
-            <el-radio class="pay-item" v-model="payment" label="2">
+            <el-radio
+              class="pay-item"
+              v-model="payment"
+              :label="PAY_METHOD_WECHAT"
+            >
               <div class="pay-item-left">
                 <i class="wechat-icon"></i>
                 <span class="pay-item-name">微信</span>
@@ -71,30 +79,104 @@
         <span class="total">¥{{ order.total_amount }}</span>
         <span class="unit">元</span>
       </div>
-      <div class="page-footer-btn">
+      <div class="page-footer-btn" @click="handlePay">
         立即支付
       </div>
     </div>
+    <el-dialog
+      width="360px"
+      :visible.sync="showWechatQrcode"
+      :show-close="false"
+    >
+      <img :src="wechatQrcode" />
+    </el-dialog>
+    <el-dialog
+      class="status-dialog"
+      width="380px"
+      :visible.sync="showStatus"
+      :show-close="false"
+    >
+      <div class="status-dialog-top">
+        <i
+          :class="[
+            status === PAY_STATUS_SUCCESS
+              ? 'success-icon'
+              : status === PAY_STATUS_FAILED
+              ? 'fail-icon'
+              : 'pending-icon'
+          ]"
+        ></i>
+        <h4 class="status-title">
+          {{
+            status === PAY_STATUS_SUCCESS
+              ? "支付成功"
+              : status === PAY_STATUS_FAILED
+              ? "支付失败"
+              : "等待支付中..."
+          }}
+        </h4>
+        <p class="status-tips" v-if="status !== PAY_STATUS_PENDING">
+          {{
+            PAY_STATUS_SUCCESS
+              ? routeCountDown + "s 后跳转"
+              : "请检查订单支付状态"
+          }}
+        </p>
+      </div>
+      <div
+        :class="['status-btn', status === PAY_STATUS_FAILED ? 'fail' : '']"
+        @click="handleStatusClick"
+      >
+        {{
+          status === PAY_STATUS_SUCCESS
+            ? "手动跳转"
+            : status === PAY_STATUS_FAILED
+            ? "返回结算台"
+            : "我已支付"
+        }}
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
-import { goHome, goMyCourse } from "utils/routes";
+import { goHome, goMyCourse, goAcademyCourseDetail } from "utils/routes";
 import TheLoadingImage from "components/TheLoadingImage";
 import orderService from "service/order";
-import { ORDER_TYPE_COURSE } from "utils/const";
+import {
+  PAY_STATUS_PENDING,
+  PAY_STATUS_SUCCESS,
+  PAY_STATUS_FAILED
+} from "utils/const";
+
+import {
+  ORDER_TYPE_COURSE,
+  PAY_METHOD_WECHAT,
+  PAY_METHOD_ALIPAY
+} from "utils/const";
 export default {
   name: "Payment",
   components: { TheAvatar, TheLoadingImage },
   data() {
     return {
       ORDER_TYPE_COURSE,
+      PAY_METHOD_WECHAT,
+      PAY_METHOD_ALIPAY,
+      PAY_STATUS_PENDING,
+      PAY_STATUS_SUCCESS,
+      PAY_STATUS_FAILED,
+      loading: true,
       payment: null,
       order: {
         resource: {}
-      }
+      },
+      showWechatQrcode: false,
+      showStatus: false,
+      routeCountDown: 5,
+      status: PAY_STATUS_PENDING,
+      wechatQrcode: null
     };
   },
   computed: {
@@ -107,9 +189,98 @@ export default {
     goHome,
     goMyCourse,
     getData() {
-      orderService.order(this.$route.params.no).then(order => {
-        this.order = order;
+      this.loading = true;
+      orderService
+        .order(this.$route.params.no)
+        .then(order => {
+          this.order = order;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handlePay() {
+      if (!this.payment) {
+        this.$notice({
+          type: "warning",
+          title: "请选择支付方式"
+        });
+        return;
+      }
+      switch (this.payment) {
+        case PAY_METHOD_WECHAT:
+          console.log("微信");
+          this.loading = true;
+          orderService
+            .payByWechat(this.$route.params.no)
+            .then(res => {
+              this.wechatQrcode = res.qrcode;
+              this.showWechatQrcode = true;
+              this.handlePayCheck();
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+          break;
+        case PAY_METHOD_ALIPAY:
+          console.log("支付宝");
+          this.loading = true;
+          orderService
+            .payByAlipay(this.$route.params.no, {
+              // return_url: this.$router.resolve({
+              //   name: "AcademyCourseDetail",
+              //   params: {
+              //     id: this.order.resource.id
+              //   }
+              // }).href
+            })
+            .then(res => {
+              this.handlePayCheck();
+              console.log(res);
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+          break;
+        default:
+          break;
+      }
+    },
+    handlePayCheck() {
+      orderService.orderCheck(this.$route.params.no).then(res => {
+        if (res.status === PAY_STATUS_SUCCESS) {
+          this.showWechatQrcode = false;
+          this.status = PAY_STATUS_SUCCESS;
+          this.showStatus = true;
+          this.routeCountDown = 5;
+          const timer = setInterval(() => {
+            this.routeCountDown--;
+            if (this.routeCountDown <= 0) {
+              goAcademyCourseDetail(this.order.resource.id);
+              clearInterval(timer);
+            }
+          }, 1000);
+        } else if (res.status === PAY_STATUS_FAILED) {
+          this.showWechatQrcode = false;
+          this.status = PAY_STATUS_FAILED;
+          this.showStatus = true;
+        } else {
+          const timer = setTimeout(() => {
+            this.handlePayCheck();
+            clearTimeout(timer);
+          }, 1000 * 1);
+        }
       });
+    },
+    handleStatusClick() {
+      if (this.status === PAY_STATUS_FAILED) {
+        this.showStatus = false;
+        this.status = PAY_STATUS_PENDING;
+      } else if (this.status === PAY_STATUS_SUCCESS) {
+        goAcademyCourseDetail(this.order.resource.id);
+      } else {
+        this.handlePayCheck();
+      }
     }
   }
 };
@@ -314,6 +485,75 @@ export default {
       color: #ffffff;
       background: #7a55ff;
       cursor: pointer;
+    }
+  }
+  /deep/ .el-dialog {
+    .el-dialog__header {
+      display: none;
+    }
+  }
+  /deep/ .status-dialog {
+    .el-dialog__body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 269px;
+      padding: 40px 0;
+      .status-dialog-top {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .pending-icon,
+        .success-icon,
+        .fail-icon {
+          display: inline-block;
+          width: 40px;
+          height: 40px;
+          margin-top: 8px;
+          background-size: cover;
+          background-repeat: no-repeat;
+        }
+        .pending-icon {
+          width: 48px;
+          height: 48px;
+          margin-top: 0;
+          background-image: url("~images/order/pending.svg");
+        }
+        .success-icon {
+          background-image: url("~images/order/success.svg");
+        }
+        .fail-icon {
+          background-image: url("~images/order/fail.svg");
+        }
+        .status-title {
+          margin-top: 16px;
+          line-height: 24px;
+          font-weight: 600;
+          font-size: 24px;
+          color: #2c3330;
+        }
+        .status-tips {
+          margin-top: 8px;
+          line-height: 17px;
+          font-size: 12px;
+          color: #81948b;
+        }
+      }
+      .status-btn {
+        padding: 7px 23px;
+        line-height: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        color: @primaryColor;
+        border: 1px solid @primaryColor;
+        cursor: pointer;
+        &.fail {
+          color: #2c3330;
+          border-color: #2c3330;
+        }
+      }
     }
   }
 }

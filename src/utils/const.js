@@ -128,3 +128,12 @@ export const ORDER_TYPE_COURSE = 1;
 export const ORDER_TYPE_CAMP = 2;
 export const ORDER_TYPE_BIBLE = 3;
 export const ORDER_TYPE_VIP = 4;
+
+// 支付方式
+export const PAY_METHOD_WECHAT = 1;
+export const PAY_METHOD_ALIPAY = 2;
+
+// 支付结果
+export const PAY_STATUS_PENDING = 0;
+export const PAY_STATUS_SUCCESS = 1;
+export const PAY_STATUS_FAILED = 2;
