@@ -39,7 +39,11 @@
                       v-if=" order.type === ORDER_TYPE_COURSE">开课时间：2021年5月21日</span> -->
               </label>
               <label class="tb-type">{{
-                order.type === ORDER_TYPE_COURSE ? "课程" : "其他"
+                order.type === ORDER_TYPE_COURSE
+                  ? "视频课"
+                  : order.type === ORDER_TYPE_COURSE_SERIES
+                  ? "系列课"
+                  : "其他"
               }}</label>
               <label class="tb-price">¥{{ order.resource.price }}</label>
               <label class="tb-count">1</label>
@@ -142,7 +146,12 @@
 <script>
 import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
-import { goHome, goMyCourse, goAcademyCourseDetail } from "utils/routes";
+import {
+  goHome,
+  goMyCourse,
+  goAcademyCourseDetail,
+  goAcademySeriesDetail
+} from "utils/routes";
 import TheLoadingImage from "components/TheLoadingImage";
 import orderService from "service/order";
 import {
@@ -150,6 +159,8 @@ import {
   PAY_STATUS_SUCCESS,
   PAY_STATUS_FAILED,
   ORDER_TYPE_COURSE,
+  ORDER_TYPE_COURSE_SERIES,
+  ORDER_TYPE_VIP,
   PAY_METHOD_WECHAT,
   PAY_METHOD_ALIPAY
 } from "utils/const";
@@ -160,13 +171,15 @@ export default {
   data() {
     return {
       ORDER_TYPE_COURSE,
+      ORDER_TYPE_COURSE_SERIES,
+      ORDER_TYPE_VIP,
       PAY_METHOD_WECHAT,
       PAY_METHOD_ALIPAY,
       PAY_STATUS_PENDING,
       PAY_STATUS_SUCCESS,
       PAY_STATUS_FAILED,
       loading: true,
-      payment: null,
+      payment: PAY_METHOD_ALIPAY,
       order: {
         resource: {}
       },
@@ -221,16 +234,7 @@ export default {
           break;
         case PAY_METHOD_ALIPAY:
           orderService.payByAlipay(this.$route.params.no, {
-            return_url:
-              window.location.protocol +
-              "//" +
-              window.location.host +
-              this.$router.resolve({
-                name: "AcademyCourseDetail",
-                params: {
-                  id: this.order.resource.id
-                }
-              }).href
+            return_url: this.getAlipayReturnUrl()
           });
           this.handlePayCheck(true);
           break;
@@ -248,13 +252,7 @@ export default {
           const timer = setInterval(() => {
             this.routeCountDown--;
             if (this.routeCountDown <= 0) {
-              switch (this.order.type) {
-                case ORDER_TYPE_COURSE:
-                  goAcademyCourseDetail(this.order.resource.id);
-                  break;
-                default:
-                  break;
-              }
+              this.handleSucess();
               clearInterval(timer);
             }
           }, 1000);
@@ -279,10 +277,49 @@ export default {
         this.showStatus = false;
         this.status = PAY_STATUS_PENDING;
       } else if (this.status === PAY_STATUS_SUCCESS) {
-        goAcademyCourseDetail(this.order.resource.id);
+        this.handleSucess();
       } else {
         this.handlePayCheck();
       }
+    },
+    handleSucess() {
+      switch (this.order.type) {
+        case ORDER_TYPE_COURSE:
+          goAcademyCourseDetail(this.order.resource.id);
+          break;
+        case ORDER_TYPE_COURSE_SERIES:
+          goAcademySeriesDetail(this.order.resource.id);
+          break;
+        default:
+          break;
+      }
+    },
+    getAlipayReturnUrl() {
+      const { type } = this.order;
+      let url = window.location.protocol + "//" + window.location.host;
+      switch (type) {
+        case ORDER_TYPE_COURSE:
+          url += this.$router.resolve({
+            name: "AcademyCourseDetail",
+            params: {
+              id: this.order.resource.id
+            }
+          }).href;
+          break;
+        case ORDER_TYPE_COURSE_SERIES:
+          url += this.$router.resolve({
+            name: "AcademySeriesDetail",
+            params: {
+              id: this.order.resource.id
+            }
+          }).href;
+          break;
+        case ORDER_TYPE_VIP:
+          url += this.$router.resolve({
+            name: "MySetting"
+          }).href;
+      }
+      return url;
     }
   }
 };

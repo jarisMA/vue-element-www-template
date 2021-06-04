@@ -16,9 +16,13 @@
               <label class="page-main-study-count"
                 >{{ series.study_count }}人正在学</label
               >
-              <el-button class="page-main-btn" type="primary"
-                >购买本课</el-button
+              <el-button
+                class="page-main-btn"
+                type="primary"
+                @click="handleOrder"
               >
+                购买本课
+              </el-button>
             </div>
           </div>
         </div>
@@ -129,6 +133,9 @@ import TheLoadingImage from "components/TheLoadingImage";
 import courseService from "service/course";
 import { formatSeconds } from "utils/moment";
 import SetCard from "./widgets/SetCard";
+import orderService from "service/order";
+import { ORDER_TYPE_COURSE_SERIES } from "utils/const";
+import { goOrder } from "utils/routes";
 
 export default {
   name: "AcademySeriesDetail",
@@ -236,6 +243,17 @@ export default {
           id
         }
       });
+    },
+    handleOrder() {
+      orderService
+        .addOrder({
+          type: ORDER_TYPE_COURSE_SERIES,
+          resource_id: this.series.id,
+          remark: "购买体系课"
+        })
+        .then(res => {
+          goOrder(res.no);
+        });
     }
   }
 };
