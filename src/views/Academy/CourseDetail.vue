@@ -21,9 +21,13 @@
               <el-button
                 class="page-main-btn"
                 type="primary"
-                @click="handleOrder"
+                @click="
+                  course.order_count > 0
+                    ? goCourse(course.id, 1)
+                    : handleOrder()
+                "
               >
-                购买本课
+                {{ course.order_count > 0 ? "开始学习" : "购买本课" }}
               </el-button>
             </div>
           </div>
@@ -103,7 +107,7 @@ import { formatSeconds } from "utils/moment";
 import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE } from "utils/const";
-import { goOrder } from "utils/routes";
+import { goOrder, goCourse } from "utils/routes";
 
 export default {
   name: "AcademyCourseDetail",
@@ -178,6 +182,7 @@ export default {
   },
   methods: {
     formatSeconds,
+    goCourse,
     getData() {
       this.loading = true;
       courseSerive
