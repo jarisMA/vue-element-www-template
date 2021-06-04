@@ -1,41 +1,34 @@
 <template>
   <div class="card" @click="goAcademyCourseDetail(course.id)">
     <div class="card-top">
-      <the-loading-image
-        :width="278"
-        :height="156"
-        :url="course.course.cover_url"
-      />
+      <the-loading-image :width="278" :height="156" :url="course.cover_url" />
     </div>
     <div class="card-bottom">
       <div class="card-bottom-content">
-        <h4 class="card-title">{{ course.course.name }}</h4>
+        <h4 class="card-title">{{ course.name }}</h4>
         <div class="card-info">
-          <label
-            class="card-info-text"
-            v-if="COURSE_LEVEL[course.course.level]"
-          >
-            {{ COURSE_LEVEL[course.course.level] }}
+          <label class="card-info-text" v-if="COURSE_LEVEL[course.level]">
+            {{ COURSE_LEVEL[course.level] }}
           </label>
           <label class="card-info-text">
             <i class="course-icon"></i>
-            {{ course.course.lesson_number }} 课时
+            {{ course.lesson_number }} 课时
           </label>
           <label class="card-info-text">
             <i class="duration-icon"></i>
-            {{ Math.floor(course.course.second_duration / 60) }}分钟
+            {{ Math.floor(course.second_duration / 60) }}分钟
           </label>
         </div>
       </div>
       <div class="card-bottom-footer">
         <div class="card-bottom-footer-left">
           <label class="current-price">{{
-            course.course.price_type === COURSE_PRICE_TYPE_PAY
-              ? "¥" + course.course.current_price
+            course.price_type === COURSE_PRICE_TYPE_PAY
+              ? "¥" + course.current_price
               : "免费"
           }}</label>
           <label class="orgin-price" v-if="course.origin_price > 0"
-            >¥{{ course.course.origin_price }}</label
+            >¥{{ course.origin_price }}</label
           >
         </div>
         <div class="card-bottom-footer-right">

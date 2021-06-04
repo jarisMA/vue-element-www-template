@@ -177,20 +177,21 @@ export default {
         .courseDetail(this.$route.params.id)
         .then(course => {
           this.course = course;
-          const withoutIds = [this.$route.params.id];
-          courseSerive
-            .courses({
-              page_size: 4,
-              page: 1,
-              withoutIds,
-              cat_id: course.cat_id
-            })
-            .then(relation => {
-              this.relations = relation.list;
-            })
-            .finally(() => {
-              this.loading = false;
-            });
+          // const withoutIds = [this.$route.params.id];
+          // courseSerive
+          //   .courses({
+          //     page_size: 4,
+          //     page: 1,
+          //     withoutIds,
+          //     cat_id: course.cat_id
+          //   })
+          //   .then(relation => {
+          //     this.relations = relation.list;
+          //   })
+          //   .finally(() => {
+          //     this.loading = false;
+          //   });
+          this.loading = false;
         })
         .catch(() => {
           this.loading = false;

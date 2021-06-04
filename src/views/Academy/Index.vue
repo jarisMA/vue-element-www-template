@@ -128,7 +128,7 @@
                 class="academy-course-item"
                 v-for="item of courses1"
                 :key="item.id"
-                :course="item"
+                :course="item.course"
               />
             </div>
           </div>
@@ -151,7 +151,7 @@
                 class="academy-course-item"
                 v-for="item of courses2"
                 :key="item.id"
-                :course="item"
+                :course="item.course"
               />
             </div>
           </div>

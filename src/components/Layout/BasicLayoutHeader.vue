@@ -24,9 +24,14 @@
                     svg-name="more" />
         </span> -->
         <nav class="header-nav">
-          <span
+          <!-- <span
             class="header-nav-item My"
             @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
+            >斗西学社</span
+          > -->
+          <span
+            class="header-nav-item My"
+            @click="(visible || theme !== 'primary') && goAcademy()"
             >斗西学社</span
           >
           <span
