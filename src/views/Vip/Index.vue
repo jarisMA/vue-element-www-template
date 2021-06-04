@@ -153,6 +153,7 @@ export default {
                 font-weight: 600;
                 font-size: 32px;
                 color: @primaryColor;
+                cursor: default;
               }
             }
             .content-item-desc {
