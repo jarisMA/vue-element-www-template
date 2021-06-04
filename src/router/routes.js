@@ -11,7 +11,7 @@ import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
 import Course from "@/views/Term/Course";
-import Payment from "@/views/Payment";
+import Order from "@/views/Order";
 
 const routes = [
   {
@@ -49,9 +49,9 @@ const routes = [
     }
   },
   {
-    path: "/payment",
-    name: "Payment",
-    component: Payment,
+    path: "/order/:no",
+    name: "Order",
+    component: Order,
     meta: {
       auth: true
     }

@@ -97,5 +97,7 @@ export default {
   myQuestion: `${WEB_PREFIX}/mine/question`,
   myFavorite: `${WEB_PREFIX}/mine/question-favorite`,
   myDraft: `${WEB_PREFIX}/mine/question/draft`,
-  vipSkus: `${WEB_PREFIX}/vip-skus`
+  vipSkus: `${WEB_PREFIX}/vip-skus`,
+  orders: `${WEB_PREFIX}/order`,
+  order: no => `${WEB_PREFIX}/order/${no}`
 };

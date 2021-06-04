@@ -332,7 +332,7 @@ export default {
         height: 375px;
         padding: 16px;
         margin-top: 24px;
-        overflow: scroll;
+        overflow-y: auto;
         background: #fafafa;
         .el-collapse {
           border-top: unset;

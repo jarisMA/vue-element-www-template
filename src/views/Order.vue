@@ -27,15 +27,23 @@
               <label class="tb-sum">小计</label>
             </li>
             <li class="table-tr">
-              <the-loading-image class="tb-pic" :width="80" :height="80" />
+              <the-loading-image
+                class="tb-pic"
+                :width="80"
+                :height="80"
+                :url="order.resource.cover_url"
+              />
               <label class="tb-name">
-                <span class="commodity-name">户型大改造 二期班</span>
-                <span class="commodity-time">开课时间：2021年5月21日</span>
+                <span class="commodity-name">{{ order.resource.name }}</span>
+                <!-- <span class="commodity-time"
+                      v-if=" order.type === ORDER_TYPE_COURSE">开课时间：2021年5月21日</span> -->
               </label>
-              <label class="tb-type">课程</label>
-              <label class="tb-price">¥4499.00</label>
+              <label class="tb-type">{{
+                order.type === ORDER_TYPE_COURSE ? "课程" : "其他"
+              }}</label>
+              <label class="tb-price">¥{{ order.resource.price }}</label>
               <label class="tb-count">1</label>
-              <label class="tb-sum">¥4499.00</label>
+              <label class="tb-sum">¥{{ order.total_amount }}</label>
             </li>
           </ul>
         </div>
@@ -60,7 +68,7 @@
     </div>
     <div class="page-footer">
       <div class="page-footer-price">
-        <span class="total">¥4499.00</span>
+        <span class="total">¥{{ order.total_amount }}</span>
         <span class="unit">元</span>
       </div>
       <div class="page-footer-btn">
@@ -75,20 +83,34 @@ import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
 import { goHome, goMyCourse } from "utils/routes";
 import TheLoadingImage from "components/TheLoadingImage";
+import orderService from "service/order";
+import { ORDER_TYPE_COURSE } from "utils/const";
 export default {
   name: "Payment",
   components: { TheAvatar, TheLoadingImage },
   data() {
     return {
-      payment: null
+      ORDER_TYPE_COURSE,
+      payment: null,
+      order: {
+        resource: {}
+      }
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+  created() {
+    this.getData();
+  },
   methods: {
     goHome,
-    goMyCourse
+    goMyCourse,
+    getData() {
+      orderService.order(this.$route.params.no).then(order => {
+        this.order = order;
+      });
+    }
   }
 };
 </script>

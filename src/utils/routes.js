@@ -220,6 +220,18 @@ export const goAcademyCampDetail = (id, type = "_self") => {
   );
 };
 
+export const goOrder = (no, type = "_blank") => {
+  return goRoute(
+    {
+      name: "Order",
+      params: {
+        no
+      }
+    },
+    type
+  );
+};
+
 export const go404 = (type = "replace") => {
   return goRoute(
     {

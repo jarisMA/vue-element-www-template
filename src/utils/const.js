@@ -122,3 +122,9 @@ export const COURSE_LEVEL = {
   3: "进阶",
   4: "高阶"
 };
+
+// 订单类型
+export const ORDER_TYPE_COURSE = 1;
+export const ORDER_TYPE_CAMP = 2;
+export const ORDER_TYPE_BIBLE = 3;
+export const ORDER_TYPE_VIP = 4;

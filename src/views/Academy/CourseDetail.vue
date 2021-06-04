@@ -18,9 +18,13 @@
               <label class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
               >
-              <el-button class="page-main-btn" type="primary"
-                >购买本课</el-button
+              <el-button
+                class="page-main-btn"
+                type="primary"
+                @click="handleOrder"
               >
+                购买本课
+              </el-button>
             </div>
           </div>
         </div>
@@ -71,7 +75,7 @@
         </div>
       </div>
       <div class="page-content">
-        <div class="page-content-relative">
+        <div class="page-content-relative" v-if="relations.length > 0">
           <h4 class="page-content-label">相关课程</h4>
           <ul class="page-content-relative-list">
             <li
@@ -97,6 +101,9 @@ import { COURSE_PRICE_TYPE_PAY } from "utils/const";
 import courseSerive from "service/course";
 import { formatSeconds } from "utils/moment";
 import CourseCard from "./widgets/CourseCard";
+import orderService from "service/order";
+import { ORDER_TYPE_COURSE } from "utils/const";
+import { goOrder } from "utils/routes";
 
 export default {
   name: "AcademyCourseDetail",
@@ -203,6 +210,17 @@ export default {
           id
         }
       });
+    },
+    handleOrder() {
+      orderService
+        .addOrder({
+          type: ORDER_TYPE_COURSE,
+          resource_id: this.course.id,
+          remark: "购买课程"
+        })
+        .then(res => {
+          goOrder(res.no);
+        });
     }
   }
 };
@@ -299,7 +317,7 @@ export default {
         height: 375px;
         padding: 16px;
         margin-top: 24px;
-        overflow: scroll;
+        overflow-y: auto;
         background: #fafafa;
         .page-lesson-item {
           display: flex;
