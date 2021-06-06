@@ -169,6 +169,7 @@ export default {
               display: inline-block;
               text-align: center;
               .unit {
+                margin-right: 4px;
                 line-height: 18px;
                 font-size: 18px;
                 color: #2c3330;

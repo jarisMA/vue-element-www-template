@@ -12,11 +12,11 @@
           </label>
           <label class="card-info-text">
             <i class="course-icon"></i>
-            {{ course.lesson_number }} 课时
+            <span>{{ course.lesson_number }} 课时</span>
           </label>
           <label class="card-info-text">
             <i class="duration-icon"></i>
-            {{ Math.floor(course.second_duration / 60) }}分钟
+            <span>{{ Math.floor(course.second_duration / 60) }}分钟</span>
           </label>
         </div>
       </div>

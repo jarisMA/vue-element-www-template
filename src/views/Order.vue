@@ -365,7 +365,7 @@ export default {
         display: inline-block;
         width: 168px;
         height: 60px;
-        background: url("~images/logo_1.svg") no-repeat center;
+        background: url("~images/order/logo.svg") no-repeat center;
         cursor: pointer;
       }
       .page-header-title {
