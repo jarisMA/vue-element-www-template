@@ -27,7 +27,10 @@ const courseService = {
     return request.get(API.courseSeries, params);
   },
   set(id) {
-    return request.get(API.courseSet(id));
+    return request.get(API.courseSetDetail(id));
+  },
+  setCourse(id, courseId) {
+    return request.get(API.courseSetCourse(id, courseId));
   }
 };
 

@@ -19,9 +19,13 @@
               <el-button
                 class="page-main-btn"
                 type="primary"
-                @click="handleOrder"
+                @click="
+                  series.permission
+                    ? goSeriesCourse(series.id, series.courses[0].id, 1)
+                    : handleOrder()
+                "
               >
-                购买本课
+                {{ series.permission ? "开始学习" : "购买本课" }}
               </el-button>
             </div>
           </div>
@@ -135,7 +139,7 @@ import { formatSeconds } from "utils/moment";
 import SetCard from "./widgets/SetCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE_SERIES } from "utils/const";
-import { goOrder } from "utils/routes";
+import { goOrder, goSeriesCourse } from "utils/routes";
 
 export default {
   name: "AcademySeriesDetail",
@@ -212,6 +216,7 @@ export default {
   },
   methods: {
     formatSeconds,
+    goSeriesCourse,
     getData() {
       this.loading = true;
       courseService

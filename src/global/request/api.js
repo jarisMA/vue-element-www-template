@@ -82,7 +82,9 @@ export default {
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
   courseSeriesCategory: `${WEB_PREFIX}/series-category`,
   courseSeries: `${WEB_PREFIX}/series`,
-  courseSet: id => `${WEB_PREFIX}/series/${id}`,
+  courseSetDetail: id => `${WEB_PREFIX}/series/${id}/detail`,
+  courseSetCourse: (id, courseId) =>
+    `${WEB_PREFIX}/series/${id}/course/${courseId}`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,

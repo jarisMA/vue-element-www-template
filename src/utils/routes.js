@@ -100,6 +100,20 @@ export const goCourse = (id, lessonIndex, type = "_blank") => {
   );
 };
 
+export const goSeriesCourse = (id, courseId, lessonIndex, type = "_blank") => {
+  return goRoute(
+    {
+      name: "SeriesCourse",
+      params: {
+        id,
+        courseId,
+        lessonIndex
+      }
+    },
+    type
+  );
+};
+
 export const goBible = (type = "_self") => {
   return goRoute(
     {

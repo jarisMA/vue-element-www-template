@@ -11,6 +11,7 @@ import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
 import Course from "@/views/Term/Course";
+import SeriesCourse from "@/views/Academy/SeriesCourse";
 import Order from "@/views/Order";
 
 const routes = [
@@ -44,6 +45,14 @@ const routes = [
     path: "/course/:id/lesson/:lessonIndex",
     name: "Course",
     component: Course,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: "/series/:id/course/:courseId/lesson/:lessonIndex",
+    name: "SeriesCourse",
+    component: SeriesCourse,
     meta: {
       auth: true
     }
