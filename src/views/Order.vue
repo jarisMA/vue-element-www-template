@@ -150,7 +150,7 @@
 
 <script>
 import TheAvatar from "components/TheAvatar";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import {
   goHome,
   goMyCourse,
@@ -170,6 +170,7 @@ import {
   PAY_METHOD_WECHAT,
   PAY_METHOD_ALIPAY
 } from "utils/const";
+import userService from "service/user";
 
 export default {
   name: "Payment",
@@ -205,6 +206,7 @@ export default {
   methods: {
     goHome,
     goMyCourse,
+    ...mapMutations(["USERINFO"]),
     getData() {
       this.loading = true;
       orderService
@@ -297,6 +299,9 @@ export default {
           goAcademySeriesDetail(this.order.resource.id);
           break;
         case ORDER_TYPE_VIP:
+          userService.getUserInfo().then(userInfo => {
+            this.USERINFO({ ...userInfo });
+          });
           goMySetting();
           break;
         default:

@@ -246,6 +246,15 @@ export const goOrder = (no, type = "_blank") => {
   );
 };
 
+export const goVip = (type = "replace") => {
+  return goRoute(
+    {
+      name: "VipIndex"
+    },
+    type
+  );
+};
+
 export const go404 = (type = "replace") => {
   return goRoute(
     {
