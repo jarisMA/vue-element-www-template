@@ -22,12 +22,10 @@
                 class="page-main-btn"
                 type="primary"
                 @click="
-                  course.order_count > 0
-                    ? goCourse(course.id, 1)
-                    : handleOrder()
+                  course.permission ? goCourse(course.id, 1) : handleOrder()
                 "
               >
-                {{ course.order_count > 0 ? "开始学习" : "购买本课" }}
+                {{ course.permission ? "开始学习" : "购买本课" }}
               </el-button>
             </div>
           </div>
@@ -56,6 +54,7 @@
               ]"
               v-for="(lesson, index) of course.lessons"
               :key="lesson.id"
+              @click="course.permission ? goCourse(course.id, index + 1) : null"
             >
               <div class="lesson-item-left">
                 <i
