@@ -124,7 +124,7 @@
         </div>
       </div>
       <div class="page-content">
-        <div class="page-content-relative">
+        <div class="page-content-relative" v-if="relations.length > 0">
           <h4 class="page-content-label">相关课程</h4>
           <ul class="page-content-relative-list">
             <li

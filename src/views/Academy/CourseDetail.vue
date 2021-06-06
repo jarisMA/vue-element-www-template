@@ -87,8 +87,8 @@
               :key="item.id"
             >
               <course-card
-                :course="item"
-                @click.native.prevent="goDetail(item.id)"
+                :course="item.course"
+                @click.native.prevent="goDetail(item.course.id)"
               />
             </li>
           </ul>
@@ -188,20 +188,20 @@ export default {
         .courseDetail(this.$route.params.id)
         .then(course => {
           this.course = course;
-          // const withoutIds = [this.$route.params.id];
-          // courseSerive
-          //   .courses({
-          //     page_size: 4,
-          //     page: 1,
-          //     withoutIds,
-          //     cat_id: course.cat_id
-          //   })
-          //   .then(relation => {
-          //     this.relations = relation.list;
-          //   })
-          //   .finally(() => {
-          //     this.loading = false;
-          //   });
+          const withoutIds = [this.$route.params.id];
+          courseSerive
+            .courses({
+              page_size: 4,
+              page: 1,
+              withoutIds,
+              cat_id: process.env.VUE_APP_COURSE_CAT_1
+            })
+            .then(relation => {
+              this.relations = relation.list;
+            })
+            .finally(() => {
+              this.loading = false;
+            });
           this.loading = false;
         })
         .catch(() => {
