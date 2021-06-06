@@ -55,7 +55,14 @@
                 <el-collapse-item>
                   <template slot="title">
                     <div class="course-header">
-                      <h4 class="course-header-title ellipsis">
+                      <h4
+                        class="course-header-title ellipsis"
+                        @click.stop="
+                          series.permission
+                            ? goSeriesCourse(series.id, course.id, 1)
+                            : null
+                        "
+                      >
                         {{ course.name }}
                       </h4>
                       <div class="course-header-right">
@@ -82,6 +89,11 @@
                       ]"
                       v-for="(lesson, index) of course.lessons"
                       :key="lesson.id"
+                      @click.stop="
+                        series.permission
+                          ? goSeriesCourse(series.id, course.id, index + 1)
+                          : null
+                      "
                     >
                       <div class="lesson-item-left">
                         <i

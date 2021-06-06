@@ -31,6 +31,12 @@ const courseService = {
   },
   setCourse(id, courseId) {
     return request.get(API.courseSetCourse(id, courseId));
+  },
+  setSeriesLessonRecord(id, courseId, lessonId, params = {}) {
+    return request.post(
+      API.courseSetLessonRecord(id, courseId, lessonId),
+      params
+    );
   }
 };
 

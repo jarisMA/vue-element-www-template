@@ -44,26 +44,30 @@ export default {
           this.lessons = res.lessons;
         });
     },
-    setLessonRecord() {}
-    // setLessonRecord (activeLessonIndex, params) {
-    //   const { lessons, setRecording } = this;
-    //   const lesson = lessons[activeLessonIndex];
-    //   if (!setRecording) {
-    //     this.setRecording = true;
-    //     courseService
-    //       .setSeriesLessonRecord(this.$route.params.id, lesson.id, params)
-    //       .then(() => {
-    //         this.$set(lessons, activeLessonIndex, {
-    //           ...lesson,
-    //           play_second_duration:
-    //             lesson.play_second_duration - 0 + (params.second_duration - 0)
-    //         });
-    //       })
-    //       .finally(() => {
-    //         this.setRecording = false;
-    //       });
-    //   }
-    // }
+    setLessonRecord(activeLessonIndex, params) {
+      const { lessons, setRecording } = this;
+      const lesson = lessons[activeLessonIndex];
+      if (!setRecording) {
+        this.setRecording = true;
+        courseService
+          .setSeriesLessonRecord(
+            this.$route.params.id,
+            this.$route.params.courseId,
+            lesson.id,
+            params
+          )
+          .then(() => {
+            this.$set(lessons, activeLessonIndex, {
+              ...lesson,
+              play_second_duration:
+                lesson.play_second_duration - 0 + (params.second_duration - 0)
+            });
+          })
+          .finally(() => {
+            this.setRecording = false;
+          });
+      }
+    }
   }
 };
 </script>
