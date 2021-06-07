@@ -87,8 +87,8 @@
               :key="item.id"
             >
               <course-card
-                :course="item.course"
-                @click.native.prevent="goDetail(item.course.id)"
+                :course="item"
+                @click.native.prevent="goDetail(item.id)"
               />
             </li>
           </ul>
