@@ -83,7 +83,7 @@
           <template v-if="courses.length > 0">
             <ul class="course-list">
               <li class="course-item" v-for="item of courses" :key="item.id">
-                <course-card :course="item.course" />
+                <course-card :course="item" />
               </li>
             </ul>
             <pagination
