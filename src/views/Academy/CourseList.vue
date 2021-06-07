@@ -67,7 +67,7 @@
                 'course-level-item',
                 levelValue === null ? 'active' : ''
               ]"
-              @click="levelValue = null"
+              @click="handleLevelChange(null)"
             >
               全部
             </div>
@@ -75,7 +75,7 @@
               :class="['course-level-item', levelValue === key ? 'active' : '']"
               v-for="(item, key) of COURSE_LEVEL"
               :key="key"
-              @click="levelValue = key"
+              @click="handleLevelChange(key)"
             >
               {{ item }}
             </div>
@@ -137,10 +137,15 @@ export default {
     },
     levelValue() {
       this.getCourses();
+    },
+    ["$route"](val) {
+      this.menuId = val.query.catId ? parseInt(val.query.catId) : null;
+      this.levelValue = val.query.level || null;
     }
   },
   created() {
-    const { catId } = this.$route.query;
+    const { catId, level } = this.$route.query;
+    this.levelValue = level || null;
     if (catId) {
       this.menuId = parseInt(catId);
     }
@@ -153,7 +158,8 @@ export default {
         courseService.courses({
           page_size: this.pagination.size,
           page: 1,
-          cat_id: this.menuId
+          cat_id: this.menuId,
+          level: this.levelValue
         })
       ])
         .then(([category, courses]) => {
@@ -211,8 +217,10 @@ export default {
       let breadcrumb = "";
       if (!mIndex && mIndex !== 0) {
         breadcrumb = "全部";
-        this.menuId = null;
         this.breadcrumb = breadcrumb;
+        this.handleRouteChange({
+          catId: null
+        });
         return;
       }
       const menu = this.menus[mIndex];
@@ -220,11 +228,28 @@ export default {
       if (menu.children && (sIndex || sIndex === 0)) {
         const submenu = menu.children[sIndex];
         submenu && (breadcrumb += ` / ${submenu.name}`);
-        this.menuId = submenu.id;
+        this.handleRouteChange({
+          catId: submenu.id
+        });
       } else {
-        this.menuId = menu.id;
+        this.handleRouteChange({
+          catId: menu.id
+        });
       }
       this.breadcrumb = breadcrumb;
+    },
+    handleLevelChange(level) {
+      this.handleRouteChange({
+        level
+      });
+    },
+    handleRouteChange(query) {
+      this.$router.push({
+        query: {
+          ...this.$route.query,
+          ...query
+        }
+      });
     }
   }
 };
