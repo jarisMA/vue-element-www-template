@@ -46,13 +46,13 @@
             {{ series.introduction }}
           </p>
           <ul class="page-course-list">
-            <li
-              class="page-course-item"
-              v-for="(course, key) of series.courses"
-              :key="key"
-            >
-              <el-collapse>
-                <el-collapse-item>
+            <el-collapse v-model="activeCourseIndexArr">
+              <li
+                class="page-course-item"
+                v-for="(course, key) of series.courses"
+                :key="key"
+              >
+                <el-collapse-item :name="key">
                   <template slot="title">
                     <div class="course-header">
                       <h4
@@ -118,8 +118,8 @@
                     </li>
                   </ul>
                 </el-collapse-item>
-              </el-collapse>
-            </li>
+              </li>
+            </el-collapse>
           </ul>
         </div>
       </div>
@@ -161,7 +161,8 @@ export default {
     return {
       loading: true,
       series: {},
-      relations: []
+      relations: [],
+      activeCourseIndexArr: [0]
     };
   },
   watch: {
