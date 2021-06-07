@@ -107,6 +107,7 @@ import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE } from "utils/const";
 import { goOrder, goCourse } from "utils/routes";
+import { mapState } from "vuex";
 
 export default {
   name: "AcademyCourseDetail",
@@ -125,6 +126,7 @@ export default {
     }
   },
   computed: {
+    ...mapState(["userInfo"]),
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
       return index => {
@@ -216,6 +218,10 @@ export default {
       });
     },
     handleOrder() {
+      if (!this.userInfo) {
+        this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+        return;
+      }
       orderService
         .addOrder({
           type: ORDER_TYPE_COURSE,
