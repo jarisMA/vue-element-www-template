@@ -39,7 +39,7 @@ export default {
   mounted() {
     window.addEventListener("click", this.handleClickItem, true);
   },
-  destroyed() {
+  beforeDestroy() {
     window.removeEventListener("click", this.handleClickItem, true);
   },
   methods: {

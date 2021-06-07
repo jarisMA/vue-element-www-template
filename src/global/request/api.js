@@ -70,10 +70,24 @@ export default {
   commodities: `${WEB_PREFIX}/commodity`,
   commodityAttrs: `${WEB_PREFIX}/commodity/attr`,
   commodityCatAttrs: catId => `${WEB_PREFIX}/commodity/cat/${catId}/attrs`,
+  commodityCatCommodities: catId =>
+    `${WEB_PREFIX}/commodity/cat/${catId}/commodities`,
   commoditySkuFeedback: id => `${WEB_PREFIX}/commodity-sku/${id}/feedback`,
+  courseCategories: `${WEB_PREFIX}/course-category`,
+  courseCategory: id => `${WEB_PREFIX}/course-category/${id}`,
   course: id => `${WEB_PREFIX}/course/${id}`,
+  courses: `${WEB_PREFIX}/course`,
+  courseDetail: id => `${WEB_PREFIX}/course/${id}/detail`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
+  courseSeriesCategory: `${WEB_PREFIX}/series-category`,
+  courseSeries: `${WEB_PREFIX}/series`,
+  courseSetDetail: id => `${WEB_PREFIX}/series/${id}/detail`,
+  courseSetCourse: (id, courseId) =>
+    `${WEB_PREFIX}/series/${id}/course/${courseId}`,
+  courseSetLessonRecord: (id, courseId, lessonId) =>
+    `${WEB_PREFIX}/series/${id}/course/${courseId}/lesson/${lessonId}/record`,
+
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,
@@ -87,5 +101,11 @@ export default {
   myAnswer: `${WEB_PREFIX}/mine/question-answer`,
   myQuestion: `${WEB_PREFIX}/mine/question`,
   myFavorite: `${WEB_PREFIX}/mine/question-favorite`,
-  myDraft: `${WEB_PREFIX}/mine/question/draft`
+  myDraft: `${WEB_PREFIX}/mine/question/draft`,
+  vipSkus: `${WEB_PREFIX}/vip-skus`,
+  orders: `${WEB_PREFIX}/order`,
+  order: no => `${WEB_PREFIX}/order/${no}`,
+  orderCheck: no => `${WEB_PREFIX}/order/${no}/check`,
+  payByWechat: no => `${WEB_PREFIX}/payment/wechat/${no}`,
+  payByAlipay: no => `${WEB_PREFIX}/payment/alipay/${no}`
 };

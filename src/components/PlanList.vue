@@ -204,10 +204,9 @@ export default {
     }
   }
 }
+
 .pagination-wrapper {
-  margin-top: 80px;
-}
-.pagination-wrapper {
+  margin: 40px 0;
   /deep/ &.homework {
     position: absolute;
     bottom: 26px;

@@ -5,11 +5,14 @@ import routesQuestion from "./routesQuestion";
 import routesError from "./routesError";
 import routesAcademy from "./routesAcademy";
 import routesMy from "./routesMy";
+import routesVip from "./routesVip";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
 import Course from "@/views/Term/Course";
+import SeriesCourse from "@/views/Academy/SeriesCourse";
+import Order from "@/views/Order";
 
 const routes = [
   {
@@ -29,6 +32,7 @@ const routes = [
       ...routesQuestion,
       ...routesAcademy,
       ...routesMy,
+      ...routesVip,
       ...routesError
     ]
   },
@@ -41,6 +45,22 @@ const routes = [
     path: "/course/:id/lesson/:lessonIndex",
     name: "Course",
     component: Course,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: "/series/:id/course/:courseId/lesson/:lessonIndex",
+    name: "SeriesCourse",
+    component: SeriesCourse,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path: "/order/:no",
+    name: "Order",
+    component: Order,
     meta: {
       auth: true
     }

@@ -98,61 +98,98 @@
         :style="{ zIndex: 4 }"
       />
     </div>
-
     <div class="academy-content">
-      <div class="academy-content-list container-1180">
-        <div class="academy-content-card" v-for="camp of camps" :key="camp.id">
-          <the-loading-image
-            :url="camp.cover_file_url"
-            class="academy-card-cover"
-          />
-          <div class="academy-card-content">
-            <span class="academy-card-label">// CAMP:</span>
-            <h3
-              class="academy-card-title ellipsis"
-              :style="{ color: camp.title_color }"
-            >
-              {{ camp.name }}
+      <div class="container-1180">
+        <div class="academy-courses">
+          <div class="academy-content-header">
+            <h3 class="academy-content-title">
+              家计划<span class="primary">视频课</span>
             </h3>
-            <div class="academy-card-desc">
-              <h4 class="academy-card-desc_camp">{{ camp.term.name }}</h4>
-              <span
-                class="academy-card-desc_status"
-                :style="{ color: camp.price_color }"
-                >{{
-                  campStatus(camp.term) === 1
-                    ? "热招中"
-                    : campStatus(camp.term) === 2
-                    ? "已开课"
-                    : "敬请期待"
-                }}</span
-              >
+            <div class="academy-content-more" @click="goAcademyCourseList()">
+              查看全部<i class="more-icon"></i>
             </div>
           </div>
-          <div class="academy-card-footer">
-            <span
-              class="academy-card-price"
-              :style="{ color: camp.price_color }"
-              >￥{{ camp.term.price }}</span
-            >
-            <button
-              class="academy-card-btn"
-              :style="{ background: camp.price_color }"
-              @click="goAcademyCamp(camp.id)"
-            >
-              {{
-                campStatus(camp.term) === 1
-                  ? "开始报名"
-                  : campStatus(camp.term) === 2
-                  ? "查看详情"
-                  : "敬请期待"
-              }}
-              <img
-                src="~images/academy/vector.svg"
-                v-if="campStatus(camp.term) === 1"
-                class="academy-card-btn_vector"
+          <div class="academy-course-wrapper">
+            <div class="course-wrapper-left">
+              <h4 class="course-cat-title">{{ courseCategory1.name }}</h4>
+              <div
+                class="course-cat-btn"
+                @click="
+                  goAcademyCourseList({
+                    catId: VUE_APP_COURSE_CAT_1
+                  })
+                "
+              >
+                全部<i class="more-icon"></i>
+              </div>
+            </div>
+            <div class="academy-course-list">
+              <course-card
+                class="academy-course-item"
+                v-for="item of courses1"
+                :key="item.id"
+                :course="item"
               />
-            </button>
+            </div>
+          </div>
+          <div class="academy-course-wrapper">
+            <div class="course-wrapper-left">
+              <h4 class="course-cat-title">{{ courseCategory2.name }}</h4>
+              <div
+                class="course-cat-btn"
+                @click="
+                  goAcademyCourseList({
+                    catId: VUE_APP_COURSE_CAT_2
+                  })
+                "
+              >
+                全部<i class="more-icon"></i>
+              </div>
+            </div>
+            <div class="academy-course-list">
+              <course-card
+                class="academy-course-item"
+                v-for="item of courses2"
+                :key="item.id"
+                :course="item"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="academy-series">
+          <div class="academy-content-header">
+            <h3 class="academy-content-title">
+              家计划<span class="primary">体系课</span>
+            </h3>
+            <div class="academy-content-more" @click="goAcademySeriesList()">
+              查看全部<i class="more-icon"></i>
+            </div>
+          </div>
+          <div class="academy-series-list">
+            <set-card
+              class="academy-series-item"
+              v-for="item of series"
+              :key="item.id"
+              :series="item"
+            />
+          </div>
+        </div>
+        <div class="academy-camp">
+          <div class="academy-content-header">
+            <h3 class="academy-content-title">
+              家计划<span class="primary">训练营</span>
+            </h3>
+            <div class="academy-content-more" @click="goAcademyCampList()">
+              查看全部<i class="more-icon"></i>
+            </div>
+          </div>
+          <div class="academy-camp-list">
+            <camp-card
+              v-for="camp of camps"
+              :key="camp.id"
+              :camp="camp"
+              @go="goAcademyCampDetail"
+            />
           </div>
         </div>
       </div>
@@ -179,13 +216,19 @@ import ZwjSvg from "./widgets/svg/ZwjSvg.vue";
 import ZzSvg from "./widgets/svg/ZzSvg.vue";
 
 import campService from "service/camp";
-import TheLoadingImage from "components/TheLoadingImage";
-import { goAcademyCamp } from "utils/routes";
-import { campMixin } from "./widgets/mixin";
+import courseService from "service/course";
+import {
+  goAcademyCourseList,
+  goAcademySeriesList,
+  goAcademyCampList,
+  goAcademyCampDetail
+} from "utils/routes";
+import CampCard from "./widgets/CampCard";
+import SetCard from "./widgets/SetCard";
+import CourseCard from "./widgets/CourseCard";
 
 export default {
   name: "Academy",
-  mixins: [campMixin],
   components: {
     DayLogoSvg,
     DoceeSvg,
@@ -203,7 +246,9 @@ export default {
     YzSvg,
     ZwjSvg,
     ZzSvg,
-    TheLoadingImage
+    CampCard,
+    SetCard,
+    CourseCard
   },
   data() {
     return {
@@ -213,6 +258,13 @@ export default {
       top: 0,
       startX: 0,
       startY: 0,
+      VUE_APP_COURSE_CAT_1: process.env.VUE_APP_COURSE_CAT_1,
+      VUE_APP_COURSE_CAT_2: process.env.VUE_APP_COURSE_CAT_2,
+      courseCategory1: {},
+      courseCategory2: {},
+      courses1: [],
+      courses2: [],
+      series: [],
       camps: []
     };
   },
@@ -235,13 +287,50 @@ export default {
     window.removeEventListener("mousemove", this.mousemove);
   },
   methods: {
-    goAcademyCamp,
+    goAcademyCourseList,
+    goAcademySeriesList,
+    goAcademyCampList,
+    goAcademyCampDetail,
     getData() {
-      campService
-        .camps()
-        .then(res => {
-          this.camps = res;
+      Promise.all([
+        courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
+        courseService.courseCategory(this.VUE_APP_COURSE_CAT_2),
+        courseService.courses({
+          page_size: 3,
+          page: 1,
+          cat_id: this.VUE_APP_COURSE_CAT_1
+        }),
+        courseService.courses({
+          page_size: 3,
+          page: 1,
+          cat_id: this.VUE_APP_COURSE_CAT_2
+        }),
+        courseService.series({
+          page_size: 3,
+          page: 1
+        }),
+        campService.camps({
+          page_size: 2,
+          page: 1
         })
+      ])
+        .then(
+          ([
+            courseCategory1,
+            courseCategory2,
+            courses1,
+            courses2,
+            series,
+            camps
+          ]) => {
+            this.courseCategory1 = courseCategory1;
+            this.courseCategory2 = courseCategory2;
+            this.courses1 = courses1.list;
+            this.courses2 = courses2.list;
+            this.series = series.list;
+            this.camps = camps.list;
+          }
+        )
         .finally(() => {
           this.loading = false;
         });
@@ -415,103 +504,98 @@ export default {
 
 .academy-content {
   width: 100%;
-  .academy-content-list {
+  padding-bottom: 80px;
+  .academy-content-header {
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    flex-wrap: wrap;
-    padding-bottom: 80px;
+    justify-content: space-between;
+    margin-top: 76px;
+    margin-bottom: 36px;
+    .academy-content-title {
+      line-height: 48px;
+      font-weight: 600;
+      font-size: 36px;
+      color: #2c3330;
+    }
+    .academy-content-more {
+      line-height: 24px;
+      font-size: 16px;
+      color: #606c66;
+      cursor: pointer;
+      .more-icon {
+        display: inline-block;
+        margin-left: 4px;
+        width: 24px;
+        height: 24px;
+        mask: url("~images/academy/vector.svg") no-repeat center;
+        background: #606c66;
+        vertical-align: bottom;
+      }
+    }
   }
-  .academy-content-card {
-    width: 540px;
-    margin-top: 80px;
-    padding: 15px 15px 23px;
-    border: 1px solid #efefef;
-    &:nth-child(even) {
-      margin-left: 100px;
+  .academy-course-wrapper {
+    display: flex;
+    & + .academy-course-wrapper {
+      margin-top: 80px;
     }
-    &:hover {
-      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.25);
-    }
-    .academy-card-cover {
-      width: 508px;
-      height: 286px;
-    }
-    .academy-card-content {
-      width: 100%;
-      margin-top: 16px;
-      .academy-card-label {
-        display: block;
+    .course-wrapper-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      width: 300px;
+      .course-cat-title {
+        line-height: 32px;
+        font-weight: 600;
         font-size: 24px;
-        font-weight: 800;
-        line-height: 30px;
-        color: #dddddd;
-        cursor: default;
+        color: #2c3330;
       }
-      .academy-card-title {
-        margin-top: 10px;
-        line-height: 1;
-        font-size: 40px;
-        font-weight: 800;
-        color: @primaryColor;
-        cursor: default;
-      }
-      .academy-card-desc {
+      .course-cat-btn {
         display: flex;
         align-items: center;
-        justify-content: space-between;
-        margin-top: 24px;
-        width: 100%;
-        padding: 12px;
-        background: #fafafa;
-        .academy-card-desc_camp {
-          line-height: 24px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #606c66;
-          cursor: default;
+        justify-content: center;
+        margin-top: 40px;
+        width: 180px;
+        height: 56px;
+        line-height: 24px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #2c3330;
+        border: 1px solid #2c3330;
+        cursor: pointer;
+        .more-icon {
+          display: inline-block;
+          margin-left: 4px;
+          width: 24px;
+          height: 24px;
+          mask: url("~images/academy/vector.svg") no-repeat center;
+          background: #2c3330;
+          vertical-align: bottom;
         }
-        .academy-card-desc_status {
-          line-height: 24px;
-          font-size: 14px;
-          font-weight: 400;
-          color: #606c66;
-          cursor: default;
+      }
+    }
+    .academy-course-list {
+      display: flex;
+      .academy-course-item {
+        &:nth-child(2) {
+          margin-left: 20px;
+          margin-right: 20px;
         }
       }
     }
   }
-  .academy-card-footer {
+  .academy-camp-list {
     display: flex;
     justify-content: space-between;
-    width: 100%;
-    padding-top: 24px;
-    .academy-card-price {
-      font-weight: 800;
-      font-size: 40px;
-      line-height: 40px;
-      color: @primaryColor;
-      cursor: default;
-    }
-    .academy-card-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 12px 30px;
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 24px;
-      border: 0;
-      outline: none;
-      color: white;
-      background-color: @primaryColor;
-      cursor: pointer;
-    }
-    .academy-card-btn_vector {
-      width: 16px;
-      height: 10px;
-      margin-top: 3px;
-      margin-left: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .academy-series-list {
+    display: flex;
+    .academy-series-item {
+      &:nth-child(2) {
+        margin-left: 20px;
+        margin-right: 20px;
+      }
     }
   }
 }

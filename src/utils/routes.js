@@ -1,9 +1,12 @@
 import router from "@/router";
 
-export const goHome = () => {
-  return goRoute({
-    name: "Home"
-  });
+export const goHome = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Home"
+    },
+    type
+  );
 };
 
 export const goAcademy = () => {
@@ -97,6 +100,20 @@ export const goCourse = (id, lessonIndex, type = "_blank") => {
   );
 };
 
+export const goSeriesCourse = (id, courseId, lessonIndex, type = "_blank") => {
+  return goRoute(
+    {
+      name: "SeriesCourse",
+      params: {
+        id,
+        courseId,
+        lessonIndex
+      }
+    },
+    type
+  );
+};
+
 export const goBible = (type = "_self") => {
   return goRoute(
     {
@@ -151,13 +168,88 @@ export const goQuestionAnswer = (id, type = "_blank") => {
   );
 };
 
-export const goAcademyCamp = (id, type = "_self") => {
+export const goAcademyCourseList = (query = {}, type = "_self") => {
   return goRoute(
     {
-      name: "AcademyCamp",
+      name: "AcademyCourseList",
+      query: {
+        ...query
+      }
+    },
+    type
+  );
+};
+
+export const goAcademyCourseDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCourseDetail",
       params: {
         id
       }
+    },
+    type
+  );
+};
+
+export const goAcademySeriesList = (type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademySeriesList"
+    },
+    type
+  );
+};
+
+export const goAcademySeriesDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademySeriesDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
+export const goAcademyCampList = (type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCampList"
+    },
+    type
+  );
+};
+
+export const goAcademyCampDetail = (id, type = "_self") => {
+  return goRoute(
+    {
+      name: "AcademyCampDetail",
+      params: {
+        id
+      }
+    },
+    type
+  );
+};
+
+export const goOrder = (no, type = "_blank") => {
+  return goRoute(
+    {
+      name: "Order",
+      params: {
+        no
+      }
+    },
+    type
+  );
+};
+
+export const goVip = (type = "replace") => {
+  return goRoute(
+    {
+      name: "VipIndex"
     },
     type
   );

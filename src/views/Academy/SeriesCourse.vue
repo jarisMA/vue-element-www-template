@@ -13,7 +13,7 @@ import courseService from "service/course";
 import Course from "components/Course/Course";
 
 export default {
-  name: "TermCourse",
+  name: "SeriesCourse",
   components: { Course },
   data() {
     return {
@@ -24,20 +24,25 @@ export default {
   },
   watch: {
     ["$route"](val, oldVal) {
-      if (val.params.id !== oldVal.params.id) {
-        this.getCourse();
+      if (
+        val.params.id !== oldVal.params.id ||
+        val.params.courseId !== oldVal.params.courseId
+      ) {
+        this.getData();
       }
     }
   },
   created() {
-    this.getCourse();
+    this.getData();
   },
   methods: {
-    getCourse() {
-      courseService.course(this.$route.params.id).then(res => {
-        this.detail = res;
-        this.lessons = res.lessons;
-      });
+    getData() {
+      courseService
+        .setCourse(this.$route.params.id, this.$route.params.courseId)
+        .then(res => {
+          this.detail = res;
+          this.lessons = res.lessons;
+        });
     },
     setLessonRecord(activeLessonIndex, params) {
       const { lessons, setRecording } = this;
@@ -45,7 +50,12 @@ export default {
       if (!setRecording) {
         this.setRecording = true;
         courseService
-          .setLessonRecord(this.$route.params.id, lesson.id, params)
+          .setSeriesLessonRecord(
+            this.$route.params.id,
+            this.$route.params.courseId,
+            lesson.id,
+            params
+          )
           .then(() => {
             this.$set(lessons, activeLessonIndex, {
               ...lesson,

@@ -15,23 +15,35 @@
           enter-active-class="animated slideInLeft"
           leave-active-class="animated slideOutLeft"
         >
-          <plan-tool
-            v-show="toolActive"
-            class="plan-tool"
-            :listingId="listingId"
-            :rootCats="(cats[0] || {}).children || []"
-            :listingBrief="listingBrief"
-            :design="design"
+          <plane-tool
+            v-if="toolIndex === 1"
+            class="plane-tool"
             @addModel="addModel"
             @showFeedback="handleShowFeedback"
           />
+          <plan-tool
+            v-if="toolIndex === 2"
+            class="plan-tool"
+            :listingId="listingId"
+            :rootCats="softCats"
+            :listingBrief="listingBrief"
+            :design="design"
+            :refreshingBrief="refreshingBrief"
+            @addModel="addModel"
+            @showFeedback="handleShowFeedback"
+            @refreshPrice="handleIframeSave"
+          />
         </transition>
-        <!-- <div class="toolbar-mask"
-             v-if="toolActive"></div> -->
         <div class="toolbar">
           <div
-            :class="['tool-icon-wrapper', toolActive ? 'active' : '']"
-            @click="toolActive = !toolActive"
+            :class="['tool-icon-wrapper', toolIndex === 1 ? 'active' : '']"
+            @click="handleSelectTool(1)"
+          >
+            <label class="plane-icon"></label>
+          </div>
+          <div
+            :class="['tool-icon-wrapper', toolIndex === 2 ? 'active' : '']"
+            @click="handleSelectTool(2)"
           >
             <label class="tool-icon"></label>
           </div>
@@ -76,28 +88,31 @@ import commodityService from "service/commodity";
 
 import { goMyPlan } from "utils/routes";
 import { mapMutations, mapState } from "vuex";
+import PlaneTool from "./widgets/PlaneTool";
 import PlanTool from "./widgets/PlanTool";
 
 export default {
   name: "EditPlan",
   components: {
+    PlaneTool,
     PlanTool
   },
   data() {
     return {
       url: "",
-      cats: [],
+      softCats: [],
       loading: true,
       listingId: null,
       showTool: false,
       design: {},
+      refreshingBrief: false,
       listingBrief: {
         list: [],
         goods: [],
         skus: []
       },
       listingTimer: null,
-      toolActive: false,
+      toolIndex: 0, // 1平面布局 2软装
       feedbackSku: null,
       showFeedback: false,
       feedbackForm: {
@@ -139,7 +154,12 @@ export default {
       Promise.all(promiseArr).then(([res, cats, design]) => {
         this.url = res.url;
         this.listingId = res.listing_id;
-        this.cats = cats || [];
+        if (cats) {
+          const softCats = cats.find(
+            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
+          );
+          this.softCats = (softCats && softCats.children) || [];
+        }
         this.design = design || {};
         if (design && design.name) {
           document.querySelector("head title").innerHTML =
@@ -181,7 +201,7 @@ export default {
               this.listingSync();
             }
             if (data && data.action === "kjl_toggle_leftSideNavigatorTab") {
-              this.toolActive = false;
+              this.handleSelectTool(0);
             }
           }
         };
@@ -191,6 +211,9 @@ export default {
           window.attachEvent("onmessage", callback);
         }
       }
+    },
+    handleSelectTool(index) {
+      this.toolIndex = this.toolIndex === index ? 0 : index;
     },
     exit() {
       goMyPlan();
@@ -212,35 +235,55 @@ export default {
         "*"
       );
     },
+    handleIframeSave() {
+      const iframe = this.$refs["iframe"];
+      iframe.contentWindow.postMessage("save_kjl", "*");
+    },
     listingSync() {
       if (this.listingId) {
-        kujialeService.listingSync(this.listingId).then(() => {
-          if (this.listingTimer) {
-            clearInterval(this.listingTimer);
-            this.listingTimer = null;
-          }
-          this.listingTimer = setInterval(() => {
-            this.getListingState();
-          }, 1000);
-        });
+        this.refreshingBrief = true;
+        kujialeService
+          .listingSync(this.listingId)
+          .then(() => {
+            if (this.listingTimer) {
+              clearInterval(this.listingTimer);
+              this.listingTimer = null;
+            }
+            this.listingTimer = setInterval(() => {
+              this.getListingState();
+            }, 1000);
+          })
+          .catch(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     getListingState() {
       if (this.listingId) {
-        kujialeService.listingState(this.listingId).then(res => {
-          if (res === 3) {
-            this.getListingBrief();
-            clearInterval(this.listingTimer);
-            this.listingTimer = null;
-          }
-        });
+        kujialeService
+          .listingState(this.listingId)
+          .then(res => {
+            if (res === 3) {
+              this.getListingBrief();
+              clearInterval(this.listingTimer);
+              this.listingTimer = null;
+            }
+          })
+          .catch(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     getListingBrief() {
       if (this.listingId) {
-        kujialeService.listingBrief(this.listingId).then(res => {
-          this.listingBrief = res;
-        });
+        kujialeService
+          .listingBrief(this.listingId)
+          .then(res => {
+            this.listingBrief = res;
+          })
+          .finally(() => {
+            this.refreshingBrief = false;
+          });
       }
     },
     handleShowFeedback(sku) {
@@ -332,12 +375,20 @@ export default {
   height: 100%;
   // background: #805d5d;
   z-index: 1;
+  .plane-tool {
+    position: absolute;
+    top: 52px;
+    left: 44px;
+    height: calc(100% - 52px - 8px);
+    cursor: default;
+    z-index: 1;
+  }
   .plan-tool {
     position: absolute;
     top: 52px;
     left: 44px;
     height: calc(100% - 52px - 8px);
-    cursor: auto;
+    cursor: default;
     z-index: 1;
   }
   .iframe {
@@ -345,22 +396,11 @@ export default {
     width: 100%;
     height: 100%;
   }
-  .toolbar-mask {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: @oWidth;
-    height: 100%;
-    background: #f7f8fa80;
-  }
   .toolbar {
     position: absolute;
     top: calc((100% + 264px - 36px) / 2);
     left: 0;
     .tool-icon-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -368,23 +408,31 @@ export default {
       height: @oWidth;
       transform: translateY(50%);
       cursor: pointer;
+      .plane-icon,
       .tool-icon {
         width: 24px;
         height: 24px;
-        background-image: url("~images/commodity/tool.svg");
         background-repeat: no-repeat;
         background-size: cover;
         cursor: pointer;
         filter: grayscale(1);
       }
+      .plane-icon {
+        background-image: url("~images/commodity/plane.svg");
+      }
+      .tool-icon {
+        background-image: url("~images/commodity/tool.svg");
+      }
       &.active {
         background-color: rgba(57, 123, 243, 0.1);
+        .plane-icon,
         .tool-icon {
           filter: unset;
         }
       }
       &:hover {
         background-color: rgba(57, 123, 243, 0.1);
+        .plane-icon,
         .tool-icon {
           filter: unset;
         }

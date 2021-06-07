@@ -24,9 +24,14 @@
                     svg-name="more" />
         </span> -->
         <nav class="header-nav">
-          <span
+          <!-- <span
             class="header-nav-item My"
             @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
+            >斗西学社</span
+          > -->
+          <span
+            class="header-nav-item My"
+            @click="(visible || theme !== 'primary') && goAcademy()"
             >斗西学社</span
           >
           <span
@@ -66,42 +71,46 @@
             >
               登录 / 注册
             </el-button>
-
-            <the-avatar
-              v-if="userInfo"
-              class="el-avatar-border"
-              :size="48"
-              :url="userInfo.avatar_url"
-              @click.native="goMyCourse()"
-            ></the-avatar>
-            <div class="user-handle_show" v-if="userInfo">
-              <div class="show-container landing">
-                <div class="login-content">
-                  <p class="login-title">
-                    <span class="ellipsis">
-                      {{ userInfo.nickname }}
-                    </span>
-                    <img
-                      v-if="userInfo && isVip()"
-                      class="user-icon"
-                      src="~images/vip.png"
-                    />
-                    <img v-else class="user-icon" src="~images/user.png" />
-                  </p>
-                </div>
-                <ul class="login-operation">
-                  <li @click="goMyPlan()" class="workbench">
-                    <span>工作台</span>
-                  </li>
-                  <li @click="goMyCourse()" class="setting">
-                    <span>个人中心</span>
-                  </li>
-                </ul>
-                <div class="logout" @click="handleLogout">
-                  <span>退出登录</span>
+            <template v-if="userInfo">
+              <the-avatar
+                class="el-avatar-border"
+                :size="48"
+                :url="userInfo.avatar_url"
+                @click.native="goMyCourse()"
+              ></the-avatar>
+              <div class="user-handle_show">
+                <div class="show-container landing">
+                  <div class="login-content">
+                    <p class="login-title">
+                      <span class="ellipsis">
+                        {{ userInfo.nickname }}
+                      </span>
+                      <img
+                        v-if="userInfo && isVip()"
+                        class="user-icon"
+                        src="~images/vip.png"
+                      />
+                      <img v-else class="user-icon" src="~images/user.png" />
+                    </p>
+                  </div>
+                  <ul class="login-operation">
+                    <li @click="goMyPlan()" class="workbench">
+                      <span>工作台</span>
+                    </li>
+                    <li @click="goMyCourse()" class="setting">
+                      <span>个人中心</span>
+                    </li>
+                  </ul>
+                  <div class="logout" @click="handleLogout">
+                    <span>退出登录</span>
+                  </div>
                 </div>
               </div>
-            </div>
+            </template>
+          </div>
+          <div class="vip-btn" v-if="userInfo && !isVip()" @click="goVip()">
+            <i class="vip-icon"></i>
+            <span>成为会员</span>
           </div>
         </div>
       </transition>
@@ -116,7 +125,8 @@ import {
   goMyCourse,
   goBible,
   goQuestion,
-  goAcademy
+  goAcademy,
+  goVip
 } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
@@ -149,6 +159,7 @@ export default {
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
+    goVip,
     goAcademy() {
       if (this.theme === "primary") {
         this.$confirm(`是否确认离开当前页面?`).then(() => {
@@ -488,6 +499,25 @@ export default {
         .user-handle_show {
           display: inline-block;
         }
+      }
+    }
+    .vip-btn {
+      margin-left: 16px;
+      padding: 7px;
+      line-height: 24px;
+      font-weight: 600;
+      font-size: 14px;
+      color: @primaryColor;
+      border: 1px solid @primaryColor;
+      background: #fff;
+      cursor: pointer;
+      .vip-icon {
+        display: inline-block;
+        margin-right: 2px;
+        width: 24px;
+        height: 24px;
+        background: url("~images/vip/vip.svg") no-repeat center;
+        vertical-align: bottom;
       }
     }
   }

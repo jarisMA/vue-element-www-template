@@ -110,3 +110,31 @@ export const REPLY_TYPE_COMPLEX = 2; // 复杂富文本
 export const TYPE_QUESTION = 1;
 export const TYPE_ANSWER = 2;
 export const TYPE_COMMENT = 3;
+
+// 课程付费类型
+export const COURSE_PRICE_TYPE_FREE = 1;
+export const COURSE_PRICE_TYPE_PAY = 2;
+
+// 课程阶段
+export const COURSE_LEVEL = {
+  1: "入门",
+  2: "初阶",
+  3: "进阶",
+  4: "高阶"
+};
+
+// 订单类型
+export const ORDER_TYPE_COURSE = 1;
+export const ORDER_TYPE_CAMP = 2;
+export const ORDER_TYPE_BIBLE = 3;
+export const ORDER_TYPE_VIP = 4;
+export const ORDER_TYPE_COURSE_SERIES = 5;
+
+// 支付方式
+export const PAY_METHOD_WECHAT = 1;
+export const PAY_METHOD_ALIPAY = 2;
+
+// 支付结果
+export const PAY_STATUS_PENDING = 0;
+export const PAY_STATUS_SUCCESS = 1;
+export const PAY_STATUS_FAILED = 2;
