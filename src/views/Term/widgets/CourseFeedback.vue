@@ -10,7 +10,11 @@
       @blur="focus = false"
       v-model="content"
     ></el-input>
-    <el-button class="feedback-btn" type="primary" @click="handleFeedback"
+    <el-button
+      class="feedback-btn"
+      type="primary"
+      :loading="feedbacking"
+      @click="handleFeedback"
       >发布</el-button
     >
   </div>
@@ -18,6 +22,7 @@
 
 <script>
 import TheAvatar from "components/TheAvatar";
+import termService from "service/term";
 import { mapState } from "vuex";
 export default {
   name: "TermCourseFeedback",
@@ -25,18 +30,48 @@ export default {
   computed: {
     ...mapState(["userInfo"])
   },
+  props: {
+    params: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       focus: false,
-      content: ""
+      content: "",
+      feedbacking: false
     };
   },
   methods: {
     handleFeedback() {
-      if (!this.content.trim()) {
+      const content = this.content.trim();
+      if (!content) {
         return;
       }
-      this.$emit("feedback", this.content);
+      if (!this.feedbacking) {
+        this.feedbacking = true;
+        const params = {
+          ...this.params,
+          content
+        };
+        termService
+          .addTermWidgetFeedback(params)
+          .then(res => {
+            this.$emit("added", {
+              ...params,
+              ...res
+            });
+            this.content = "";
+            this.$notice({
+              type: "success",
+              title: "反馈添加成功"
+            });
+          })
+          .finally(() => {
+            this.feedbacking = false;
+          });
+      }
     }
   }
 };

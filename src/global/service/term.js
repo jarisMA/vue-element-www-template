@@ -22,6 +22,18 @@ const termService = {
   },
   termFeedback(id, params = {}) {
     return request.put(API.campTermFeedback(id), params);
+  },
+  termLike(campId, termId, params = {}) {
+    return request.post(API.campTermLike(campId, termId), params);
+  },
+  termWidgetFeedbacks(params = {}) {
+    return request.get(API.campTermWidgetFeedbacks, params);
+  },
+  addTermWidgetFeedback(params = {}) {
+    return request.post(API.campTermWidgetFeedbacks, params);
+  },
+  deleteTermWidgetFeedback(id) {
+    return request.delete(API.campTermWidgetFeedback(id));
   }
 };
 
