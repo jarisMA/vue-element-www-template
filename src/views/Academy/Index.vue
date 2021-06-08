@@ -100,7 +100,10 @@
     </div>
     <div class="academy-content">
       <div class="container-1180">
-        <div class="academy-courses">
+        <div
+          class="academy-courses"
+          v-if="courses1.length > 0 || courses2.length > 0"
+        >
           <div class="academy-content-header">
             <h3 class="academy-content-title">
               家计划<span class="primary">视频课</span>
@@ -109,7 +112,7 @@
               查看全部<i class="more-icon"></i>
             </div>
           </div>
-          <div class="academy-course-wrapper">
+          <div class="academy-course-wrapper" v-if="courses1.length > 0">
             <div class="course-wrapper-left">
               <h4 class="course-cat-title">{{ courseCategory1.name }}</h4>
               <div
@@ -132,7 +135,7 @@
               />
             </div>
           </div>
-          <div class="academy-course-wrapper">
+          <div class="academy-course-wrapper" v-if="courses2.length > 0">
             <div class="course-wrapper-left">
               <h4 class="course-cat-title">{{ courseCategory2.name }}</h4>
               <div
@@ -162,7 +165,7 @@
             查看全部视频课<i class="more-icon"></i>
           </div>
         </div>
-        <div class="academy-series">
+        <div class="academy-series" v-if="series.length > 0">
           <div class="academy-content-header">
             <h3 class="academy-content-title">
               家计划<span class="primary">体系课</span>
@@ -180,7 +183,7 @@
             />
           </div>
         </div>
-        <div class="academy-camp">
+        <div class="academy-camp" v-if="camps.length > 0">
           <div class="academy-content-header">
             <h3 class="academy-content-title">
               家计划<span class="primary">训练营</span>
