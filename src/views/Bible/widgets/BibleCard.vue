@@ -95,8 +95,6 @@ export default {
     theme() {
       const swiper = this.$refs["mySwiper"];
       if (swiper) {
-        console.log(swiper);
-        window.swiper = swiper;
         this.$nextTick(() => {
           swiper.$swiper.init();
         });

@@ -218,7 +218,7 @@ export default {
       }
       this.timer = setTimeout(() => {
         const maxWidth = Math.max(window.innerWidth - 200, 1200 - 200);
-        this.col = Math.floor(maxWidth / (262 + 15));
+        this.col = Math.floor(maxWidth / (262 + 30));
       }, 300);
     },
     getData(start = 1) {

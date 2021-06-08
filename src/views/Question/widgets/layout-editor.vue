@@ -171,6 +171,10 @@ export default {
       this.getImgSize();
     });
   },
+  beforeDestroy() {
+    window.removeEventListener("mousemove", this.handleMouseMove);
+    window.removeEventListener("mouseup", this.handleMouseUp);
+  },
   methods: {
     getImgSize() {
       const { image_url } = this.layout;
