@@ -45,82 +45,84 @@
           <p class="page-main-intro" v-if="series.introduction">
             {{ series.introduction }}
           </p>
-          <ul class="page-course-list">
-            <el-collapse v-model="activeCourseIndexArr">
-              <li
-                class="page-course-item"
-                v-for="(course, key) of series.courses"
-                :key="key"
-              >
-                <el-collapse-item :name="key">
-                  <template slot="title">
-                    <div class="course-header">
-                      <h4
-                        class="course-header-title ellipsis"
+          <div class="page-course-list">
+            <el-scrollbar class="scroll-section">
+              <el-collapse v-model="activeCourseIndexArr">
+                <div
+                  class="page-course-item"
+                  v-for="(course, key) of series.courses"
+                  :key="key"
+                >
+                  <el-collapse-item :name="key">
+                    <template slot="title">
+                      <div class="course-header">
+                        <h4 class="course-header-title ellipsis">
+                          <span
+                            @click.stop="
+                              series.permission
+                                ? goSeriesCourse(series.id, course.id, 1)
+                                : null
+                            "
+                            >{{ course.name }}</span
+                          >
+                        </h4>
+                        <div class="course-header-right">
+                          <label class="course-header-count"
+                            >共{{ course.lesson_number }}节</label
+                          >
+                          <label class="course-header-duration"
+                            >{{
+                              Math.floor(course.second_duration / 60)
+                            }}分钟</label
+                          >
+                        </div>
+                      </div>
+                    </template>
+                    <ul
+                      class="page-lesson-list"
+                      v-if="course.lessons && course.lessons.length > 0"
+                    >
+                      <li
+                        :class="[
+                          'page-lesson-item',
+                          lessonStatus(key, index) === 3 ? 'active' : '',
+                          lessonStatus(key, index) === 4 ? 'completed' : ''
+                        ]"
+                        v-for="(lesson, index) of course.lessons"
+                        :key="lesson.id"
                         @click.stop="
                           series.permission
-                            ? goSeriesCourse(series.id, course.id, 1)
+                            ? goSeriesCourse(series.id, course.id, index + 1)
                             : null
                         "
                       >
-                        {{ course.name }}
-                      </h4>
-                      <div class="course-header-right">
-                        <label class="course-header-count"
-                          >共{{ course.lesson_number }}节</label
-                        >
-                        <label class="course-header-duration"
-                          >{{
-                            Math.floor(course.second_duration / 60)
-                          }}分钟</label
-                        >
-                      </div>
-                    </div>
-                  </template>
-                  <ul
-                    class="page-lesson-list"
-                    v-if="course.lessons && course.lessons.length > 0"
-                  >
-                    <li
-                      :class="[
-                        'page-lesson-item',
-                        lessonStatus(key, index) === 3 ? 'active' : '',
-                        lessonStatus(key, index) === 4 ? 'completed' : ''
-                      ]"
-                      v-for="(lesson, index) of course.lessons"
-                      :key="lesson.id"
-                      @click.stop="
-                        series.permission
-                          ? goSeriesCourse(series.id, course.id, index + 1)
-                          : null
-                      "
-                    >
-                      <div class="lesson-item-left">
-                        <i
-                          :class="[
-                            'lesson-item-icon',
-                            lessonStatusIconClass(key, index)
-                          ]"
-                        ></i>
-                        <h5 class="lesson-item-title ellipsis">
-                          {{ lesson.name }}
-                        </h5>
-                      </div>
-                      <div class="lesson-item-right">
-                        <label class="lesson-item-status">
-                          {{ lessonStatusText(key, index) }}
-                        </label>
-                        <label class="lesson-item-duration">
-                          {{ lessonStatusText(key, index) ? "/" : "" }}
-                          {{ formatSeconds(lesson.second_duration) }}
-                        </label>
-                      </div>
-                    </li>
-                  </ul>
-                </el-collapse-item>
-              </li>
-            </el-collapse>
-          </ul>
+                        <div class="lesson-item-left">
+                          <i
+                            :class="[
+                              'lesson-item-icon',
+                              lessonStatusIconClass(key, index)
+                            ]"
+                          ></i>
+                          <h5 class="lesson-item-title ellipsis">
+                            {{ lesson.name }}
+                          </h5>
+                        </div>
+                        <div class="lesson-item-right">
+                          <label class="lesson-item-status">
+                            {{ lessonStatusText(key, index) }}
+                          </label>
+                          <label class="lesson-item-duration">
+                            {{ lessonStatusText(key, index) ? "/" : "" }}
+                            {{ formatSeconds(lesson.second_duration) }}
+                          </label>
+                        </div>
+                      </li>
+                    </ul>
+                  </el-collapse-item>
+                </div>
+              </el-collapse>
+            </el-scrollbar>
+          </div>
         </div>
       </div>
       <div class="page-content">
@@ -173,9 +175,12 @@ export default {
   computed: {
     ...mapState(["userInfo"]),
     lessonStatus() {
-      // 4 播放完成，3 播放过，2 正在播放，1 未播放
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放, 5 不能播放
       return (key, index) => {
         const { lessons } = this.series.courses[key];
+        if (!this.series.permission) {
+          return 5;
+        }
         if (!index) {
           return 1;
         }
@@ -212,6 +217,9 @@ export default {
         const status = this.lessonStatus(key, index);
         let iconClass = "unplay-icon";
         switch (status) {
+          case 5:
+            iconClass = "lock-icon";
+            break;
           case 3:
             iconClass = "played-icon";
             break;
@@ -372,11 +380,17 @@ export default {
       }
       .page-course-list {
         height: 375px;
-        padding: 16px;
+        padding: 16px 0;
         margin-top: 24px;
-        overflow-y: auto;
         background: #fafafa;
+        .scroll-section {
+          height: 100%;
+          /deep/ .el-scrollbar__wrap {
+            overflow-x: hidden;
+          }
+        }
         .el-collapse {
+          margin: 0 16px;
           border-top: unset;
           /deep/ .el-collapse-item {
             .el-collapse-item__header {
@@ -409,6 +423,9 @@ export default {
             }
             .el-collapse-item__wrap {
               background: transparent;
+              .el-collapse-item__content {
+                padding-bottom: 0;
+              }
             }
           }
         }
@@ -458,6 +475,10 @@ export default {
                 &.completed-icon {
                   background-color: #2c3330;
                   mask-image: url("~images/course/completed.svg");
+                }
+                &.lock-icon {
+                  background-color: #2c3330;
+                  mask-image: url("~images/course/lock.svg");
                 }
               }
               .lesson-item-title {

@@ -45,36 +45,45 @@
           <p class="page-main-intro" v-if="course.introduction">
             {{ course.introduction }}
           </p>
-          <ul class="page-lesson-list">
-            <li
-              :class="[
-                'page-lesson-item',
-                lessonStatus(index) === 3 ? 'active' : '',
-                lessonStatus(index) === 4 ? 'completed' : ''
-              ]"
-              v-for="(lesson, index) of course.lessons"
-              :key="lesson.id"
-              @click="course.permission ? goCourse(course.id, index + 1) : null"
-            >
-              <div class="lesson-item-left">
-                <i
-                  :class="['lesson-item-icon', lessonStatusIconClass(index)]"
-                ></i>
-                <h5 class="lesson-item-title ellipsis">
-                  {{ lesson.name }}
-                </h5>
-              </div>
-              <div class="lesson-item-right">
-                <label class="lesson-item-status">
-                  {{ lessonStatusText(index) }}
-                </label>
-                <label class="lesson-item-duration">
-                  {{ lessonStatusText(index) ? "/" : "" }}
-                  {{ formatSeconds(lesson.second_duration) }}
-                </label>
-              </div>
-            </li>
-          </ul>
+          <div class="page-lesson-wrapper">
+            <el-scrollbar class="scroll-section">
+              <ul class="page-lesson-list">
+                <li
+                  :class="[
+                    'page-lesson-item',
+                    lessonStatus(index) === 3 ? 'active' : '',
+                    lessonStatus(index) === 4 ? 'completed' : ''
+                  ]"
+                  v-for="(lesson, index) of course.lessons"
+                  :key="lesson.id"
+                  @click="
+                    course.permission ? goCourse(course.id, index + 1) : null
+                  "
+                >
+                  <div class="lesson-item-left">
+                    <i
+                      :class="[
+                        'lesson-item-icon',
+                        lessonStatusIconClass(index)
+                      ]"
+                    ></i>
+                    <h5 class="lesson-item-title ellipsis">
+                      {{ lesson.name }}
+                    </h5>
+                  </div>
+                  <div class="lesson-item-right">
+                    <label class="lesson-item-status">
+                      {{ lessonStatusText(index) }}
+                    </label>
+                    <label class="lesson-item-duration">
+                      {{ lessonStatusText(index) ? "/" : "" }}
+                      {{ formatSeconds(lesson.second_duration) }}
+                    </label>
+                  </div>
+                </li>
+              </ul>
+            </el-scrollbar>
+          </div>
         </div>
       </div>
       <div class="page-content">
@@ -128,9 +137,12 @@ export default {
   computed: {
     ...mapState(["userInfo"]),
     lessonStatus() {
-      // 4 播放完成，3 播放过，2 正在播放，1 未播放
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放， 5 不能播放
       return index => {
-        const { lessons } = this.course;
+        const { lessons, permission } = this.course;
+        if (!permission) {
+          return 5;
+        }
         const lesson = lessons[index];
         const last_play_position = lesson.last_play_position || 0;
         const play_second_duration = lesson.play_second_duration || 0;
@@ -164,6 +176,9 @@ export default {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
         switch (status) {
+          case 5:
+            iconClass = "lock-icon";
+            break;
           case 3:
             iconClass = "played-icon";
             break;
@@ -323,11 +338,19 @@ export default {
         font-size: 14px;
         color: #81948b;
       }
-      .page-lesson-list {
+      .page-lesson-wrapper {
+        width: 100%;
         height: 375px;
+        .scroll-section {
+          height: 100%;
+          /deep/ .el-scrollbar__wrap {
+            overflow-x: hidden;
+          }
+        }
+      }
+      .page-lesson-list {
         padding: 16px;
         margin-top: 24px;
-        overflow-y: auto;
         background: #fafafa;
         .page-lesson-item {
           display: flex;
@@ -374,6 +397,10 @@ export default {
               &.completed-icon {
                 background-color: #2c3330;
                 mask-image: url("~images/course/completed.svg");
+              }
+              &.lock-icon {
+                background-color: #2c3330;
+                mask-image: url("~images/course/lock.svg");
               }
             }
             .lesson-item-title {
