@@ -81,6 +81,7 @@
               </div>
             </div>
           </div>
+          <course-feedback />
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -95,9 +96,11 @@ import {
 } from "utils/const";
 import { goBibleDetail, goCourse } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
+import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
+  components: { CourseFeedback },
   props: {
     category: {
       type: Object,
