@@ -155,6 +155,12 @@
               />
             </div>
           </div>
+          <div
+            class="academy-content-more center"
+            @click="goAcademyCourseList()"
+          >
+            查看全部视频课<i class="more-icon"></i>
+          </div>
         </div>
         <div class="academy-series">
           <div class="academy-content-header">
@@ -504,12 +510,10 @@ export default {
 
 .academy-content {
   width: 100%;
-  padding-bottom: 80px;
   .academy-content-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 76px;
     margin-bottom: 36px;
     .academy-content-title {
       line-height: 48px;
@@ -517,65 +521,84 @@ export default {
       font-size: 36px;
       color: #2c3330;
     }
-    .academy-content-more {
-      line-height: 24px;
-      font-size: 16px;
-      color: #606c66;
-      cursor: pointer;
-      .more-icon {
-        display: inline-block;
-        margin-left: 4px;
-        width: 24px;
-        height: 24px;
-        mask: url("~images/academy/vector.svg") no-repeat center;
-        background: #606c66;
-        vertical-align: bottom;
-      }
+  }
+  .academy-content-more {
+    line-height: 24px;
+    font-size: 16px;
+    color: #606c66;
+    cursor: pointer;
+    .more-icon {
+      display: inline-block;
+      margin-left: 4px;
+      width: 24px;
+      height: 24px;
+      mask: url("~images/academy/vector.svg") no-repeat center;
+      background: #606c66;
+      vertical-align: bottom;
     }
   }
-  .academy-course-wrapper {
-    display: flex;
-    & + .academy-course-wrapper {
-      margin-top: 80px;
-    }
-    .course-wrapper-left {
+  .academy-courses {
+    padding: 80px 0;
+    .academy-course-wrapper {
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      width: 300px;
-      .course-cat-title {
-        line-height: 32px;
-        font-weight: 600;
-        font-size: 24px;
-        color: #2c3330;
+      & + .academy-course-wrapper {
+        margin-top: 80px;
       }
-      .course-cat-btn {
+      .course-wrapper-left {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 40px;
-        width: 180px;
-        height: 56px;
-        line-height: 24px;
-        font-weight: 500;
-        font-size: 16px;
-        color: #2c3330;
-        border: 1px solid #2c3330;
-        cursor: pointer;
-        .more-icon {
-          display: inline-block;
-          margin-left: 4px;
-          width: 24px;
-          height: 24px;
-          mask: url("~images/academy/vector.svg") no-repeat center;
-          background: #2c3330;
-          vertical-align: bottom;
+        flex-direction: column;
+        justify-content: flex-end;
+        width: 300px;
+        .course-cat-title {
+          line-height: 32px;
+          font-weight: 600;
+          font-size: 24px;
+          color: #2c3330;
+        }
+        .course-cat-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: 40px;
+          width: 180px;
+          height: 56px;
+          line-height: 24px;
+          font-weight: 500;
+          font-size: 16px;
+          color: #2c3330;
+          border: 1px solid #2c3330;
+          cursor: pointer;
+          .more-icon {
+            display: inline-block;
+            margin-left: 4px;
+            width: 24px;
+            height: 24px;
+            mask: url("~images/academy/vector.svg") no-repeat center;
+            background: #2c3330;
+            vertical-align: bottom;
+          }
+        }
+      }
+      .academy-course-list {
+        display: flex;
+        .academy-course-item {
+          &:nth-child(2) {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
         }
       }
     }
-    .academy-course-list {
+    .academy-content-more.center {
+      margin-top: 80px;
+      text-align: center;
+    }
+  }
+  .academy-series {
+    padding: 60px 0;
+    .academy-series-list {
       display: flex;
-      .academy-course-item {
+      .academy-series-item {
         &:nth-child(2) {
           margin-left: 20px;
           margin-right: 20px;
@@ -583,19 +606,13 @@ export default {
       }
     }
   }
-  .academy-camp-list {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-  }
-  .academy-series-list {
-    display: flex;
-    .academy-series-item {
-      &:nth-child(2) {
-        margin-left: 20px;
-        margin-right: 20px;
-      }
+  .academy-camp {
+    padding: 100px 0 160px;
+    .academy-camp-list {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
     }
   }
 }
