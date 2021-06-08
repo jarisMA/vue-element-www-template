@@ -480,7 +480,8 @@ export default {
         questionService.answers(this.id, {
           page: 1,
           page_size: this.pagination.size,
-          hot: this.answerOrder === 1
+          hot: this.answerOrder === 1,
+          showAll: true
         })
       ])
         .then(([detail, res]) => {
@@ -517,7 +518,8 @@ export default {
         .answers(this.id, {
           page: start,
           page_size: this.pagination.size,
-          hot: this.answerOrder === 1
+          hot: this.answerOrder === 1,
+          showAll: true
         })
         .then(res => {
           this.answers = res.list;
