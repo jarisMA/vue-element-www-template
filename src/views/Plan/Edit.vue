@@ -16,16 +16,31 @@
           leave-active-class="animated slideOutLeft"
         >
           <plane-tool
-            v-if="toolIndex === 1"
+            v-show="toolIndex === 1"
             class="plane-tool"
             @addModel="addModel"
             @showFeedback="handleShowFeedback"
           />
+        </transition>
+        <transition
+          enter-active-class="animated slideInLeft"
+          leave-active-class="animated slideOutLeft"
+        >
+          <texture-tool
+            class="texture-tool"
+            v-show="toolIndex === 2"
+            @addModel="addModel"
+            @showFeedback="handleShowFeedback"
+          />
+        </transition>
+        <transition
+          enter-active-class="animated slideInLeft"
+          leave-active-class="animated slideOutLeft"
+        >
           <plan-tool
-            v-if="toolIndex === 2"
+            v-show="toolIndex === 3"
             class="plan-tool"
             :listingId="listingId"
-            :rootCats="softCats"
             :listingBrief="listingBrief"
             :design="design"
             :refreshingBrief="refreshingBrief"
@@ -44,6 +59,12 @@
           <div
             :class="['tool-icon-wrapper', toolIndex === 2 ? 'active' : '']"
             @click="handleSelectTool(2)"
+          >
+            <label class="texture-icon"></label>
+          </div>
+          <div
+            :class="['tool-icon-wrapper', toolIndex === 3 ? 'active' : '']"
+            @click="handleSelectTool(3)"
           >
             <label class="tool-icon"></label>
           </div>
@@ -90,17 +111,18 @@ import { goMyPlan } from "utils/routes";
 import { mapMutations, mapState } from "vuex";
 import PlaneTool from "./widgets/PlaneTool";
 import PlanTool from "./widgets/PlanTool";
+import TextureTool from "./widgets/TextureTool";
 
 export default {
   name: "EditPlan",
   components: {
     PlaneTool,
-    PlanTool
+    PlanTool,
+    TextureTool
   },
   data() {
     return {
       url: "",
-      softCats: [],
       loading: true,
       listingId: null,
       showTool: false,
@@ -112,7 +134,7 @@ export default {
         skus: []
       },
       listingTimer: null,
-      toolIndex: 0, // 1平面布局 2软装
+      toolIndex: 2, // 1平面布局 2材质 3软装
       feedbackSku: null,
       showFeedback: false,
       feedbackForm: {
@@ -144,22 +166,15 @@ export default {
             designid: this.$route.params.designId
           })
         );
-        promiseArr.push(commodityService.cats());
         promiseArr.push(
           kujialeService.designBasic(this.$route.params.designId)
         );
       } else {
         promiseArr.push(kujialeService.iframe(4));
       }
-      Promise.all(promiseArr).then(([res, cats, design]) => {
+      Promise.all(promiseArr).then(([res, design]) => {
         this.url = res.url;
         this.listingId = res.listing_id;
-        if (cats) {
-          const softCats = cats.find(
-            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
-          );
-          this.softCats = (softCats && softCats.children) || [];
-        }
         this.design = design || {};
         if (design && design.name) {
           document.querySelector("head title").innerHTML =
@@ -383,6 +398,14 @@ export default {
     cursor: default;
     z-index: 1;
   }
+  .texture-tool {
+    position: absolute;
+    top: 52px;
+    left: 44px;
+    height: calc(100% - 52px - 8px);
+    cursor: default;
+    z-index: 1;
+  }
   .plan-tool {
     position: absolute;
     top: 52px;
@@ -408,7 +431,9 @@ export default {
       height: @oWidth;
       transform: translateY(50%);
       cursor: pointer;
+
       .plane-icon,
+      .texture-icon,
       .tool-icon {
         width: 24px;
         height: 24px;
@@ -417,8 +442,12 @@ export default {
         cursor: pointer;
         filter: grayscale(1);
       }
+
       .plane-icon {
         background-image: url("~images/commodity/plane.svg");
+      }
+      .texture-icon {
+        background-image: url("~images/commodity/texture.svg");
       }
       .tool-icon {
         background-image: url("~images/commodity/tool.svg");
@@ -426,6 +455,7 @@ export default {
       &.active {
         background-color: rgba(57, 123, 243, 0.1);
         .plane-icon,
+        .texture-icon,
         .tool-icon {
           filter: unset;
         }

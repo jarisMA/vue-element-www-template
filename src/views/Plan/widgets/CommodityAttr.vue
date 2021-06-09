@@ -2,32 +2,19 @@
   <div class="attr-wrapper">
     <div class="attr-header">
       <div class="attr-list">
-        <el-tooltip
-          popper-class="tool-label-tip"
-          effect="dark"
-          content="品牌"
-          :open-delay="tipsDelay"
-          placement="bottom"
-          :disabled="!(allBrands.length > 0)"
-        >
-          <div
-            :class="[
-              'bgImg-wrapper',
-              'brand-icon',
-              attrFocusId === -1
-                ? 'focus'
-                : brandSelectedId.length > 0
-                ? 'active'
-                : ''
-            ]"
-            :style="{
-              cursor: allBrands.length > 0 ? 'pointer' : 'not-allowed'
-            }"
-            @click="allBrands.length > 0 ? handleAttrFocusChange(-1) : ''"
+        <div :class="['attr-list-left', !showAttr ? 'flex-start' : '']">
+          <el-tooltip
+            popper-class="tool-label-tip"
+            effect="dark"
+            content="品牌"
+            :open-delay="tipsDelay"
+            placement="bottom"
+            :disabled="!(allBrands.length > 0)"
           >
-            <label
+            <div
               :class="[
-                'bgImg',
+                'bgImg-wrapper',
+                'brand-icon',
                 attrFocusId === -1
                   ? 'focus'
                   : brandSelectedId.length > 0
@@ -37,140 +24,147 @@
               :style="{
                 cursor: allBrands.length > 0 ? 'pointer' : 'not-allowed'
               }"
-            ></label>
-          </div>
-        </el-tooltip>
-        <el-tooltip
-          popper-class="tool-label-tip"
-          effect="dark"
-          content="价格"
-          :open-delay="tipsDelay"
-          placement="bottom"
-        >
-          <div
-            :class="[
-              'bgImg-wrapper',
-              'price-icon',
-              attrFocusId === -2
-                ? 'focus'
-                : hasValueSelectByAttr(-2)
-                ? 'active'
-                : ''
-            ]"
-            @click="handleAttrFocusChange(-2)"
+              @click="allBrands.length > 0 ? handleAttrFocusChange(-1) : ''"
+            >
+              <label
+                :class="[
+                  'bgImg',
+                  attrFocusId === -1
+                    ? 'focus'
+                    : brandSelectedId.length > 0
+                    ? 'active'
+                    : ''
+                ]"
+                :style="{
+                  cursor: allBrands.length > 0 ? 'pointer' : 'not-allowed'
+                }"
+              ></label>
+            </div>
+          </el-tooltip>
+          <el-tooltip
+            popper-class="tool-label-tip"
+            effect="dark"
+            content="价格"
+            :open-delay="tipsDelay"
+            placement="bottom"
           >
-            <label
+            <div
               :class="[
-                'bgImg',
+                'bgImg-wrapper',
+                'price-icon',
                 attrFocusId === -2
                   ? 'focus'
                   : hasValueSelectByAttr(-2)
                   ? 'active'
                   : ''
               ]"
-            ></label>
-          </div>
-        </el-tooltip>
-        <el-tooltip
-          popper-class="tool-label-tip"
-          effect="dark"
-          content="尺寸"
-          :open-delay="tipsDelay"
-          placement="bottom"
-        >
-          <div
-            :class="[
-              'bgImg-wrapper',
-              'size-icon',
-              attrFocusId === -3
-                ? 'focus'
-                : hasValueSelectByAttr(-3)
-                ? 'active'
-                : ''
-            ]"
-            @click="handleAttrFocusChange(-3)"
+              @click="handleAttrFocusChange(-2)"
+            >
+              <label
+                :class="[
+                  'bgImg',
+                  attrFocusId === -2
+                    ? 'focus'
+                    : hasValueSelectByAttr(-2)
+                    ? 'active'
+                    : ''
+                ]"
+              ></label>
+            </div>
+          </el-tooltip>
+          <el-tooltip
+            popper-class="tool-label-tip"
+            effect="dark"
+            content="尺寸"
+            :open-delay="tipsDelay"
+            placement="bottom"
           >
-            <label
+            <div
               :class="[
-                'bgImg',
+                'bgImg-wrapper',
+                'size-icon',
                 attrFocusId === -3
                   ? 'focus'
                   : hasValueSelectByAttr(-3)
                   ? 'active'
                   : ''
               ]"
-            ></label>
-          </div>
-        </el-tooltip>
-        <el-tooltip
-          v-for="attr of attrs"
-          :key="attr.id"
-          popper-class="tool-label-tip"
-          effect="dark"
-          :open-delay="tipsDelay"
-          :content="attr.name"
-          placement="bottom"
-          :disabled="!(attr.children && attr.children.length > 0)"
-        >
-          <div
-            :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
-            :style="{
-              backgroundColor:
-                attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null,
-              cursor:
-                attr.children && attr.children.length > 0
-                  ? 'pointer'
-                  : 'not-allowed'
-            }"
-            @click="
-              attr.children && attr.children.length > 0
-                ? handleAttrFocusChange(attr.id)
-                : ''
-            "
-          >
-            <label
-              :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
-              :style="{
-                backgroundImage:
-                  attrFocusId === attr.id
-                    ? `url(${attr.focus_icon})`
-                    : hasValueSelectByAttr(attr.id)
-                    ? `url(${attr.active_icon})`
-                    : `url(${attr.default_icon})`,
-                cursor:
+              @click="handleAttrFocusChange(-3)"
+            >
+              <label
+                :class="[
+                  'bgImg',
+                  attrFocusId === -3
+                    ? 'focus'
+                    : hasValueSelectByAttr(-3)
+                    ? 'active'
+                    : ''
+                ]"
+              ></label>
+            </div>
+          </el-tooltip>
+          <template v-if="showAttr">
+            <el-tooltip
+              v-for="attr of attrs"
+              :key="attr.id"
+              popper-class="tool-label-tip"
+              effect="dark"
+              :open-delay="tipsDelay"
+              :content="attr.name"
+              placement="bottom"
+              :disabled="!(attr.children && attr.children.length > 0)"
+            >
+              <div
+                :class="[
+                  'bgImg-wrapper',
+                  attrFocusId === attr.id ? 'focus' : ''
+                ]"
+                :style="{
+                  backgroundColor:
+                    attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null,
+                  cursor:
+                    attr.children && attr.children.length > 0
+                      ? 'pointer'
+                      : 'not-allowed'
+                }"
+                @click="
                   attr.children && attr.children.length > 0
-                    ? 'pointer'
-                    : 'not-allowed'
-              }"
-            ></label>
-          </div>
-        </el-tooltip>
-        <el-tooltip
-          popper-class="tool-label-tip"
-          effect="dark"
-          content="其余"
-          :open-delay="tipsDelay"
-          placement="bottom"
-          :disabled="!(moreAttrs.length > 0)"
-        >
-          <div
-            :class="[
-              'bgImg-wrapper',
-              'filter-icon',
-              attrFocusId === -4
-                ? 'focus'
-                : hasValueSelectByAttr(-4)
-                ? 'active'
-                : ''
-            ]"
-            :style="{
-              cursor: moreAttrs.length > 0 ? 'pointer' : 'not-allowed'
-            }"
-            @click="moreAttrs.length > 0 ? handleAttrFocusChange(-4) : ''"
+                    ? handleAttrFocusChange(attr.id)
+                    : ''
+                "
+              >
+                <label
+                  :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
+                  :style="{
+                    backgroundImage:
+                      attrFocusId === attr.id
+                        ? `url(${attr.focus_icon})`
+                        : hasValueSelectByAttr(attr.id)
+                        ? `url(${attr.active_icon})`
+                        : `url(${attr.default_icon})`,
+                    cursor:
+                      attr.children && attr.children.length > 0
+                        ? 'pointer'
+                        : 'not-allowed'
+                  }"
+                ></label>
+              </div>
+            </el-tooltip>
+          </template>
+        </div>
+        <div class="attr-list-right">
+          <el-tooltip
+            popper-class="tool-label-tip"
+            effect="dark"
+            content="其余"
+            :open-delay="tipsDelay"
+            placement="bottom"
+            :disabled="!(moreAttrs.length > 0)"
           >
-            <label
+            <div
               :class="[
-                'bgImg',
+                'bgImg-wrapper',
+                'filter-icon',
                 attrFocusId === -4
                   ? 'focus'
                   : hasValueSelectByAttr(-4)
@@ -180,9 +174,24 @@
               :style="{
                 cursor: moreAttrs.length > 0 ? 'pointer' : 'not-allowed'
               }"
-            ></label>
-          </div>
-        </el-tooltip>
+              @click="moreAttrs.length > 0 ? handleAttrFocusChange(-4) : ''"
+            >
+              <label
+                :class="[
+                  'bgImg',
+                  attrFocusId === -4
+                    ? 'focus'
+                    : hasValueSelectByAttr(-4)
+                    ? 'active'
+                    : ''
+                ]"
+                :style="{
+                  cursor: moreAttrs.length > 0 ? 'pointer' : 'not-allowed'
+                }"
+              ></label>
+            </div>
+          </el-tooltip>
+        </div>
       </div>
       <div class="columns-wrapper" v-if="columns > 2">
         <label
@@ -493,6 +502,10 @@ export default {
     columns: {
       type: Number,
       default: 2
+    },
+    showAttr: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -574,7 +587,9 @@ export default {
     }
   },
   created() {
-    this.getAttrs();
+    if (this.showAttr) {
+      this.getAttrs();
+    }
     this.getBrands();
     this.getAttrsByCatId(this.parentCat.id);
   },
@@ -751,6 +766,15 @@ export default {
       justify-content: space-between;
       width: 345px;
       height: 100%;
+      .attr-list-left {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        &.flex-start {
+          flex: none;
+        }
+      }
     }
     .bgImg-wrapper {
       flex: 1;
@@ -758,6 +782,7 @@ export default {
       justify-content: center;
       align-items: center;
       height: 100%;
+      padding: 6px 12px;
       cursor: pointer;
       outline: unset;
     }

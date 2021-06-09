@@ -274,10 +274,6 @@ export default {
       type: Object,
       required: true
     },
-    rootCats: {
-      type: Array,
-      required: true
-    },
     listingId: {
       type: String
     },
@@ -292,6 +288,7 @@ export default {
   },
   data() {
     return {
+      rootCats: [],
       catLoading: true,
       commodityLoading: true,
       isSearch: false,
@@ -343,8 +340,25 @@ export default {
       }
     }
   },
+  created() {
+    this.getRootCats();
+  },
   methods: {
     hex2Rgba,
+    getRootCats() {
+      this.catLoading = true;
+      commodityService
+        .cats()
+        .then(cats => {
+          const softCats = cats.find(
+            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
+          );
+          this.rootCats = (softCats && softCats.children) || [];
+        })
+        .finally(() => {
+          this.catLoading = false;
+        });
+    },
     getCats(id) {
       this.catLoading = true;
       commodityService
