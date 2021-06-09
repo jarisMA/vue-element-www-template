@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="['category-card', isDisabled ? 'disabled' : 'pointer']"
-    @click.prevent="!isDisabled ? handleCardClick() : null"
-  >
+  <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
     <el-collapse>
       <el-collapse-item>
         <template slot="title">
@@ -19,7 +16,10 @@
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
-                <h4 class="card-header-title ellipsis">
+                <h4
+                  class="card-header-title ellipsis"
+                  @click.prevent="!isDisabled ? handleCardClick() : null"
+                >
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
@@ -92,7 +92,7 @@
                 term_id: termId,
                 widget_id: category.id,
                 resource_type: category.type,
-                resource_id: category.resource_id
+                resource_id: category.resource_id || category.bible_id
               }"
             />
             <label class="card-feedback-more" @click="handleShowFeedback">

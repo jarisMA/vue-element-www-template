@@ -1,24 +1,28 @@
 <template>
   <div class="feedback-wrapper" v-loading="loading">
     <div class="feedback-content">
-      <h3 class="feedback-content-title">看看同学们怎么说</h3>
-      <p class="feedback-content-desc">
-        「{{ category.title }}」中同学们的收获
-      </p>
-      <ul class="feedback-list" v-if="feedbacks.length > 0">
-        <li
-          class="feeback-item"
-          v-for="(feedback, index) of feedbacks"
-          :key="feedback.id"
-        >
-          <course-feedback-card
-            :feedback="feedback"
-            @addLike="count => handleAddLike(feedback.id, count, index)"
-            @delete="handleDelete(feedback.id, index)"
-          />
-        </li>
-      </ul>
-      <the-empty v-else />
+      <div class="scroll-section" v-infinite-scroll="getData(true)">
+        <div class="feedback-content-wrapper">
+          <h3 class="feedback-content-title">看看同学们怎么说</h3>
+          <p class="feedback-content-desc">
+            「{{ category.title }}」中同学们的收获
+          </p>
+          <ul class="feedback-list" v-if="feedbacks.length > 0">
+            <li
+              class="feeback-item"
+              v-for="(feedback, index) of feedbacks"
+              :key="feedback.id"
+            >
+              <course-feedback-card
+                :feedback="feedback"
+                @addLike="count => handleAddLike(feedback.id, count, index)"
+                @delete="handleDelete(feedback.id, index)"
+              />
+            </li>
+          </ul>
+          <the-empty v-else />
+        </div>
+      </div>
     </div>
     <div class="feedback-footer">
       <course-feedback
@@ -27,7 +31,7 @@
           term_id: termId,
           widget_id: category.id,
           resource_type: category.type,
-          resource_id: category.resource_id
+          resource_id: category.resource_id || category.bible_id
         }"
         @added="handleAddedFeedback"
       />
@@ -67,7 +71,8 @@ export default {
       pagination: {
         size: 15,
         page: 1,
-        total: 0
+        total: 0,
+        total_pages: 1
       }
     };
   },
@@ -78,12 +83,21 @@ export default {
     this.getData();
   },
   methods: {
-    getData(start = 1) {
-      start === 1 && (this.loading = true);
+    getData(flag = false) {
+      if (!flag) {
+        this.pagination.page = 1;
+        this.loading = true;
+      } else {
+        if (this.pagination.page < this.pagination.total_pages) {
+          this.pagination.page += 1;
+        } else {
+          return;
+        }
+      }
       termService
         .termWidgetFeedbacks({
           page_size: this.pagination.size,
-          page: start,
+          page: this.pagination.page,
           camp_id: this.campId,
           term_id: this.termId,
           widget_id: this.category.id,
@@ -91,9 +105,13 @@ export default {
           type: this.category.type
         })
         .then(res => {
-          this.feedbacks = res.list;
-          this.pagination.page = start;
+          if (flag) {
+            this.feedbacks = this.feedbacks.concat(res.list);
+          } else {
+            this.feedbacks = res.list;
+          }
           this.pagination.total = res.pagination.total;
+          this.pagination.total_pages = res.pagination.total_pages;
         })
         .finally(() => {
           this.loading = false;
@@ -142,12 +160,24 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background: #fff;
   .feedback-content {
     flex: 1;
     width: 100%;
-    padding: 40px;
+    height: 5px;
+    overflow: hidden;
+    .scroll-section {
+      width: calc(100% + 15px);
+      height: 100%;
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        width: 15px;
+      }
+    }
+    .feedback-content-wrapper {
+      padding: 40px;
+    }
     .feedback-content-title {
       line-height: 34px;
       font-weight: 600;
@@ -162,8 +192,6 @@ export default {
     }
   }
   .feedback-footer {
-    position: relative;
-    z-index: 1;
     flex: none;
     padding: 16px;
     background: #fff;

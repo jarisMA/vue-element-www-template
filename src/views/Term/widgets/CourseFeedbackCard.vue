@@ -10,12 +10,16 @@
           <span class="time">{{ feedback.created_at }}</span>
         </div>
         <div class="card-right-top-right">
-          <span
-            class="delete-wrapper"
+          <el-popconfirm
             v-if="userInfo.id === feedback.user.id"
-            @click="handleDelete"
-            >删除</span
+            @confirm="handleDelete"
+            title="确定删除此反馈吗？"
           >
+            <div slot="reference">
+              <span class="delete-wrapper">删除</span>
+            </div>
+          </el-popconfirm>
+
           <div
             :class="[
               'like-wrapper',
