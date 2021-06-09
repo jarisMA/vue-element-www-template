@@ -73,7 +73,8 @@ export default {
         page: 1,
         total: 0,
         total_pages: 1
-      }
+      },
+      liking: false
     };
   },
   computed: {
@@ -127,21 +128,32 @@ export default {
       });
     },
     handleAddLike(resourceId, count, index) {
-      termService
-        .termLike(this.campId, this.termId, {
-          widget_id: this.category.id,
-          resource_id: resourceId,
-          resource_type: 1,
-          count
-        })
-        .then(() => {
-          const diff = count - this.feedbacks[index].auth_like_count;
-          this.$set(this.feedbacks, index, {
-            ...this.feedbacks[index],
-            auth_like_count: count,
-            like_count: this.feedbacks[index].like_count + diff
+      if (!this.liking) {
+        this.liking = true;
+        termService
+          .termLike(this.campId, this.termId, {
+            widget_id: this.category.id,
+            resource_id: resourceId,
+            resource_type: 1,
+            count
+          })
+          .then(() => {
+            const diff = count - this.feedbacks[index].auth_like_count;
+            this.$set(this.feedbacks, index, {
+              ...this.feedbacks[index],
+              auth_like_count: count,
+              like_count: this.feedbacks[index].like_count + diff
+            });
+          })
+          .finally(() => {
+            this.liking = false;
           });
+      } else {
+        this.$notice({
+          type: "warning",
+          title: "太快了～"
         });
+      }
     },
     handleAddedFeedback(params) {
       this.feedbacks.unshift({
