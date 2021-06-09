@@ -391,185 +391,26 @@
         ><span class="page-font2">体验了我们课程的学员这样说</span>
       </div>
       <div class="feedback-content">
-        <carousel
-          class="feedback-container"
-          :paginationEnabled="false"
-          :perPage="8"
-          :scrollPerPage="false"
-        >
-          <slide class="feedback-subcontainer">
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide
+            class="feedback-subcontainer"
+            v-for="(item, key) of feedbacks"
+            :key="key"
+          >
             <div class="feedback-comment">
-              很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。
+              {{ item.content }}
             </div>
             <div class="feedback-triangle1"></div>
             <div class="feedback-triangle2"></div>
             <div class="feedback-user">
               <div class="feedback-username">
-                <span class="page-font4">童萌洁</span><br /><span class="cnt5"
-                  >户型大改造·训练营一期班</span
-                >
+                <span class="page-font4">{{ item.user.nickname }}</span
+                ><br /><span class="page-font5">{{ item.termName }}</span>
               </div>
-              <img src="~/images/home/user.png" />
+              <img :src="item.user.avatar_url" />
             </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">苏闽</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              从硬装布局到赏金设计团，再等待软装课，一直跟着斗西老师在学习家装内容，希望能自己设计一个合心意的家。毕竟房子是个价值巨大且对普通家庭来说没有后悔药的商品，再赋予家的含义，对任何一个家庭来说都意义重大。希望咱们这系列的课程可以一直办下去。若是能在买房前就学习到这些知识才是最优解。斗西老师和女团们每天都要加油鸭！
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">Honeyblood</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              感恩老师们的所有辛苦付出，爱你们～超有幸能在这样的天团带领下学习，收获了不仅仅有装修的知识，更多是人生思考模式，人生何处不设计。嗯。就这样吧，反正还报了软装也不是很感伤，咳，就，回见～（你们是最闪耀的天团～
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">阿比甲当嘎</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              感恩老师们的所有辛苦付出，爱你们～超有幸能在这样的天团带领下学习，收获了不仅仅有装修的知识，更多是人生思考模式，人生何处不设计。嗯。就这样吧，反正还报了软装也不是很感伤，咳，就，回见～（你们是最闪耀的天团～
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">阿比甲当嘎</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              各位老师们，通过这段时间的学习从一个小白到把自己家平面规划出来。首先很感激你们安排了这样的课程，让我有机会自己来diy。然后，整个课程的学习中也能感受到老师们对课程内容的用心，课后不管什么时候问问题，老师们都能耐心解答并且重视提出的每一个问题（不管是成熟的还是不成熟的）被我骚扰的最多的就是铁工老师了，哈哈。总之，通过这个课程收获满满，感恩各位老师！
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">cc</span><br /><span class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">童萌洁</span><br /><span class="cnt5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">童萌洁</span><br /><span class="cnt5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">苏闽</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">苏闽</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-          <slide class="feedback-subcontainer">
-            <div class="feedback-comment">
-              说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~
-            </div>
-            <div class="feedback-triangle1"></div>
-            <div class="feedback-triangle2"></div>
-            <div class="feedback-user">
-              <div class="feedback-username">
-                <span class="page-font4">苏闽</span><br /><span
-                  class="page-font5"
-                  >户型大改造·训练营一期班</span
-                >
-              </div>
-              <img src="~/images/home/user.png" />
-            </div>
-          </slide>
-        </carousel>
+          </swiper-slide>
+        </swiper>
       </div>
     </div>
     <div class="product-section">
@@ -625,9 +466,125 @@ export default {
       plangoUrl: [huxingPNG, moxingPNG, yusuanPNG, qingdanPNG],
 
       prizeindex: null,
-
       isBig: "prize-scale",
-      isSmall: "prize-img"
+      isSmall: "prize-img",
+      swiperOptions: {
+        slidesPerView: "auto",
+        slidesPerGroup: 3,
+        spaceBetween: 0
+      },
+      feedbacks: [
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            "说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "苏闽"
+          }
+        },
+        {
+          content:
+            "从硬装布局到赏金设计团，再等待软装课，一直跟着斗西老师在学习家装内容，希望能自己设计一个合心意的家。毕竟房子是个价值巨大且对普通家庭来说没有后悔药的商品，再赋予家的含义，对任何一个家庭来说都意义重大。希望咱们这系列的课程可以一直办下去。若是能在买房前就学习到这些知识才是最优解。斗西老师和女团们每天都要加油鸭！",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "Honeyblood"
+          }
+        },
+        {
+          content:
+            "感恩老师们的所有辛苦付出，爱你们～超有幸能在这样的天团带领下学习，收获了不仅仅有装修的知识，更多是人生思考模式，人生何处不设计。嗯。就这样吧，反正还报了软装也不是很感伤，咳，就，回见～（你们是最闪耀的天团～",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "阿比甲当嘎"
+          }
+        },
+        {
+          content:
+            "各位老师们，通过这段时间的学习从一个小白到把自己家平面规划出来。首先很感激你们安排了这样的课程，让我有机会自己来diy。然后，整个课程的学习中也能感受到老师们对课程内容的用心，课后不管什么时候问问题，老师们都能耐心解答并且重视提出的每一个问题（不管是成熟的还是不成熟的）被我骚扰的最多的就是铁工老师了，哈哈。总之，通过这个课程收获满满，感恩各位老师！",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "cc"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        },
+        {
+          content:
+            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
+          termName: "户型大改造·训练营一期班",
+          user: {
+            avatar_url:
+              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
+            nickname: "童萌洁"
+          }
+        }
+      ]
     };
   },
 
@@ -636,7 +593,6 @@ export default {
     (this.timer = setInterval(this.handleNext.bind(this), 1000)),
       this.handleChangeplangoIndex(0);
   },
-
   methods: {
     handleNext() {
       if (this.imgindex == this.imagesUrl.length - 1) {
