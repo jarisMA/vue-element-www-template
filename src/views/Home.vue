@@ -14,6 +14,7 @@
                   :typeSpeed="100"
                   :backSpeed="100"
                   :smartBackspace="false"
+                  :cursorChar="'｜'"
                 >
                   <span class="slogan-container typing"></span>
                 </vue-typed-js>
@@ -25,11 +26,14 @@
           </div>
           <div class="slogan-right">
             <img class="slogan-circle" src="~/images/home/slogan-circle.svg" />
-            <img class="slogan-icon" :src="imagesUrl[imgindex]" />
+            <img class="slogan-icon" :src="imagesUrl[imgIndex]" />
           </div>
         </div>
         <div class="slogan-content-ft">
-          <img class="slogan-img" src="~/images/home/slogan-img.jpg" />
+          <img
+            class="slogan-img"
+            src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/hPLKkXKY2MO0K8ly4Fgu3NS8fKRLaMSMMnBTm0cm.jpg"
+          />
         </div>
       </div>
     </div>
@@ -48,7 +52,7 @@
         ><span>设计为生的专业人</span>
       </div>
     </div>
-    <div class="course-section container-1180">
+    <!-- <div class="course-section container-1180">
       <div class="course-list">
         <span class="page-font3">家计划视频课</span
         ><span class="page-font4 course-left">日常布局小课堂</span
@@ -59,7 +63,7 @@
       </div>
       <div class="course-content">
         <div class="course-free">
-          <img class="course-freeimage" src="~/images/home/course-img1.png" />
+          <img class="course-freeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/lOCvnG7cxOVfFfERLiDG3F29S42NrCByQdwAHySX.png" />
           <div class="course-text">
             <div class="course-title">
               动线+热区别乱做！中看不中用，入住悔断肠
@@ -82,7 +86,7 @@
           </div>
         </div>
         <div class="course-free">
-          <img class="course-freeimage" src="~/images/home/course-img1.png" />
+          <img class="course-freeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/lOCvnG7cxOVfFfERLiDG3F29S42NrCByQdwAHySX.png" />
           <div class="course-text">
             <div class="course-title">
               免费设计和¥1000/m2的设计师区别在哪？一个视频让你明白
@@ -105,7 +109,7 @@
           </div>
         </div>
         <div class="course-free">
-          <img class="course-freeimage" src="~/images/home/course-img1.png" />
+          <img class="course-freeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/lOCvnG7cxOVfFfERLiDG3F29S42NrCByQdwAHySX.png" />
           <div class="course-text">
             <div class="course-title">
               U型厨房要注意，台面过窄是禁忌！
@@ -128,7 +132,7 @@
           </div>
         </div>
         <div class="course-free">
-          <img class="course-freeimage" src="~/images/home/course-img1.png" />
+          <img class="course-freeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/lOCvnG7cxOVfFfERLiDG3F29S42NrCByQdwAHySX.png" />
           <div class="course-text">
             <div class="course-title">
               时代变了！乱画平面图也叫设计师吗？
@@ -161,7 +165,7 @@
       </div>
       <div class="course-content">
         <div class="course-charge">
-          <img class="course-chargeimage" src="~/images/home/course-img2.png" />
+          <img class="course-chargeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/bShQqj7VqrprAbqjm8yBTo0fObHsxgCmF4DjDKIj.png" />
           <div class="course-text">
             <div class="course-title">
               体系课 - 家·软装进行时
@@ -184,7 +188,7 @@
           </div>
         </div>
         <div class="course-charge">
-          <img class="course-chargeimage" src="~/images/home/course-img3.png" />
+          <img class="course-chargeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/g4KiMud7LtTeaNdYg8NCdlYxJgyWpE5N0T9vTXoh.png" />
           <div class="course-text">
             <div class="course-title">
               体系课 - 家·平面布局的小秘密
@@ -207,7 +211,7 @@
           </div>
         </div>
         <div class="course-charge">
-          <img class="course-chargeimage" src="~/images/home/course-img2.png" />
+          <img class="course-chargeimage" src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/bShQqj7VqrprAbqjm8yBTo0fObHsxgCmF4DjDKIj.png" />
           <div class="course-text">
             <div class="course-title">
               体系课 - 家·软装进行时
@@ -233,10 +237,10 @@
       <div class="course-xueshe container-1180">
         <span>斗西家学社&nbsp;&rarr;</span>
       </div>
-    </div>
+    </div> -->
     <div class="plango-section container-1180">
-      <div class="plango">
-        <span class="page-font1 plango-title">Plan Go</span
+      <div class="bigtitle">
+        <span class="page-font1 title">Plan Go</span
         ><span class="page-font2"
           >满足设计师的专业需求，同时小白也可轻松上手</span
         >
@@ -248,7 +252,7 @@
         <div class="plango-text">
           <div
             class="plango-sub"
-            @mouseover="handleChangeplangoIndex(0)"
+            @mouseover="handleChangePlangoIndex(0)"
             :style="[plangoIndex === 0 ? 'background: #EAFAF2;' : ''] + ''"
           >
             <img
@@ -270,7 +274,7 @@
           </div>
           <div
             class="plango-sub"
-            @mouseover="handleChangeplangoIndex(1)"
+            @mouseover="handleChangePlangoIndex(1)"
             :style="[plangoIndex === 1 ? 'background: #EAFAF2;' : ''] + ''"
           >
             <img
@@ -291,7 +295,7 @@
           </div>
           <div
             class="plango-sub"
-            @mouseover="handleChangeplangoIndex(2)"
+            @mouseover="handleChangePlangoIndex(2)"
             :style="[plangoIndex === 2 ? 'background: #EAFAF2;' : ''] + ''"
           >
             <img
@@ -306,13 +310,13 @@
                 >预算实时可见</span
               >
               <span class="plango-hoversub" v-if="plangoIndex === 2"
-                >照着清单买，设计落地马上来</span
+                >装修预算精准掌握</span
               >
             </div>
           </div>
           <div
             class="plango-sub"
-            @mouseover="handleChangeplangoIndex(3)"
+            @mouseover="handleChangePlangoIndex(3)"
             :style="[plangoIndex === 3 ? 'background: #EAFAF2;' : ''] + ''"
           >
             <img
@@ -327,7 +331,7 @@
                 >即刻生成购买清单</span
               >
               <span class="plango-hoversub" v-if="plangoIndex === 3"
-                >即刻生成购买清单</span
+                >照着清单买，设计落地马上来</span
               >
             </div>
           </div>
@@ -335,7 +339,7 @@
       </div>
     </div>
     <div class="prize-section container-1180">
-      <div class="plango">
+      <div class="bigtitle">
         <span class="page-font1 prize-padding">见证我们的团队实力</span>
       </div>
       <div class="prize">
@@ -367,27 +371,27 @@
         </div>
         <div class="prize-container">
           <img
-            :class="[prizeindex === 0 ? isBig : isSmall, 'prize-position1']"
+            :class="[prizeIndex === 0 ? isBig : isSmall, 'prize-position1']"
             src="~/images/home/itafe.png"
           />
           <img
-            :class="[prizeindex === 1 ? isBig : isSmall, 'prize-position2']"
-            src="~/images/home/aite.png"
+            :class="[prizeIndex === 1 ? isBig : isSmall, 'prize-position2']"
+            src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/cysksK7fFt4CUjIGoJpaQJHRo8IaoOM4mOdbtDwS.png"
           />
           <img
-            :class="[prizeindex === 2 ? isBig : isSmall, 'prize-position3']"
-            src="~/images/home/aiding.png"
+            :class="[prizeIndex === 2 ? isBig : isSmall, 'prize-position3']"
+            src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/72K1OeTRYEpW0hEunvIU8PaRHYx8N9izAV7fwl4Q.png"
           />
           <img
-            :class="[prizeindex === 3 ? isBig : isSmall, 'prize-position4']"
-            src="~/images/home/frame.png"
+            :class="[prizeIndex === 3 ? isBig : isSmall, 'prize-position4']"
+            src="http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/fBqH1ueo4ULxHNkgKQJqwwIo1VEi6fY31QPZS5v7.png"
           />
         </div>
       </div>
     </div>
     <div class="feedback-section">
       <div class="feedback">
-        <span class="page-font1 plango-title">学员对我们的认可</span
+        <span class="page-font1 title">学员对我们的认可</span
         ><span class="page-font2">体验了我们课程的学员这样说</span>
       </div>
       <div class="feedback-content">
@@ -407,7 +411,7 @@
                 <span class="page-font4">{{ item.user.nickname }}</span
                 ><br /><span class="page-font5">{{ item.termName }}</span>
               </div>
-              <img :src="item.user.avatar_url" />
+              <img class="feedback-avatar" :src="item.user.avatar_url" />
             </div>
           </swiper-slide>
         </swiper>
@@ -416,14 +420,17 @@
     <div class="product-section">
       <div class="product-flex container-1180">
         <div class="product-left">
-          <img lass="product-logo" src="~/images/home/logo.svg" />
+          <img class="product-logo" src="~/images/home/logo.svg" />
           <div class="product-text">
             <span>每个人都能拥有好设计<br />家装领域“价值观”驱动平台</span>
             <div class="product-weixin">
-              <img class="product-wechat" src="~/images/home/wechat.svg" /><img
+              <img class="product-wechat" src="~/images/home/wechat.svg" />
+              <img
                 class="product-qr"
                 src="~/images/home/QRcode.svg"
-              />&nbsp;&nbsp;&nbsp;<img src="~/images/home/email.svg" />
+              />&nbsp;&nbsp;&nbsp;<a href="mailto:kf@home-plan.cn"
+                ><img src="~/images/home/email.svg"
+              /></a>
             </div>
           </div>
         </div>
@@ -450,182 +457,116 @@ import chairSVG from "images/home/chair.svg";
 import cabinetSVG from "images/home/cabinet.svg";
 import tableSVG from "images/home/table.svg";
 import bedSVG from "images/home/bed.svg";
-import huxingPNG from "images/home/huxing.png";
-import moxingPNG from "images/home/moxing.png";
-import yusuanPNG from "images/home/yusuan.png";
-import qingdanPNG from "images/home/qingdan.png";
+import { feedbacks } from "utils/feedbacks.js";
 
 export default {
   data() {
     return {
-      imgindex: "0",
+      feedbacks,
+      imgIndex: "0",
       imagesUrl: [sofaSVG, chairSVG, cabinetSVG, tableSVG, bedSVG],
       timer: "",
 
       plangoIndex: "0",
-      plangoUrl: [huxingPNG, moxingPNG, yusuanPNG, qingdanPNG],
+      plangoUrl: [
+        "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/oEJ6gG8uqScuTGt1OjELpT0Sv5xk3x62PEw1Qutb.png",
+        "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/bu6rP8BC8t7lOLJtlYM9CQebnSokHgDqZfF1vjjC.png",
+        "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/aXw4rpSFTBMreyG8IxXDR72U9fshWkQqy6uEfdEh.png",
+        "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/home/JhAW6XZpqyDKHOvnca86ml842Zc8H9myN0WHs72i.png"
+      ],
 
-      prizeindex: null,
+      prizeIndex: null,
       isBig: "prize-scale",
       isSmall: "prize-img",
       swiperOptions: {
         slidesPerView: "auto",
         slidesPerGroup: 3,
         spaceBetween: 0
-      },
-      feedbacks: [
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            "说是顺利结束，可是马上又开始了~期待软装课，也谢谢老师给我在布局上的建议，上完软装课，我自己考完职称，在秋天开始的时候我就可以开始动工了呢，小学的时候就想过以后的梦想是做室内设计，那时家里刚有房子，第一次有自己的房间，我说想要粉色的房间，设计师帮我完成我的想法，我觉得他特别的酷，可惜后来自己没有朝这个职业方向走去，谢谢斗西的团队让我在毕业那么多年后，有了自己房子之后，有能力设计自己的家，自己小时候的梦想算是有一点点着落，再次感谢~",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "苏闽"
-          }
-        },
-        {
-          content:
-            "从硬装布局到赏金设计团，再等待软装课，一直跟着斗西老师在学习家装内容，希望能自己设计一个合心意的家。毕竟房子是个价值巨大且对普通家庭来说没有后悔药的商品，再赋予家的含义，对任何一个家庭来说都意义重大。希望咱们这系列的课程可以一直办下去。若是能在买房前就学习到这些知识才是最优解。斗西老师和女团们每天都要加油鸭！",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "Honeyblood"
-          }
-        },
-        {
-          content:
-            "感恩老师们的所有辛苦付出，爱你们～超有幸能在这样的天团带领下学习，收获了不仅仅有装修的知识，更多是人生思考模式，人生何处不设计。嗯。就这样吧，反正还报了软装也不是很感伤，咳，就，回见～（你们是最闪耀的天团～",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "阿比甲当嘎"
-          }
-        },
-        {
-          content:
-            "各位老师们，通过这段时间的学习从一个小白到把自己家平面规划出来。首先很感激你们安排了这样的课程，让我有机会自己来diy。然后，整个课程的学习中也能感受到老师们对课程内容的用心，课后不管什么时候问问题，老师们都能耐心解答并且重视提出的每一个问题（不管是成熟的还是不成熟的）被我骚扰的最多的就是铁工老师了，哈哈。总之，通过这个课程收获满满，感恩各位老师！",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "cc"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        },
-        {
-          content:
-            " 很可惜户型改造课没有时间实时跟进课程，最后放假才慢慢补了课，一如既往干货满满收货很多。但我想实时跟进课程的效果应该会更好，所以很期待马上要开始的软装课。",
-          termName: "户型大改造·训练营一期班",
-          user: {
-            avatar_url:
-              "http://docee.oss-cn-shanghai.aliyuncs.com/www/2021/0609/avatar/ZoMKwgYsMFdwgv9pTMHn63koYf6l2C0ePgNebhLS.png",
-            nickname: "童萌洁"
-          }
-        }
-      ]
+      }
     };
   },
 
   //
-  created() {
-    (this.timer = setInterval(this.handleNext.bind(this), 1000)),
-      this.handleChangeplangoIndex(0);
+  mounted() {
+    (this.timer = setInterval(() => {
+      this.handleNext();
+    }, 1000)),
+      this.handleChangePlangoIndex(0);
+  },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer);
+    }
   },
   methods: {
     handleNext() {
-      if (this.imgindex == this.imagesUrl.length - 1) {
-        this.imgindex = 0;
+      if (this.imgIndex == this.imagesUrl.length - 1) {
+        this.imgIndex = 0;
       } else {
-        this.imgindex++;
+        this.imgIndex++;
       }
     },
 
-    handleChangeplangoIndex(index) {
+    handleChangePlangoIndex(index) {
       this.plangoIndex = index;
     },
 
     handleChangePrizeIndex(index) {
-      this.prizeindex = index;
+      this.prizeIndex = index;
     }
   }
 };
 </script>
 
 <style type="text/css" lang="less" scoped>
-* {
-  margin: 0;
-  padding: 0;
-  cursor: default;
-}
-
 .page-body {
   display: block;
-
   background-color: white;
-}
+  .bigtitle {
+    margin: 120px auto 70px auto;
+    text-align: center;
+  }
 
+  .title {
+    margin: 0px auto 16px;
+  }
+
+  .page-font1 {
+    display: block;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 62px;
+    color: #2c3330;
+  }
+
+  .page-font2 {
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 18px;
+    color: #606c66;
+  }
+
+  .page-font3 {
+    line-height: 48px;
+    font-weight: 600;
+    font-size: 36px;
+    color: #2c3330;
+  }
+
+  .page-font4 {
+    line-height: 24px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #2c3330;
+  }
+
+  .page-font5 {
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 16px;
+    color: #81948b;
+  }
+}
 .container-1180 {
   width: 1180px;
   margin: 0 auto;
@@ -633,702 +574,534 @@ export default {
 
 .slogan-section {
   margin-top: 70px;
-}
-
-.slogan-content {
-  margin-bottom: 70px;
-}
-
-.slogan-content-hd {
-  display: flex;
-  justify-content: space-between;
-}
-
-.slogan-left {
-  display: inline-block;
-  width: 600px;
-  height: 161px;
-  vertical-align: middle;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 72px;
-  line-height: 78px;
-  /* identical to box height, or 100% */
-  letter-spacing: 0.01em;
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.slogan-down {
-  height: 80px;
-  display: flex;
-}
-
-.slogan-container {
-  display: inline-block;
-  color: #14af64;
-  line-height: 80px;
-  border-bottom: 8px solid #14af64;
-  padding-bottom: 3px;
-  height: 95px;
-}
-
-.slogan-middle {
-  display: inline-flex;
-  height: 160px;
-  padding-left: 34px;
-  margin-left: 100px;
-  border-left: 2px solid;
-  align-items: center;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 32px;
-  line-height: 42px;
-  /* identical to box height, or 112% */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.slogan-right {
-  align-items: center;
-  position: relative;
-  width: 160px;
-  height: 160px;
-}
-
-.slogan-circle {
-  position: relative;
-  animation: rotate 10s linear infinite;
-}
-@keyframes rotate {
-  0% {
-    transform: rotateZ(0deg); /*从0度开始*/
-  }
-  100% {
-    transform: rotateZ(360deg); /*360度结束*/
-  }
-}
-
-.slogan-icon {
-  width: 60px;
-  height: 60px;
-  position: absolute;
-  top: 30%;
-  left: 30%;
-}
-
-.slogan-img {
-  width: 1180px;
-  height: 700px;
-  margin-top: 84px;
-  margin-bottom: 120px;
-}
-
-.people-title {
-  text-align: center;
-  margin-bottom: 72px;
-}
-
-.page-font1 {
-  display: block;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 48px;
-  line-height: 62px;
-  /* identical to box height, or 129% */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.people-img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 19px 0;
-}
-
-.people-space {
-  margin: 0 333px;
-}
-
-.page-font2 {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 18px;
-  line-height: 24px;
-  /* identical to box height, or 133% */
-  /* Font/gray */
-  color: #606c66;
-}
-
-.page-font3 {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 36px;
-  line-height: 48px;
-  /* identical to box height, or 133% */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.page-font4 {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.page-font5 {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
-  /* Font/gray2 */
-  color: #81948b;
-}
-
-.course-left {
-  margin-left: 40px;
-}
-
-.course-right {
-  margin-top: 128px;
-  margin-bottom: 31px;
-  float: right;
-  display: flex;
-  align-items: center;
-}
-
-.course-list {
-  margin-top: 120px;
-  margin-bottom: 31px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.course-content {
-  display: flex;
-  justify-content: space-between;
-}
-
-.course-text {
-  padding: 17px;
-}
-
-.course-free {
-  width: 280px;
-  height: 318px;
-  border: 1px solid #efefef;
-  box-sizing: border-box;
-}
-
-.course-free:hover {
-  width: 280px;
-  height: 318px;
-  border: 1px solid #efefef;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.course-ft {
-  display: flex;
-  justify-content: space-between;
-}
-
-.course-freeimage {
-  width: 278px;
-  height: 156px;
-}
-
-.course-chargeimage {
-  width: 378px;
-  height: 224px;
-}
-
-.course-title {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  /* or 150% */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.course-length {
-  margin-top: 8px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  /* identical to box height, or 171% */
-  /* Font/gray-light */
-  color: #8ea098;
-  display: flex;
-  align-items: center;
-}
-
-.course-price {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
-  /* Brand/Green */
-  color: #14af64;
-}
-
-.course-price1 {
-  margin-top: 24px;
-}
-
-.course-price2 {
-  margin-top: 16px;
-  display: inline-block;
-}
-
-.course-price3 {
-  margin-left: 4px;
-  margin-bottom: 17px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  /* identical to box height, or 171% */
-
-  text-decoration-line: line-through;
-
-  /* Font/gray-light */
-
-  color: #8ea098;
-}
-
-.course-invisibile {
-  visibility: hidden;
-  display: flex;
-  align-items: flex-start;
-}
-
-.prize-indisplay {
-  display: none;
-}
-
-.course-charge {
-  width: 380px;
-  height: 354px;
-  border: 1px solid #efefef;
-  box-sizing: border-box;
-}
-
-.course-charge:hover {
-  width: 380px;
-  height: 354px;
-  border: 1px solid #efefef;
-  box-sizing: border-box;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-}
-
-.course-charge:hover .course-invisibile {
-  visibility: visible;
-}
-
-.course-free:hover .course-invisibile {
-  visibility: visible;
-}
-
-.course-xueshe {
-  width: 204px;
-  margin: 80px auto;
-  padding: 16px 48px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
-  display: flex;
-  align-items: center;
-  /* Font/gray-dark */
-  color: #2c3330;
-  border: 1px solid #2c3330;
-  box-sizing: border-box;
-}
-
-.course-xueshe:hover {
-  width: 204px;
-  margin: 80px auto;
-  padding: 16px 48px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  /* identical to box height, or 150% */
-  display: flex;
-  align-items: center;
-  /* Font/gray-dark */
-  color: white;
-  border: 1px solid #2c3330;
-  box-sizing: border-box;
-  background-color: #2c3330;
-  cursor: pointer;
-}
-
-.plango {
-  text-align: center;
-  margin: 70px auto;
-}
-
-.plango-title {
-  margin: 0px auto 16px auto;
-}
-
-.plango-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.plango-img {
-  position: relative;
-  width: 779px;
-  height: 496px;
-  display: inline-block;
-}
-
-.plango-sub {
-  width: 379px;
-  height: 84px;
-  padding-left: 20px;
-  display: flex;
-  align-items: center;
-}
-
-.plango-hoversub {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 20px;
-  /* identical to box height */
-
-  /* Font/gray */
-
-  color: #606c66;
-  margin-left: 12px;
-}
-
-.plango-subcontainer {
-  width: 200px;
-}
-
-.plango-text {
-  display: inline;
-  float: right;
-}
-
-.plango-subtext {
-  margin-left: 12px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 20px;
-  line-height: 32px;
-  /* identical to box height, or 160% */
-  /* Font/gray-dark */
-  color: #2c3330;
-  display: block;
-}
-
-.plango-grey {
-  filter: grayscale(1) opacity(0.6);
-}
-
-.plango-subwidth {
-  width: 200px;
-}
-
-.prize-padding {
-  padding-top: 80px;
-  padding-bottom: 0px;
-}
-
-.prize {
-  display: flex;
-  align-items: center;
-}
-
-.prize-text {
-  width: 590px;
-  display: inline;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 32px;
-  font-weight: 400;
-  line-height: 64px;
-  /* identical to box height, or 100% */
-  /* Font/gray */
-  color: #606c66;
-}
-
-.prize-sel {
-  display: flex;
-  align-items: center;
-}
-
-.prize-sel:hover {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 32px;
-  line-height: 64px;
-  /* identical to box height, or 100% */
-
-  /* Font/gray-dark */
-
-  color: #2c3330;
-}
-
-.prize-container {
-  width: 425px;
-  height: 425px;
-  position: relative;
-}
-
-.prize-position1 {
-  position: absolute;
-}
-
-.prize-position2 {
-  position: absolute;
-  left: 220px;
-}
-
-.prize-position3 {
-  position: absolute;
-  top: 220px;
-}
-
-.prize-position4 {
-  position: absolute;
-  left: 220px;
-  top: 220px;
-}
-
-.prize-img {
-  width: 150px;
-  height: 150px;
-}
-
-.prize-scale {
-  width: 150px;
-  height: 150px;
-  transform: scale(1.5);
-  transition: transform 0.2s;
-}
-
-.prize-sel:hover .prize-indisplay {
-  display: inline;
-}
-
-.feedback {
-  text-align: center;
-  margin: 100px auto 72px auto;
-}
-
-.feedback-content {
-  position: relative;
-  margin: 0 auto;
-  height: 500px;
-}
-
-.feedback-container {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  height: 550px;
-  cursor: grab;
-}
-
-.feedback-subcontainer {
-  width: 382px;
-  // margin: 0px 10px;
-  cursor: grab;
-  margin: 0px 10px;
-}
-
-.feedback-comment {
-  width: 332px;
-  padding: 24px;
-  font-family: Source Han Sans SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 24px;
-  /* or 171% */
-  letter-spacing: 1px;
-  /* Font/gray-dark */
-  color: #2c3330;
-  border: 1px solid #efefef;
-  background: #fafafa;
-  display: inline-block;
-  cursor: grab;
-}
-
-.feedback-triangle1 {
-  float: right;
-  width: 0;
-  height: 0;
-  border-top: 16px solid#EFEFEF;
-  border-left: 16px solid transparent;
-}
-
-.feedback-triangle2 {
-  position: relative;
-  top: -1px;
-  left: 316px;
-  width: 0;
-  height: 0;
-  border-top: 15px solid #fafafa;
-  border-left: 15px solid transparent;
-}
-
-.feedback-user {
-  margin-top: 17px;
-  text-align: right;
-}
-
-.feedback-username {
-  margin-right: 16px;
-  display: inline-block;
-}
-
-.product-section {
-  height: 330px;
-  padding-top: 80px;
-  background: #fafafa;
-  display: flex;
-  justify-content: center;
-}
-
-.product-text {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 14px;
-  line-height: 27px;
-  display: inline-block;
-  margin-bottom: 22px;
-  /* identical to box height */
-  /* Font/gray */
-  color: #606c66;
-  opacity: 0.8;
-}
-
-.product-left {
-  width: 170px;
-  display: inline-block;
-}
-
-.product-right {
-  display: inline-flex;
-  align-items: flex-start;
-}
-
-.product-flex {
-  display: inline-flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin: 0 auto;
-}
-
-.product-logo {
-  width: 145px;
-  height: 34px;
-  margin-bottom: 16px;
-}
-
-.product-container2 {
-  text-align: left;
-  display: inline-block;
-}
-
-.product-container3 {
-  margin-left: 72px;
-  text-align: left;
-  display: inline-block;
-}
-
-.product-title {
-  display: block;
-  margin-bottom: 24px;
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 24px;
-  line-height: 34px;
-  /* identical to box height */
-  /* Font/gray-dark */
-  color: #2c3330;
-}
-
-.product-weixin {
-  margin-top: 42px;
-  position: relative;
-}
-
-.product-wechat {
-  &:hover {
-    .product-qr {
-      visibility: visible;
+  .slogan-content {
+    margin-bottom: 70px;
+
+    .slogan-content-hd {
+      display: flex;
+      justify-content: space-between;
+
+      .slogan-left {
+        display: inline-block;
+        width: 700px;
+        height: 161px;
+        line-height: 78px;
+        vertical-align: middle;
+        font-style: normal;
+        font-weight: 600;
+        font-size: 72px;
+        letter-spacing: 0.01em;
+        color: #2c3330;
+
+        .slogan-down {
+          display: flex;
+          height: 80px;
+
+          .slogan-container {
+            display: inline-block;
+            padding-bottom: 3px;
+            line-height: 80px;
+            height: 95px;
+            color: #14af64;
+            border-bottom: 8px solid #14af64;
+          }
+        }
+      }
+      .slogan-middle {
+        display: inline-flex;
+        align-items: center;
+        height: 160px;
+        line-height: 42px;
+        padding-left: 34px;
+        margin-left: -15px;
+        border-left: 2px solid;
+        font-weight: normal;
+        font-size: 32px;
+        color: #2c3330;
+      }
+
+      .slogan-right {
+        position: relative;
+        width: 160px;
+        height: 160px;
+
+        .slogan-circle {
+          position: relative;
+          animation: rotate 10s linear infinite;
+        }
+        @keyframes rotate {
+          0% {
+            transform: rotateZ(0deg);
+          }
+          100% {
+            transform: rotateZ(360deg);
+          }
+        }
+      }
+
+      .slogan-icon {
+        position: absolute;
+        top: 30%;
+        left: 30%;
+        width: 60px;
+        height: 60px;
+      }
+    }
+
+    .slogan-img {
+      width: 1180px;
+      height: 700px;
+      margin-top: 84px;
+      margin-bottom: 120px;
     }
   }
 }
 
-.product-qr {
-  visibility: hidden;
-  position: absolute;
-  left: -58px;
-  top: -170px;
+.people-section {
+  .people-title {
+    margin-bottom: 72px;
+    text-align: center;
+  }
+  .people-space {
+    margin: 0 333px;
+  }
+  .people-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 19px 0;
+  }
 }
 
-.page-footer {
-  padding: 0 40px;
+// .course-section {
+//   .course-left {
+//     margin-left: 40px;
+//   }
+
+//   .course-content {
+//     display: flex;
+//     justify-content: space-between;
+//   }
+
+//   .course-right {
+//     float: right;
+//     display: flex;
+//     align-items: center;
+//     margin-top: 128px;
+//     margin-bottom: 31px;
+//   }
+
+//   .course-list {
+//     display: inline-flex;
+//     align-items: center;
+//     margin-top: 120px;
+//     margin-bottom: 31px;
+//   }
+
+//   .course-text {
+//     padding: 17px;
+//   }
+
+//   .course-free {
+//     width: 280px;
+//     height: 318px;
+//     border: 1px solid #efefef;
+//   }
+
+//   .course-free:hover {
+//     width: 280px;
+//     height: 318px;
+//     border: 1px solid #efefef;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+//     cursor: pointer;
+//   }
+
+//   .course-ft {
+//     display: flex;
+//     justify-content: space-between;
+//   }
+
+//   .course-freeimage {
+//     width: 278px;
+//     height: 156px;
+//   }
+
+//   .course-chargeimage {
+//     width: 378px;
+//     height: 224px;
+//   }
+//   .course-title {
+//     line-height: 24px;
+
+//     font-weight: 600;
+//     font-size: 16px;
+//     color: #2c3330;
+//   }
+
+//   .course-length {
+//     display: flex;
+//     align-items: center;
+//     margin-top: 8px;
+//     line-height: 24px;
+
+//     font-weight: normal;
+//     font-size: 14px;
+//     color: #8ea098;
+//   }
+
+//   .course-price {
+//     line-height: 24px;
+//     font-style: normal;
+//     font-weight: 600;
+//     font-size: 16px;
+//     color: #14af64;
+//   }
+
+//   .course-price1 {
+//     margin-top: 24px;
+//   }
+
+//   .course-price2 {
+//     display: inline-block;
+//     margin-top: 16px;
+//   }
+
+//   .course-price3 {
+//     margin-left: 4px;
+//     margin-bottom: 17px;
+//     line-height: 24px;
+//     font-weight: normal;
+//     font-size: 14px;
+//     text-decoration-line: line-through;
+//     color: #8ea098;
+//   }
+
+//   .course-invisibile {
+//     display: flex;
+//     visibility: hidden;
+//     align-items: flex-start;
+//   }
+//   .course-charge {
+//     width: 380px;
+//     height: 354px;
+//     border: 1px solid #efefef;
+//     box-sizing: border-box;
+//   }
+
+//   .course-charge:hover {
+//     width: 380px;
+//     height: 354px;
+//     border: 1px solid #efefef;
+//     box-sizing: border-box;
+//     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+//     cursor: pointer;
+//   }
+
+//   .course-charge:hover .course-invisibile {
+//     visibility: visible;
+//   }
+
+//   .course-free:hover .course-invisibile {
+//     visibility: visible;
+//   }
+
+//   .course-xueshe {
+//     display: flex;
+//     align-items: center;
+//     width: 204px;
+//     line-height: 24px;
+//     margin: 80px auto;
+//     padding: 16px 48px;
+//     font-weight: normal;
+//     font-size: 16px;
+//     color: #2c3330;
+//     border: 1px solid #2c3330;
+//     cursor: pointer;
+//     &:hover {
+//       color: white;
+//       background-color: #2c3330;
+//     }
+//   }
+// }
+
+.plango-section {
+  .plango-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .plango-img {
+      position: relative;
+      display: inline-block;
+      width: 779px;
+      height: 496px;
+    }
+    .plango-text {
+      display: inline;
+      float: right;
+
+      .plango-sub {
+        width: 379px;
+        height: 84px;
+        padding-left: 20px;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        .plango-grey {
+          filter: grayscale(1) opacity(0.6);
+        }
+        .plango-subwidth {
+          width: 200px;
+
+          .plango-subtext {
+            display: block;
+            margin-left: 12px;
+            line-height: 32px;
+            font-weight: 600;
+            font-size: 20px;
+            color: #2c3330;
+            cursor: pointer;
+          }
+
+          .plango-hoversub {
+            margin-left: 12px;
+            line-height: 20px;
+            font-weight: normal;
+            font-size: 14px;
+            color: #606c66;
+          }
+        }
+      }
+    }
+  }
+}
+
+.prize-section {
+  .prize-padding {
+    padding-top: 80px;
+    padding-bottom: 0px;
+  }
+  .prize {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .prize-text {
+      display: inline;
+      line-height: 64px;
+      font-size: 32px;
+      font-weight: 400;
+      color: #606c66;
+
+      .prize-sel {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        &:hover {
+          line-height: 64px;
+          font-weight: normal;
+          font-size: 32px;
+          color: #2c3330;
+          .prize-indisplay {
+            display: inline;
+          }
+        }
+
+        .prize-indisplay {
+          display: none;
+        }
+      }
+    }
+
+    .prize-container {
+      position: relative;
+      margin-right: 95px;
+      width: 425px;
+      height: 425px;
+
+      .prize-position1 {
+        position: absolute;
+      }
+
+      .prize-position2 {
+        position: absolute;
+        left: 220px;
+      }
+
+      .prize-position3 {
+        position: absolute;
+        top: 220px;
+      }
+
+      .prize-position4 {
+        position: absolute;
+        left: 220px;
+        top: 220px;
+      }
+
+      .prize-img {
+        width: 150px;
+        height: 150px;
+      }
+
+      .prize-scale {
+        width: 150px;
+        height: 150px;
+        transform: scale(1.5);
+        transition: transform 0.2s;
+      }
+    }
+  }
+}
+
+.feedback-section {
+  .feedback {
+    margin: 100px auto 72px;
+    text-align: center;
+  }
+
+  .feedback-content {
+    position: relative;
+    margin: 0 auto;
+    height: 500px;
+
+    .feedback-subcontainer {
+      margin: 0px 10px;
+      width: 382px;
+      cursor: grab;
+
+      .feedback-comment {
+        display: inline-block;
+        width: 382px;
+        padding: 24px;
+        line-height: 24px;
+        font-weight: normal;
+        font-size: 14px;
+        letter-spacing: 1px;
+        color: #2c3330;
+        border: 1px solid #efefef;
+        background: #fafafa;
+        cursor: grab;
+      }
+
+      .feedback-triangle1 {
+        position: absolute;
+        left: 366px;
+        width: 0;
+        height: 0;
+        border-top: 16px solid#EFEFEF;
+        border-left: 16px solid transparent;
+      }
+
+      .feedback-triangle2 {
+        position: relative;
+        top: -1px;
+        left: 366px;
+        width: 0;
+        height: 0;
+        border-top: 15px solid #fafafa;
+        border-left: 15px solid transparent;
+      }
+
+      .feedback-user {
+        margin-top: 17px;
+        width: 385px;
+        text-align: right;
+
+        .feedback-username {
+          display: inline-block;
+          margin-right: 16px;
+        }
+
+        .feedback-avatar {
+          width: 40px;
+          height: 40px;
+        }
+      }
+    }
+  }
+}
+
+.product-section {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 57px;
-  border-top: 1px solid rgba(44, 51, 48, 0.1);
+  justify-content: center;
+  height: 330px;
+  padding-top: 80px;
   background: #fafafa;
-}
 
-.footer-endtext {
-  font-family: PingFang SC;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 12px;
-  line-height: 17px;
-  /* identical to box height */
-  /* Font/gray-dark */
-  color: #2c3330;
-  opacity: 0.6;
+  .product-flex {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin: 0 auto;
+
+    .product-left {
+      display: inline-block;
+      width: 170px;
+
+      .product-logo {
+        margin-bottom: 16px;
+      }
+    }
+
+    .product-right {
+      display: inline-flex;
+      align-items: flex-start;
+    }
+  }
+
+  .product-text {
+    display: inline-block;
+    margin-bottom: 22px;
+    line-height: 27px;
+    font-weight: normal;
+    font-size: 14px;
+    color: #606c66;
+    opacity: 0.8;
+
+    .product-weixin {
+      position: relative;
+      margin-top: 42px;
+      cursor: pointer;
+
+      .product-wechat {
+        &:hover {
+          & + .product-qr {
+            position: absolute;
+            visibility: visible;
+            left: -58px;
+            top: -170px;
+          }
+        }
+      }
+    }
+  }
+
+  .product-container2 {
+    display: inline-block;
+    text-align: left;
+  }
+
+  .product-container3 {
+    display: inline-block;
+    margin-left: 72px;
+    text-align: left;
+  }
+
+  .product-title {
+    display: block;
+    line-height: 34px;
+    margin-bottom: 24px;
+    font-weight: 600;
+    font-size: 24px;
+
+    color: #2c3330;
+  }
+
+  .product-qr {
+    position: absolute;
+    visibility: hidden;
+    left: -58px;
+    top: -170px;
+  }
 }
 </style>
