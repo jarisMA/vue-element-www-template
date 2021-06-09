@@ -103,6 +103,7 @@
                 resource_type: category.type,
                 resource_id: category.resource_id || category.bible_id
               }"
+              @added="handleShowFeedback"
             />
             <label class="card-feedback-more" @click="handleShowFeedback">
               <span>看看同学们怎么说</span>

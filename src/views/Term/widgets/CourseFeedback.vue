@@ -8,7 +8,7 @@
       placeholder="畅所欲言，跟大家分享一下这节课的收获吧"
       :autofocus="false"
       @focus="focus = true"
-      @blur="focus = false"
+      @blur="handleBlur"
       v-model="content"
     ></el-input>
     <el-button
@@ -64,6 +64,7 @@ export default {
               ...res
             });
             this.content = "";
+            this.focus = false;
             this.$notice({
               type: "success",
               title: "反馈添加成功"
@@ -72,6 +73,11 @@ export default {
           .finally(() => {
             this.feedbacking = false;
           });
+      }
+    },
+    handleBlur() {
+      if (!this.content.trim()) {
+        this.focus = false;
       }
     }
   }
