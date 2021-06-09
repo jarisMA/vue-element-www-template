@@ -1,10 +1,7 @@
 <template>
-  <div
-    :class="['category-card', isDisabled ? 'disabled' : 'pointer']"
-    @click.prevent="!isDisabled ? handleCardClick() : null"
-  >
+  <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
     <el-collapse>
-      <el-collapse-item :disabled="category.type !== COURSE_TYPE_COURSE">
+      <el-collapse-item>
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -19,7 +16,10 @@
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
-                <h4 class="card-header-title ellipsis">
+                <h4
+                  class="card-header-title ellipsis"
+                  @click.prevent="!isDisabled ? handleCardClick() : null"
+                >
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
@@ -48,8 +48,11 @@
             </div>
           </div>
         </template>
-        <div class="card-content" v-if="category.type === COURSE_TYPE_COURSE">
-          <div class="card-content-list">
+        <div class="card-content">
+          <div
+            class="card-content-list"
+            v-if="category.type === COURSE_TYPE_COURSE"
+          >
             <div
               :class="[
                 'card-content-item',
@@ -81,6 +84,22 @@
               </div>
             </div>
           </div>
+          <div class="card-feedback-wrapper">
+            <course-feedback
+              class="card-feedback"
+              :params="{
+                camp_id: campId,
+                term_id: termId,
+                widget_id: category.id,
+                resource_type: category.type,
+                resource_id: category.resource_id || category.bible_id
+              }"
+            />
+            <label class="card-feedback-more" @click="handleShowFeedback">
+              <span>看看同学们怎么说</span>
+              <i class="card-more-icon"></i>
+            </label>
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -95,13 +114,21 @@ import {
 } from "utils/const";
 import { goBibleDetail, goCourse } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
+import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
+  components: { CourseFeedback },
   props: {
     category: {
       type: Object,
       required: true
+    },
+    campId: {
+      type: Number
+    },
+    termId: {
+      type: Number
     }
   },
   data() {
@@ -245,6 +272,9 @@ export default {
       if (type === COURSE_TYPE_COURSE) {
         goCourse(resource.id, index + 1);
       }
+    },
+    handleShowFeedback() {
+      this.$emit("showFeedback");
     }
   }
 };
@@ -442,6 +472,28 @@ export default {
         display: inline-block;
         width: 50px;
       }
+    }
+  }
+}
+.card-feedback-wrapper {
+  .card-feedback {
+    padding: 20px 0;
+  }
+  .card-feedback-more {
+    display: inline-block;
+    margin-left: 48px;
+    line-height: 24px;
+    font-weight: 500;
+    font-size: 14px;
+    color: @primaryColor;
+    cursor: pointer;
+    .card-more-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background-color: @primaryColor;
+      mask: url("~images/my/arrow.svg") no-repeat center;
+      vertical-align: bottom;
     }
   }
 }

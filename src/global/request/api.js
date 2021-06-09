@@ -39,7 +39,10 @@ export default {
   campHomeworkUpdate: id => `${WEB_PREFIX}/camp/homework/${id}`,
   checkTerm: id => `${WEB_PREFIX}/camp/term/${id}/check`,
   campAttaches: termId => `${WEB_PREFIX}/camp/term/${termId}/attach`,
-
+  campTermWidgetFeedbacks: `${WEB_PREFIX}/camp_term_widget_feedback`,
+  campTermWidgetFeedback: id => `${WEB_PREFIX}/camp_term_widget_feedback/${id}`,
+  campTermLike: (campId, termId) =>
+    `${WEB_PREFIX}/camp/${campId}/term/${termId}/like`,
   bibles: `${WEB_PREFIX}/bible`,
   bible: id => `${WEB_PREFIX}/bible/${id}`,
   bibleNode: (bibleId, id) => `${WEB_PREFIX}/bible/${bibleId}/node/${id}`,

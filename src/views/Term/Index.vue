@@ -26,14 +26,12 @@
       <div class="page-right">
         <el-tabs v-model="activeName" @tab-click="tabClick">
           <el-tab-pane label="课程章节" name="category">
-            <div class="category-list" v-if="categories.length > 0">
-              <category-card
-                v-for="category of categories"
-                :key="category.id"
-                :category="category"
-              />
-            </div>
-            <the-empty v-else-if="!loading" noText="暂无课程可学习" />
+            <category
+              :categories="categories"
+              :loading="loading"
+              :campId="detail.camp_id"
+              :termId="detail.id"
+            />
           </el-tab-pane>
           <el-tab-pane label="作业" name="homework">
             <homework
@@ -64,7 +62,6 @@
 <script>
 import termService from "service/term";
 import TheLoadingImage from "components/TheLoadingImage";
-import CategoryCard from "./widgets/CategoryCard";
 import Homework from "./widgets/Homework";
 import Attach from "./widgets/Attach";
 
@@ -72,17 +69,16 @@ import { TERM_STATUS } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan, goMyPlan } from "utils/routes";
 import Feedback from "./widgets/Feedback.vue";
-import TheEmpty from "components/TheEmpty.vue";
+import Category from "./widgets/Category.vue";
 
 export default {
   name: "Term",
   components: {
     TheLoadingImage,
-    CategoryCard,
+    Category,
     Homework,
     Attach,
-    Feedback,
-    TheEmpty
+    Feedback
   },
   data() {
     return {
@@ -97,7 +93,8 @@ export default {
       categories: [],
       homeworks: [],
       attaches: [],
-      feedbackSending: false
+      feedbackSending: false,
+      courseFeedbacking: false
     };
   },
   created() {
@@ -244,9 +241,5 @@ export default {
       }
     }
   }
-}
-.category-list {
-  padding: 0 20px;
-  width: 100%;
 }
 </style>
