@@ -7,7 +7,7 @@
       <div class="card-right-top">
         <div class="card-right-top-left">
           <label class="nickname">{{ feedback.user.nickname }}</label>
-          <span class="time">{{ feedback.created_at }}</span>
+          <span class="time">{{ formatDateTime(feedback.created_at) }}</span>
         </div>
         <div class="card-right-top-right">
           <el-popconfirm
@@ -41,6 +41,8 @@
 
 <script>
 import TheAvatar from "components/TheAvatar";
+import { formatDateTime } from "utils/moment";
+
 import { mapState } from "vuex";
 export default {
   name: "CourseFeedbackCard",
@@ -57,6 +59,7 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    formatDateTime,
     handleAddLike() {
       const count = this.feedback.auth_like_count > 0 ? 0 : 1;
       this.$emit("addLike", count);

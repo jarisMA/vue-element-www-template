@@ -6,6 +6,7 @@
       type="textarea"
       resize="none"
       placeholder="畅所欲言，跟大家分享一下这节课的收获吧"
+      :autofocus="false"
       @focus="focus = true"
       @blur="focus = false"
       v-model="content"

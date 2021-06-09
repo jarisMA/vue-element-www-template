@@ -84,6 +84,15 @@
               </div>
             </div>
           </div>
+          <div
+            class="card-content-live"
+            v-if="category.type === COURSE_TYPE_LIVE"
+          >
+            <i class="upload-icon"></i>
+            <p class="card-content-live-desc">
+              录播视频将在直播结束后 24 小时内上传，敬请期待
+            </p>
+          </div>
           <div class="card-feedback-wrapper">
             <course-feedback
               class="card-feedback"
@@ -292,6 +301,7 @@ export default {
   &.pointer {
     /deep/ .el-collapse-item__header {
       cursor: pointer !important;
+      border: unset;
     }
   }
   /deep/ .el-collapse {
@@ -400,8 +410,7 @@ export default {
 .card-content {
   width: calc(100% - 42px);
   margin-left: 42px;
-  padding: 20px 0 20px 0;
-  border-top: 1px solid #efefef;
+  padding: 0 0 20px 0;
   .card-content-item {
     display: flex;
     align-items: center;
@@ -474,7 +483,28 @@ export default {
       }
     }
   }
+  .card-content-live {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    cursor: default;
+    .upload-icon {
+      display: inline-block;
+      width: 40px;
+      height: 40px;
+      background: url("~images/term/upload.svg") no-repeat center;
+    }
+    .card-content-live-desc {
+      margin-top: 10px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #8ea098;
+    }
+  }
 }
+
 .card-feedback-wrapper {
   .card-feedback {
     padding: 20px 0;
