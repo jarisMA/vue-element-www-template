@@ -20,7 +20,7 @@
               />
             </li>
           </ul>
-          <the-empty v-else />
+          <the-empty v-else noText="空空如也" />
         </div>
       </div>
     </div>
