@@ -424,11 +424,14 @@
           <div class="product-text">
             <span>每个人都能拥有好设计<br />家装领域“价值观”驱动平台</span>
             <div class="product-contact">
-              <img class="product-wechat" src="~/images/home/wechat.svg" />
-              <img class="product-qr" src="~/images/home/QRcode.svg" /><a
-                href="mailto:kf@home-plan.cn"
-                ><img class="product-email" src="~/images/home/email.svg"
-              /></a>
+              <div class="product-wechat-section">
+                <img class="product-wechat" src="~/images/home/wechat.svg" />
+                <img class="product-qr" src="~/images/home/QRcode.svg" />
+              </div>
+
+              <a href="mailto:kf@home-plan.cn">
+                <img class="product-email" src="~/images/home/email.svg" />
+              </a>
             </div>
           </div>
         </div>
@@ -1068,13 +1071,17 @@ export default {
         margin-left: 16px;
       }
 
-      .product-wechat {
-        &:hover {
-          & + .product-qr {
-            position: absolute;
-            visibility: visible;
-            left: -58px;
-            top: -170px;
+      .product-wechat-section {
+        display: inline;
+
+        .product-wechat {
+          &:hover {
+            & + .product-qr {
+              position: absolute;
+              visibility: visible;
+              left: -58px;
+              top: -170px;
+            }
           }
         }
       }
