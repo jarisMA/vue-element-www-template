@@ -223,7 +223,8 @@ export default {
         display: inline-block;
         width: 24px;
         height: 24px;
-        background: url("~images/commodity/expand.svg") no-repeat center;
+        mask: url("~images/commodity/expand.svg") no-repeat center;
+        background: #2c3330;
         transition: transform 0.1s;
         &.unexpand {
           transform: rotate(180deg);
@@ -237,6 +238,7 @@ export default {
     height: 100%;
     background: #fff;
     box-shadow: 4px 0px 4px rgba(0, 0, 0, 0.05);
+    border-left: 1px solid #efefef;
   }
   .tool-main {
     display: flex;

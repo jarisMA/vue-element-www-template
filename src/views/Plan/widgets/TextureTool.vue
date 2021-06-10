@@ -50,7 +50,7 @@
         <div class="cat-wrapper" v-if="rootCats[activeRootCatIndex]">
           <label
             :class="['cat-label', 'pointer', !activeCat && 'active']"
-            @click="activeCat = null"
+            @click="handleToggleCat(null)"
           >
             全部
           </label>
@@ -62,7 +62,7 @@
             ]"
             v-for="cat of rootCats[activeRootCatIndex].children"
             :key="cat.id"
-            @click="activeCat = cat"
+            @click="handleToggleCat(cat)"
           >
             {{ cat.name }}
           </label>
@@ -80,12 +80,13 @@
           <div
             class="scroll-section"
             ref="commodityScroll"
-            v-infinite-scroll="getCommodity(true)"
+            v-homeplan-infinite="handleCommodityScroll"
           >
-            <div class="commodity-list">
+            <div class="commodity-list" ref="commodityList">
               <commodity-card
                 v-for="(commodity, index) of commodities"
                 :key="`${commodity.id}-${index}`"
+                type="texture"
                 :commodity="commodity"
                 :values="values"
                 :columns="columns"
@@ -104,21 +105,124 @@
         ></label>
       </div>
     </div>
+    <ul class="value-list" v-if="values.length > 0">
+      <li class="reset-wrapper pointer" @click="handleValueReset">
+        <label class="reset-icon bgImg"></label>
+        重置
+      </li>
+      <li
+        class="value-item"
+        v-for="(item, key) of values"
+        :key="item.value.id"
+        :style="{
+          color: item.color,
+          backgroundColor: hex2Rgba(item.color, 0.1)
+        }"
+      >
+        {{
+          item.type === "search"
+            ? item.value.name
+            : item.type === "price"
+            ? `${item.value.min_price ? item.value.min_price : "∞"}-${
+                item.value.max_price ? item.value.max_price : "∞"
+              }元`
+            : item.type === "size_x"
+            ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
+                item.value.max_size_x ? item.value.max_size_x : "∞"
+              }mm`
+            : item.type === "size_y"
+            ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
+                item.value.max_size_y ? item.value.max_size_y : "∞"
+              }mm`
+            : item.type === "size_z"
+            ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
+                item.value.max_size_z ? item.value.max_size_z : "∞"
+              }mm`
+            : item.value.name
+        }}
+        <label class="close-icon-wrapper" @click="handleValueRemove(key)">
+          <i class="bgImg close-icon pointer"></i>
+        </label>
+      </li>
+    </ul>
+    <div
+      class="commodity-detail-card"
+      ref="commodityDetail"
+      v-if="activeCommodity"
+      :style="{ top: offsetTop + 'px' }"
+      @mouseover="detailTimer && clearTimeout(detailTimer)"
+      @mouseout="handleCommodityDetail(activeCommodity)"
+    >
+      <div class="card-top">
+        <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide
+              v-for="(image, key) of activeCommodity.images"
+              :key="key"
+            >
+              <the-loading-image
+                :width="200"
+                :height="200"
+                :key="key"
+                :url="image"
+              />
+            </swiper-slide>
+            <div :class="['card-img-prev']" @click.stop slot="button-prev">
+              <div class="btn-icon"></div>
+            </div>
+            <div :class="['card-img-next']" @click.stop slot="button-next">
+              <div class="btn-icon"></div>
+            </div>
+          </swiper>
+        </div>
+
+        <the-loading-image
+          v-else
+          :width="200"
+          :height="200"
+          :url="activeCommodity.images[0]"
+        />
+      </div>
+      <div class="card-bottom">
+        <h4 class="card-name">{{ activeCommodity.name }}</h4>
+        <label class="card-brand" v-if="activeCommodity.brand_name">{{
+          activeCommodity.brand_name
+        }}</label>
+      </div>
+    </div>
+    <commodity-sku-list
+      class="sku-list-wrapper"
+      type="texture"
+      :style="{ top: offsetTop + 'px' }"
+      :skus.sync="activeSkus"
+      v-if="activeSkus"
+      @addModel="handleAddModel"
+      @showFeedback="handleShowFeedback"
+    />
   </div>
 </template>
 
 <script>
 import commodityService from "service/commodity";
-import CommodityAttr from "./CommodityAttr.vue";
-import CommodityCard from "./CommodityCard.vue";
+import CommodityAttr from "./CommodityAttr";
+import CommodityCard from "./CommodityCard";
+import CommoditySkuList from "./CommoditySkuList";
+import TheLoadingImage from "components/TheLoadingImage";
+import { hex2Rgba } from "utils/function";
 
 export default {
   name: "TextureTool",
-  components: { CommodityAttr, CommodityCard },
+  components: {
+    CommodityAttr,
+    CommodityCard,
+    CommoditySkuList,
+    TheLoadingImage
+  },
   data() {
     return {
       catLoading: true,
-      commodityLoading: false,
+      commodityLoading: true,
+      commodityLoadingMore: false,
       showMore: false,
       name: "",
       columns: 2,
@@ -129,6 +233,17 @@ export default {
       commodities: [],
       activeCommodity: null,
       activeSkus: null,
+      offsetTop: 0,
+      detailTimer: null,
+      swiperOptions: {
+        slidesPerView: 1,
+        spaceBetween: 0,
+        loop: true,
+        loopedSlides: 0,
+        nextButton: ".card-img-next",
+        prevButton: ".card-img-prev",
+        observe: true
+      },
       pagination: {
         size: 30,
         page: 1,
@@ -136,16 +251,28 @@ export default {
       }
     };
   },
+  watch: {
+    values() {
+      this.getCommodity();
+    }
+  },
+  computed: {
+    infiniteDisabled() {
+      console.log("disabled");
+      return this.commodityLoading;
+    }
+  },
   created() {
     this.getData();
   },
   methods: {
+    hex2Rgba,
     getData() {
       commodityService
         .cats()
         .then(cats => {
           const rootCats = cats.find(
-            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
+            item => item.id === parseInt(process.env.VUE_APP_TEXTURE_CAT_ID)
           );
           this.rootCats = (rootCats && rootCats.children) || [];
           this.getCommodity();
@@ -179,7 +306,8 @@ export default {
       const names = this.values
         .filter(item => item.type === "search")
         .map(item => item.value.name);
-      this.commodityLoading = true;
+      !flag && (this.commodityLoading = true);
+      this.commodityLoadingMore = true;
       commodityService
         .commodities({
           parent_cat_id: this.rootCats[this.activeRootCatIndex].id,
@@ -219,17 +347,153 @@ export default {
         })
         .finally(() => {
           this.commodityLoading = false;
+          this.commodityLoadingMore = false;
         });
+    },
+    handleCommodityScroll() {
+      if (!this.commodityLoadingMore) {
+        this.commodityLoadingMore = true;
+        this.getCommodity(true);
+      }
     },
     handleToggleParentCat(index) {
       this.activeRootCatIndex = index;
+      this.activeCat = null;
+      this.values = [];
     },
-    handleValueAdd() {},
-    handleColumnChange() {},
-    handleCommodityDetail() {},
-    handleShowSkus() {},
-    handleAddModel() {},
-    handleShowFeedback() {}
+    handleToggleCat(cat) {
+      this.activeCat = cat;
+      this.getCommodity();
+    },
+    handleNameInputConfirm() {
+      this.handleValueAdd({
+        type: "search",
+        attrId: 0,
+        color: "#9F8164",
+        value: {
+          id: -1,
+          name: this.name
+        }
+      });
+    },
+    handleValueAdd(value) {
+      let flag = true;
+      const valueIds = this.values
+        .filter(item => item.value.id)
+        .map(item => item.value.id);
+      const existIndex = this.values.findIndex(
+        item =>
+          item.type === value.type &&
+          JSON.stringify(item.value) === JSON.stringify(value.value)
+      );
+      if (["brand", "value"].indexOf(value.type) > -1 && existIndex > -1) {
+        this.values.splice(existIndex, 1);
+        return;
+      }
+      if (value.type === "search") {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        !value.value.name && (flag = false);
+      } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
+        flag = true;
+      } else if (value.type === "price") {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+      } else if (["size_x", "size_y", "size_z"].indexOf(value.type) > -1) {
+        const index = this.values.findIndex(item => item.type === value.type);
+        if (index > -1) {
+          this.values.splice(index, 1);
+        }
+        flag = false;
+        for (let key in value.value) {
+          if (value.value[key]) {
+            flag = true;
+            break;
+          }
+        }
+      }
+      if (this.values.length === 15) {
+        this.$notice({
+          type: "warning",
+          title: "筛选条件最多只能15条"
+        });
+        return;
+      }
+      flag && this.values.push(value);
+    },
+    handleValueRemove(key) {
+      this.values.splice(key, 1);
+    },
+    handleValueReset() {
+      this.values = [];
+    },
+    handleColumnChange(column) {
+      this.columns = column;
+    },
+    handleCommodityDetail(data, flag = true) {
+      if (this.detailTimer) {
+        clearTimeout(this.detailTimer);
+        this.detailTimer = null;
+      }
+      this.activeSkus = null;
+      data.images =
+        data.images instanceof Array
+          ? data.images
+          : data.images
+          ? (data.images || "").split(",")
+          : [];
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${data.id}`).offsetTop - scrollTop;
+
+      const height = 280;
+      if (offsetTop + height > this.$refs["tool"].clientHeight) {
+        this.offsetTop =
+          offsetTop + (this.$refs["tool"].clientHeight - (offsetTop + height));
+      } else {
+        this.offsetTop = offsetTop;
+      }
+      this.activeCommodity = data;
+      if (flag) {
+        this.detailTimer = setTimeout(() => {
+          this.activeCommodity = null;
+          clearTimeout(this.detailTimer);
+          this.detailTimer = null;
+        }, 500);
+      }
+    },
+    clearTimeout(timer) {
+      clearTimeout(timer);
+    },
+    handleShowSkus(id, skus) {
+      this.activeCommodity = null;
+      const scrollTop = this.$refs.commodityScroll.scrollTop;
+      const offsetTop =
+        document.getElementById(`commodity-${id}`).offsetTop - scrollTop;
+
+      const height = Math.min(
+        skus.length * 145 + (skus.length - 1) * 10 + 10,
+        424
+      );
+      if (offsetTop + height > this.$refs["tool"].clientHeight) {
+        this.offsetTop =
+          offsetTop + (this.$refs["tool"].clientHeight - (offsetTop + height));
+      } else {
+        this.offsetTop = offsetTop;
+      }
+
+      this.activeSkus = skus;
+    },
+    handleAddModel(goodId) {
+      this.$emit("addModel", goodId);
+    },
+    handleShowFeedback(sku) {
+      this.$emit("showFeedback", sku);
+    }
   }
 };
 </script>
@@ -295,6 +559,15 @@ export default {
     height: 100%;
     overflow: hidden;
     border-left: 1px solid #efefef;
+    /deep/ .attr-wrapper {
+      .attr-list-left {
+        flex: none;
+        .price-icon,
+        .size-icon {
+          display: none;
+        }
+      }
+    }
   }
   .cat-container {
     width: 100%;
@@ -679,11 +952,6 @@ export default {
         line-height: 17px;
         font-size: 12px;
         color: #111111;
-      }
-      .card-price {
-        line-height: 17px;
-        font-size: 12px;
-        color: #666666;
       }
     }
   }

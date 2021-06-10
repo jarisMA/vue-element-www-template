@@ -1,44 +1,50 @@
 <template>
   <div
-    :class="['commodity-card', columns > 4 ? 'multi' : '']"
+    :class="['commodity-card', type, columns > 4 ? 'multi' : '']"
     @click.prevent="handleAddModel"
     :style="{
-      width: columns > 4 ? '93px' : '',
-      height: columns > 4 ? '93px' : ''
+      width: columns > 4 ? '93px' : ''
     }"
     :id="`commodity-${commodity.id}`"
   >
-    <label
-      class="bgImg multi"
-      v-if="skus.length > 1"
-      @click.stop="handleSkusClick"
-      @mouseover="handleSkusClick"
-    >
-      <i class="multi-icon"></i>
-    </label>
-    <label
-      class="bgImg info"
-      @click.stop="handleDetailClick"
-      @mouseover="handleClearTimer"
-      @mouseout="handleDetailClick"
-      ><i class="info-icon"></i
-    ></label>
-    <the-loading-image
-      :width="columns > 4 ? 93 : 145"
-      :height="columns > 4 ? 93 : 145"
-      :url="(skus.length > 0 && skus[0].img_id) || ''"
-    />
-    <label class="bgImg feedback" @click.stop="handleShowFeedback(skus[0])">
-      <i class="feedback-icon"></i>
-    </label>
-    <label class="price-label"
-      >¥{{ skus.length > 0 && (skus[0].unit_price || "0.00") }}</label
-    >
-    <div class="size-wrapper" v-if="columns <= 4 && skus.length > 0">
-      {{
-        `${skus[0].size_x || 0}*${skus[0].size_y || 0}*${skus[0].size_z ||
-          0}(mm)`
-      }}
+    <div class="card-top">
+      <label
+        class="bgImg multi"
+        v-if="skus.length > 1"
+        @click.stop="handleSkusClick"
+        @mouseover="handleSkusClick"
+      >
+        <i class="multi-icon"></i>
+      </label>
+      <label
+        class="bgImg info"
+        @click.stop="handleDetailClick"
+        @mouseover="handleClearTimer"
+        @mouseout="handleDetailClick"
+        ><i class="info-icon"></i
+      ></label>
+      <the-loading-image
+        :width="columns > 4 ? 93 : 145"
+        :height="columns > 4 ? 93 : 145"
+        :url="(skus.length > 0 && skus[0].img_id) || ''"
+      />
+      <label class="bgImg feedback" @click.stop="handleShowFeedback(skus[0])">
+        <i class="feedback-icon"></i>
+      </label>
+      <template v-if="type === 'model'">
+        <label class="price-label"
+          >¥{{ skus.length > 0 && (skus[0].unit_price || "0.00") }}</label
+        >
+        <div class="size-wrapper" v-if="columns <= 4 && skus.length > 0">
+          {{
+            `${skus[0].size_x || 0}*${skus[0].size_y || 0}*${skus[0].size_z ||
+              0}(mm)`
+          }}
+        </div>
+      </template>
+    </div>
+    <div class="card-bottom" v-if="type === 'texture'">
+      <label class="card-name ellipsis">{{ skus[0].name }}</label>
     </div>
   </div>
 </template>
@@ -60,6 +66,10 @@ export default {
     },
     values: {
       type: Array
+    },
+    type: {
+      type: String,
+      default: "model"
     }
   },
   computed: {
@@ -146,101 +156,126 @@ export default {
 <style lang="less" scoped>
 @size: 145px;
 .commodity-card {
-  position: relative;
   width: @size;
-  height: @size;
   margin-bottom: 10px;
   background: #fafafa;
   &:hover {
-    .price-label {
-      bottom: 26px;
-    }
-    .size-wrapper {
-      display: block;
-    }
-    .bgImg {
-      display: flex;
+    .card-top {
+      .price-label {
+        bottom: 26px;
+      }
+      .size-wrapper {
+        display: block;
+      }
+      .bgImg {
+        display: flex;
+      }
     }
   }
   &.multi {
     &:hover {
-      .price-label {
-        bottom: 7px;
+      .card-top {
+        .price-label {
+          bottom: 7px;
+        }
       }
     }
   }
-  .bgImg {
-    position: absolute;
-    display: flex;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.8);
-    opacity: 0.8;
-    cursor: pointer;
-    &:hover {
-      opacity: 1;
-    }
-    &.multi {
-      top: 5px;
-      left: 5px;
-      .multi-icon {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        background-image: url("~images/commodity/multi-model.svg");
-      }
-    }
-    &.info {
-      top: 5px;
-      right: 5px;
-      .info-icon {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        background-image: url("~images/commodity/info.svg");
-      }
-    }
-    &.feedback {
-      bottom: 26px;
-      left: 5px;
-      .feedback-icon {
-        display: inline-block;
-        width: 16px;
-        height: 16px;
-        background-image: url("~images/commodity/feedback.svg");
+  &.texture {
+    .card-top {
+      .bgImg {
+        &.feedback {
+          bottom: 5px;
+        }
       }
     }
   }
+  .card-top {
+    position: relative;
+    .bgImg {
+      position: absolute;
+      display: flex;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.8);
+      opacity: 0.8;
+      cursor: pointer;
+      &:hover {
+        opacity: 1;
+      }
+      &.multi {
+        top: 5px;
+        left: 5px;
+        .multi-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          background-image: url("~images/commodity/multi-model.svg");
+        }
+      }
+      &.info {
+        top: 5px;
+        right: 5px;
+        .info-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          background-image: url("~images/commodity/info.svg");
+        }
+      }
+      &.feedback {
+        bottom: 26px;
+        left: 5px;
+        .feedback-icon {
+          display: inline-block;
+          width: 16px;
+          height: 16px;
+          background-image: url("~images/commodity/feedback.svg");
+        }
+      }
+    }
 
-  .price-label {
-    position: absolute;
-    display: inline-block;
-    padding: 2px 4px;
-    bottom: 7px;
-    right: 7px;
-    line-height: 1;
-    font-size: 12px;
-    color: #666666;
-    background: rgba(255, 255, 255, 0.8);
-    border-radius: 8px;
-    transition: bottom 0.2s;
+    .price-label {
+      position: absolute;
+      display: inline-block;
+      padding: 2px 4px;
+      bottom: 7px;
+      right: 7px;
+      line-height: 1;
+      font-size: 12px;
+      color: #666666;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      transition: bottom 0.2s;
+    }
+    .size-wrapper {
+      display: none;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      padding: 0 5px;
+      width: 100%;
+      height: 21px;
+      line-height: 21px;
+      font-size: 12px;
+      color: #666666;
+      background: rgba(255, 255, 255, 0.8);
+    }
   }
-  .size-wrapper {
-    display: none;
-    position: absolute;
-    left: 0;
-    bottom: 0;
-    padding: 0 5px;
+  .card-bottom {
     width: 100%;
-    height: 21px;
-    line-height: 21px;
-    font-size: 12px;
-    color: #666666;
-    background: rgba(255, 255, 255, 0.8);
+    margin-top: 4px;
+    .card-name {
+      display: inline-block;
+      width: 100%;
+      line-height: 12px;
+      font-size: 12px;
+      color: #666666;
+    }
   }
 }
 </style>

@@ -9,16 +9,27 @@
           :key="sku.id"
           @click="handleAddModel(sku.kjl_sku_id)"
         >
-          <div
-            class="sku-feedback_icon-wrapper"
-            @click.stop="handleShowFeedback(sku)"
-          >
-            <i class="sku-feedback_icon"></i>
+          <div class="sku-item-top">
+            <div
+              class="sku-feedback_icon-wrapper"
+              @click.stop="handleShowFeedback(sku)"
+            >
+              <i class="sku-feedback_icon"></i>
+            </div>
+            <the-loading-image :width="145" :height="145" :url="sku.img_id" />
+            <template v-if="type === 'model'">
+              <label class="sku-price"> ¥{{ sku.unit_price || "0.00" }} </label>
+              <div class="sku-size">
+                {{
+                  `${sku.size_x || 0}*${sku.size_y || 0}*${sku.size_z || 0}(mm)`
+                }}
+              </div>
+            </template>
           </div>
-          <the-loading-image :width="145" :height="145" :url="sku.img_id" />
-          <label class="sku-price"> ¥{{ sku.unit_price || "0.00" }} </label>
-          <div class="sku-size">
-            {{ `${sku.size_x || 0}*${sku.size_y || 0}*${sku.size_z || 0}(mm)` }}
+          <div class="sku-item-bottom" v-show="type === 'texture'">
+            <label class="sku-item-name ellipsis" :title="sku.name">{{
+              sku.name
+            }}</label>
           </div>
         </li>
       </ul>
@@ -35,6 +46,10 @@ export default {
     skus: {
       type: Array,
       required: true
+    },
+    type: {
+      type: String,
+      default: "model"
     }
   },
   components: { TheLoadingImage },
@@ -74,69 +89,83 @@ export default {
       display: flex;
       flex-direction: column;
       .sku-item {
-        position: relative;
-        width: 145px;
-        height: 145px;
         background: #fafafa;
         &:hover {
-          .sku-price {
-            bottom: 26px;
-          }
-          .sku-size {
-            display: block;
+          .sku-item-top {
+            .sku-price {
+              bottom: 26px;
+            }
+            .sku-size {
+              display: block;
+            }
           }
         }
         & + .sku-item {
           margin-top: 10px;
         }
-        .sku-feedback_icon-wrapper {
-          position: absolute;
-          right: 6px;
-          top: 6px;
-          width: 16px;
-          height: 16px;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 50%;
-          cursor: pointer;
-          .sku-feedback_icon {
-            display: inline-block;
+        .sku-item-top {
+          position: relative;
+          width: 145px;
+          height: 145px;
+          .sku-feedback_icon-wrapper {
+            position: absolute;
+            right: 6px;
+            top: 6px;
             width: 16px;
             height: 16px;
-            mask-image: url("~images/commodity/feedback.svg");
-            mask-repeat: no-repeat;
-            mask-size: cover;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
             cursor: pointer;
-            &:hover {
-              background: rgba(0, 0, 0, 1);
+            .sku-feedback_icon {
+              display: inline-block;
+              width: 16px;
+              height: 16px;
+              mask-image: url("~images/commodity/feedback.svg");
+              mask-repeat: no-repeat;
+              mask-size: cover;
+              background: rgba(0, 0, 0, 0.8);
+              cursor: pointer;
+              &:hover {
+                background: rgba(0, 0, 0, 1);
+              }
             }
           }
-        }
 
-        .sku-price {
-          position: absolute;
-          right: 5px;
-          bottom: 5px;
-          padding: 2px 4px;
-          line-height: 1;
-          font-size: 12px;
-          color: #666666;
-          background: rgba(255, 255, 255, 0.8);
-          border-radius: 8px;
-          transition: bottom 0.2s;
+          .sku-price {
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+            padding: 2px 4px;
+            line-height: 1;
+            font-size: 12px;
+            color: #666666;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            transition: bottom 0.2s;
+          }
+          .sku-size {
+            display: none;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            padding: 0 5px;
+            width: 100%;
+            height: 21px;
+            line-height: 21px;
+            font-size: 12px;
+            color: #666666;
+            background: rgba(255, 255, 255, 0.8);
+          }
         }
-        .sku-size {
-          display: none;
-          position: absolute;
-          left: 0;
-          bottom: 0;
-          padding: 0 5px;
-          width: 100%;
-          height: 21px;
-          line-height: 21px;
-          font-size: 12px;
-          color: #666666;
-          background: rgba(255, 255, 255, 0.8);
+        .sku-item-bottom {
+          .sku-item-name {
+            display: inline-block;
+            width: 100%;
+            margin-top: 4px;
+            line-height: 12px;
+            font-size: 12px;
+            color: #666;
+          }
         }
       }
     }

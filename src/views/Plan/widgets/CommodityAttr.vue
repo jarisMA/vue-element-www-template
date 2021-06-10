@@ -1,8 +1,8 @@
 <template>
   <div class="attr-wrapper">
     <div class="attr-header">
-      <div class="attr-list">
-        <div :class="['attr-list-left', !showAttr ? 'flex-start' : '']">
+      <div :class="['attr-list', columns >= 4 ? 'flex-start' : '']">
+        <div :class="['attr-list-left']">
           <el-tooltip
             popper-class="tool-label-tip"
             effect="dark"
@@ -103,54 +103,49 @@
               ></label>
             </div>
           </el-tooltip>
-          <template v-if="showAttr">
-            <el-tooltip
-              v-for="attr of attrs"
-              :key="attr.id"
-              popper-class="tool-label-tip"
-              effect="dark"
-              :open-delay="tipsDelay"
-              :content="attr.name"
-              placement="bottom"
-              :disabled="!(attr.children && attr.children.length > 0)"
+          <el-tooltip
+            v-for="attr of attrs"
+            :key="attr.id"
+            popper-class="tool-label-tip"
+            effect="dark"
+            :open-delay="tipsDelay"
+            :content="attr.name"
+            placement="bottom"
+            :disabled="!(attr.children && attr.children.length > 0)"
+          >
+            <div
+              :class="['bgImg-wrapper', attrFocusId === attr.id ? 'focus' : '']"
+              :style="{
+                backgroundColor:
+                  attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null,
+                cursor:
+                  attr.children && attr.children.length > 0
+                    ? 'pointer'
+                    : 'not-allowed'
+              }"
+              @click="
+                attr.children && attr.children.length > 0
+                  ? handleAttrFocusChange(attr.id)
+                  : ''
+              "
             >
-              <div
-                :class="[
-                  'bgImg-wrapper',
-                  attrFocusId === attr.id ? 'focus' : ''
-                ]"
+              <label
+                :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
                 :style="{
-                  backgroundColor:
-                    attrFocusId === attr.id ? hex2Rgba(attr.color, 0.1) : null,
+                  backgroundImage:
+                    attrFocusId === attr.id
+                      ? `url(${attr.focus_icon})`
+                      : hasValueSelectByAttr(attr.id)
+                      ? `url(${attr.active_icon})`
+                      : `url(${attr.default_icon})`,
                   cursor:
                     attr.children && attr.children.length > 0
                       ? 'pointer'
                       : 'not-allowed'
                 }"
-                @click="
-                  attr.children && attr.children.length > 0
-                    ? handleAttrFocusChange(attr.id)
-                    : ''
-                "
-              >
-                <label
-                  :class="['bgImg', attrFocusId === attr.id ? 'focus' : '']"
-                  :style="{
-                    backgroundImage:
-                      attrFocusId === attr.id
-                        ? `url(${attr.focus_icon})`
-                        : hasValueSelectByAttr(attr.id)
-                        ? `url(${attr.active_icon})`
-                        : `url(${attr.default_icon})`,
-                    cursor:
-                      attr.children && attr.children.length > 0
-                        ? 'pointer'
-                        : 'not-allowed'
-                  }"
-                ></label>
-              </div>
-            </el-tooltip>
-          </template>
+              ></label>
+            </div>
+          </el-tooltip>
         </div>
         <div class="attr-list-right">
           <el-tooltip
@@ -502,10 +497,6 @@ export default {
     columns: {
       type: Number,
       default: 2
-    },
-    showAttr: {
-      type: Boolean,
-      default: true
     }
   },
   data() {
@@ -587,9 +578,7 @@ export default {
     }
   },
   created() {
-    if (this.showAttr) {
-      this.getAttrs();
-    }
+    this.getAttrs();
     this.getBrands();
     this.getAttrsByCatId(this.parentCat.id);
   },
@@ -766,14 +755,14 @@ export default {
       justify-content: space-between;
       width: 345px;
       height: 100%;
+      &.flex-start {
+        justify-content: flex-start;
+      }
       .attr-list-left {
         flex: 1;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        &.flex-start {
-          flex: none;
-        }
       }
     }
     .bgImg-wrapper {

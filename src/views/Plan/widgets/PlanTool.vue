@@ -118,7 +118,7 @@
             <div
               class="scroll-section"
               ref="commodityScroll"
-              v-infinite-scroll="getCommodity(true)"
+              v-homeplan-infinite="handleCommodityScroll"
             >
               <div class="commodity-list">
                 <commodity-card
@@ -291,6 +291,7 @@ export default {
       rootCats: [],
       catLoading: true,
       commodityLoading: true,
+      commodityLoadingMore: false,
       isSearch: false,
       name: null,
       cats: [],
@@ -395,7 +396,8 @@ export default {
       const names = this.values
         .filter(item => item.type === "search")
         .map(item => item.value.name);
-      this.commodityLoading = true;
+      !flag && (this.commodityLoading = true);
+      this.commodityLoadingMore = true;
       commodityService
         .commodities({
           parent_cat_id: this.activeParentCat.id,
@@ -435,7 +437,14 @@ export default {
         })
         .finally(() => {
           this.commodityLoading = false;
+          this.commodityLoadingMore = false;
         });
+    },
+    handleCommodityScroll() {
+      if (!this.commodityLoadingMore) {
+        this.commodityLoadingMore = true;
+        this.getCommodity(true);
+      }
     },
     handleBack() {
       this.activeParentCat = null;
