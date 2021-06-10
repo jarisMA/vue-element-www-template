@@ -4,153 +4,107 @@
     ref="tool"
     :style="{ width: columns >= 4 ? '655px' : '' }"
   >
-    <div class="tool-wrapper">
-      <div class="cat-container">
-        <div class="cat-top-wrapper">
-          <ul class="tab-list">
+    <div class="tool-left">
+      <el-scrollbar class="scroll-section">
+        <ul class="tool-left-list">
+          <template v-for="(cat, index) of rootCats">
             <li
-              class="tab-item pointer"
-              v-for="(tab, key) of rootCats"
-              :key="tab.id"
-              :class="{ active: key === activeTabKey }"
-              @click="activeTabKey = key"
-            >
-              <label
-                class="tab-cover-img pointer"
-                :style="{
-                  backgroundImage:
-                    key === activeTabKey
-                      ? `url(${tab.active_cover_url})`
-                      : `url(${tab.cover_url})`
-                }"
-              ></label>
-              {{ tab.name }}
-            </li>
-          </ul>
-        </div>
-        <div class="cat-bottom-wrapper">
-          <ul class="cat-list" v-if="(rootCats[activeTabKey] || {}).children">
-            <li
-              class="cat-item pointer"
-              v-for="cat of rootCats[activeTabKey].children"
-              :key="cat.id"
-              @click="activeParentCat = cat"
-            >
-              <label class="cat-name pointer">
-                {{ cat.name }}
-              </label>
-              <label
-                class="cat-cover-img pointer"
-                :style="{ backgroundImage: `url(${cat.cover_url})` }"
-              ></label>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <transition
-        enter-active-class="animated slideInRight"
-        leave-active-class="animated slideOutRight"
-      >
-        <div
-          class="search-container"
-          v-if="activeParentCat"
-          v-loading="catLoading"
-        >
-          <div class="search-header">
-            <template v-if="!isSearch">
-              <div class="cat-name">
-                <div class="back-icon-wrapper" @click="handleBack">
-                  <label class="back-icon bgImg pointer"></label>
-                </div>
-                <h3 class="ellipsis">
-                  {{ (activeParentCat || {}).name }}
-                </h3>
-              </div>
-              <label
-                class="search-icon bgImg pointer"
-                @click="handleSearchShow"
-              ></label>
-            </template>
-            <el-input
-              v-else
-              ref="nameSearch"
-              class="name-search"
-              type="text"
-              :placeholder="`在「${(activeParentCat || {}).name}」下搜索`"
-              prefix-icon="search-icon bgImg"
-              v-model="name"
-              autofocus
-              clearable
-              @keyup.enter.native="handleNameInputConfirm"
-              @blur="isSearch = false"
-            >
-            </el-input>
-          </div>
-          <div class="cat-wrapper">
-            <label
-              :class="['cat-label', 'pointer', !activeCat && 'active']"
-              @click="activeCat = null"
-            >
-              全部
-            </label>
-            <label
+              v-show="index < 3 || showMore"
               :class="[
-                'cat-label',
-                'pointer',
-                activeCat && activeCat.id === cat.id ? 'active' : ''
+                'tool-left-item',
+                index === activeRootCatIndex ? 'active' : ''
               ]"
-              v-for="cat of cats"
               :key="cat.id"
-              @click="activeCat = cat"
+              @click="handleToggleParentCat(index)"
             >
               {{ cat.name }}
-            </label>
-          </div>
-          <commodity-attr
-            :values="values"
-            :parentCat="activeParentCat"
-            :activeCat="activeCat"
-            :columns="columns"
-            @addValue="handleValueAdd"
-            @columnChange="handleColumnChange"
-          />
-          <div class="commodity-wrapper" v-loading="commodityLoading">
-            <div
-              class="scroll-section"
-              ref="commodityScroll"
-              v-homeplan-infinite="handleCommodityScroll"
-            >
-              <div class="commodity-list">
-                <commodity-card
-                  v-for="(commodity, index) of commodities"
-                  :key="`${commodity.id}-${index}`"
-                  :commodity="commodity"
-                  :values="values"
-                  :columns="columns"
-                  @detail="handleCommodityDetail(commodity)"
-                  @clearTimer="handleCommodityDetail(commodity, false)"
-                  @showSkus="skus => handleShowSkus(commodity.id, skus)"
-                  @addModel="handleAddModel"
-                  @showFeedback="handleShowFeedback"
-                />
-              </div>
+            </li>
+          </template>
+          <li
+            v-if="rootCats.length > 3"
+            class="tool-left-more"
+            @click="showMore = !showMore"
+          >
+            <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+          </li>
+        </ul>
+      </el-scrollbar>
+    </div>
+    <div class="tool-wrapper" v-if="rootCats[activeRootCatIndex]">
+      <div class="search-container" v-loading="catLoading">
+        <div class="search-header">
+          <el-input
+            ref="nameSearch"
+            class="name-search"
+            type="text"
+            :placeholder="
+              `在「${(rootCats[activeRootCatIndex] || {}).name}」下搜索`
+            "
+            prefix-icon="search-icon bgImg"
+            v-model="name"
+            clearable
+            @keyup.enter.native="handleNameInputConfirm"
+          >
+          </el-input>
+        </div>
+        <div class="cat-wrapper" v-if="rootCats[activeRootCatIndex]">
+          <label
+            :class="['cat-label', 'pointer', !activeCat && 'active']"
+            @click="handleToggleCat(null)"
+          >
+            全部
+          </label>
+          <label
+            :class="[
+              'cat-label',
+              'pointer',
+              activeCat && activeCat.id === cat.id ? 'active' : ''
+            ]"
+            v-for="cat of rootCats[activeRootCatIndex].children"
+            :key="cat.id"
+            @click="handleToggleCat(cat)"
+          >
+            {{ cat.name }}
+          </label>
+        </div>
+        <commodity-attr
+          type="texture"
+          :showAttr="false"
+          :values="values"
+          :parentCat="rootCats[activeRootCatIndex]"
+          :activeCat="activeCat"
+          :columns="columns"
+          @addValue="handleValueAdd"
+          @columnChange="handleColumnChange"
+        />
+        <div class="commodity-wrapper" v-loading="commodityLoading">
+          <div
+            class="scroll-section"
+            ref="commodityScroll"
+            v-homeplan-infinite="handleCommodityScroll"
+          >
+            <div class="commodity-list" ref="commodityList">
+              <commodity-card
+                v-for="(commodity, index) of commodities"
+                :key="`${commodity.id}-${index}`"
+                type="texture"
+                :commodity="commodity"
+                :values="values"
+                :columns="columns"
+                @detail="handleCommodityDetail(commodity)"
+                @clearTimer="handleCommodityDetail(commodity, false)"
+                @showSkus="skus => handleShowSkus(commodity.id, skus)"
+                @addModel="handleAddModel"
+                @showFeedback="handleShowFeedback"
+              />
             </div>
           </div>
-          <label
-            :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
-            @click="columns > 2 ? (columns = 2) : (columns = 4)"
-          ></label>
-          <commodity-list
-            :class="['commodity-list-wrapper', isListUp ? 'show' : '']"
-            :up.sync="isListUp"
-            :full_screen.sync="isListFullScreen"
-            :listingBrief="listingBrief"
-            :design="design"
-            :refreshing="refreshingBrief"
-            @refreshPrice="handleRefreshPrice"
-          />
         </div>
-      </transition>
+        <label
+          :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
+          @click="columns > 2 ? (columns = 2) : (columns = 4)"
+        ></label>
+      </div>
     </div>
     <ul class="value-list" v-if="values.length > 0">
       <li class="reset-wrapper pointer" @click="handleValueReset">
@@ -235,13 +189,11 @@
         <label class="card-brand" v-if="activeCommodity.brand_name">{{
           activeCommodity.brand_name
         }}</label>
-        <span class="card-price"
-          >参考价 ¥{{ activeCommodity.unit_price }}
-        </span>
       </div>
     </div>
     <commodity-sku-list
       class="sku-list-wrapper"
+      type="texture"
       :style="{ top: offsetTop + 'px' }"
       :skus.sync="activeSkus"
       v-if="activeSkus"
@@ -253,54 +205,37 @@
 
 <script>
 import commodityService from "service/commodity";
-import CommodityCard from "./CommodityCard.vue";
-import CommodityAttr from "./CommodityAttr.vue";
+import CommodityAttr from "./CommodityAttr";
+import CommodityCard from "./CommodityCard";
+import CommoditySkuList from "./CommoditySkuList";
+import TheLoadingImage from "components/TheLoadingImage";
 import { hex2Rgba } from "utils/function";
-import TheLoadingImage from "components/TheLoadingImage.vue";
-import CommoditySkuList from "./CommoditySkuList.vue";
-import CommodityList from "./CommodityList.vue";
 
 export default {
-  name: "PlanTool",
+  name: "TextureTool",
   components: {
-    CommodityCard,
     CommodityAttr,
-    TheLoadingImage,
+    CommodityCard,
     CommoditySkuList,
-    CommodityList
-  },
-  props: {
-    design: {
-      type: Object,
-      required: true
-    },
-    listingId: {
-      type: String
-    },
-    listingBrief: {
-      type: Object,
-      required: true
-    },
-    refreshingBrief: {
-      type: Boolean,
-      default: false
-    }
+    TheLoadingImage
   },
   data() {
     return {
-      rootCats: [],
       catLoading: true,
       commodityLoading: true,
       commodityLoadingMore: false,
-      isSearch: false,
-      name: null,
-      cats: [],
-      activeTabKey: 0,
-      activeParentCat: null,
+      showMore: false,
+      name: "",
+      columns: 2,
+      rootCats: [],
+      activeRootCatIndex: 0,
       activeCat: null,
-      commodities: [],
       values: [],
+      commodities: [],
       activeCommodity: null,
+      activeSkus: null,
+      offsetTop: 0,
+      detailTimer: null,
       swiperOptions: {
         slidesPerView: 1,
         spaceBetween: 0,
@@ -310,12 +245,6 @@ export default {
         prevButton: ".card-img-prev",
         observe: true
       },
-      activeSkus: null,
-      detailTimer: null,
-      offsetTop: 0,
-      columns: 2,
-      isListUp: false,
-      isListFullScreen: false,
       pagination: {
         size: 30,
         page: 1,
@@ -324,48 +253,30 @@ export default {
     };
   },
   watch: {
-    activeParentCat(val) {
-      if (val) {
-        this.getCats(val.id);
-        this.getCommodity();
-      }
-    },
-    activeCat() {
-      if (this.activeParentCat) {
-        this.getCommodity();
-      }
-    },
     values() {
-      if (this.activeParentCat) {
-        this.getCommodity();
-      }
+      this.getCommodity();
+    }
+  },
+  computed: {
+    infiniteDisabled() {
+      console.log("disabled");
+      return this.commodityLoading;
     }
   },
   created() {
-    this.getRootCats();
+    this.getData();
   },
   methods: {
     hex2Rgba,
-    getRootCats() {
-      this.catLoading = true;
+    getData() {
       commodityService
         .cats()
         .then(cats => {
-          const softCats = cats.find(
-            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
+          const rootCats = cats.find(
+            item => item.id === parseInt(process.env.VUE_APP_TEXTURE_CAT_ID)
           );
-          this.rootCats = (softCats && softCats.children) || [];
-        })
-        .finally(() => {
-          this.catLoading = false;
-        });
-    },
-    getCats(id) {
-      this.catLoading = true;
-      commodityService
-        .cat(id)
-        .then(res => {
-          this.cats = res.children;
+          this.rootCats = (rootCats && rootCats.children) || [];
+          this.getCommodity();
         })
         .finally(() => {
           this.catLoading = false;
@@ -400,7 +311,7 @@ export default {
       this.commodityLoadingMore = true;
       commodityService
         .commodities({
-          parent_cat_id: this.activeParentCat.id,
+          parent_cat_id: this.rootCats[this.activeRootCatIndex].id,
           cat_id: (this.activeCat && this.activeCat.id) || null,
           brand_ids: brandIds,
           name: names ? names[0] || null : null,
@@ -446,19 +357,14 @@ export default {
         this.getCommodity(true);
       }
     },
-    handleBack() {
-      this.activeParentCat = null;
+    handleToggleParentCat(index) {
+      this.activeRootCatIndex = index;
       this.activeCat = null;
       this.values = [];
-      this.activeCommodity = null;
-      this.activeSkus = null;
-      this.columns = 2;
     },
-    handleSearchShow() {
-      this.isSearch = true;
-      this.$nextTick(() => {
-        this.$refs.nameSearch.focus();
-      });
+    handleToggleCat(cat) {
+      this.activeCat = cat;
+      this.getCommodity();
     },
     handleNameInputConfirm() {
       this.handleValueAdd({
@@ -470,7 +376,6 @@ export default {
           name: this.name
         }
       });
-      this.isSearch = false;
     },
     handleValueAdd(value) {
       let flag = true;
@@ -526,6 +431,9 @@ export default {
     },
     handleValueReset() {
       this.values = [];
+    },
+    handleColumnChange(column) {
+      this.columns = column;
     },
     handleCommodityDetail(data, flag = true) {
       if (this.detailTimer) {
@@ -583,19 +491,9 @@ export default {
     },
     handleAddModel(goodId) {
       this.$emit("addModel", goodId);
-      if (this.listTimer) {
-        clearTimeout(this.listTimer);
-        this.listTimer = null;
-      }
-    },
-    handleColumnChange(column) {
-      this.columns = column;
     },
     handleShowFeedback(sku) {
       this.$emit("showFeedback", sku);
-    },
-    handleRefreshPrice() {
-      this.$emit("refreshPrice");
     }
   }
 };
@@ -613,11 +511,64 @@ export default {
   background: #fafafa;
   transition: width @transitionDuration;
   user-select: none;
+  .tool-left {
+    position: absolute;
+    left: -44px;
+    top: 0;
+    width: 44px;
+    max-height: 100%;
+    overflow: auto;
+    .tool-left-list {
+      width: 100%;
+      padding: 8px 0;
+      background: #fff;
+      .tool-left-item {
+        width: 100%;
+        padding: 8px 10px;
+        line-height: 16px;
+        font-weight: 600;
+        font-size: 12px;
+        text-align: center;
+        color: #2c3330;
+        cursor: pointer;
+        &.active {
+          color: @primaryColor;
+        }
+      }
+    }
+    .tool-left-more {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      .expand-icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        mask: url("~images/commodity/expand.svg") no-repeat center;
+        background: #2c3330;
+        transition: transform 0.1s;
+        &.unexpand {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
   .tool-wrapper {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
+    border-left: 1px solid #efefef;
+    /deep/ .attr-wrapper {
+      .attr-list-left {
+        flex: none;
+        .price-icon,
+        .size-icon {
+          display: none;
+        }
+      }
+    }
   }
   .cat-container {
     width: 100%;
@@ -1002,11 +953,6 @@ export default {
         line-height: 17px;
         font-size: 12px;
         color: #111111;
-      }
-      .card-price {
-        line-height: 17px;
-        font-size: 12px;
-        color: #666666;
       }
     }
   }
