@@ -409,7 +409,7 @@
             <div class="feedback-user">
               <div class="feedback-username">
                 <span class="page-font4">{{ item.user.nickname }}</span
-                ><br /><span class="page-font5">{{ item.termName }}</span>
+                ><br /><span class="page-font6">{{ item.termName }}</span>
               </div>
               <img class="feedback-avatar" :src="item.user.avatar_url" />
             </div>
@@ -423,13 +423,11 @@
           <img class="product-logo" src="~/images/home/logo.svg" />
           <div class="product-text">
             <span>每个人都能拥有好设计<br />家装领域“价值观”驱动平台</span>
-            <div class="product-weixin">
+            <div class="product-contact">
               <img class="product-wechat" src="~/images/home/wechat.svg" />
-              <img
-                class="product-qr"
-                src="~/images/home/QRcode.svg"
-              />&nbsp;&nbsp;&nbsp;<a href="mailto:kf@home-plan.cn"
-                ><img src="~/images/home/email.svg"
+              <img class="product-qr" src="~/images/home/QRcode.svg" /><a
+                href="mailto:kf@home-plan.cn"
+                ><img class="product-email" src="~/images/home/email.svg"
               /></a>
             </div>
           </div>
@@ -480,7 +478,7 @@ export default {
       isSmall: "prize-img",
       swiperOptions: {
         slidesPerView: "auto",
-        slidesPerGroup: 3,
+        slidesPerGroup: 1,
         spaceBetween: 0
       }
     };
@@ -564,6 +562,13 @@ export default {
     line-height: 24px;
     font-weight: normal;
     font-size: 16px;
+    color: #81948b;
+  }
+
+  .page-font6 {
+    line-height: 24px;
+    font-weight: normal;
+    font-size: 14px;
     color: #81948b;
   }
 }
@@ -1037,10 +1042,6 @@ export default {
     .product-left {
       display: inline-block;
       width: 170px;
-
-      .product-logo {
-        margin-bottom: 16px;
-      }
     }
 
     .product-right {
@@ -1058,10 +1059,14 @@ export default {
     color: #606c66;
     opacity: 0.8;
 
-    .product-weixin {
+    .product-contact {
       position: relative;
       margin-top: 42px;
       cursor: pointer;
+
+      .product-email {
+        margin-left: 16px;
+      }
 
       .product-wechat {
         &:hover {
