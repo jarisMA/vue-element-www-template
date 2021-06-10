@@ -68,6 +68,7 @@
           </label>
         </div>
         <commodity-attr
+          type="texture"
           :showAttr="false"
           :values="values"
           :parentCat="rootCats[activeRootCatIndex]"

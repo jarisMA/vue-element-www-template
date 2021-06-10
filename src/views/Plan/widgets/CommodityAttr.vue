@@ -497,6 +497,10 @@ export default {
     columns: {
       type: Number,
       default: 2
+    },
+    type: {
+      type: String,
+      default: "model"
     }
   },
   data() {
@@ -586,7 +590,13 @@ export default {
     hex2Rgba,
     getAttrs() {
       commodityService.attrs().then(res => {
-        this.attrs = res;
+        if (this.type === "texture") {
+          this.attrs = res.filter(
+            item => item.id != process.env.VUE_APP_TOOL_TEXTURE_ATTR_ID
+          );
+        } else {
+          this.attrs = res;
+        }
       });
     },
     getBrands() {

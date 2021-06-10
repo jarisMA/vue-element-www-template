@@ -134,7 +134,7 @@ export default {
         skus: []
       },
       listingTimer: null,
-      toolIndex: 2, // 1平面布局 2材质 3软装
+      toolIndex: null, // 1平面布局 2材质 3软装
       feedbackSku: null,
       showFeedback: false,
       feedbackForm: {
