@@ -89,7 +89,7 @@ export default {
       display: flex;
       flex-direction: column;
       .sku-item {
-        background: #fafafa;
+        width: 145px;
         &:hover {
           .sku-item-top {
             .sku-price {
@@ -105,7 +105,7 @@ export default {
         }
         .sku-item-top {
           position: relative;
-          width: 145px;
+          width: 100%;
           height: 145px;
           .sku-feedback_icon-wrapper {
             position: absolute;
