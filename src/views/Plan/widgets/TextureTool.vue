@@ -1,9 +1,5 @@
 <template>
-  <div
-    class="tool-container"
-    ref="tool"
-    :style="{ width: columns >= 4 ? '655px' : '' }"
-  >
+  <div class="tool-container" ref="tool">
     <div class="tool-left">
       <el-scrollbar class="scroll-section">
         <ul class="tool-left-list">
@@ -100,10 +96,6 @@
             </div>
           </div>
         </div>
-        <label
-          :class="['unfold-icon', columns > 2 ? 'fold-icon' : '']"
-          @click="columns > 2 ? (columns = 2) : (columns = 4)"
-        ></label>
       </div>
     </div>
     <ul class="value-list" v-if="values.length > 0">
@@ -427,13 +419,15 @@ export default {
       flag && this.values.push(value);
     },
     handleValueRemove(key) {
+      const value = this.values[key];
+      if (value.type === "search") {
+        this.name = "";
+      }
       this.values.splice(key, 1);
     },
     handleValueReset() {
       this.values = [];
-    },
-    handleColumnChange(column) {
-      this.columns = column;
+      this.name = "";
     },
     handleCommodityDetail(data, flag = true) {
       if (this.detailTimer) {

@@ -158,7 +158,6 @@ export default {
 .commodity-card {
   width: @size;
   margin-bottom: 10px;
-  background: #fafafa;
   &:hover {
     .card-top {
       .price-label {

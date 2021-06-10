@@ -522,10 +522,15 @@ export default {
       flag && this.values.push(value);
     },
     handleValueRemove(key) {
+      const value = this.values[key];
+      if (value.type === "search") {
+        this.name = "";
+      }
       this.values.splice(key, 1);
     },
     handleValueReset() {
       this.values = [];
+      this.name = "";
     },
     handleCommodityDetail(data, flag = true) {
       if (this.detailTimer) {
