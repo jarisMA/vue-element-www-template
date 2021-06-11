@@ -46,7 +46,7 @@
             {{ series.introduction }}
           </p>
           <div class="page-course-list">
-            <el-scrollbar class="scroll-section">
+            <div class="scroll-section">
               <el-collapse v-model="activeCourseIndexArr">
                 <div
                   class="page-course-item"
@@ -121,7 +121,7 @@
                   </el-collapse-item>
                 </div>
               </el-collapse>
-            </el-scrollbar>
+            </div>
           </div>
         </div>
       </div>
@@ -299,6 +299,7 @@ export default {
   background: #fff !important;
   .page-main {
     display: flex;
+    height: 520px;
     padding-bottom: 16px;
     border-bottom: 1px solid #efefef;
     .page-main-left {
@@ -336,15 +337,19 @@ export default {
       }
     }
     .page-main-right {
+      display: flex;
+      flex-direction: column;
       margin-left: 20px;
       width: 380px;
       .page-main-title {
+        flex: none;
         line-height: 32px;
         font-weight: 600;
         font-size: 20px;
         color: #2c3330;
       }
       .page-main-right-info {
+        flex: none;
         margin-top: 8px;
         .page-main-info-text {
           line-height: 24px;
@@ -373,20 +378,24 @@ export default {
         }
       }
       .page-main-intro {
+        flex: none;
         margin-top: 16px;
         line-height: 24px;
         font-size: 14px;
         color: #81948b;
       }
       .page-course-list {
+        flex: 1;
         height: 375px;
         padding: 16px 0;
         margin-top: 24px;
         background: #fafafa;
         .scroll-section {
+          width: calc(100% + 15px);
           height: 100%;
-          /deep/ .el-scrollbar__wrap {
-            overflow-x: hidden;
+          overflow-y: scroll;
+          &::-webkit-scrollbar {
+            width: 15px;
           }
         }
         .el-collapse {
