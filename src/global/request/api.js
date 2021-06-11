@@ -80,7 +80,6 @@ export default {
   courseCategory: id => `${WEB_PREFIX}/course-category/${id}`,
   course: id => `${WEB_PREFIX}/course/${id}`,
   courses: `${WEB_PREFIX}/course`,
-  courseDetail: id => `${WEB_PREFIX}/course/${id}/detail`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
   courseSeriesCategory: `${WEB_PREFIX}/series-category`,

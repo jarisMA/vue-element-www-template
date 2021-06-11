@@ -11,6 +11,7 @@
 <script>
 import courseService from "service/course";
 import Course from "components/Course/Course";
+import { goHome } from "utils/routes";
 
 export default {
   name: "TermCourse",
@@ -35,6 +36,13 @@ export default {
   methods: {
     getCourse() {
       courseService.course(this.$route.params.id).then(res => {
+        if (!res.permission) {
+          this.$notice({
+            type: "warning",
+            title: "暂无权限"
+          });
+          return goHome();
+        }
         this.detail = res;
         this.lessons = res.lessons;
       });

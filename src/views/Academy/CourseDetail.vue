@@ -202,7 +202,7 @@ export default {
     getData() {
       this.loading = true;
       courseSerive
-        .courseDetail(this.$route.params.id)
+        .course(this.$route.params.id)
         .then(course => {
           this.course = course;
           const withoutIds = [this.$route.params.id];
