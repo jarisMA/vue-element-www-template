@@ -134,7 +134,7 @@ export default {
   width: 100%;
   height: calc(410 / 1920 * 100vw);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   .container-1180 {
     position: relative;
     height: 100%;

@@ -193,12 +193,7 @@
             </div>
           </div>
           <div class="academy-camp-list">
-            <camp-card
-              v-for="camp of camps"
-              :key="camp.id"
-              :camp="camp"
-              @go="goAcademyCampDetail"
-            />
+            <camp-card v-for="camp of camps" :key="camp.id" :camp="camp" />
           </div>
         </div>
       </div>
@@ -229,8 +224,7 @@ import courseService from "service/course";
 import {
   goAcademyCourseList,
   goAcademySeriesList,
-  goAcademyCampList,
-  goAcademyCampDetail
+  goAcademyCampList
 } from "utils/routes";
 import CampCard from "./widgets/CampCard";
 import SetCard from "./widgets/SetCard";
@@ -299,7 +293,6 @@ export default {
     goAcademyCourseList,
     goAcademySeriesList,
     goAcademyCampList,
-    goAcademyCampDetail,
     getData() {
       Promise.all([
         courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
