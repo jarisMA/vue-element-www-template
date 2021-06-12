@@ -87,12 +87,12 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
-export const goCourse = (id, lessonIndex, type = "_blank") => {
+export const goCourse = (courseId, lessonIndex, type = "_blank") => {
   return goRoute(
     {
       name: "Course",
       params: {
-        id,
+        courseId,
         lessonIndex
       }
     },
@@ -100,12 +100,17 @@ export const goCourse = (id, lessonIndex, type = "_blank") => {
   );
 };
 
-export const goSeriesCourse = (id, courseId, lessonIndex, type = "_blank") => {
+export const goSeriesCourse = (
+  seriesId,
+  courseId,
+  lessonIndex,
+  type = "_blank"
+) => {
   return goRoute(
     {
       name: "SeriesCourse",
       params: {
-        id,
+        seriesId,
         courseId,
         lessonIndex
       }

@@ -21,7 +21,7 @@
                 type="primary"
                 @click="
                   series.permission
-                    ? goSeriesCourse(series.id, series.courses[0].id, 1)
+                    ? goSeriesCourse(series.id, series.chapters[0].id, 1)
                     : handleOrder()
                 "
               >
@@ -45,75 +45,75 @@
           <p class="page-main-intro" v-if="series.introduction">
             {{ series.introduction }}
           </p>
-          <div class="page-course-list">
+          <div class="page-chapter-list">
             <el-scrollbar class="scroll-section">
-              <el-collapse v-model="activeCourseIndexArr">
+              <el-collapse v-model="activeChapterIndexArr">
                 <div
-                  class="page-course-item"
-                  v-for="(course, key) of series.courses"
+                  class="page-chapter-item"
+                  v-for="(chapter, key) of series.chapters"
                   :key="key"
                 >
                   <el-collapse-item :name="key">
                     <template slot="title">
-                      <div class="course-header">
-                        <h4 class="course-header-title ellipsis">
+                      <div class="chapter-header">
+                        <h4 class="chapter-header-title ellipsis">
                           <span
                             @click.stop="
                               series.permission
-                                ? goSeriesCourse(series.id, course.id, 1)
+                                ? goSeriesChapter(series.id, chapter.id, 1)
                                 : null
                             "
-                            >{{ course.name }}</span
+                            >{{ chapter.name }}</span
                           >
                         </h4>
-                        <div class="course-header-right">
-                          <label class="course-header-count"
-                            >共{{ course.lesson_number }}节</label
+                        <div class="chapter-header-right">
+                          <label class="chapter-header-count"
+                            >共{{ chapter.lesson_number }}节</label
                           >
-                          <label class="course-header-duration"
+                          <label class="chapter-header-duration"
                             >{{
-                              Math.floor(course.second_duration / 60)
+                              Math.floor(chapter.second_duration / 60)
                             }}分钟</label
                           >
                         </div>
                       </div>
                     </template>
                     <ul
-                      class="page-lesson-list"
-                      v-if="course.lessons && course.lessons.length > 0"
+                      class="page-section-list"
+                      v-if="chapter.sections && chapter.sections.length > 0"
                     >
                       <li
                         :class="[
-                          'page-lesson-item',
+                          'page-section-item',
                           lessonStatus(key, index) === 3 ? 'active' : '',
                           lessonStatus(key, index) === 4 ? 'completed' : ''
                         ]"
-                        v-for="(lesson, index) of course.lessons"
-                        :key="lesson.id"
+                        v-for="(section, index) of chapter.sections"
+                        :key="section.id"
                         @click.stop="
                           series.permission
-                            ? goSeriesCourse(series.id, course.id, index + 1)
+                            ? goSeriesChapter(series.id, chapter.id, index + 1)
                             : null
                         "
                       >
-                        <div class="lesson-item-left">
+                        <div class="section-item-left">
                           <i
                             :class="[
-                              'lesson-item-icon',
+                              'section-item-icon',
                               lessonStatusIconClass(key, index)
                             ]"
                           ></i>
-                          <h5 class="lesson-item-title ellipsis">
-                            {{ lesson.name }}
+                          <h5 class="section-item-title ellipsis">
+                            {{ section.name }}
                           </h5>
                         </div>
-                        <div class="lesson-item-right">
-                          <label class="lesson-item-status">
+                        <div class="section-item-right">
+                          <label class="section-item-status">
                             {{ lessonStatusText(key, index) }}
                           </label>
-                          <label class="lesson-item-duration">
+                          <label class="section-item-duration">
                             {{ lessonStatusText(key, index) ? "/" : "" }}
-                            {{ formatSeconds(lesson.second_duration) }}
+                            {{ formatSeconds(section.second_duration) }}
                           </label>
                         </div>
                       </li>
@@ -164,7 +164,7 @@ export default {
       loading: true,
       series: {},
       relations: [],
-      activeCourseIndexArr: [0]
+      activeChapterIndexArr: [0]
     };
   },
   watch: {
@@ -177,17 +177,17 @@ export default {
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放, 5 不能播放
       return (key, index) => {
-        const { lessons } = this.series.courses[key];
+        const { sections } = this.series.chapters[key];
         if (!this.series.permission) {
           return 5;
         }
         if (!index) {
           return 1;
         }
-        const lesson = lessons[index];
-        const last_play_position = lesson.last_play_position || 0;
-        const play_second_duration = lesson.play_second_duration || 0;
-        return play_second_duration >= lesson.second_duration * 0.9
+        const section = sections[index];
+        const last_play_position = section.last_play_position || 0;
+        const play_second_duration = section.play_second_duration || 0;
+        return play_second_duration >= section.second_duration * 0.9
           ? 4
           : last_play_position > 0
           ? 3
@@ -197,12 +197,12 @@ export default {
     lessonStatusText() {
       return (key, index) => {
         const status = this.lessonStatus(key, index);
-        const { lessons } = this.series.courses[key];
-        const lesson = lessons[index];
+        const { sections } = this.series.chapters[key];
+        const section = sections[index];
         let text = "";
         switch (status) {
           case 3:
-            text = this.formatSeconds(lesson.last_play_position);
+            text = this.formatSeconds(section.last_play_position);
             break;
           case 4:
           case 1:
@@ -378,7 +378,7 @@ export default {
         font-size: 14px;
         color: #81948b;
       }
-      .page-course-list {
+      .page-chapter-list {
         height: 375px;
         padding: 16px 0;
         margin-top: 24px;
@@ -397,25 +397,25 @@ export default {
               padding: 16px 8px;
               height: auto;
               background: transparent;
-              .course-header {
+              .chapter-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 width: 100%;
-                .course-header-title {
+                .chapter-header-title {
                   flex: 1;
                   line-height: 24px;
                   font-weight: 500;
                   font-size: 16px;
                   color: #2c3330;
                 }
-                .course-header-right {
+                .chapter-header-right {
                   flex: none;
                   margin-right: 8px;
                   line-height: 24px;
                   font-size: 12px;
                   color: rgba(0, 0, 0, 0.6);
-                  .course-header-duration {
+                  .chapter-header-duration {
                     margin-left: 8px;
                   }
                 }
@@ -429,34 +429,34 @@ export default {
             }
           }
         }
-        .page-lesson-list {
-          .page-lesson-item {
+        .page-section-list {
+          .page-section-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             width: 100%;
             padding: 16px 8px;
             cursor: pointer;
-            & + .page-lesson-item {
+            & + .page-section-item {
               border-top: 1px solid #2c33301a;
             }
             &:hover {
               background: rgba(0, 0, 0, 0.05);
             }
             &.active {
-              .lesson-item-title {
+              .section-item-title {
                 color: @primaryColor !important;
               }
-              .lesson-item-status {
+              .section-item-status {
                 color: @primaryColor !important;
               }
             }
-            .lesson-item-left {
+            .section-item-left {
               flex: 1;
               display: flex;
               align-items: center;
               justify-content: flex-start;
-              .lesson-item-icon {
+              .section-item-icon {
                 flex: none;
                 display: block;
                 margin-right: 16px;
@@ -481,7 +481,7 @@ export default {
                   mask-image: url("~images/course/lock.svg");
                 }
               }
-              .lesson-item-title {
+              .section-item-title {
                 flex: 1;
                 width: 5px;
                 line-height: 24px;
@@ -491,14 +491,14 @@ export default {
               }
             }
 
-            .lesson-item-right {
+            .section-item-right {
               flex: none;
               display: inline-block;
               line-height: 24px;
               font-size: 14px;
               text-align: right;
               color: #999;
-              .lesson-item-duration {
+              .section-item-duration {
                 display: inline-block;
               }
             }

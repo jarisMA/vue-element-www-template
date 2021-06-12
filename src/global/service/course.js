@@ -26,12 +26,12 @@ const courseService = {
   set(id) {
     return request.get(API.courseSetDetail(id));
   },
-  setCourse(id, courseId) {
-    return request.get(API.courseSetCourse(id, courseId));
+  setChapter(id, chapterId) {
+    return request.get(API.courseSetChapter(id, chapterId));
   },
-  setSeriesLessonRecord(id, courseId, lessonId, params = {}) {
+  setSeriesSectionRecord(id, chapterId, sectionId, params = {}) {
     return request.post(
-      API.courseSetLessonRecord(id, courseId, lessonId),
+      API.courseSetSectionRecord(id, chapterId, sectionId),
       params
     );
   }

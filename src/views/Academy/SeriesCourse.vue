@@ -25,7 +25,7 @@ export default {
   watch: {
     ["$route"](val, oldVal) {
       if (
-        val.params.id !== oldVal.params.id ||
+        val.params.seriesId !== oldVal.params.seriesId ||
         val.params.courseId !== oldVal.params.courseId
       ) {
         this.getData();
@@ -38,7 +38,7 @@ export default {
   methods: {
     getData() {
       courseService
-        .setCourse(this.$route.params.id, this.$route.params.courseId)
+        .setChapter(this.$route.params.seriesId, this.$route.params.courseId)
         .then(res => {
           this.detail = res;
           this.lessons = res.lessons;
@@ -50,8 +50,8 @@ export default {
       if (!setRecording) {
         this.setRecording = true;
         courseService
-          .setSeriesLessonRecord(
-            this.$route.params.id,
+          .setSeriesSectionRecord(
+            this.$route.params.seriesId,
             this.$route.params.courseId,
             lesson.id,
             params

@@ -85,10 +85,10 @@ export default {
   courseSeriesCategory: `${WEB_PREFIX}/series-category`,
   courseSeries: `${WEB_PREFIX}/series`,
   courseSetDetail: id => `${WEB_PREFIX}/series/${id}/detail`,
-  courseSetCourse: (id, courseId) =>
-    `${WEB_PREFIX}/series/${id}/course/${courseId}`,
-  courseSetLessonRecord: (id, courseId, lessonId) =>
-    `${WEB_PREFIX}/series/${id}/course/${courseId}/lesson/${lessonId}/record`,
+  courseSetChapter: (id, chapterId) =>
+    `${WEB_PREFIX}/series/${id}/chapter/${chapterId}`,
+  courseSetSectionRecord: (id, chapterId, sectionId) =>
+    `${WEB_PREFIX}/series/${id}/chapter/${chapterId}/section/${sectionId}/record`,
 
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>

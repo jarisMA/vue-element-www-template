@@ -42,7 +42,7 @@ const routes = [
     component: Protocol
   },
   {
-    path: "/course/:id/lesson/:lessonIndex",
+    path: "/course/:courseId/lesson/:lessonIndex",
     name: "Course",
     component: Course,
     meta: {
@@ -50,7 +50,7 @@ const routes = [
     }
   },
   {
-    path: "/series/:id/course/:courseId/lesson/:lessonIndex",
+    path: "/series/:seriesId/course/:courseId/section/:lessonIndex",
     name: "SeriesCourse",
     component: SeriesCourse,
     meta: {
