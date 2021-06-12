@@ -16,7 +16,9 @@
                 <span class="primary">{{ item.current_price }}</span>
               </label>
               <div class="content-item-desc">
-                <p v-for="(desc, key) of item.desc" :key="key">{{ desc }}</p>
+                <!-- <p v-for="(desc, key) of item.desc" :key="key">{{ desc }}</p> -->
+                <p>付费课程免费看</p>
+                <p>PlanGo工具开放使用</p>
               </div>
             </div>
             <div class="content-item-bottom">
@@ -211,6 +213,9 @@ export default {
               color: #fff;
               background: @primaryColor;
               cursor: pointer;
+              &:hover {
+                box-shadow: 0px 4px 10px rgba(20, 175, 100, 0.3);
+              }
             }
           }
         }

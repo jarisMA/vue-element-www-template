@@ -24,7 +24,7 @@
       <button
         class="card-btn"
         :style="{ background: camp.price_color }"
-        @click="goAcademyCamp(camp.id)"
+        @click="goAcademyCampDetail(camp.id)"
       >
         {{
           campStatus(camp.term) === 1
@@ -46,7 +46,7 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import { campMixin } from "./mixin";
-
+import { goAcademyCampDetail } from "utils/routes";
 export default {
   name: "CampCard",
   components: { TheLoadingImage },
@@ -58,9 +58,7 @@ export default {
     }
   },
   methods: {
-    goAcademyCamp(id) {
-      this.$emit("go", id);
-    }
+    goAcademyCampDetail
   }
 };
 </script>

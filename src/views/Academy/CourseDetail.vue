@@ -46,7 +46,7 @@
             {{ course.introduction }}
           </p>
           <div class="page-lesson-wrapper">
-            <el-scrollbar class="scroll-section">
+            <div class="scroll-section">
               <ul class="page-lesson-list">
                 <li
                   :class="[
@@ -82,7 +82,7 @@
                   </div>
                 </li>
               </ul>
-            </el-scrollbar>
+            </div>
           </div>
         </div>
       </div>
@@ -259,6 +259,7 @@ export default {
   background: #fff !important;
   .page-main {
     display: flex;
+    height: 520px;
     padding-bottom: 16px;
     border-bottom: 1px solid #efefef;
     .page-main-left {
@@ -296,15 +297,20 @@ export default {
       }
     }
     .page-main-right {
+      display: flex;
+      flex-direction: column;
       margin-left: 20px;
       width: 380px;
+      height: 100%;
       .page-main-title {
+        flex: none;
         line-height: 32px;
         font-weight: 600;
         font-size: 20px;
         color: #2c3330;
       }
       .page-main-right-info {
+        flex: none;
         margin-top: 8px;
         .page-main-info-text {
           line-height: 24px;
@@ -333,95 +339,100 @@ export default {
         }
       }
       .page-main-intro {
+        flex: none;
         margin-top: 16px;
         line-height: 24px;
         font-size: 14px;
         color: #81948b;
       }
       .page-lesson-wrapper {
+        flex: 1;
         width: 100%;
-        height: 375px;
-        .scroll-section {
-          height: 100%;
-          /deep/ .el-scrollbar__wrap {
-            overflow-x: hidden;
-          }
-        }
-      }
-      .page-lesson-list {
-        padding: 16px;
         margin-top: 24px;
+        overflow: hidden;
         background: #fafafa;
-        .page-lesson-item {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 100%;
-          padding: 16px 8px;
-          cursor: pointer;
-          & + .page-lesson-item {
-            border-top: 1px solid #2c33301a;
+        .scroll-section {
+          width: calc(100% + 15px);
+          height: 100%;
+          overflow-y: scroll;
+          &::-webkit-scrollbar {
+            width: 15px;
           }
-          &:hover {
-            background: rgba(0, 0, 0, 0.05);
-          }
-          &.active {
-            .lesson-item-title {
-              color: @primaryColor !important;
-            }
-            .lesson-item-status {
-              color: @primaryColor !important;
-            }
-          }
-          .lesson-item-left {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            .lesson-item-icon {
-              flex: none;
-              display: block;
-              margin-right: 16px;
-              width: 24px;
-              height: 24px;
-              mask-size: cover;
-              mask-repeat: no-repeat;
-              &.unplay-icon {
-                background-color: #2c3330;
-                mask-image: url("~images/course/unplay.svg");
+          .page-lesson-list {
+            padding: 16px;
+            background: #fafafa;
+            .page-lesson-item {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: 100%;
+              padding: 16px 8px;
+              cursor: pointer;
+              & + .page-lesson-item {
+                border-top: 1px solid #2c33301a;
               }
-              &.played-icon {
-                background-color: @primaryColor;
-                mask-image: url("~images/course/unplay.svg");
+              &:hover {
+                background: rgba(0, 0, 0, 0.05);
               }
-              &.completed-icon {
-                background-color: #2c3330;
-                mask-image: url("~images/course/completed.svg");
+              &.active {
+                .lesson-item-title {
+                  color: @primaryColor !important;
+                }
+                .lesson-item-status {
+                  color: @primaryColor !important;
+                }
               }
-              &.lock-icon {
-                background-color: #2c3330;
-                mask-image: url("~images/course/lock.svg");
+              .lesson-item-left {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                .lesson-item-icon {
+                  flex: none;
+                  display: block;
+                  margin-right: 16px;
+                  width: 24px;
+                  height: 24px;
+                  mask-size: cover;
+                  mask-repeat: no-repeat;
+                  &.unplay-icon {
+                    background-color: #2c3330;
+                    mask-image: url("~images/course/unplay.svg");
+                  }
+                  &.played-icon {
+                    background-color: @primaryColor;
+                    mask-image: url("~images/course/unplay.svg");
+                  }
+                  &.completed-icon {
+                    background-color: #2c3330;
+                    mask-image: url("~images/course/completed.svg");
+                  }
+                  &.lock-icon {
+                    background-color: #2c3330;
+                    mask-image: url("~images/course/lock.svg");
+                  }
+                }
+                .lesson-item-title {
+                  flex: 1;
+                  width: 5px;
+                  line-height: 24px;
+                  font-size: 14px;
+                  font-weight: normal;
+                  color: #2c3330;
+                }
               }
-            }
-            .lesson-item-title {
-              flex: 1;
-              width: 5px;
-              line-height: 24px;
-              font-size: 14px;
-              font-weight: normal;
-              color: #2c3330;
-            }
-          }
 
-          .lesson-item-right {
-            flex: none;
-            display: inline-block;
-            line-height: 24px;
-            font-size: 14px;
-            text-align: right;
-            color: #999;
-            .lesson-item-duration {
-              display: inline-block;
+              .lesson-item-right {
+                flex: none;
+                display: inline-block;
+                line-height: 24px;
+                font-size: 14px;
+                text-align: right;
+                color: #999;
+                .lesson-item-duration {
+                  display: inline-block;
+                }
+              }
             }
           }
         }
