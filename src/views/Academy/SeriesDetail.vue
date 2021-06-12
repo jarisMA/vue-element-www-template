@@ -45,7 +45,7 @@
           <p class="page-main-intro" v-if="series.introduction">
             {{ series.introduction }}
           </p>
-          <div class="page-course-list">
+          <div class="page-chapter-list">
             <div class="scroll-section">
               <el-collapse v-model="activeChapterIndexArr">
                 <div
@@ -60,7 +60,7 @@
                           <span
                             @click.stop="
                               series.permission
-                                ? goSeriesChapter(series.id, chapter.id, 1)
+                                ? goSeriesCourse(series.id, chapter.id, 1)
                                 : null
                             "
                             >{{ chapter.name }}</span
@@ -92,7 +92,7 @@
                         :key="section.id"
                         @click.stop="
                           series.permission
-                            ? goSeriesChapter(series.id, chapter.id, index + 1)
+                            ? goSeriesCourse(series.id, chapter.id, index + 1)
                             : null
                         "
                       >
