@@ -186,12 +186,15 @@ export default {
     },
     handleToggleLesson(index) {
       const { lessons, activeLessonIndex } = this;
-      if (lessons[index].id === lessons[activeLessonIndex].id) {
+      if (
+        lessons[activeLessonIndex] &&
+        lessons[index].id === lessons[activeLessonIndex].id
+      ) {
         return;
       }
       this.$router.push({
         params: {
-          id: this.$route.params.id,
+          ...this.$route.params,
           lessonIndex: index + 1
         }
       });

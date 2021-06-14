@@ -25,7 +25,10 @@ export default {
   },
   watch: {
     ["$route"](val, oldVal) {
-      if (val.params.id !== oldVal.params.id) {
+      if (
+        val.params.id !== oldVal.params.id ||
+        val.params.courseId !== oldVal.params.courseId
+      ) {
         this.getCourse();
       }
     }
@@ -35,7 +38,8 @@ export default {
   },
   methods: {
     getCourse() {
-      courseService.course(this.$route.params.id).then(res => {
+      const id = this.$route.params.id || this.$route.params.courseId;
+      courseService.course(id).then(res => {
         if (!res.permission) {
           this.$notice({
             type: "warning",
@@ -52,8 +56,9 @@ export default {
       const lesson = lessons[activeLessonIndex];
       if (!setRecording) {
         this.setRecording = true;
+        const id = this.$route.params.id || this.$route.params.courseId;
         courseService
-          .setLessonRecord(this.$route.params.id, lesson.id, params)
+          .setLessonRecord(id, lesson.id, params)
           .then(() => {
             this.$set(lessons, activeLessonIndex, {
               ...lesson,
