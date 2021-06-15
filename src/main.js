@@ -13,6 +13,8 @@ import MessageBox from "components/MessageBox/index";
 import Notification from "components/Notification/index";
 import VueAwesomeSwiper from "vue-awesome-swiper";
 import waterfall from "vue-waterfall2";
+import VueTypedJs from "vue-typed-js";
+import VueCarousel from "vue-carousel";
 
 Vue.use(VueAwesomeSwiper);
 Vue.use(waterfall);
@@ -20,6 +22,8 @@ Vue.use(animate);
 Vue.use(IconSvg);
 Vue.use(MessageBox);
 Vue.use(Notification);
+Vue.use(VueTypedJs);
+Vue.use(VueCarousel);
 Vue.config.productionTip = false;
 new Vue({
   router,
