@@ -71,7 +71,6 @@
           :activeCat="activeCat"
           :columns="columns"
           @addValue="handleValueAdd"
-          @columnChange="handleColumnChange"
         />
         <div class="commodity-wrapper" v-loading="commodityLoading">
           <div

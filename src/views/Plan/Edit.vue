@@ -336,6 +336,8 @@ export default {
 @import "~styles/variable.less";
 @oWidth: 44px;
 .edit-plan-container {
+  position: relative;
+  z-index: 4;
   width: 100vw;
   margin-top: 14px !important;
   height: calc(100vh - 36px);

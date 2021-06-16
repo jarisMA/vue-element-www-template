@@ -1123,8 +1123,8 @@ export default {
         align-items: center;
         img {
           display: inline-block;
-          width: 95px;
-          height: 85px;
+          width: 100px;
+          height: 100px;
           margin-right: 15px;
         }
         .size-input-wrapper {
