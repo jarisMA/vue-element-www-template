@@ -353,46 +353,49 @@
             />
             <div class="size-input-wrapper">
               <div class="number-input size-input">
+                <label class="size-input-label">a</label>
                 <el-input
                   v-model="form.min_size_x"
-                  placeholder="a"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_x"
-                  placeholder="a"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
               </div>
               <div class="number-input size-input">
+                <label class="size-input-label">b</label>
                 <el-input
                   v-model="form.min_size_y"
-                  placeholder="b"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_y"
-                  placeholder="b"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
               </div>
               <div class="number-input size-input">
+                <label class="size-input-label">c</label>
                 <el-input
                   v-model="form.min_size_z"
-                  placeholder="c"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_z"
-                  placeholder="c"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
@@ -1140,6 +1143,16 @@ export default {
             & + .size-input {
               margin-top: 10px;
             }
+          }
+          .size-input-label {
+            width: 30px;
+            height: 27px;
+            line-height: 27px;
+            font-size: 14px;
+            color: #2c3330;
+            text-align: center;
+            background: #fff;
+            border-right: 1px solid #efefef;
           }
         }
       }
