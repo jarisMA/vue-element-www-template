@@ -9,6 +9,7 @@
             content="品牌"
             :open-delay="tipsDelay"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(allBrands.length > 0)"
           >
             <div
@@ -46,6 +47,7 @@
             effect="dark"
             content="价格"
             :open-delay="tipsDelay"
+            :visible-arrow="tipsArrowVisible"
             placement="bottom"
           >
             <div
@@ -77,6 +79,7 @@
             effect="dark"
             content="尺寸"
             :open-delay="tipsDelay"
+            :visible-arrow="tipsArrowVisible"
             placement="bottom"
           >
             <div
@@ -111,6 +114,7 @@
             :open-delay="tipsDelay"
             :content="attr.name"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(attr.children && attr.children.length > 0)"
           >
             <div
@@ -154,6 +158,7 @@
             content="其余"
             :open-delay="tipsDelay"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(moreAttrs.length > 0)"
           >
             <div
@@ -505,7 +510,8 @@ export default {
   },
   data() {
     return {
-      tipsDelay: 1000,
+      tipsDelay: 500,
+      tipsArrowVisible: false,
       price_options,
       attrs: [],
       attrFocusId: 0,

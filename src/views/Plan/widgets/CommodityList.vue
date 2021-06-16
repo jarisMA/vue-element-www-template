@@ -3,16 +3,24 @@
     <div :class="['brief', briefTheme]" v-show="!full_screen">
       <div class="list-header">
         <label class="price-wrapper" v-if="!up">
-          <label class="price"
-            ><span class="price-unit">¥</span>{{ totalPrice }}</label
-          >
-          <label
-            class="refresh-price ellipsis"
-            @click="!refreshing ? handleRefreshPrice() : null"
-          >
-            <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
-            >更新总价
-          </label>
+          <template v-if="!refreshing">
+            <label class="price"
+              ><span class="price-unit">¥</span>{{ totalPrice }}</label
+            >
+            <label
+              class="refresh-price ellipsis"
+              @click="!refreshing ? handleRefreshPrice() : null"
+            >
+              <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+              >更新总价
+            </label>
+          </template>
+          <div class="refreshing-wrapper animation" v-else>
+            <div class="refreshing-icon icon-1"></div>
+            <div class="refreshing-icon icon-2"></div>
+            <div class="refreshing-icon icon-3"></div>
+            <div class="refreshing-icon icon-4"></div>
+          </div>
         </label>
         <label v-else class="header-title">已选商品清单</label>
         <div class="operate-wrapper">
@@ -212,7 +220,7 @@
         </div>
         <div class="list-footer">
           <div class="footer-content">
-            <div class="footer-content-left">
+            <div class="footer-content-left" v-if="!refreshing">
               <label class="price-wrapper">
                 <label class="price"
                   ><span class="price-unit">¥</span>{{ totalPrice }}</label
@@ -227,6 +235,12 @@
                   >更新总价
                 </label>
               </label>
+            </div>
+            <div class="refreshing-wrapper animation" v-else>
+              <div class="refreshing-icon icon-1"></div>
+              <div class="refreshing-icon icon-2"></div>
+              <div class="refreshing-icon icon-3"></div>
+              <div class="refreshing-icon icon-4"></div>
             </div>
             <div class="footer-content-right">
               <label class="number"> 共 {{ totalNumber }} 件商品 </label>
@@ -483,20 +497,50 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @padding: 10px;
+@refreshingDuration: 0.8s;
 @keyframes refreshing {
   0% {
-    transform: rotate(0);
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
   }
   100% {
-    transform: rotate(360deg);
+    transform: scale(0);
   }
 }
-@refreshingDuration: 0.7s;
 .list-wrapper {
   width: 100%;
   height: 100%;
   &.full_screen {
     transform: unset !important;
+  }
+  .refreshing-wrapper {
+    margin-left: 20px;
+    .refreshing-icon {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      & + .refreshing-icon {
+        margin-left: 10px;
+      }
+      &.icon-1 {
+        animation: refreshing @refreshingDuration ease-out infinite;
+      }
+      &.icon-2 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 1
+          ease-out infinite;
+      }
+      &.icon-3 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 2
+          ease-out infinite;
+      }
+      &.icon-4 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 3
+          ease-out infinite;
+      }
+    }
   }
   .brief {
     display: flex;
@@ -505,6 +549,11 @@ export default {
     height: 100%;
     background: #fff;
     &.white {
+      .refreshing-wrapper {
+        .refreshing-icon {
+          background: @primaryColor;
+        }
+      }
       .list-header {
         border-top: 1px solid #efefef;
         background: #fff;
@@ -554,9 +603,9 @@ export default {
             height: 16px;
             background: #fff;
             mask: url("~images/common/refresh.svg") no-repeat center;
-            &.refreshing {
-              animation: refreshing @refreshingDuration linear infinite;
-            }
+            // &.refreshing {
+            //   animation: refreshing @refreshingDuration linear infinite;
+            // }
           }
         }
       }
@@ -711,9 +760,9 @@ export default {
             height: 16px;
             background: @primaryColor;
             mask: url("~images/common/refresh.svg") no-repeat center;
-            &.refreshing {
-              animation: refreshing @refreshingDuration linear infinite;
-            }
+            // &.refreshing {
+            //   animation: refreshing @refreshingDuration linear infinite;
+            // }
           }
         }
       }
@@ -956,9 +1005,9 @@ export default {
                 height: 16px;
                 background: #fff;
                 mask: url("~images/common/refresh.svg") no-repeat center;
-                &.refreshing {
-                  animation: refreshing @refreshingDuration linear infinite;
-                }
+                // &.refreshing {
+                //   animation: refreshing @refreshingDuration linear infinite;
+                // }
               }
             }
           }
