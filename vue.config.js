@@ -1,15 +1,15 @@
 const webpack = require("webpack");
 const path = require("path");
 
-function resolve(dir) {
+function resolve (dir) {
   return path.join(__dirname, dir);
 }
 
 module.exports = {
   devServer: {
     open: true,
-    host: `www-test1${process.env.VUE_APP_DOMAIN}`
-    //port: 80
+    host: `www-test1${process.env.VUE_APP_DOMAIN}`,
+    port: 80
     // proxy: {
     //   "/api": {
     //     // target: "https://api.home-plan.cn",

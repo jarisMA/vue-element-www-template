@@ -14,7 +14,7 @@ function randomTop(el) {
   const timer = setTimeout(() => {
     randomTop(el);
     clearTimeout(timer);
-  }, 10 * 1000);
+  }, 30 * 1000);
 }
 class PhoneNumberComponent {
   constructor() {}
@@ -327,6 +327,11 @@ export default {
 @randomTop: `Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%" `;
 @keyframes phoneMove {
   0% {
+    right: -200%;
+    transform: translate3d(100%, 0, 0);
+  }
+  66% {
+    transform: translate3d(0, 0, 0);
     right: 0;
   }
   100% {
@@ -356,7 +361,7 @@ export default {
       color: rgba(255, 255, 255, 0.8);
       background: rgba(0, 0, 0, 0.4);
       z-index: 1;
-      animation: phoneMove 10s linear infinite;
+      animation: phoneMove 30s linear infinite;
       transform: translate3d(0, 0, 0);
     }
     video {
