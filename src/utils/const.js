@@ -117,10 +117,10 @@ export const COURSE_PRICE_TYPE_PAY = 2;
 
 // 课程阶段
 export const COURSE_LEVEL = {
-  0: "入门",
-  1: "初阶",
-  2: "进阶",
-  3: "高阶"
+  1: "入门",
+  2: "初阶",
+  3: "进阶",
+  4: "高阶"
 };
 
 // 订单类型
@@ -131,11 +131,11 @@ export const ORDER_TYPE_VIP = 4;
 export const ORDER_TYPE_COURSE_SERIES = 5;
 
 export const ORDER_TYPE = {
-  1: "课程",
-  2: "实战营",
-  3: "宝典",
-  4: "VIP",
-  5: "体系课"
+  [ORDER_TYPE_COURSE]: "课程",
+  [ORDER_TYPE_CAMP]: "实战营",
+  [ORDER_TYPE_BIBLE]: "宝典",
+  [ORDER_TYPE_VIP]: "VIP",
+  [ORDER_TYPE_COURSE_SERIES]: "体系课"
 };
 
 // 支付方式
