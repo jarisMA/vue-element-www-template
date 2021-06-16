@@ -76,7 +76,7 @@
                 class="el-avatar-border"
                 :size="48"
                 :url="userInfo.avatar_url"
-                @click.native="goMyCourse()"
+                @click.native="goMyClasses()"
               ></the-avatar>
               <div class="user-handle_show">
                 <div class="show-container landing">
@@ -94,10 +94,10 @@
                     </p>
                   </div>
                   <ul class="login-operation">
-                    <li @click="goMyPlan()" class="workbench">
-                      <span>工作台</span>
+                    <li @click="goMyClasses()" class="workbench">
+                      <span>学习中心</span>
                     </li>
-                    <li @click="goMyCourse()" class="setting">
+                    <li @click="goMySetting()" class="setting">
                       <span>个人中心</span>
                     </li>
                   </ul>
@@ -122,7 +122,8 @@ import { mapMutations, mapState } from "vuex";
 import {
   goHome,
   goMyPlan,
-  goMyCourse,
+  goMyClasses,
+  goMySetting,
   goBible,
   goQuestion,
   goAcademy,
@@ -201,11 +202,18 @@ export default {
         goMyPlan();
       }
     },
-    goMyCourse() {
+    goMyClasses() {
       if (this.theme === "primary") {
-        goMyCourse("_blank");
+        goMyClasses("_blank");
       } else {
-        goMyCourse();
+        goMyClasses();
+      }
+    },
+    goMySetting() {
+      if (this.theme === "primary") {
+        goMySetting("_blank");
+      } else {
+        goMySetting();
       }
     },
     loginDialogVisible(index) {

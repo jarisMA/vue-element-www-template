@@ -264,6 +264,51 @@ export const go404 = (type = "replace") => {
   );
 };
 
+export const goMyClasses = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Classes"
+    },
+    type
+  );
+};
+
+export const goMyCourses = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Courses"
+    },
+    type
+  );
+};
+
+export const goMySystems = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Systems"
+    },
+    type
+  );
+};
+
+export const goMyVip = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Vip"
+    },
+    type
+  );
+};
+
+export const goPurchase = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Purchase"
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&

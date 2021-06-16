@@ -7,9 +7,9 @@ function resolve(dir) {
 
 module.exports = {
   devServer: {
-    open: true
-    //host: `www-test1${process.env.VUE_APP_DOMAIN}`,
-    //port: 80
+    open: true,
+    host: `www-test1${process.env.VUE_APP_DOMAIN}`,
+    port: 80
     // proxy: {
     //   "/api": {
     //     // target: "https://api.home-plan.cn",

@@ -1,5 +1,5 @@
 <template>
-  <div class="my-page" v-loading="loading || dataLoading">
+  <div class="my-page">
     <div class="page-header">
       <div class="container-1180">
         <div class="page-header-left">
@@ -56,15 +56,6 @@
             <li
               :class="[
                 'page-menu-item',
-                activeTab === 'MyCourse' ? 'active' : ''
-              ]"
-              @click="goMyCourse()"
-            >
-              我的课程
-            </li>
-            <li
-              :class="[
-                'page-menu-item',
                 activeTab === 'MySetting' ? 'active' : ''
               ]"
               @click="goMySetting()"
@@ -78,7 +69,22 @@
               ]"
               @click="goMyQuestion()"
             >
-              我的提问
+              我的问答
+            </li>
+            <li
+              :class="['page-menu-item', activeTab === 'Vip' ? 'active' : '']"
+              @click="goMyVip()"
+            >
+              会员中心
+            </li>
+            <li
+              :class="[
+                'page-menu-item',
+                activeTab === 'Purchase' ? 'active' : ''
+              ]"
+              @click="goPurchase()"
+            >
+              我的订单
             </li>
           </ul>
         </div>
@@ -87,11 +93,12 @@
             v-if="activeTab === 'MySetting'"
             :loading.sync="loading"
           />
-          <my-course v-if="activeTab === 'MyCourse'" :loading.sync="loading" />
           <my-question
             v-if="activeTab === 'MyQuestion'"
             :loading.sync="loading"
           />
+          <vip-center v-if="activeTab === 'Vip'" :loading.sync="loading" />
+          <purchase v-if="activeTab === 'Purchase'" :loading.sync="loading" />
         </div>
       </div>
     </div>
@@ -114,31 +121,31 @@ import { mapMutations, mapState } from "vuex";
 import { isVip } from "utils/function";
 import TheAvatar from "components/TheAvatar";
 import MyProfile from "./widgets/Profile";
-import MyCourse from "./widgets/Course";
 import MyQuestion from "./widgets/Question";
-
+import Purchase from "./widgets/Purchase";
 import ClockDialog from "./widgets/ClockDialog";
 import GainDialog from './widgets/GainDialog';
-
-import { goMySetting, goMyCourse, goMyQuestion } from "utils/routes";
 import userService from "service/user";
+import { goMySetting, goMyQuestion, goPurchase, goMyVip } from "utils/routes";
+import VipCenter from './widgets/VipCenter';
 const week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
 
 export default {
-  name: "MyIndex",
+  name: "MyCenter",
   components: {
     TheAvatar,
     MyProfile,
-    MyCourse,
     MyQuestion,
+    Purchase,
     ClockDialog,
-    GainDialog
+    GainDialog,
+    VipCenter
   },
   data () {
     return {
       dataLoading: true,
       loading: true,
-      activeTab: "MyCourse",
+      activeTab: "MySetting",
       weekClocks: [],
       shineCount: 0,
       gainVisible: false,
@@ -148,7 +155,6 @@ export default {
   },
   created () {
     this.activeTab = this.$route.name;
-    this.getData();
   },
   watch: {
     ["$route"] (val) {
@@ -157,7 +163,7 @@ export default {
   },
   computed: {
     ...mapState(["userInfo"]),
-    clocks () {
+        clocks () {
       const now = new Date();
       const index = now.getDay();
       let clocks = [];
@@ -220,9 +226,10 @@ export default {
     ...mapMutations(['USERINFO']),
     isVip,
     goMySetting,
-    goMyCourse,
     goMyQuestion,
-    getData () {
+    goPurchase,
+    goMyVip,
+        getData () {
       this.dataLoading = true;
       const year = new Date().getFullYear();
       const month = new Date().getMonth() + 1;
