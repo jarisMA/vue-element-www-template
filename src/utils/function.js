@@ -51,9 +51,12 @@ export const getPy = str => {
 // 获取字符串首字母
 export const checkCh = ch => {
   var uni = ch.charCodeAt(0);
-  //如果不在汉字处理范围之内,返回原字符,也可以调用自己的处理函数
+  //如果不在汉字处理范围之内,返回'#',也可以调用自己的处理函数
   if (uni > 40869 || uni < 19968) {
-    return ch;
+    if ((uni >= 65 && uni <= 90) || (uni >= 97 && uni <= 122)) {
+      return ch;
+    }
+    return "#";
   }
   //检查是否是多音字,是按多音字处理,不是就直接在strChineseFirstPY字符串中找对应的首字母
   return oMultiDiff[uni]
