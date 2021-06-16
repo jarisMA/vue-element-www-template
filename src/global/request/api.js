@@ -109,5 +109,10 @@ export default {
   order: no => `${WEB_PREFIX}/order/${no}`,
   orderCheck: no => `${WEB_PREFIX}/order/${no}/check`,
   payByWechat: no => `${WEB_PREFIX}/payment/wechat/${no}`,
-  payByAlipay: no => `${WEB_PREFIX}/payment/alipay/${no}`
+  payByAlipay: no => `${WEB_PREFIX}/payment/alipay/${no}`,
+
+  myCourses: `${WEB_PREFIX}/course/mine`,
+  mySeries: `${WEB_PREFIX}/series/mine`,
+  myOrder: `${WEB_PREFIX}/order/mine`,
+  myHistory: `${WEB_PREFIX}/vip/mine`
 };

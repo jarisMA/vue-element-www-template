@@ -33,15 +33,6 @@ export const goMySetting = (type = "_self") => {
   );
 };
 
-export const goMyCourse = (type = "_self") => {
-  return goRoute(
-    {
-      name: "MyCourse"
-    },
-    type
-  );
-};
-
 export const goMyQuestion = (type = "_self") => {
   return goRoute(
     {
@@ -264,6 +255,51 @@ export const go404 = (type = "replace") => {
   return goRoute(
     {
       name: "NotFound"
+    },
+    type
+  );
+};
+
+export const goMyClasses = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Classes"
+    },
+    type
+  );
+};
+
+export const goMyCourses = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Courses"
+    },
+    type
+  );
+};
+
+export const goMySystems = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Systems"
+    },
+    type
+  );
+};
+
+export const goMyVip = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Vip"
+    },
+    type
+  );
+};
+
+export const goPurchase = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Purchase"
     },
     type
   );

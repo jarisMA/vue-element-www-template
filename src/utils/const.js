@@ -130,6 +130,14 @@ export const ORDER_TYPE_BIBLE = 3;
 export const ORDER_TYPE_VIP = 4;
 export const ORDER_TYPE_COURSE_SERIES = 5;
 
+export const ORDER_TYPE = {
+  [ORDER_TYPE_COURSE]: "课程",
+  [ORDER_TYPE_CAMP]: "实战营",
+  [ORDER_TYPE_BIBLE]: "宝典",
+  [ORDER_TYPE_VIP]: "VIP",
+  [ORDER_TYPE_COURSE_SERIES]: "体系课"
+};
+
 // 支付方式
 export const PAY_METHOD_WECHAT = 1;
 export const PAY_METHOD_ALIPAY = 2;

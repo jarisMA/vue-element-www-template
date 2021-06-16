@@ -19,6 +19,9 @@ const orderService = {
       API.payByAlipay(no) + `?return_url=${params.return_url}`,
       "_blank"
     );
+  },
+  myOrder(params = {}) {
+    return request.get(API.myOrder, params);
   }
 };
 
