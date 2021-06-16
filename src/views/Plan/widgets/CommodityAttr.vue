@@ -9,6 +9,7 @@
             content="品牌"
             :open-delay="tipsDelay"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(allBrands.length > 0)"
           >
             <div
@@ -46,6 +47,7 @@
             effect="dark"
             content="价格"
             :open-delay="tipsDelay"
+            :visible-arrow="tipsArrowVisible"
             placement="bottom"
           >
             <div
@@ -77,6 +79,7 @@
             effect="dark"
             content="尺寸"
             :open-delay="tipsDelay"
+            :visible-arrow="tipsArrowVisible"
             placement="bottom"
           >
             <div
@@ -111,6 +114,7 @@
             :open-delay="tipsDelay"
             :content="attr.name"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(attr.children && attr.children.length > 0)"
           >
             <div
@@ -154,6 +158,7 @@
             content="其余"
             :open-delay="tipsDelay"
             placement="bottom"
+            :visible-arrow="tipsArrowVisible"
             :disabled="!(moreAttrs.length > 0)"
           >
             <div
@@ -348,46 +353,49 @@
             />
             <div class="size-input-wrapper">
               <div class="number-input size-input">
+                <label class="size-input-label">a</label>
                 <el-input
                   v-model="form.min_size_x"
-                  placeholder="a"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_x"
-                  placeholder="a"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
               </div>
               <div class="number-input size-input">
+                <label class="size-input-label">b</label>
                 <el-input
                   v-model="form.min_size_y"
-                  placeholder="b"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_y"
-                  placeholder="b"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
               </div>
               <div class="number-input size-input">
+                <label class="size-input-label">c</label>
                 <el-input
                   v-model="form.min_size_z"
-                  placeholder="c"
+                  placeholder="0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_z"
-                  placeholder="c"
+                  placeholder="∞"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
                   :controls="false"
                 ></el-input>
@@ -505,7 +513,8 @@ export default {
   },
   data() {
     return {
-      tipsDelay: 1000,
+      tipsDelay: 500,
+      tipsArrowVisible: false,
       price_options,
       attrs: [],
       attrFocusId: 0,
@@ -1123,8 +1132,8 @@ export default {
         align-items: center;
         img {
           display: inline-block;
-          width: 95px;
-          height: 85px;
+          width: 100px;
+          height: 100px;
           margin-right: 15px;
         }
         .size-input-wrapper {
@@ -1134,6 +1143,16 @@ export default {
             & + .size-input {
               margin-top: 10px;
             }
+          }
+          .size-input-label {
+            width: 30px;
+            height: 27px;
+            line-height: 27px;
+            font-size: 14px;
+            color: #2c3330;
+            text-align: center;
+            background: #fff;
+            border-right: 1px solid #efefef;
           }
         }
       }

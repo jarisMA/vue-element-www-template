@@ -1,28 +1,37 @@
 <template>
   <div :class="['list-wrapper', full_screen ? 'full_screen' : '']">
-    <div class="brief" v-show="!full_screen">
+    <div :class="['brief', briefTheme]" v-show="!full_screen">
       <div class="list-header">
         <label class="price-wrapper" v-if="!up">
-          <label class="price">¥{{ totalPrice }}</label>
-          <label
-            class="refresh-price ellipsis"
-            @click="!refreshing ? handleRefreshPrice() : null"
-          >
-            <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
-            >更新总价
-          </label>
+          <template v-if="!refreshing">
+            <label class="price"
+              ><span class="price-unit">¥</span>{{ totalPrice }}</label
+            >
+            <label
+              class="refresh-price ellipsis"
+              @click="!refreshing ? handleRefreshPrice() : null"
+            >
+              <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+              >更新总价
+            </label>
+          </template>
+          <div class="refreshing-wrapper animation" v-else>
+            <div class="refreshing-icon icon-1"></div>
+            <div class="refreshing-icon icon-2"></div>
+            <div class="refreshing-icon icon-3"></div>
+            <div class="refreshing-icon icon-4"></div>
+          </div>
         </label>
         <label v-else class="header-title">已选商品清单</label>
         <div class="operate-wrapper">
           <label
-            v-if="up"
             class="full_screen-icon bgImg"
             @click="toggleFullScreen"
           ></label>
-          <label
+          <!-- <label
             :class="['bgImg', up ? 'down-icon' : 'up-icon']"
             @click="toggleUp"
-          ></label>
+          ></label> -->
         </div>
       </div>
       <div class="list-content">
@@ -79,146 +88,167 @@
         </label>
       </div>
     </div>
-    <div :class="['full', headerUnfold ? 'unfold' : '']" v-show="full_screen">
-      <div class="container-1200-wrapper">
-        <div class="container-1200">
-          <div class="list-content">
-            <h3 class="list-title">
-              已选商品清单
-              <label
-                class="full_screen-icon bgImg"
-                @click="toggleFullScreen"
-              ></label>
-            </h3>
-            <div class="plan-desc">
-              <label class="plan-name">
-                方案名称 <span>{{ design.name || "-" }}</span>
-              </label>
-              <label class="plan-aulabelor">
-                设计师 <span>{{ userInfo.nickname }}</span>
-              </label>
-              <label class="plan-type">
-                房型信息
-                <span class="plan-spec">{{ design.srcArea || "-" }}㎡</span
-                >|<span>{{ design.specName || "-" }}</span>
-              </label>
-            </div>
-            <div class="list-desc">
-              <div
-                class="list-section"
-                v-for="(item, key) of listing.list"
-                :key="key"
-              >
-                <h3 class="list-spec">
-                  {{ item.typeName }}
-                </h3>
-                <ul class="table">
-                  <li class="table-header">
-                    <label class="order-label">序号</label>
-                    <label class="img-label">产品图</label>
-                    <label class="name-label">产品名称</label>
-                    <label class="brand-label">品牌</label>
-                    <label class="size-label">尺寸(mm)</label>
-                    <label class="unit-label">单位</label>
-                    <label class="number-label">数量</label>
-                    <label class="code-label">SKU编码</label>
-                    <label class="amount-label">返现/个</label>
-                    <label class="price-label">单价</label>
-                    <label class="total-label">总价</label>
-                    <label class="link-label">购买</label>
-                    <label class="remark-label">通用备注</label>
-                  </li>
-                  <template v-for="(good, gid) of item.softOutfits">
-                    <li
-                      class="table-tr"
-                      v-if="good.sku"
-                      :key="good.brandGoodId"
-                    >
-                      <label class="order-label">{{
-                        `${key + 1}-${gid + 1}`
-                      }}</label>
-                      <label class="img-label">
-                        <the-loading-image
-                          :width="50"
-                          :height="50"
-                          :url="good.sku.img_id"
-                        />
+    <div
+      :class="['full', headerUnfold ? 'unfold' : '']"
+      v-show="full_screen"
+      @click="toggleFullScreen"
+    >
+      <div class="full-main-wrapper" @click.stop>
+        <div class="container-1180-wrapper">
+          <div class="container-1180">
+            <div class="list-content">
+              <h3 class="list-title">
+                商品清单
+                <label
+                  class="close-icon bgImg"
+                  @click="toggleFullScreen"
+                ></label>
+              </h3>
+              <div class="plan-desc">
+                <label class="plan-name">
+                  方案名称 <span>{{ design.name || "-" }}</span>
+                </label>
+                <label class="plan-aulabelor">
+                  设计师 <span>{{ userInfo.nickname }}</span>
+                </label>
+                <label class="plan-area">
+                  面积
+                  <span>{{ design.srcArea || "-" }}㎡ </span>
+                </label>
+                <label class="plan-type">
+                  房型
+                  <span>{{ design.specName || "-" }}</span>
+                </label>
+              </div>
+              <div class="list-desc">
+                <template v-for="(item, key) of listing.list">
+                  <div
+                    class="list-section"
+                    v-if="number(item.softOutfits) > 0"
+                    :key="key"
+                  >
+                    <h3 class="list-spec">
+                      {{ item.typeName }}
+                    </h3>
+                    <ul class="table">
+                      <li class="table-header">
+                        <label class="order-label">序号</label>
+                        <label class="img-label">产品图</label>
+                        <label class="name-label">产品名称</label>
+                        <label class="brand-label">品牌</label>
+                        <label class="size-label">尺寸(mm)</label>
+                        <label class="number-label">数量</label>
+                        <label class="unit-label">单位</label>
+                        <label class="price-label">单价</label>
+                        <label class="total-label">总价</label>
+                        <label class="link-label">购买</label>
+                        <label class="amount-label">返现/个</label>
+                        <label class="remark-label">通用备注</label>
+                      </li>
+                      <template v-for="(good, gid) of item.softOutfits">
+                        <li
+                          class="table-tr"
+                          v-if="good.sku"
+                          :key="good.brandGoodId"
+                        >
+                          <label class="order-label">{{
+                            `${key + 1}-${gid + 1}`
+                          }}</label>
+                          <label class="img-label">
+                            <the-loading-image
+                              :width="50"
+                              :height="50"
+                              :url="good.sku.img_id"
+                            />
+                          </label>
+                          <label class="name-label">{{ good.sku.name }}</label>
+                          <label class="brand-label">{{
+                            (good.sku.brand && good.sku.brand.name) || "-"
+                          }}</label>
+                          <label class="size-label">{{
+                            `${good.sku.size_x || 0}*${good.sku.size_y ||
+                              0}*${good.sku.size_z || 0}`
+                          }}</label>
+                          <label class="number-label">{{ good.number }}</label>
+                          <label class="unit-label">{{ good.unit }}</label>
+                          <label class="price-label"
+                            >¥{{ good.sku.unit_price || "-" }}</label
+                          >
+                          <label class="total-label"
+                            >¥{{
+                              (good.sku.unit_price * good.number).toFixed(2)
+                            }}</label
+                          >
+                          <label
+                            :class="[
+                              'link-label',
+                              purchase_url(good.sku.purchase_url) ? 'bgImg' : ''
+                            ]"
+                            @click="
+                              purchase_url(good.sku.purchase_url)
+                                ? goRoute(
+                                    purchase_url(good.sku.purchase_url),
+                                    '_blank'
+                                  )
+                                : ''
+                            "
+                          >
+                            {{ good.sku.tb_purchase_url ? "" : "-" }}
+                          </label>
+                          <label class="amount-label"
+                            >¥{{ good.sku.cashback_amount || "-" }}</label
+                          >
+                          <label class="remark-label">{{
+                            good.sku.remark || "-"
+                          }}</label>
+                        </li>
+                      </template>
+                    </ul>
+                    <div class="section-footer">
+                      <label class="number">
+                        {{ number(item.softOutfits) }}件商品
                       </label>
-                      <label class="name-label">{{ good.sku.name }}</label>
-                      <label class="brand-label">{{
-                        (good.sku.brand && good.sku.brand.name) || "-"
-                      }}</label>
-                      <label class="size-label">{{
-                        `${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
-                          .sku.size_z || 0}`
-                      }}</label>
-                      <label class="unit-label">{{ good.unit }}</label>
-                      <label class="number-label">{{ good.number }}</label>
-                      <label class="code-label">{{
-                        good.sku.product_number
-                      }}</label>
-                      <label class="amount-label"
-                        >¥{{ good.sku.cashback_amount || "-" }}</label
-                      >
-                      <label class="price-label"
-                        >¥{{ good.sku.unit_price || "-" }}</label
-                      >
-                      <label class="total-label"
-                        >¥{{
-                          (good.sku.unit_price * good.number).toFixed(2)
-                        }}</label
-                      >
-                      <label
-                        :class="[
-                          'link-label',
-                          purchase_url(good.sku.purchase_url) ? 'bgImg' : ''
-                        ]"
-                        @click="
-                          purchase_url(good.sku.purchase_url)
-                            ? goRoute(
-                                purchase_url(good.sku.purchase_url),
-                                '_blank'
-                              )
-                            : ''
-                        "
-                      >
-                        {{ good.sku.tb_purchase_url ? "" : "-" }}
+                      <label class="total">
+                        小计：¥{{ price(item.softOutfits) }}
                       </label>
-                      <label class="remark-label">{{
-                        good.sku.remark || "-"
-                      }}</label>
-                    </li>
-                  </template>
-                </ul>
-                <div class="section-footer">
-                  <label class="number">
-                    {{ number(item.softOutfits) }}件商品
-                  </label>
-                  <label class="total">
-                    小计：¥{{ price(item.softOutfits) }}
-                  </label>
-                </div>
+                    </div>
+                  </div>
+                </template>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="list-footer">
-        <div class="footer-content">
-          <label class="price-wrapper">
-            <label class="price">¥{{ totalPrice }}</label>
-            <label
-              class="refresh-price ellipsis"
-              @click="!refreshing ? handleRefreshPrice() : null"
-            >
-              <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
-              >更新总价
-            </label>
-          </label>
-          <label class="number"> 共{{ totalNumber }}件商品 </label>
-        </div>
-        <div class="footer-operate" @click="download">
-          <label class="export-icon bgImg"></label>导出Excel
+        <div class="list-footer">
+          <div class="footer-content">
+            <div class="footer-content-left" v-if="!refreshing">
+              <label class="price-wrapper">
+                <label class="price"
+                  ><span class="price-unit">¥</span>{{ totalPrice }}</label
+                >
+                <label
+                  class="refresh-price ellipsis"
+                  @click="!refreshing ? handleRefreshPrice() : null"
+                >
+                  <i
+                    :class="['refresh-icon', refreshing ? 'refreshing' : '']"
+                  ></i
+                  >更新总价
+                </label>
+              </label>
+            </div>
+            <div class="refreshing-wrapper animation" v-else>
+              <div class="refreshing-icon icon-1"></div>
+              <div class="refreshing-icon icon-2"></div>
+              <div class="refreshing-icon icon-3"></div>
+              <div class="refreshing-icon icon-4"></div>
+            </div>
+            <div class="footer-content-right">
+              <label class="number"> 共 {{ totalNumber }} 件商品 </label>
+            </div>
+          </div>
+          <div class="footer-operate" @click="download">
+            <label class="export-icon bgImg"></label>导出Excel
+          </div>
         </div>
       </div>
     </div>
@@ -252,6 +282,10 @@ export default {
     refreshing: {
       type: Boolean,
       default: false
+    },
+    briefTheme: {
+      type: String,
+      default: "primary"
     }
   },
   data() {
@@ -261,28 +295,45 @@ export default {
     ...mapState(["headerUnfold", "userInfo"]),
     listing() {
       const res = JSON.parse(JSON.stringify(this.listingBrief));
-      const list = res.list;
-      const skus = res.skus;
-      const goods = res.goods;
+      const { list, skus, goods } = res;
+
+      let listArr = [];
+      let goodsArr = [];
       list.map(item => {
+        let flag = false;
         item.softOutfits.map(good => {
-          const sku = skus.find(sku => sku.kjl_sku_id === good.brandGoodId);
+          const sku = skus.find(
+            sku =>
+              sku.kjl_sku_id === good.brandGoodId &&
+              this.purchase_url(sku.purchase_url)
+          );
           good.sku = sku;
+          sku && (flag = true);
         });
+        item.softOutfits = item.softOutfits.filter(good => !!good.sku);
+        flag && listArr.push(item);
       });
+
       goods.map(good => {
-        const sku = skus.find(sku => sku.kjl_sku_id === good.brandGoodId);
+        const sku = skus.find(
+          sku =>
+            sku.kjl_sku_id === good.brandGoodId &&
+            this.purchase_url(sku.purchase_url)
+        );
         good.sku = sku;
+        sku && goodsArr.push(good);
       });
-      return res;
+      return {
+        goods: goodsArr,
+        list: listArr,
+        skus
+      };
     },
     number() {
       return arr => {
         let count = 0;
         arr.map(item => {
-          if (item.sku) {
-            count += item.number;
-          }
+          count += item.number;
         });
         return count;
       };
@@ -361,12 +412,11 @@ export default {
                   <td>产品名称</td>
                   <td>品牌</td>
                   <td>尺寸(mm)</td>
-                  <td>单位</td>
                   <td>数量</td>
-                  <td>SKU编码</td>
-                  <td>返现/个</td>
+                  <td>单位</td>
                   <td>单价</td>
                   <td>购买</td>
+                  <td>返现/个</td>
                   <td>通用备注</td>
                   <td>总价</td>
                 </tr>`;
@@ -385,10 +435,8 @@ export default {
                       ${`${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
                         .sku.size_z || 0}`}\t
                     </td>
-                    <td>${good.unit}\t</td>
                     <td>${good.number}\t</td>
-                    <td>${good.sku.product_number || "-"}\t</td>
-                    <td>¥${good.sku.cashback_amount || "-" + ""}\t</td>
+                    <td>${good.unit}\t</td>
                     <td>¥${good.sku.unit_price || "-" + ""}\t</td>
                     <td>
                       ${
@@ -401,6 +449,7 @@ export default {
                           : "-"
                       }\t
                     </td>
+                    <td>¥${good.sku.cashback_amount || "-" + ""}\t</td>
                     <td>${good.sku.remark || "-"}\t</td>
                     <td>
                       ¥${(good.sku.unit_price * good.number).toFixed(2)}\t
@@ -448,20 +497,50 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @padding: 10px;
+@refreshingDuration: 0.8s;
 @keyframes refreshing {
   0% {
-    transform: rotate(0);
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1);
   }
   100% {
-    transform: rotate(360deg);
+    transform: scale(0);
   }
 }
-@refreshingDuration: 0.7s;
 .list-wrapper {
   width: 100%;
   height: 100%;
   &.full_screen {
     transform: unset !important;
+  }
+  .refreshing-wrapper {
+    margin-left: 20px;
+    .refreshing-icon {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #fff;
+      & + .refreshing-icon {
+        margin-left: 10px;
+      }
+      &.icon-1 {
+        animation: refreshing @refreshingDuration ease-out infinite;
+      }
+      &.icon-2 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 1
+          ease-out infinite;
+      }
+      &.icon-3 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 2
+          ease-out infinite;
+      }
+      &.icon-4 {
+        animation: refreshing @refreshingDuration @refreshingDuration / 4 * 3
+          ease-out infinite;
+      }
+    }
   }
   .brief {
     display: flex;
@@ -469,6 +548,33 @@ export default {
     width: 100%;
     height: 100%;
     background: #fff;
+    &.white {
+      .refreshing-wrapper {
+        .refreshing-icon {
+          background: @primaryColor;
+        }
+      }
+      .list-header {
+        border-top: 1px solid #efefef;
+        background: #fff;
+        .price-wrapper {
+          .price {
+            color: @primaryColor;
+          }
+          .refresh-price {
+            color: @primaryColor;
+            .refresh-icon {
+              background: @primaryColor;
+            }
+          }
+        }
+        .operate-wrapper {
+          .full_screen-icon {
+            background: @primaryColor;
+          }
+        }
+      }
+    }
     .list-header {
       display: flex;
       justify-content: space-between;
@@ -480,12 +586,13 @@ export default {
       .price-wrapper {
         flex: 1;
         display: flex;
-        align-items: center;
+        align-items: flex-end;
         .refresh-price {
           flex: 1;
           display: flex;
           align-items: center;
           margin-left: 8px;
+          margin-bottom: 3px;
           font-size: 12px;
           color: #ffffff;
           cursor: pointer;
@@ -496,9 +603,9 @@ export default {
             height: 16px;
             background: #fff;
             mask: url("~images/common/refresh.svg") no-repeat center;
-            &.refreshing {
-              animation: refreshing @refreshingDuration linear infinite;
-            }
+            // &.refreshing {
+            //   animation: refreshing @refreshingDuration linear infinite;
+            // }
           }
         }
       }
@@ -508,6 +615,15 @@ export default {
         font-weight: 600;
         font-size: 30px;
         color: #fff;
+        .price-unit {
+          display: inline-block;
+          margin-right: 4px;
+          margin-bottom: 3px;
+          font-weight: 600;
+          font-size: 16px;
+          line-height: 16px;
+          vertical-align: baseline;
+        }
       }
       .header-title {
         line-height: 1;
@@ -528,7 +644,8 @@ export default {
           }
         }
         .full_screen-icon {
-          background-image: url("~images/commodity/full_screen.svg");
+          mask: url("~images/commodity/pull.svg") center no-repeat;
+          background: #fff;
         }
         .up-icon,
         .down-icon {
@@ -643,9 +760,9 @@ export default {
             height: 16px;
             background: @primaryColor;
             mask: url("~images/common/refresh.svg") no-repeat center;
-            &.refreshing {
-              animation: refreshing @refreshingDuration linear infinite;
-            }
+            // &.refreshing {
+            //   animation: refreshing @refreshingDuration linear infinite;
+            // }
           }
         }
       }
@@ -655,248 +772,267 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    padding-top: 14px;
-    display: flex;
-    flex-direction: column;
     width: 100vw;
     height: 100vh;
-    background: #fff;
+    background: rgba(0, 0, 0, 0.5);
     z-index: 20;
-    transition: all 0.5s;
+    transition: all 0.1s;
     &.unfold {
       padding-top: 52px;
     }
-    .container-1200-wrapper {
-      flex: 1;
-      width: 100%;
-      height: 5px;
-      overflow: auto;
-    }
-    .container-1200 {
-      .list-content {
+    .full-main-wrapper {
+      display: flex;
+      flex-direction: column;
+      width: 1260px;
+      height: 100%;
+      background: #fff;
+      .container-1180-wrapper {
         flex: 1;
-        padding: 60px 0;
-        .list-title {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin-bottom: 30px;
-          line-height: 1;
-          font-weight: 600;
-          font-size: 24px;
-          color: #111111;
-          .full_screen-icon {
-            width: 24px;
-            height: 24px;
-            background-image: url("~images/commodity/zoom_out.svg");
-            cursor: pointer;
-          }
-        }
-        .plan-desc {
-          padding-bottom: 12px;
-          border-bottom: 1px solid #eeeeee;
-          label {
+        width: 100%;
+        height: 5px;
+        overflow: auto;
+      }
+      .container-1180 {
+        .list-content {
+          flex: 1;
+          padding: 40px 0;
+          .list-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
             line-height: 1;
-            font-size: 12px;
-            color: #666666;
-            span {
-              display: inline-block;
-              margin-left: 10px;
-              color: #000;
-              &.plan-spec {
-                margin-right: 10px;
-              }
+            font-weight: 600;
+            font-size: 24px;
+            color: #2c3330;
+            .full_screen-icon {
+              width: 24px;
+              height: 24px;
+              background-image: url("~images/commodity/zoom_out.svg");
+              cursor: pointer;
             }
-            & + label {
-              margin-left: 20px;
+            .close-icon {
+              width: 24px;
+              height: 24px;
+              background-image: url("~images/commodity/close.svg");
+              cursor: pointer;
             }
           }
-        }
-        .list-desc {
-          .list-section {
-            margin-top: 20px;
-            .list-spec {
-              margin-bottom: 10px;
-              line-height: 1;
-              font-weight: 600;
+          .plan-desc {
+            padding-bottom: 20px;
+            border-bottom: 1px dashed #ccc;
+            label {
+              line-height: 24px;
               font-size: 14px;
-              color: #111111;
-            }
-            .table {
-              width: 100%;
-              border-collapse: collapse;
-              border-bottom: 1px solid #eee;
-              .table-header {
-                display: flex;
-                border-top: 1px solid #eeeeee;
-                border-bottom: 1px solid #eeeeee;
-                label {
-                  display: inline-block;
-                  text-align: left;
-                  line-height: 1;
-                  font-weight: normal !important;
-                  font-size: 12px;
-                  color: #666666 !important;
-                  padding: 10px 0;
-                  & + label {
-                    margin-left: 10px;
-                  }
-                }
-              }
-              .table-tr {
-                display: flex;
-                align-items: center;
-                padding: 10px 0;
-                label {
-                  line-height: 21px;
-                  font-size: 12px;
-                  color: #111;
-                  &.link-label {
-                    text-align: center;
-                    &.bgImg {
-                      width: 24px;
-                      height: 24px;
-                      background-image: url("~images/commodity/shopping_cart.svg");
-                      cursor: pointer;
-                    }
-                  }
-                  & + label {
-                    margin-left: 10px;
-                  }
-                }
-              }
-              label {
-                &.order-label {
-                  width: 32px;
-                  color: #666666;
-                }
-                &.img-label {
-                  width: 50px;
-                }
-                &.name-label {
-                  flex: 1;
-                  width: 5px;
-                  font-weight: 600;
-                }
-                &.brand-label {
-                  width: 84px;
-                }
-                &.size-label {
-                  width: 110px;
-                }
-                &.unit-label {
-                  width: 24px;
-                }
-                &.number-label {
-                  width: 24px;
-                }
-                &.code-label {
-                  width: 110px;
-                }
-                &.amount-label {
-                  width: 80px;
-                }
-                &.price-label {
-                  width: 80px;
-                }
-                &.total-label {
-                  width: 80px;
-                  font-weight: 600;
-                  color: @primaryColor;
-                }
-                &.link-label {
-                  width: 24px;
-                }
-                &.remark-label {
-                  width: 175px;
-                }
-              }
-            }
-            .section-footer {
-              margin-top: 12px;
-              text-align: right;
-              .number {
-                line-height: 16px;
-                font-size: 12px;
-                color: #111;
-              }
-              .total {
+              color: #81948b;
+              span {
                 display: inline-block;
+                margin-left: 4px;
+                color: #2c3330;
+                &.plan-spec {
+                  margin-right: 10px;
+                }
+              }
+              & + label {
                 margin-left: 20px;
+              }
+            }
+          }
+          .list-desc {
+            .list-section {
+              margin-top: 20px;
+              .list-spec {
+                margin-top: 20px;
+                margin-bottom: 24px;
                 line-height: 1;
                 font-weight: 600;
-                font-size: 16px;
-                color: @primaryColor;
+                font-size: 20px;
+                color: #2c3330;
+              }
+              .table {
+                width: 100%;
+                border-collapse: collapse;
+                .table-header {
+                  display: flex;
+                  justify-content: center;
+                  background: #fafafa;
+                  label {
+                    display: inline-block;
+                    text-align: center;
+                    line-height: 24px;
+                    font-weight: normal !important;
+                    font-size: 14px;
+                    color: #606c66 !important;
+                    padding: 12px 0;
+                    text-align: center;
+                    & + label {
+                      margin-left: 16px;
+                    }
+                  }
+                }
+                .table-tr {
+                  display: flex;
+                  align-items: center;
+                  padding: 16px 12px;
+                  border-bottom: 1px solid #efefef;
+                  label {
+                    line-height: 24px;
+                    font-size: 14px;
+                    color: #2c3330;
+                    text-align: center;
+                    &.link-label {
+                      text-align: center;
+                      &.bgImg {
+                        width: 24px;
+                        height: 24px;
+                        background-image: url("~images/commodity/shopping_cart.svg");
+                        cursor: pointer;
+                      }
+                    }
+                    & + label {
+                      margin-left: 16px;
+                    }
+                  }
+                }
+                label {
+                  &.order-label {
+                    width: 44px;
+                  }
+                  &.img-label {
+                    width: 50px;
+                  }
+                  &.name-label {
+                    width: 260px;
+                  }
+                  &.brand-label {
+                    width: 112px;
+                  }
+                  &.size-label {
+                    width: 120px;
+                  }
+                  &.number-label {
+                    width: 28px;
+                  }
+                  &.unit-label {
+                    width: 28px;
+                  }
+                  &.price-label {
+                    width: 80px;
+                  }
+                  &.total-label {
+                    width: 80px;
+                  }
+                  &.link-label {
+                    width: 28px;
+                  }
+                  &.amount-label {
+                    width: 60px;
+                  }
+                  &.remark-label {
+                    width: 90px;
+                  }
+                }
+              }
+              .section-footer {
+                margin-top: 16px;
+                text-align: right;
+                .number {
+                  line-height: 24px;
+                  font-size: 14px;
+                  color: #606c66;
+                }
+                .total {
+                  display: inline-block;
+                  margin-left: 23px;
+                  line-height: 24px;
+                  font-weight: 600;
+                  font-size: 14px;
+                  color: @primaryColor;
+                }
               }
             }
           }
         }
       }
-    }
-    .list-footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 48px;
-      background: @primaryColor;
-      .footer-content {
+      .list-footer {
         display: flex;
         align-items: center;
-        padding-left: 20px;
-        height: 30px;
-        font-size: 12px;
-        line-height: 12px;
-        color: #ffffff;
-        .price-wrapper {
+        justify-content: space-between;
+        height: 48px;
+        background: @primaryColor;
+        .footer-content {
           flex: 1;
           display: flex;
           align-items: center;
-          .price {
-            display: inline-block;
-            font-weight: 600;
-            font-size: 30px;
-          }
-          .refresh-price {
+          justify-content: space-between;
+          padding: 0 16px 0 20px;
+          height: 30px;
+          font-size: 12px;
+          line-height: 12px;
+          color: #ffffff;
+          .price-wrapper {
             flex: 1;
             display: flex;
-            align-items: center;
-            margin-left: 8px;
-            font-size: 12px;
-            color: #ffffff;
-            cursor: pointer;
-            .refresh-icon {
+            align-items: flex-end;
+            height: 30px;
+            .price {
               display: inline-block;
-              margin-right: 2px;
-              width: 16px;
-              height: 16px;
-              background: #fff;
-              mask: url("~images/common/refresh.svg") no-repeat center;
-              &.refreshing {
-                animation: refreshing @refreshingDuration linear infinite;
+              height: 30px;
+              line-height: 30px;
+              font-weight: 600;
+              font-size: 30px;
+              .price-unit {
+                display: inline-block;
+                margin-right: 4px;
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 16px;
+                vertical-align: baseline;
+              }
+            }
+            .refresh-price {
+              flex: 1;
+              display: flex;
+              align-items: center;
+              margin-left: 8px;
+              font-size: 12px;
+              color: #ffffff;
+              cursor: pointer;
+              .refresh-icon {
+                display: inline-block;
+                margin-right: 2px;
+                width: 16px;
+                height: 16px;
+                background: #fff;
+                mask: url("~images/common/refresh.svg") no-repeat center;
+                // &.refreshing {
+                //   animation: refreshing @refreshingDuration linear infinite;
+                // }
               }
             }
           }
+          .number {
+            display: inline-block;
+            font-size: 14px;
+            color: #fff;
+          }
         }
-
-        .number {
-          display: inline-block;
-          margin-left: 10px;
-        }
-      }
-      .footer-operate {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 118px;
-        height: 100%;
-        font-size: 12px;
-        color: #fff;
-        background: #6764ff;
-        cursor: pointer;
-        .export-icon {
-          width: 24px;
-          height: 24px;
-          background-image: url("~images/commodity/export.svg");
+        .footer-operate {
+          flex: none;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 118px;
+          height: 100%;
+          font-size: 12px;
+          color: #fff;
+          background: #6764ff;
+          cursor: pointer;
+          .export-icon {
+            width: 24px;
+            height: 24px;
+            background-image: url("~images/commodity/export.svg");
+          }
         }
       }
     }

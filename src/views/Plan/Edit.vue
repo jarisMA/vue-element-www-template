@@ -77,6 +77,19 @@
       class="feedback-dialog"
       width="580px"
     >
+      <div class="feedback-sku-wrapper" v-if="feedbackSku">
+        <div class="feedback-sku-left">
+          <the-loading-image
+            :url="feedbackSku.img_id"
+            :width="60"
+            :height="60"
+          />
+          <h3 class="feedback-sku-name">{{ feedbackSku.name }}</h3>
+        </div>
+        <div class="feedback-sku-right">
+          <span>模型编码：{{ feedbackSku.id }}</span>
+        </div>
+      </div>
       <el-form :model="feedbackForm" ref="feedbackForm" @submit.native.prevent>
         <el-form-item
           prop="content"
@@ -112,13 +125,15 @@ import { mapMutations, mapState } from "vuex";
 import PlaneTool from "./widgets/PlaneTool";
 import PlanTool from "./widgets/PlanTool";
 import TextureTool from "./widgets/TextureTool";
+import TheLoadingImage from "components/TheLoadingImage";
 
 export default {
   name: "EditPlan",
   components: {
     PlaneTool,
     PlanTool,
-    TextureTool
+    TextureTool,
+    TheLoadingImage
   },
   data() {
     return {
@@ -336,6 +351,7 @@ export default {
 @import "~styles/variable.less";
 @oWidth: 44px;
 .edit-plan-container {
+  position: relative;
   width: 100vw;
   margin-top: 14px !important;
   height: calc(100vh - 36px);
@@ -364,6 +380,36 @@ export default {
     }
     .el-dialog__body {
       padding: 0;
+      .feedback-sku-wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding: 10px 16px;
+        background: #fafafa;
+        .feedback-sku-left {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          .cover-img {
+            flex: none;
+          }
+          .feedback-sku-name {
+            flex: 1;
+            margin: 0 8px;
+            line-height: 24px;
+            font-weight: normal;
+            font-size: 14px;
+            color: #2c3330;
+          }
+        }
+        .feedback-sku-right {
+          flex: none;
+          line-height: 24px;
+          font-size: 14px;
+          color: #81948b;
+        }
+      }
       .el-form-item {
         margin-bottom: 20px;
         &:last-child {
@@ -372,11 +418,18 @@ export default {
       }
       .el-textarea__inner {
         height: 91px;
+        padding: 14px;
+        line-height: 24px;
+        font-size: 14px;
+        border: 1px solid #efefef;
+        &::placeholder {
+          color: #999999;
+        }
       }
       .feedback-submit {
         text-align: right;
         .feedback-submit-btn {
-          padding: 8px 24px;
+          padding: 7px 23px;
           line-height: 1;
           font-size: 14px;
         }
