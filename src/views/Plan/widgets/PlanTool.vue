@@ -154,103 +154,103 @@
         :refreshing="refreshingBrief"
         @refreshPrice="handleRefreshPrice"
       />
-      <ul class="value-list" v-if="values.length > 0">
-        <li class="reset-wrapper pointer" @click="handleValueReset">
-          <label class="reset-icon bgImg"></label>
-          重置
-        </li>
-        <li
-          class="value-item"
-          v-for="(item, key) of values"
-          :key="item.value.id"
-          :style="{
-            color: item.color,
-            backgroundColor: hex2Rgba(item.color, 0.1)
-          }"
-        >
-          {{
-            item.type === "search"
-              ? item.value.name
-              : item.type === "price"
-              ? `${item.value.min_price ? item.value.min_price : "∞"}-${
-                  item.value.max_price ? item.value.max_price : "∞"
-                }元`
-              : item.type === "size_x"
-              ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
-                  item.value.max_size_x ? item.value.max_size_x : "∞"
-                }mm`
-              : item.type === "size_y"
-              ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
-                  item.value.max_size_y ? item.value.max_size_y : "∞"
-                }mm`
-              : item.type === "size_z"
-              ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
-                  item.value.max_size_z ? item.value.max_size_z : "∞"
-                }mm`
-              : item.value.name
-          }}
-          <label class="close-icon-wrapper" @click="handleValueRemove(key)">
-            <i class="bgImg close-icon pointer"></i>
-          </label>
-        </li>
-      </ul>
-      <div
-        class="commodity-detail-card"
-        ref="commodityDetail"
-        v-if="activeCommodity"
-        :style="{ top: offsetTop + 'px' }"
-        @mouseover="detailTimer && clearTimeout(detailTimer)"
-        @mouseout="handleCommodityDetail(activeCommodity)"
-      >
-        <div class="card-top">
-          <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
-            <swiper ref="mySwiper" :options="swiperOptions">
-              <swiper-slide
-                v-for="(image, key) of activeCommodity.images"
-                :key="key"
-              >
-                <the-loading-image
-                  :width="200"
-                  :height="200"
-                  :key="key"
-                  :url="image"
-                />
-              </swiper-slide>
-              <div :class="['card-img-prev']" @click.stop slot="button-prev">
-                <div class="btn-icon"></div>
-              </div>
-              <div :class="['card-img-next']" @click.stop slot="button-next">
-                <div class="btn-icon"></div>
-              </div>
-            </swiper>
-          </div>
-
-          <the-loading-image
-            v-else
-            :width="200"
-            :height="200"
-            :url="activeCommodity.images[0]"
-          />
-        </div>
-        <div class="card-bottom">
-          <h4 class="card-name">{{ activeCommodity.name }}</h4>
-          <label class="card-brand" v-if="activeCommodity.brand_name">{{
-            activeCommodity.brand_name
-          }}</label>
-          <span class="card-price"
-            >参考价 ¥{{ activeCommodity.unit_price }}
-          </span>
-        </div>
-      </div>
-      <commodity-sku-list
-        class="sku-list-wrapper"
-        :style="{ top: offsetTop + 'px' }"
-        :skus.sync="activeSkus"
-        v-if="activeSkus"
-        @addModel="handleAddModel"
-        @showFeedback="handleShowFeedback"
-      />
     </div>
+    <ul class="value-list" v-if="values.length > 0">
+      <li class="reset-wrapper pointer" @click="handleValueReset">
+        <label class="reset-icon bgImg"></label>
+        重置
+      </li>
+      <li
+        class="value-item"
+        v-for="(item, key) of values"
+        :key="item.value.id"
+        :style="{
+          color: item.color,
+          backgroundColor: hex2Rgba(item.color, 0.1)
+        }"
+      >
+        {{
+          item.type === "search"
+            ? item.value.name
+            : item.type === "price"
+            ? `${item.value.min_price ? item.value.min_price : "∞"}-${
+                item.value.max_price ? item.value.max_price : "∞"
+              }元`
+            : item.type === "size_x"
+            ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
+                item.value.max_size_x ? item.value.max_size_x : "∞"
+              }mm`
+            : item.type === "size_y"
+            ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
+                item.value.max_size_y ? item.value.max_size_y : "∞"
+              }mm`
+            : item.type === "size_z"
+            ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
+                item.value.max_size_z ? item.value.max_size_z : "∞"
+              }mm`
+            : item.value.name
+        }}
+        <label class="close-icon-wrapper" @click="handleValueRemove(key)">
+          <i class="bgImg close-icon pointer"></i>
+        </label>
+      </li>
+    </ul>
+    <div
+      class="commodity-detail-card"
+      ref="commodityDetail"
+      v-if="activeCommodity"
+      :style="{ top: offsetTop + 'px' }"
+      @mouseover="detailTimer && clearTimeout(detailTimer)"
+      @mouseout="handleCommodityDetail(activeCommodity)"
+    >
+      <div class="card-top">
+        <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
+          <swiper ref="mySwiper" :options="swiperOptions">
+            <swiper-slide
+              v-for="(image, key) of activeCommodity.images"
+              :key="key"
+            >
+              <the-loading-image
+                :width="200"
+                :height="200"
+                :key="key"
+                :url="image"
+              />
+            </swiper-slide>
+            <div :class="['card-img-prev']" @click.stop slot="button-prev">
+              <div class="btn-icon"></div>
+            </div>
+            <div :class="['card-img-next']" @click.stop slot="button-next">
+              <div class="btn-icon"></div>
+            </div>
+          </swiper>
+        </div>
+
+        <the-loading-image
+          v-else
+          :width="200"
+          :height="200"
+          :url="activeCommodity.images[0]"
+        />
+      </div>
+      <div class="card-bottom">
+        <h4 class="card-name">{{ activeCommodity.name }}</h4>
+        <label class="card-brand" v-if="activeCommodity.brand_name">{{
+          activeCommodity.brand_name
+        }}</label>
+        <span class="card-price"
+          >参考价 ¥{{ activeCommodity.unit_price }}
+        </span>
+      </div>
+    </div>
+    <commodity-sku-list
+      class="sku-list-wrapper"
+      :style="{ top: offsetTop + 'px' }"
+      :skus.sync="activeSkus"
+      v-if="activeSkus"
+      @addModel="handleAddModel"
+      @showFeedback="handleShowFeedback"
+    />
   </div>
 </template>
 
