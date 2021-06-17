@@ -45,7 +45,7 @@
         <p v-html="camp.content"></p>
       </div>
     </div>
-    <div class="camp-footer" v-if="!loading && term">
+    <div class="camp-footer" v-if="!loading && term && scroll > 300">
       <div class="camp-footer-wrapper">
         <div class="camp-footer-left" style=" backgroundColor: #14AF64 ">
           <h3 class="camp-footer-name ellipsis">{{ camp.name }}</h3>
@@ -83,11 +83,18 @@ export default {
       loading: true,
       camp: {},
       term: {},
-      status: 3
+      status: 3,
+      scroll: ""
     };
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.menu);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.menu);
   },
   computed: {
     campBtnText() {
@@ -114,6 +121,10 @@ export default {
     },
     handleRegister() {
       console.log("register");
+    },
+    menu() {
+      this.scroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
     }
   }
 };
