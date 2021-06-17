@@ -6,26 +6,11 @@ function resolve (dir) {
 }
 
 module.exports = {
+  outputDir: "current_dist",
   devServer: {
     open: true,
     host: `www-test1${process.env.VUE_APP_DOMAIN}`,
     port: 80
-    // proxy: {
-    //   "/api": {
-    //     // target: "https://api.home-plan.cn",
-    //     target: "http://homeplan-api.test",
-    //     changeOrigin: true,
-    //     secure: false
-    //   },
-    //   "/upload": {
-    //     target: "http://homeplan-api.test",
-    //     pathRewrite: {
-    //       "^/upload": "/api"
-    //     },
-    //     changeOrigin: true,
-    //     secure: false
-    //   }
-    // }
   },
   css: {
     loaderOptions: {
