@@ -94,7 +94,7 @@
       v-if="detailVisible"
       class="detail-dialog"
       width="100%"
-      :show-close="false"
+      :close-on-click-modal="true"
       :visible.sync="detailVisible"
     >
       <detail

@@ -32,7 +32,7 @@
               </div>
             </li>
             <li class="menu-item" v-for="(menu, index) of menus" :key="menu.id">
-              <div class="menu-item-header">
+              <div class="menu-item-header" @click="handleFoldChange(index)">
                 <label
                   :class="['menu-name', menuId === menu.id ? 'active' : '']"
                   @click="handleMenuActive(index)"
@@ -41,7 +41,6 @@
                 <i
                   v-if="menu.children"
                   :class="[menu.unFold ? 'fold-icon' : 'unfold-icon']"
-                  @click="handleFoldChange(index)"
                 ></i>
               </div>
               <ul class="submenu-list" v-show="menu.unFold">

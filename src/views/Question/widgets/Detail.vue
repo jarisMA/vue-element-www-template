@@ -3,8 +3,9 @@
     :class="['page-wrapper', !showNavigation ? 'padding' : '']"
     ref="scroll"
     @scroll="handleScroll"
+    @click="handleBeforeClose"
   >
-    <div class="page">
+    <div class="page" @click.stop="">
       <div class="container-980" v-loading="loading">
         <template v-if="detail">
           <div class="page-detail" ref="detail">
@@ -53,11 +54,12 @@
                     v-for="(image, key) in detail.images"
                     :key="key"
                   >
-                    <the-loading-image
-                      :width="600"
-                      :height="600"
-                      :url="image"
-                    />
+                    <el-image
+                      :preview-src-list="[image]"
+                      style="width: 600px; height: 600px"
+                      :src="image"
+                    >
+                    </el-image>
                   </el-carousel-item>
                 </el-carousel>
               </div>
@@ -138,11 +140,12 @@
                 v-if="detail.type === QUESTION_TYPE_VOTE"
               >
                 <div class="vote-image-wrapper" v-if="detail.images">
-                  <the-loading-image
-                    :width="600"
-                    :height="600"
-                    :url="detail.images"
-                  />
+                  <el-image
+                    :preview-src-list="[detail.images]"
+                    style="width: 600px; height: 600px"
+                    :src="detail.images"
+                  >
+                  </el-image>
                 </div>
                 <div class="vote-wrapper">
                   <vote :question="detail" @vote="handleVote" />
@@ -369,7 +372,6 @@
 
 <script>
 import questionService from "service/question";
-import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
 import AnswerCard from "./AnswerCard";
 import Pagination from "components/Pagination";
@@ -393,7 +395,6 @@ export default {
   name: "QuestionDetail",
   mixins: [commonMixins],
   components: {
-    TheLoadingImage,
     TheAvatar,
     AnswerCard,
     Pagination,

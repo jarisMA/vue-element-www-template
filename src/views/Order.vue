@@ -186,7 +186,7 @@ export default {
       PAY_STATUS_SUCCESS,
       PAY_STATUS_FAILED,
       loading: true,
-      payment: PAY_METHOD_ALIPAY,
+      payment: null,
       order: {
         resource: {}
       },
@@ -505,9 +505,15 @@ export default {
             }
           }
         }
+        /deep/ .is-focus,
+        .is-checked {
+          background-color: #eff9f4;
+          border: 1px solid #14af64;
+        }
       }
     }
   }
+
   .page-footer {
     display: flex;
     justify-content: flex-end;
