@@ -7,7 +7,7 @@
       </div>
       <div class="page-header-right">
         <the-avatar
-          @click.native="goMyCourse('_blank')"
+          @click.native="goMyClasses('_blank')"
           :size="32"
           :url="userInfo.avatar_url"
         />
@@ -153,7 +153,7 @@ import TheAvatar from "components/TheAvatar";
 import { mapMutations, mapState } from "vuex";
 import {
   goHome,
-  goMyCourse,
+  goMyClasses,
   goAcademyCourseDetail,
   goAcademySeriesDetail,
   goMySetting
@@ -205,7 +205,7 @@ export default {
   },
   methods: {
     goHome,
-    goMyCourse,
+    goMyClasses,
     ...mapMutations(["USERINFO"]),
     getData() {
       this.loading = true;
