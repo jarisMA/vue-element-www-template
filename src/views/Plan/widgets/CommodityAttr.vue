@@ -356,15 +356,19 @@
                 <label class="size-input-label">a</label>
                 <el-input
                   v-model="form.min_size_x"
-                  placeholder="0"
+                  :placeholder="sizeFocus.min_size_x ? '' : 0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.min_size_x = true"
+                  @blur="sizeFocus.min_size_x = false"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_x"
-                  placeholder="∞"
+                  :placeholder="sizeFocus.max_size_x ? '' : '∞'"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.max_size_x = true"
+                  @blur="sizeFocus.max_size_x = false"
                   :controls="false"
                 ></el-input>
               </div>
@@ -372,15 +376,19 @@
                 <label class="size-input-label">b</label>
                 <el-input
                   v-model="form.min_size_y"
-                  placeholder="0"
+                  :placeholder="sizeFocus.min_size_y ? '' : 0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.min_size_y = true"
+                  @blur="sizeFocus.min_size_y = false"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_y"
-                  placeholder="∞"
+                  :placeholder="sizeFocus.max_size_y ? '' : '∞'"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.max_size_y = true"
+                  @blur="sizeFocus.max_size_y = false"
                   :controls="false"
                 ></el-input>
               </div>
@@ -388,15 +396,19 @@
                 <label class="size-input-label">c</label>
                 <el-input
                   v-model="form.min_size_z"
-                  placeholder="0"
+                  :placeholder="sizeFocus.min_size_z ? '' : 0"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.min_size_z = true"
+                  @blur="sizeFocus.min_size_z = false"
                   :controls="false"
                 ></el-input>
                 <label class="border"></label>
                 <el-input
                   v-model="form.max_size_z"
-                  placeholder="∞"
+                  :placeholder="sizeFocus.max_size_z ? '' : '∞'"
                   onkeyup="this.value = this.value.replace(/\D/g,'')"
+                  @focus="sizeFocus.max_size_z = true"
+                  @blur="sizeFocus.max_size_z = false"
                   :controls="false"
                 ></el-input>
               </div>
@@ -533,7 +545,15 @@ export default {
         min_size_z: null,
         max_size_z: null
       },
-      moreAttrs: []
+      moreAttrs: [],
+      sizeFocus: {
+        min_size_x: false,
+        max_size_x: false,
+        min_size_y: false,
+        max_size_y: false,
+        min_size_z: false,
+        max_size_z: false
+      }
     };
   },
   watch: {
@@ -629,7 +649,6 @@ export default {
     brandSearch(q, callback) {
       if (q) {
         const result = this.brands.filter(item => item.name.indexOf(q) >= 0);
-        console.log(result);
         callback(result);
       } else {
         callback([]);

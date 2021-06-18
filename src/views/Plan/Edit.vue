@@ -511,7 +511,7 @@ export default {
         background-image: url("~images/commodity/tool.svg");
       }
       &.active {
-        background-color: rgba(57, 123, 243, 0.1);
+        background-color: #e5f5ec;
         .plane-icon,
         .texture-icon,
         .tool-icon {
@@ -519,8 +519,9 @@ export default {
         }
       }
       &:hover {
-        background-color: rgba(57, 123, 243, 0.1);
+        background-color: #e5f5ec;
         .plane-icon,
+        .texture-icon,
         .tool-icon {
           filter: unset;
         }

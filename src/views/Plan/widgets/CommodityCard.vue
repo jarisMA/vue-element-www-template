@@ -182,6 +182,7 @@ export default {
   }
   &.texture {
     .card-top {
+      background: rgba(255, 255, 255, 1);
       .bgImg {
         &.feedback {
           bottom: 5px;

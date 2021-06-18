@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import cookies from "js-cookie";
+import { goHome } from "utils/routes";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -28,7 +29,7 @@ export default new Vuex.Store({
         path: "/",
         domain: process.env.VUE_APP_DOMAIN
       });
-      window.location.reload();
+      goHome();
     },
     updateHeaderTheme(state, theme) {
       state.headerTheme = theme;

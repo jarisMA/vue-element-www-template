@@ -1,6 +1,6 @@
 <template>
   <div
-    class="cover-img"
+    :class="['cover-img', show ? 'animation' : '']"
     :style="{ width: width + 'px', height: height + 'px' }"
   >
     <div class="cover" :style="{ backgroundImage: `url(${url})` }"></div>
@@ -28,9 +28,36 @@ export default {
       show: true
     };
   },
+  watch: {
+    url() {
+      this.getImage();
+    }
+  },
+  created() {
+    this.getImage();
+  },
   methods: {
     error() {
       this.show = false;
+    },
+    getImage() {
+      this.show = true;
+      const url = this.url;
+      if (!url) {
+        this.show = false;
+        return;
+      }
+      const image = new Image();
+      image.src = url;
+
+      // 判断是否有缓存
+      if (image.complete) {
+        this.show = false;
+      } else {
+        image.onload = () => {
+          this.show = false;
+        };
+      }
     }
   }
 };
@@ -45,10 +72,13 @@ export default {
   }
 }
 .cover-img {
-  background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
-  background-size: 400% 100%;
-  animation: coverLoading 1.4s ease infinite;
+  background: #f2f2f2;
   overflow: hidden;
+  &.animation {
+    background: linear-gradient(90deg, #f2f2f2 25%, #e6e6e6 37%, #f2f2f2 63%);
+    background-size: 400% 100%;
+    animation: coverLoading 1.4s ease infinite;
+  }
   .cover {
     width: 100%;
     height: 100%;
