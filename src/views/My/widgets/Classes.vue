@@ -55,7 +55,12 @@ export default {
       termService
         .myCampTerms({ term_name: this.keyword || null })
         .then(res => {
-          this.terms = res;
+          this.terms = res.sort(function(a, b) {
+            return (
+              new Date(b.created_at).valueOf() -
+              new Date(a.created_at).valueOf()
+            );
+          });
         })
         .finally(() => {
           this.$emit("update:loading", false);

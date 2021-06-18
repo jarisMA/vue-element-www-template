@@ -34,74 +34,82 @@
     </div>
     <div class="page-content">
       <template v-if="activeTabIndex === 1">
-        <answer-card
-          v-for="(answer, index) of myAnswers.list"
-          :key="answer.id"
-          :answer="answer"
-          @delete="handelAnswerDelete(index, 'myAnswers')"
-        />
-        <pagination
-          class="pagination-wrapper"
-          :pageSize="pageSize"
-          :current-page="myAnswers.pagination.page"
-          :total="myAnswers.pagination.total"
-          @change-page="getMyAnswers"
-        />
+        <template v-if="myAnswers.list.length > 0">
+          <answer-card
+            v-for="(answer, index) of myAnswers.list"
+            :key="answer.id"
+            :answer="answer"
+            @delete="handelAnswerDelete(index, 'myAnswers')"
+          />
+          <pagination
+            class="pagination-wrapper"
+            :pageSize="pageSize"
+            :current-page="myAnswers.pagination.page"
+            :total="myAnswers.pagination.total"
+            @change-page="getMyAnswers"
+          />
+        </template>
         <div class="end-wrapper" v-if="!loading && myAnswers.list.length < 1">
           <the-empty noText="这里还没有内容" />
         </div>
       </template>
       <template v-if="activeTabIndex === 2">
-        <question-card
-          v-for="(question, index) of myQuestions.list"
-          mine
-          :key="question.id"
-          :question="question"
-          @delete="handelQuestionDelete(index)"
-        />
-        <pagination
-          class="pagination-wrapper"
-          :pageSize="pageSize"
-          :current-page="myQuestions.pagination.page"
-          :total="myQuestions.pagination.total"
-          @change-page="getMyQuestions"
-        />
+        <template v-if="myQuestions.list.length > 0">
+          <question-card
+            v-for="(question, index) of myQuestions.list"
+            mine
+            :key="question.id"
+            :question="question"
+            @delete="handelQuestionDelete(index)"
+          />
+          <pagination
+            class="pagination-wrapper"
+            :pageSize="pageSize"
+            :current-page="myQuestions.pagination.page"
+            :total="myQuestions.pagination.total"
+            @change-page="getMyQuestions"
+          />
+        </template>
         <div class="end-wrapper" v-if="!loading && myQuestions.list.length < 1">
           <the-empty noText="这里还没有内容" />
         </div>
       </template>
       <template v-if="activeTabIndex === 3">
-        <question-card
-          v-for="(question, index) of myFavorites.list"
-          :key="question.id"
-          :question="question.resource"
-          @unFavorite="handleQuestionUnFavorite(index)"
-        />
-        <pagination
-          class="pagination-wrapper"
-          :pageSize="pageSize"
-          :current-page="myFavorites.pagination.page"
-          :total="myFavorites.pagination.total"
-          @change-page="getMyFavorites"
-        />
+        <template v-if="myFavorites.list.length > 0">
+          <question-card
+            v-for="(question, index) of myFavorites.list"
+            :key="question.id"
+            :question="question.resource"
+            @unFavorite="handleQuestionUnFavorite(index)"
+          />
+          <pagination
+            class="pagination-wrapper"
+            :pageSize="pageSize"
+            :current-page="myFavorites.pagination.page"
+            :total="myFavorites.pagination.total"
+            @change-page="getMyFavorites"
+          />
+        </template>
         <div class="end-wrapper" v-if="!loading && myFavorites.list.length < 1">
           <the-empty noText="这里还没有内容" />
         </div>
       </template>
       <template v-if="activeTabIndex === 4">
-        <answer-card
-          v-for="(answer, index) of myPerfectAnswers.list"
-          :key="answer.id"
-          :answer="answer"
-          @delete="handelAnswerDelete(index, 'myPerfectAnswers')"
-        />
-        <pagination
-          class="pagination-wrapper"
-          :pageSize="pageSize"
-          :current-page="myPerfectAnswers.pagination.page"
-          :total="myPerfectAnswers.pagination.total"
-          @change-page="getMyPerfectAnswers"
-        />
+        <template v-if="myPerfectAnswers.list.length > 0">
+          <answer-card
+            v-for="(answer, index) of myPerfectAnswers.list"
+            :key="answer.id"
+            :answer="answer"
+            @delete="handelAnswerDelete(index, 'myPerfectAnswers')"
+          />
+          <pagination
+            class="pagination-wrapper"
+            :pageSize="pageSize"
+            :current-page="myPerfectAnswers.pagination.page"
+            :total="myPerfectAnswers.pagination.total"
+            @change-page="getMyPerfectAnswers"
+          />
+        </template>
         <div
           class="end-wrapper"
           v-if="!loading && myPerfectAnswers.list.length < 1"
@@ -110,13 +118,15 @@
         </div>
       </template>
       <template v-if="activeTabIndex === 5">
-        <draft-card
-          v-for="(draft, index) of myDrafts"
-          :key="draft.id"
-          :draft="draft"
-          @delete="handleDraftDelete(index)"
-          @edit="handleDraftEdit(index)"
-        />
+        <template v-if="myDrafts.length > 0">
+          <draft-card
+            v-for="(draft, index) of myDrafts"
+            :key="draft.id"
+            :draft="draft"
+            @delete="handleDraftDelete(index)"
+            @edit="handleDraftEdit(index)"
+          />
+        </template>
         <div class="end-wrapper" v-if="!loading && myDrafts.length < 1">
           <the-empty noText="这里还没有内容" />
         </div>
