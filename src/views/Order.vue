@@ -73,6 +73,7 @@
               class="pay-item"
               v-model="payment"
               :label="PAY_METHOD_WECHAT"
+              v-if="false"
             >
               <div class="pay-item-left">
                 <i class="wechat-icon"></i>
