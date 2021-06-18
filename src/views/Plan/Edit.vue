@@ -197,7 +197,7 @@ export default {
           document.getElementById("footer-plan-name").innerHTML = design.name;
         }
         this.listener();
-        this.getListingBrief();
+        this.getListingBrief(false);
         // this.loading = false;
       });
     },
@@ -304,12 +304,17 @@ export default {
           });
       }
     },
-    getListingBrief() {
+    getListingBrief(tips = true) {
       if (this.listingId) {
         kujialeService
           .listingBrief(this.listingId)
           .then(res => {
             this.listingBrief = res;
+            tips &&
+              this.$notice({
+                type: "success",
+                title: "更新成功"
+              });
           })
           .finally(() => {
             this.refreshingBrief = false;
