@@ -180,20 +180,14 @@
                             }}</label
                           >
                           <label
-                            :class="[
-                              'link-label',
-                              purchase_url(good.sku.purchase_url) ? 'bgImg' : ''
-                            ]"
+                            :class="['link-label', 'bgImg']"
                             @click="
-                              purchase_url(good.sku.purchase_url)
-                                ? goRoute(
-                                    purchase_url(good.sku.purchase_url),
-                                    '_blank'
-                                  )
-                                : ''
+                              goRoute(
+                                purchase_url(good.sku.purchase_url),
+                                '_blank'
+                              )
                             "
                           >
-                            {{ good.sku.tb_purchase_url ? "" : "-" }}
                           </label>
                           <label class="amount-label"
                             >¥{{ good.sku.cashback_amount || "-" }}</label
@@ -750,6 +744,7 @@ export default {
           display: flex;
           align-items: center;
           margin-left: 8px;
+          margin-bottom: 3px;
           font-size: 12px;
           color: @primaryColor;
           cursor: pointer;
@@ -1022,15 +1017,16 @@ export default {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 118px;
+          width: 140px;
           height: 100%;
-          font-size: 12px;
+          font-size: 14px;
           color: #fff;
           background: #6764ff;
           cursor: pointer;
           .export-icon {
             width: 24px;
             height: 24px;
+            margin-right: 4px;
             background-image: url("~images/commodity/export.svg");
           }
         }
