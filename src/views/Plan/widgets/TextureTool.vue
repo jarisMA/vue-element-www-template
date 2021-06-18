@@ -250,7 +250,6 @@ export default {
   },
   computed: {
     infiniteDisabled() {
-      console.log("disabled");
       return this.commodityLoading;
     }
   },

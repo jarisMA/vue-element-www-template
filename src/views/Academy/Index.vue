@@ -100,89 +100,91 @@
     </div>
     <div class="academy-content">
       <div class="container-1180">
-        <div
-          class="academy-courses"
-          v-if="courses1.length > 0 || courses2.length > 0"
-        >
-          <div class="academy-content-header">
-            <h3 class="academy-content-title">
-              家计划<span class="primary">视频课</span>
-            </h3>
-            <div class="academy-content-more" @click="goAcademyCourseList()">
-              查看全部<i class="more-icon"></i>
-            </div>
-          </div>
-          <div class="academy-course-wrapper" v-if="courses1.length > 0">
-            <div class="course-wrapper-left">
-              <h4 class="course-cat-title">{{ courseCategory1.name }}</h4>
-              <div
-                class="course-cat-btn"
-                @click="
-                  goAcademyCourseList({
-                    catId: VUE_APP_COURSE_CAT_1
-                  })
-                "
-              >
-                全部<i class="more-icon"></i>
-              </div>
-            </div>
-            <div class="academy-course-list">
-              <course-card
-                class="academy-course-item"
-                v-for="item of courses1"
-                :key="item.id"
-                :course="item"
-              />
-            </div>
-          </div>
-          <div class="academy-course-wrapper" v-if="courses2.length > 0">
-            <div class="course-wrapper-left">
-              <h4 class="course-cat-title">{{ courseCategory2.name }}</h4>
-              <div
-                class="course-cat-btn"
-                @click="
-                  goAcademyCourseList({
-                    catId: VUE_APP_COURSE_CAT_2
-                  })
-                "
-              >
-                全部<i class="more-icon"></i>
-              </div>
-            </div>
-            <div class="academy-course-list">
-              <course-card
-                class="academy-course-item"
-                v-for="item of courses2"
-                :key="item.id"
-                :course="item"
-              />
-            </div>
-          </div>
+        <template v-if="false">
           <div
-            class="academy-content-more center"
-            @click="goAcademyCourseList()"
+            class="academy-courses"
+            v-if="courses1.length > 0 || courses2.length > 0"
           >
-            查看全部视频课<i class="more-icon"></i>
-          </div>
-        </div>
-        <div class="academy-series" v-if="series.length > 0">
-          <div class="academy-content-header">
-            <h3 class="academy-content-title">
-              家计划<span class="primary">体系课</span>
-            </h3>
-            <div class="academy-content-more" @click="goAcademySeriesList()">
-              查看全部<i class="more-icon"></i>
+            <div class="academy-content-header">
+              <h3 class="academy-content-title">
+                家计划<span class="primary">视频课</span>
+              </h3>
+              <div class="academy-content-more" @click="goAcademyCourseList()">
+                查看全部<i class="more-icon"></i>
+              </div>
+            </div>
+            <div class="academy-course-wrapper" v-if="courses1.length > 0">
+              <div class="course-wrapper-left">
+                <h4 class="course-cat-title">{{ courseCategory1.name }}</h4>
+                <div
+                  class="course-cat-btn"
+                  @click="
+                    goAcademyCourseList({
+                      catId: VUE_APP_COURSE_CAT_1
+                    })
+                  "
+                >
+                  全部<i class="more-icon"></i>
+                </div>
+              </div>
+              <div class="academy-course-list">
+                <course-card
+                  class="academy-course-item"
+                  v-for="item of courses1"
+                  :key="item.id"
+                  :course="item"
+                />
+              </div>
+            </div>
+            <div class="academy-course-wrapper" v-if="courses2.length > 0">
+              <div class="course-wrapper-left">
+                <h4 class="course-cat-title">{{ courseCategory2.name }}</h4>
+                <div
+                  class="course-cat-btn"
+                  @click="
+                    goAcademyCourseList({
+                      catId: VUE_APP_COURSE_CAT_2
+                    })
+                  "
+                >
+                  全部<i class="more-icon"></i>
+                </div>
+              </div>
+              <div class="academy-course-list">
+                <course-card
+                  class="academy-course-item"
+                  v-for="item of courses2"
+                  :key="item.id"
+                  :course="item"
+                />
+              </div>
+            </div>
+            <div
+              class="academy-content-more center"
+              @click="goAcademyCourseList()"
+            >
+              查看全部视频课<i class="more-icon"></i>
             </div>
           </div>
-          <div class="academy-series-list">
-            <set-card
-              class="academy-series-item"
-              v-for="item of series"
-              :key="item.id"
-              :series="item"
-            />
+          <div class="academy-series" v-if="series.length > 0">
+            <div class="academy-content-header">
+              <h3 class="academy-content-title">
+                家计划<span class="primary">体系课</span>
+              </h3>
+              <div class="academy-content-more" @click="goAcademySeriesList()">
+                查看全部<i class="more-icon"></i>
+              </div>
+            </div>
+            <div class="academy-series-list">
+              <set-card
+                class="academy-series-item"
+                v-for="item of series"
+                :key="item.id"
+                :series="item"
+              />
+            </div>
           </div>
-        </div>
+        </template>
         <div class="academy-camp" v-if="camps.length > 0">
           <div class="academy-content-header">
             <h3 class="academy-content-title">
@@ -220,7 +222,7 @@ import ZwjSvg from "./widgets/svg/ZwjSvg.vue";
 import ZzSvg from "./widgets/svg/ZzSvg.vue";
 
 import campService from "service/camp";
-import courseService from "service/course";
+// import courseService from "service/course";
 import {
   goAcademyCourseList,
   goAcademySeriesList,
@@ -295,22 +297,22 @@ export default {
     goAcademyCampList,
     getData() {
       Promise.all([
-        courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
-        courseService.courseCategory(this.VUE_APP_COURSE_CAT_2),
-        courseService.courses({
-          page_size: 3,
-          page: 1,
-          cat_id: this.VUE_APP_COURSE_CAT_1
-        }),
-        courseService.courses({
-          page_size: 3,
-          page: 1,
-          cat_id: this.VUE_APP_COURSE_CAT_2
-        }),
-        courseService.series({
-          page_size: 3,
-          page: 1
-        }),
+        // courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
+        // courseService.courseCategory(this.VUE_APP_COURSE_CAT_2),
+        // courseService.courses({
+        //   page_size: 3,
+        //   page: 1,
+        //   cat_id: this.VUE_APP_COURSE_CAT_1
+        // }),
+        // courseService.courses({
+        //   page_size: 3,
+        //   page: 1,
+        //   cat_id: this.VUE_APP_COURSE_CAT_2
+        // }),
+        // courseService.series({
+        //   page_size: 3,
+        //   page: 1
+        // }),
         campService.camps({
           page_size: 2,
           page: 1
@@ -318,18 +320,18 @@ export default {
       ])
         .then(
           ([
-            courseCategory1,
-            courseCategory2,
-            courses1,
-            courses2,
-            series,
+            // courseCategory1,
+            // courseCategory2,
+            // courses1,
+            // courses2,
+            // series,
             camps
           ]) => {
-            this.courseCategory1 = courseCategory1;
-            this.courseCategory2 = courseCategory2;
-            this.courses1 = courses1.list;
-            this.courses2 = courses2.list;
-            this.series = series.list;
+            // this.courseCategory1 = courseCategory1;
+            // this.courseCategory2 = courseCategory2;
+            // this.courses1 = courses1.list;
+            // this.courses2 = courses2.list;
+            // this.series = series.list;
             this.camps = camps.list;
           }
         )

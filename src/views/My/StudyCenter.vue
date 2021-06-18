@@ -21,21 +21,21 @@
         <div class="page-menu">
           <div
             @click="goMyClasses()"
-            :class="activeTab === 'Classes' ? 'menu-active' : 'menu-inactive'"
+            :class="activeTab === 'MyClasses' ? 'menu-active' : 'menu-inactive'"
           >
             <img class="menu-icon" src="~/images/term/class.svg" />
             <span>我的班级</span>
           </div>
           <div
             @click="goMyCourses()"
-            :class="activeTab === 'Courses' ? 'menu-active' : 'menu-inactive'"
+            :class="activeTab === 'MyCourses' ? 'menu-active' : 'menu-inactive'"
           >
             <img class="menu-icon" src="~/images/term/course.svg" />
             <span>我的课程</span>
           </div>
           <div
             @click="goMySystems()"
-            :class="activeTab === 'Systems' ? 'menu-active' : 'menu-inactive'"
+            :class="activeTab === 'MySystems' ? 'menu-active' : 'menu-inactive'"
           >
             <img class="menu-icon" src="~/images/term/system.svg" />
             <span>我的体系课</span>
@@ -43,9 +43,9 @@
         </div>
       </div>
       <div class="page-right">
-        <classes v-if="activeTab === 'Classes'" :loading.sync="loading" />
-        <courses v-if="activeTab === 'Courses'" :loading.sync="loading" />
-        <systems v-if="activeTab === 'Systems'" :loading.sync="loading" />
+        <classes v-if="activeTab === 'MyClasses'" :loading.sync="loading" />
+        <courses v-if="activeTab === 'MyCourses'" :loading.sync="loading" />
+        <systems v-if="activeTab === 'MySystems'" :loading.sync="loading" />
       </div>
     </div>
   </div>

@@ -105,7 +105,6 @@ export default {
           this.order = res.list;
           this.total = res.pagination.total;
           this.page = start;
-          console.log(res);
         })
         .finally(() => {
           this.$emit("update:loading", false);

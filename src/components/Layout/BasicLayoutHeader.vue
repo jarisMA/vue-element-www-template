@@ -76,7 +76,7 @@
                 class="el-avatar-border"
                 :size="48"
                 :url="userInfo.avatar_url"
-                @click.native="goMyClasses()"
+                @click.native="goMySetting()"
               ></the-avatar>
               <div class="user-handle_show">
                 <div class="show-container landing">

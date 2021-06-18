@@ -72,7 +72,7 @@
               我的问答
             </li>
             <li
-              :class="['page-menu-item', activeTab === 'Vip' ? 'active' : '']"
+              :class="['page-menu-item', activeTab === 'MyVip' ? 'active' : '']"
               @click="goMyVip()"
             >
               会员中心
@@ -80,7 +80,7 @@
             <li
               :class="[
                 'page-menu-item',
-                activeTab === 'Purchase' ? 'active' : ''
+                activeTab === 'MyPurchase' ? 'active' : ''
               ]"
               @click="goPurchase()"
             >
@@ -97,8 +97,8 @@
             v-if="activeTab === 'MyQuestion'"
             :loading.sync="loading"
           />
-          <vip-center v-if="activeTab === 'Vip'" :loading.sync="loading" />
-          <purchase v-if="activeTab === 'Purchase'" :loading.sync="loading" />
+          <vip-center v-if="activeTab === 'MyVip'" :loading.sync="loading" />
+          <purchase v-if="activeTab === 'MyPurchase'" :loading.sync="loading" />
         </div>
       </div>
     </div>
@@ -163,7 +163,7 @@ export default {
   },
   computed: {
     ...mapState(["userInfo"]),
-        clocks () {
+    clocks () {
       const now = new Date();
       const index = now.getDay();
       let clocks = [];
@@ -229,7 +229,7 @@ export default {
     goMyQuestion,
     goPurchase,
     goMyVip,
-        getData () {
+    getData () {
       this.dataLoading = true;
       const year = new Date().getFullYear();
       const month = new Date().getMonth() + 1;

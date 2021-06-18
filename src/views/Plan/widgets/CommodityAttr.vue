@@ -629,7 +629,6 @@ export default {
     brandSearch(q, callback) {
       if (q) {
         const result = this.brands.filter(item => item.name.indexOf(q) >= 0);
-        console.log(result);
         callback(result);
       } else {
         callback([]);

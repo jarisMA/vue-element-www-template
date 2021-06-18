@@ -28,24 +28,24 @@ const routes = [
     }
   },
   {
-    path: "my/classes",
-    name: "Classes",
+    path: "study/classes",
+    name: "MyClasses",
     component: StudyCenter,
     meta: {
       auth: true
     }
   },
   {
-    path: "my/courses",
-    name: "Courses",
+    path: "study/courses",
+    name: "MyCourses",
     component: StudyCenter,
     meta: {
       auth: true
     }
   },
   {
-    path: "my/systems",
-    name: "Systems",
+    path: "study/systems",
+    name: "MySystems",
     component: StudyCenter,
     meta: {
       auth: true
@@ -53,7 +53,7 @@ const routes = [
   },
   {
     path: "my/profile",
-    name: "Profile",
+    name: "MyProfile",
     component: Index,
     meta: {
       auth: true
@@ -61,7 +61,7 @@ const routes = [
   },
   {
     path: "my/vip",
-    name: "Vip",
+    name: "MyVip",
     component: Index,
     meta: {
       auth: true
@@ -69,7 +69,7 @@ const routes = [
   },
   {
     path: "my/purchase",
-    name: "Purchase",
+    name: "MyPurchase",
     component: Index,
     meta: {
       auth: true

@@ -263,7 +263,7 @@ export const go404 = (type = "replace") => {
 export const goMyClasses = (type = "_self") => {
   return goRoute(
     {
-      name: "Classes"
+      name: "MyClasses"
     },
     type
   );
@@ -272,7 +272,7 @@ export const goMyClasses = (type = "_self") => {
 export const goMyCourses = (type = "_self") => {
   return goRoute(
     {
-      name: "Courses"
+      name: "MyCourses"
     },
     type
   );
@@ -281,7 +281,7 @@ export const goMyCourses = (type = "_self") => {
 export const goMySystems = (type = "_self") => {
   return goRoute(
     {
-      name: "Systems"
+      name: "MySystems"
     },
     type
   );
@@ -290,7 +290,7 @@ export const goMySystems = (type = "_self") => {
 export const goMyVip = (type = "_self") => {
   return goRoute(
     {
-      name: "Vip"
+      name: "MyVip"
     },
     type
   );
@@ -299,7 +299,7 @@ export const goMyVip = (type = "_self") => {
 export const goPurchase = (type = "_self") => {
   return goRoute(
     {
-      name: "Purchase"
+      name: "MyPurchase"
     },
     type
   );

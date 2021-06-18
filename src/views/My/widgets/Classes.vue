@@ -64,7 +64,6 @@ export default {
     handleSearch(keyword) {
       this.keyword = keyword;
       this.getData();
-      console.log(keyword);
     }
   }
 };

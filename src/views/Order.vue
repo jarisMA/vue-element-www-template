@@ -330,7 +330,7 @@ export default {
           break;
         case ORDER_TYPE_VIP:
           url += this.$router.resolve({
-            name: "MySetting"
+            name: "MyVip"
           }).href;
           break;
         default:
