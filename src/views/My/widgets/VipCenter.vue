@@ -2,35 +2,34 @@
   <div class="vip-section">
     <div class="vip-top">
       <div class="vip-top-left">
-        <p class="vip-top-left-title">
-          {{
-            !isVip() && !userInfo.vip_expired
-              ? "还没有成为家计划·会员"
-              : isVip() && !userInfo.vip_expired
-              ? `家计划·会员已过期${dateCompare(
-                  new Date().valueOf(),
-                  userInfo.vip_expired
-                )}天`
-              : `家计划·会员剩余${dateCompare(
-                  userInfo.vip_expired,
-                  new Date().valueOf()
-                )}天`
-          }}
-        </p>
-        <span class="vip-top-left-text" v-if="isVip()"
-          >{{
-            formatDate(userInfo.vip_expired, (format = "YYYY.MM.DD"))
-          }}到期</span
-        >
+        <div class="vip-top-left-header">
+          <p class="vip-top-left-title">
+            {{
+              !isVip() && !userInfo.vip_expired
+                ? "还没有成为家计划·会员"
+                : isVip() && !userInfo.vip_expired
+                ? `家计划·会员已过期${dateCompare(
+                    new Date().valueOf(),
+                    userInfo.vip_expired
+                  )}天`
+                : `家计划·会员剩余${dateCompare(
+                    userInfo.vip_expired,
+                    new Date().valueOf()
+                  )}天`
+            }}
+          </p>
+          <span class="vip-top-left-text" v-if="isVip()"
+            >{{
+              formatDate(userInfo.vip_expired, (format = "YYYY.MM.DD"))
+            }}到期</span
+          >
+        </div>
         <el-progress
-          v-if="isVip() && userInfo.vip_expired"
+          v-if="isVip() && userInfo.vip_expired && false"
           :percentage="50"
           class="vip-top-left-bar"
         ></el-progress>
-        <button
-          :class="[isVip() ? 'vip-top-left-btn' : 'vip-top-left-btn-long']"
-          @click="goVip()"
-        >
+        <button class="vip-top-left-btn" @click="goVip('_self')">
           {{ isVip() ? "续费" : "成为会员" }}
         </button>
       </div>
@@ -51,7 +50,7 @@
             src="~/images/my/plango.svg"
           /><span class="vip-not-member-body-btm-text">PlanGo工具开放使用</span>
         </div>
-        <button class="vip-not-member-btn" @click="goVip()">
+        <button class="vip-not-member-btn" @click="goVip('_self')">
           成为会员 &rarr;
         </button>
       </div>
@@ -223,13 +222,14 @@ export default {
     }
 
     .vip-top-left-btn {
-      width: 96px;
-      height: 48px;
-      background: #ffffff;
+      margin-top: 24px;
+      padding: 12px 32px;
       font-weight: 600;
       font-size: 16px;
       color: #14af64;
       border: none;
+      background: #ffffff;
+      cursor: pointer;
     }
   }
   .vip-body {
@@ -291,16 +291,6 @@ export default {
   font-weight: 600;
   font-size: 32px;
   color: #ffffff;
-}
-
-.vip-top-left-btn-long {
-  width: 96px;
-  height: 48px;
-  background: #ffffff;
-  font-weight: 600;
-  font-size: 16px;
-  color: #14af64;
-  border: none;
 }
 
 .vip-not-member-body {

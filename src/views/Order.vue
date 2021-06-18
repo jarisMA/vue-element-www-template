@@ -156,7 +156,7 @@ import {
   goMyClasses,
   goAcademyCourseDetail,
   goAcademySeriesDetail,
-  goMySetting
+  goMyVip
 } from "utils/routes";
 import TheLoadingImage from "components/TheLoadingImage";
 import orderService from "service/order";
@@ -302,7 +302,7 @@ export default {
           userService.getUserInfo().then(userInfo => {
             this.USERINFO({ ...userInfo });
           });
-          goMySetting();
+          goMyVip();
           break;
         default:
           break;
