@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --mode local",
-    "build": "vue-cli-service build --mode production && yarn move",
+    "build": "vue-cli-service build --mode local && yarn move",
     "move": "rm -rf dist && mv current_dist dist",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
@@ -13,11 +13,11 @@
     "animate.css": "3",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
+    "dayjs": "^1.10.5",
     "element-theme": "^2.0.1",
     "element-ui": "^2.13.1",
     "file-saver": "^2.0.5",
     "js-cookie": "^2.2.1",
-    "moment": "^2.26.0",
     "nprogress": "^0.2.0",
     "qiniu-js": "^2.5.5",
     "quill-image-resize-module": "^3.0.0",
