@@ -2,7 +2,8 @@
   <div
     class="card"
     @click="goAcademyCourseDetail(course.id)"
-    @mouseover="getData()" @mouseleave="clearData()"
+    @mouseover="getData()"
+    @mouseleave="clearData()"
   >
     <div class="card-top">
       <the-loading-image :width="278" :height="156" :url="course.cover_url" />
@@ -26,7 +27,7 @@
       </div>
       <div class="card-bottom-footer">
         <div class="card-bottom-footer-left">
-          <div class="vip-free" v-if="fee > 0 && vip =='1'">
+          <div class="vip-free" v-if="fee > 0 && vip == '1'">
             <span class="vip">VIP</span
             ><span style="margin-left: 4px;">免费学</span>
           </div>
@@ -57,34 +58,33 @@ import { goAcademyCourseDetail } from "utils/routes";
 export default {
   name: "CourseCard",
   components: {
-    TheLoadingImage,
+    TheLoadingImage
   },
   props: {
     course: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
       COURSE_LEVEL,
       fee: "",
-      vip: "",
+      vip: ""
     };
   },
   methods: {
     goAcademyCourseDetail,
     getData() {
-      this.fee = this.course.origin_price
-      this.vip = this.course.is_vip
+      this.fee = this.course.origin_price;
+      this.vip = this.course.is_vip;
     },
     clearData() {
-      this.fee = ''
-      this.vip = ''
-    },
-    
-  },
+      this.fee = "";
+      this.vip = "";
+    }
+  }
 };
 </script>
 

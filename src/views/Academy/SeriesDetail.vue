@@ -27,11 +27,13 @@
               >
                 {{ series.permission ? "开始学习" : "购买本课" }}
               </el-button>
-              <el-button class="vip-free"
-              v-if="series.origin_price > 0 && !isVip()"
+              <el-button
+                class="vip-free"
+                v-if="series.origin_price > 0 && !isVip()"
                 @click="goVip()"
               >
-              <span style="font-weight:600">开通VIP</span> <span style="font-weight:400">免费学</span>
+                <span style="font-weight:600">开通VIP</span>
+                <span style="font-weight:400">免费学</span>
               </el-button>
             </div>
           </div>
@@ -92,7 +94,7 @@
                         :class="[
                           'page-section-item',
                           lessonStatus(key, index) === 3 ? 'active' : '',
-                          lessonStatus(key, index) === 4 ? 'completed' : '',
+                          lessonStatus(key, index) === 4 ? 'completed' : ''
                         ]"
                         v-for="(section, index) of chapter.sections"
                         :key="section.id"
@@ -106,7 +108,7 @@
                           <i
                             :class="[
                               'section-item-icon',
-                              lessonStatusIconClass(key, index),
+                              lessonStatusIconClass(key, index)
                             ]"
                           ></i>
                           <h5 class="section-item-title ellipsis">
@@ -172,13 +174,13 @@ export default {
       loading: true,
       series: {},
       relations: [],
-      activeChapterIndexArr: [0],
+      activeChapterIndexArr: [0]
     };
   },
   watch: {
     ["$route"]() {
       this.getData();
-    },
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -240,7 +242,7 @@ export default {
         }
         return iconClass;
       };
-    },
+    }
   },
   created() {
     this.getData();
@@ -254,7 +256,7 @@ export default {
       this.loading = true;
       courseService
         .set(this.$route.params.id)
-        .then((series) => {
+        .then(series => {
           this.series = series;
           const withoutIds = [this.$route.params.id];
           courseService
@@ -262,9 +264,9 @@ export default {
               page_size: 3,
               page: 1,
               withoutIds,
-              cat_id: series.cat_id,
+              cat_id: series.cat_id
             })
-            .then((relation) => {
+            .then(relation => {
               this.relations = relation.list;
             })
             .finally(() => {
@@ -278,8 +280,8 @@ export default {
     goDetail(id) {
       this.$router.push({
         params: {
-          id,
-        },
+          id
+        }
       });
     },
     handleOrder() {
@@ -291,13 +293,13 @@ export default {
         .addOrder({
           type: ORDER_TYPE_COURSE_SERIES,
           resource_id: this.series.id,
-          remark: "购买体系课",
+          remark: "购买体系课"
         })
-        .then((res) => {
+        .then(res => {
           goOrder(res.no);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -545,7 +547,7 @@ export default {
       }
     }
   }
-    .vip-free {
+  .vip-free {
     width: 186px;
     height: 48px;
     font-size: 16px;

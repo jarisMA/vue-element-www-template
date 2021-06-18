@@ -51,19 +51,19 @@ import { goAcademySeriesDetail } from "utils/routes";
 export default {
   name: "CourseCard",
   components: {
-    TheLoadingImage,
+    TheLoadingImage
   },
   props: {
     series: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       COURSE_LEVEL,
       fee: "",
-      vip: "",
+      vip: ""
     };
   },
   methods: {
@@ -75,8 +75,8 @@ export default {
     clearData() {
       this.fee = "";
       this.vip = "";
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -170,25 +170,24 @@ export default {
           mask: url("~images/academy/vector.svg") no-repeat center;
           background-color: @primaryColor;
         }
-        
       }
     }
   }
-        .vip-free {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 85px;
-        height: 32px;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: 16px;
-        background-color: #efefef;
+  .vip-free {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 85px;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 16px;
+    background-color: #efefef;
 
-        .vip {
-          font-size: 15px;
-          color: #ffbd12;
-        }
-      }
+    .vip {
+      font-size: 15px;
+      color: #ffbd12;
+    }
+  }
 }
 </style>
