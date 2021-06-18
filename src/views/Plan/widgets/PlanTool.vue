@@ -144,10 +144,15 @@
           </div>
         </transition>
       </div>
-      <commodity-list
-        :class="['commodity-list-wrapper', isListUp ? 'show' : '']"
+      <commodity-brief-list
+        :class="['commodity-brief-list-wrapper']"
         :briefTheme="activeParentCat ? 'primary' : 'white'"
-        :up.sync="isListUp"
+        :full_screen.sync="isListFullScreen"
+        :listingBrief="listingBrief"
+        :refreshing="refreshingBrief"
+        @refreshPrice="handleRefreshPrice"
+      />
+      <commodity-full-list
         :full_screen.sync="isListFullScreen"
         :listingBrief="listingBrief"
         :design="design"
@@ -256,12 +261,13 @@
 
 <script>
 import commodityService from "service/commodity";
-import CommodityCard from "./CommodityCard.vue";
-import CommodityAttr from "./CommodityAttr.vue";
+import CommodityCard from "./CommodityCard";
+import CommodityAttr from "./CommodityAttr";
 import { hex2Rgba } from "utils/function";
-import TheLoadingImage from "components/TheLoadingImage.vue";
-import CommoditySkuList from "./CommoditySkuList.vue";
-import CommodityList from "./CommodityList.vue";
+import TheLoadingImage from "components/TheLoadingImage";
+import CommoditySkuList from "./CommoditySkuList";
+import CommodityBriefList from "./CommodityBriefList";
+import CommodityFullList from "./CommodityFullList";
 
 export default {
   name: "PlanTool",
@@ -270,7 +276,8 @@ export default {
     CommodityAttr,
     TheLoadingImage,
     CommoditySkuList,
-    CommodityList
+    CommodityBriefList,
+    CommodityFullList
   },
   props: {
     design: {
@@ -627,15 +634,11 @@ export default {
     height: 100%;
     overflow: hidden;
   }
-  .commodity-list-wrapper {
+  .commodity-brief-list-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     transform: translateY(calc(100% - 48px));
-    transition: transform @transitionDuration * 10;
-    &.show {
-      transform: translateY(0);
-    }
   }
   .tool-wrapper {
     position: relative;
