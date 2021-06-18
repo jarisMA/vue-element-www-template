@@ -72,12 +72,14 @@
               我的问答
             </li>
             <li
+              v-if="false"
               :class="['page-menu-item', activeTab === 'MyVip' ? 'active' : '']"
               @click="goMyVip()"
             >
               会员中心
             </li>
             <li
+              v-if="false"
               :class="[
                 'page-menu-item',
                 activeTab === 'MyPurchase' ? 'active' : ''

@@ -31,7 +31,7 @@
           > -->
           <span
             class="header-nav-item My"
-            @click="(visible || theme !== 'primary') && goAcademy()"
+            @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
             >斗西学社</span
           >
           <span

@@ -27,6 +27,7 @@
             <span>我的班级</span>
           </div>
           <div
+            v-if="false"
             @click="goMyCourses()"
             :class="activeTab === 'MyCourses' ? 'menu-active' : 'menu-inactive'"
           >
@@ -34,6 +35,7 @@
             <span>我的课程</span>
           </div>
           <div
+            v-if="false"
             @click="goMySystems()"
             :class="activeTab === 'MySystems' ? 'menu-active' : 'menu-inactive'"
           >
