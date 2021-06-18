@@ -662,6 +662,7 @@ export default {
             display: flex;
             align-items: center;
             margin-left: 8px;
+            margin-bottom: 3px;
             font-size: 12px;
             color: #ffffff;
             cursor: pointer;
