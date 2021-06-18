@@ -41,16 +41,13 @@
       </div>
     </div>
     <div class="camp-content">
-      <div class="container-1200">
+      <div class="container-1180">
         <p v-html="camp.content"></p>
       </div>
     </div>
-    <div class="camp-footer" v-if="!loading && term">
+    <div class="camp-footer" v-if="!loading && term && scroll > 300">
       <div class="camp-footer-wrapper">
-        <div
-          class="camp-footer-left"
-          :style="{ backgroundColor: camp.price_color }"
-        >
+        <div class="camp-footer-left" style=" backgroundColor: #14AF64 ">
           <h3 class="camp-footer-name ellipsis">{{ camp.name }}</h3>
           <div class="camp-footer-price">
             <span class="camp-footer-price_text"
@@ -62,7 +59,7 @@
         <div class="camp-footer-right">
           <div
             :class="['camp-footer-btn', status !== 1 ? 'disabled' : '']"
-            :style="{ backgroundColor: camp.title_color }"
+            style=" backgroundColor: #7A55FF "
             @click="status === 1 ? handleRegister() : null"
           >
             {{ campBtnText }}
@@ -86,11 +83,18 @@ export default {
       loading: true,
       camp: {},
       term: {},
-      status: 3
+      status: 3,
+      scroll: ""
     };
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    window.addEventListener("scroll", this.menu);
+  },
+  destroyed() {
+    window.removeEventListener("scroll", this.menu);
   },
   computed: {
     campBtnText() {
@@ -117,6 +121,10 @@ export default {
     },
     handleRegister() {
       console.log("register");
+    },
+    menu() {
+      this.scroll =
+        document.documentElement.scrollTop || document.body.scrollTop;
     }
   }
 };
@@ -241,7 +249,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 980px;
+    width: 1180px;
     height: 60px;
   }
   .camp-footer-left {
@@ -267,7 +275,7 @@ export default {
       .camp-footer-price_text {
         line-height: 1;
         font-weight: 800;
-        font-size: 48px;
+        font-size: 36px;
         color: #fff;
       }
       .camp-footer-unit {

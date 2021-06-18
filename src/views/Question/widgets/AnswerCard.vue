@@ -287,20 +287,25 @@ export default {
         return;
       }
       if (!this.accepting) {
-        this.accepting = true;
-        questionService
-          .acceptAnswer(this.answer.id)
-          .then(() => {
-            this.$notice({
-              title: "采纳回答成功",
-              type: "success"
+        this.$confirm("提示", "确定采纳这条回答吗？", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消"
+        }).then(() => {
+          this.accepting = true;
+          questionService
+            .acceptAnswer(this.answer.id)
+            .then(() => {
+              this.$notice({
+                title: "采纳回答成功",
+                type: "success"
+              });
+              this.answer.has_accepted = 1;
+              this.$emit("accepted", this.answer.id);
+            })
+            .finally(() => {
+              this.accepting = false;
             });
-            this.answer.has_accepted = 1;
-            this.$emit("accepted", this.answer.id);
-          })
-          .finally(() => {
-            this.accepting = false;
-          });
+        });
       }
     },
     initDom() {
