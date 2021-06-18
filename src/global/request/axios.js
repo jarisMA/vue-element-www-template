@@ -1,9 +1,8 @@
 import axios from "axios";
-import { Message } from "element-ui";
 import cookies from "js-cookie";
 import Store from "@/store/index.js";
 import { goRoute } from "utils/routes";
-
+import Vue from "vue";
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
 
@@ -32,31 +31,27 @@ const handleErrorRequest = error => {
     const { data } = response;
     const message = data.msg || "服务器发送错误，请稍后再试";
     if (status === 401) {
-      // this.$notice({
-      //   type: 'danger',
-      //   title: '未登录，请登录重试'
-      // });
-      Message.error("未登录，请登录重试");
+      Vue.prototype.$notice({
+        type: "danger",
+        title: "未登录，请登录重试"
+      });
       Store.commit("LOGOUT");
     } else if (status === 403) {
-      // this.$notice({
-      //   type: 'danger',
-      //   title: '没有权限，联系管理员'
-      // });
-      Message.error("没有权限，联系管理员");
+      Vue.prototype.$notice({
+        type: "danger",
+        title: "没有权限，联系管理员"
+      });
     } else {
-      // this.$notice({
-      //   type: 'danger',
-      //   title: message
-      // });
-      Message.error(message);
+      Vue.prototype.$notice({
+        type: "danger",
+        title: message
+      });
     }
   } else {
-    // this.$notice({
-    //   type: 'danger',
-    //   title: '网络超时'
-    // });
-    Message.error("网络超时");
+    Vue.prototype.$notice({
+      type: "danger",
+      title: "网络超时"
+    });
   }
 };
 
@@ -74,7 +69,10 @@ const successRes = res => {
       //   type: 'danger',
       //   title: res.data.msg || "服务器发送错误，请稍后再试"
       // });
-      Message.error(res.data.msg || "服务器发送错误，请稍后再试");
+      Vue.prototype.$notice({
+        type: "danger",
+        title: res.data.msg || "服务器发送错误，请稍后再试"
+      });
       return Promise.reject(res.data);
   }
 };
