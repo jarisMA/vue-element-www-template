@@ -26,7 +26,6 @@
             </template>
           </div>
           <div class="time-wrapper">
-            <!-- {{ fromNow(comment.created_at) }} -->
             {{ formatDate(comment.created_at, "YYYY-MM-DD hh:mm:ss") }}
           </div>
         </div>
@@ -105,7 +104,7 @@ import ThePreviewImage from "components/ThePreviewImage";
 import Comment from "./Comment";
 import { mapState } from "vuex";
 import questionService from "service/question";
-import { fromNow, formatDate } from "utils/moment";
+import { formatDate } from "utils/moment";
 
 export default {
   name: "QuestionCommentCard",
@@ -169,7 +168,6 @@ export default {
     }
   },
   methods: {
-    fromNow,
     formatDate,
     commented(val, key) {
       this.commentVisible = false;
