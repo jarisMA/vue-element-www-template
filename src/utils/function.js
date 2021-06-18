@@ -2,6 +2,10 @@ import store from "@/store/index";
 
 // 判断当前是否为vip用户
 export const isVip = () => {
+  const userInfo = store.state.userInfo;
+  if (!userInfo) {
+    return false;
+  }
   const date = store.state.userInfo.vip_expired;
   if (!date) {
     return false;
