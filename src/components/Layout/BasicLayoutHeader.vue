@@ -108,7 +108,11 @@
               </div>
             </template>
           </div>
-          <div class="vip-btn" v-if="userInfo && !isVip()" @click="goVip()">
+          <div
+            class="vip-btn"
+            v-if="userInfo && !isVip() && false"
+            @click="goVip()"
+          >
             <i class="vip-icon"></i>
             <span>成为会员</span>
           </div>
