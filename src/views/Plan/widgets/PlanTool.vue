@@ -182,15 +182,15 @@
                 item.value.max_price ? item.value.max_price : "∞"
               }元`
             : item.type === "size_x"
-            ? `a：${item.value.min_size_x ? item.value.min_size_x : "∞"}-${
+            ? `a：${item.value.min_size_x ? item.value.min_size_x : "0"}-${
                 item.value.max_size_x ? item.value.max_size_x : "∞"
               }mm`
             : item.type === "size_y"
-            ? `b：${item.value.min_size_y ? item.value.min_size_y : "∞"}-${
+            ? `b：${item.value.min_size_y ? item.value.min_size_y : "0"}-${
                 item.value.max_size_y ? item.value.max_size_y : "∞"
               }mm`
             : item.type === "size_z"
-            ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
+            ? `c：${item.value.min_size_z ? item.value.min_size_z : "0"}-${
                 item.value.max_size_z ? item.value.max_size_z : "∞"
               }mm`
             : item.value.name
