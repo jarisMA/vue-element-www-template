@@ -1,6 +1,5 @@
 import axios from "request/axios";
 import API from "request/api";
-import OSS from "ali-oss";
 
 const ossService = {
   /**
@@ -57,6 +56,7 @@ const ossService = {
       bucket,
       key
     } = params;
+    // eslint-disable-next-line
     const client = new OSS({
       region,
       accessKeyId,

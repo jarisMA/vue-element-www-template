@@ -1,9 +1,7 @@
-import * as moment from "moment";
-moment.locale("zh-cn");
+import * as dayjs from "dayjs";
+dayjs.locale("zh-cn");
 export const formatDate = (date, format = "YYYY/MM/DD") => {
-  return moment(date)
-    .utcOffset(480)
-    .format(format);
+  return dayjs(date).format(format);
 };
 
 export const formNowFormatDay = date => {
@@ -13,10 +11,6 @@ export const formNowFormatDay = date => {
     return -1;
   }
   return Math.floor((end - now) / 1000 / 60 / 60 / 24);
-};
-
-export const fromNow = (date, format = "YYYY年MM月DD日 HH:mm") => {
-  return moment(date, format).fromNow();
 };
 
 export const formatSeconds = second => {
