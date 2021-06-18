@@ -1,5 +1,10 @@
 <template>
-  <div class="card" @click="goAcademySeriesDetail(series.id)">
+  <div
+    class="card"
+    @click="goAcademySeriesDetail(series.id)"
+    @mouseover="getData()"
+    @mouseleave="clearData()"
+  >
     <div class="card-top">
       <the-loading-image :width="378" :height="224" :url="series.cover_url" />
     </div>
@@ -19,10 +24,16 @@
       </div>
       <div class="card-bottom-footer">
         <div class="card-bottom-footer-left">
-          <label class="current-price">¥{{ series.current_price }}</label>
-          <label class="orgin-price" v-if="series.origin_price > 0"
-            >¥{{ series.origin_price }}</label
-          >
+          <div class="vip-free" v-if="fee > 0 && vip == '1'">
+            <span class="vip">VIP</span
+            ><span style="margin-left: 4px;">免费学</span>
+          </div>
+          <div class="not-free" v-else>
+            <label class="current-price">¥{{ series.current_price }}</label>
+            <label class="orgin-price" v-if="series.origin_price > 0"
+              >¥{{ series.origin_price }}</label
+            >
+          </div>
         </div>
         <div class="card-bottom-footer-right">
           开始学习<i class="more-icon"></i>
@@ -40,22 +51,32 @@ import { goAcademySeriesDetail } from "utils/routes";
 export default {
   name: "CourseCard",
   components: {
-    TheLoadingImage
+    TheLoadingImage,
   },
   props: {
     series: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      COURSE_LEVEL
+      COURSE_LEVEL,
+      fee: "",
+      vip: "",
     };
   },
   methods: {
-    goAcademySeriesDetail
-  }
+    goAcademySeriesDetail,
+    getData() {
+      this.fee = this.series.origin_price;
+      this.vip = this.series.is_vip;
+    },
+    clearData() {
+      this.fee = "";
+      this.vip = "";
+    },
+  },
 };
 </script>
 
@@ -149,8 +170,25 @@ export default {
           mask: url("~images/academy/vector.svg") no-repeat center;
           background-color: @primaryColor;
         }
+        
       }
     }
   }
+        .vip-free {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 85px;
+        height: 32px;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 16px;
+        background-color: #efefef;
+
+        .vip {
+          font-size: 15px;
+          color: #ffbd12;
+        }
+      }
 }
 </style>
