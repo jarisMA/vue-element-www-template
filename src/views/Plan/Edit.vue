@@ -56,25 +56,34 @@
       </template>
       <div class="toolbar">
         <div
-          :class="['tool-icon-wrapper', toolIndex === 1 ? 'active' : '']"
+          :class="['toolbar-item', toolIndex === 1 ? 'active' : '']"
           @click="handleSelectTool(1)"
           v-if="!loading && showPlane"
         >
-          <label class="plane-icon"></label>
+          <div class="tool-icon-wrapper">
+            <label class="plane-icon"></label>
+          </div>
+          <label class="tool-icon-label">平面</label>
         </div>
         <div
-          :class="['tool-icon-wrapper', toolIndex === 2 ? 'active' : '']"
+          :class="['toolbar-item', toolIndex === 2 ? 'active' : '']"
           @click="handleSelectTool(2)"
           v-if="!loading && showTexture"
         >
-          <label class="texture-icon"></label>
+          <div class="tool-icon-wrapper">
+            <label class="texture-icon"></label>
+          </div>
+          <label class="tool-icon-label">硬装</label>
         </div>
         <div
-          :class="['tool-icon-wrapper', toolIndex === 3 ? 'active' : '']"
+          :class="['toolbar-item', toolIndex === 3 ? 'active' : '']"
           @click="handleSelectTool(3)"
           v-if="!loading && showSoftware"
         >
-          <label class="tool-icon"></label>
+          <div class="tool-icon-wrapper">
+            <label class="tool-icon"></label>
+          </div>
+          <label class="tool-icon-label">软装</label>
         </div>
       </div>
     </div>
@@ -176,7 +185,6 @@ export default {
         this.showPlane = true;
         this.showTexture = true;
         this.showSoftware = true;
-        return;
       }
       if (this.$route.query.plane == "true") {
         this.showPlane = true;
@@ -502,52 +510,84 @@ export default {
   }
   .toolbar {
     position: absolute;
+    z-index: 2;
     top: calc((100% + 264px - 36px) / 2);
     left: 0;
-    .tool-icon-wrapper {
+    width: 44px;
+    background: #ffffff;
+    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.05);
+    border-radius: 0px 4px 4px 0px;
+    transform: translateY(22px);
+    transition: width 0.1s;
+    overflow: hidden;
+    &:hover {
+      width: 132px;
+    }
+    .toolbar-item {
       display: flex;
       align-items: center;
-      justify-content: center;
-      width: @oWidth;
-      height: @oWidth;
-      transform: translateY(50%);
+      justify-content: flex-start;
+      width: 132px;
       cursor: pointer;
-
-      .plane-icon,
-      .texture-icon,
-      .tool-icon {
-        width: 24px;
-        height: 24px;
-        background-repeat: no-repeat;
-        background-size: cover;
-        cursor: pointer;
-        filter: grayscale(1);
-      }
-
-      .plane-icon {
-        background-image: url("~images/commodity/plane.svg");
-      }
-      .texture-icon {
-        background-image: url("~images/commodity/texture.svg");
-      }
-      .tool-icon {
-        background-image: url("~images/commodity/tool.svg");
-      }
       &.active {
         background-color: #e5f5ec;
-        .plane-icon,
-        .texture-icon,
-        .tool-icon {
-          filter: unset;
+        .tool-icon-wrapper {
+          .plane-icon,
+          .texture-icon,
+          .tool-icon {
+            filter: unset;
+          }
+        }
+        .tool-icon-label {
+          color: @primaryColor;
         }
       }
       &:hover {
-        background-color: #e5f5ec;
+        .tool-icon-wrapper {
+          .plane-icon,
+          .texture-icon,
+          .tool-icon {
+            filter: unset;
+          }
+        }
+        .tool-icon-label {
+          color: @primaryColor;
+        }
+      }
+      .tool-icon-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: @oWidth;
+        height: @oWidth;
+        cursor: pointer;
+
         .plane-icon,
         .texture-icon,
         .tool-icon {
-          filter: unset;
+          width: 24px;
+          height: 24px;
+          background-repeat: no-repeat;
+          background-size: cover;
+          cursor: pointer;
+          filter: grayscale(1);
         }
+
+        .plane-icon {
+          background-image: url("~images/commodity/plane.svg");
+        }
+        .texture-icon {
+          background-image: url("~images/commodity/texture.svg");
+        }
+        .tool-icon {
+          background-image: url("~images/commodity/tool.svg");
+        }
+      }
+      .tool-icon-label {
+        line-height: 12px;
+        font-size: 12px;
+        color: #606c66;
+        cursor: pointer;
       }
     }
   }
