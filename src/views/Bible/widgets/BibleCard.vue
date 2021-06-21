@@ -16,6 +16,7 @@
               :height="imageSize"
               :key="key"
               :url="image"
+              @click.stop.native="showPreviewImage(image)"
             />
           </swiper-slide>
           <div
@@ -44,6 +45,7 @@
         :width="imageSize"
         :height="imageSize"
         :url="images[0]"
+        @click.stop.native="showPreviewImage(images[0])"
       />
     </div>
     <div class="bible-card-bottom">
@@ -131,6 +133,9 @@ export default {
       if (this.isShowDetail(data)) {
         this.$emit("showDetail");
       }
+    },
+    showPreviewImage(url) {
+      this.$emit("previewImage", url);
     }
   }
 };

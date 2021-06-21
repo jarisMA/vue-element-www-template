@@ -39,6 +39,7 @@
               :color="color"
               :depth="depth"
               @showDetail="showDetail"
+              @previewImage="handleShowPreviewImage"
             />
           </div>
         </div>
@@ -61,6 +62,50 @@
         </el-tab-pane>
       </el-tabs>
     </el-drawer>
+    <el-dialog
+      custom-class="preview-image-wrapper"
+      :visible="showPreviewImage"
+      :show-close="false"
+    >
+      <div
+        class="preview-image-container"
+        @click="showPreviewImage = false"
+        v-if="images.length > 0"
+      >
+        <div class="preview-image-close">
+          <i class="close-icon"></i>
+        </div>
+        <div class="preview-image-content">
+          <h3 class="preview-image-content_title">
+            {{ images[activeImageIndex].menu }}
+          </h3>
+          <div class="preview-image-content_image">
+            <img :src="images[activeImageIndex].url" @click.stop />
+          </div>
+          <div class="preview-image-content_pagination">
+            {{ activeImageIndex + 1 }}/{{ images.length }}
+          </div>
+          <div
+            class="preview-image-prev"
+            v-if="activeImageIndex > 1"
+            @click.stop="
+              handleTogglePreviewImage(images[activeImageIndex - 1].url)
+            "
+          >
+            <i class="prev-icon"></i>
+          </div>
+          <div
+            class="preview-image-next"
+            v-if="activeImageIndex < images.length - 1"
+            @click.stop="
+              handleTogglePreviewImage(images[activeImageIndex + 1].url)
+            "
+          >
+            <i class="next-icon"></i>
+          </div>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -94,7 +139,10 @@ export default {
       activeCard: {},
       activePane: null,
       depth: 0,
-      scrollTimer: null
+      scrollTimer: null,
+      images: [],
+      activeImageIndex: 0,
+      showPreviewImage: false
     };
   },
   created() {
@@ -151,6 +199,7 @@ export default {
                     this.menus[0].children[0]) ||
                   this.menus[0] ||
                   {};
+                this.images = this.getImages(this.menus);
                 this.depth = this.getDepth(this.menus, 0);
               })
               .catch(() => {
@@ -171,6 +220,7 @@ export default {
                 this.menus[0].children[0]) ||
               this.menus[0] ||
               {};
+            this.images = this.getImages(this.menus);
             this.depth = this.getDepth(this.menus, 0);
             this.loading = false;
           }
@@ -245,6 +295,40 @@ export default {
           break;
         }
       }
+    },
+    getImages(data, images = [], menus = []) {
+      data.forEach(menu => {
+        if (
+          menu.children &&
+          menu.children instanceof Array &&
+          menu.children.length > 0
+        ) {
+          images = this.getImages(
+            menu.children,
+            images,
+            menus.concat([menu.name])
+          );
+        } else {
+          let newImages = menu.cover_url.split(",");
+          newImages = newImages
+            .filter(item => !!item)
+            .map(item => {
+              return {
+                url: item,
+                menu: menus.concat([menu.name]).join("/")
+              };
+            });
+          images = images.concat(newImages);
+        }
+      });
+      return images;
+    },
+    handleShowPreviewImage(url) {
+      this.handleTogglePreviewImage(url);
+      this.showPreviewImage = true;
+    },
+    handleTogglePreviewImage(url) {
+      this.activeImageIndex = this.images.findIndex(item => item.url === url);
     }
   }
 };
@@ -420,6 +504,107 @@ export default {
             }
           }
         }
+      }
+    }
+  }
+}
+/deep/ .preview-image-wrapper {
+  margin: 0 !important;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  .el-dialog__header {
+    display: none;
+  }
+  .el-dialog__body {
+    padding: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .preview-image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 46px 220px;
+    .preview-image-close,
+    .preview-image-prev,
+    .preview-image-next {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: #222;
+      border-radius: 50%;
+      cursor: pointer;
+      &:hover {
+        background: #111;
+      }
+    }
+    .preview-image-close {
+      right: 20px;
+      top: 20px;
+      .close-icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        mask: url("~images/commodity/close.svg") no-repeat center;
+        background-color: #fff;
+      }
+    }
+    .preview-image-prev {
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      .prev-icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        mask: url("~images/bible/left.svg") no-repeat center;
+        background-color: #fff;
+      }
+    }
+    .preview-image-next {
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      .next-icon {
+        display: inline-block;
+        width: 40px;
+        height: 40px;
+        mask: url("~images/bible/right.svg") no-repeat center;
+        background-color: #fff;
+      }
+    }
+    .preview-image-content {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      .preview-image-content_title {
+        line-height: 24px;
+        font-weight: 600;
+        font-size: 16px;
+        text-align: center;
+        color: #ffffff;
+      }
+      .preview-image-content_image {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        img {
+          max-width: 100%;
+          max-height: 100%;
+        }
+      }
+      .preview-image-content_pagination {
+        line-height: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #ffffff;
       }
     }
   }

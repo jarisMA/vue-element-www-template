@@ -1,7 +1,12 @@
 <template>
   <ul :class="['bible-item', theme]">
     <li v-for="item of list" :key="item.id">
-      <bible-card :bible="item" :theme="theme" @showDetail="showDetail(item)" />
+      <bible-card
+        :bible="item"
+        :theme="theme"
+        @showDetail="showDetail(item)"
+        @previewImage="showPreviewImage"
+      />
     </li>
   </ul>
 </template>
@@ -27,6 +32,9 @@ export default {
   methods: {
     showDetail(data) {
       this.$emit("showDetail", data);
+    },
+    showPreviewImage(url) {
+      this.$emit("previewImage", url);
     }
   }
 };
