@@ -10,7 +10,7 @@
         frameborder="0"
       >
       </iframe>
-      <template v-if="!loading && showTool">
+      <template v-if="!loading && showPlane">
         <transition
           enter-active-class="animated slideInLeft"
           leave-active-class="animated slideOutLeft"
@@ -22,6 +22,8 @@
             @showFeedback="handleShowFeedback"
           />
         </transition>
+      </template>
+      <template v-if="!loading && showTexture">
         <transition
           enter-active-class="animated slideInLeft"
           leave-active-class="animated slideOutLeft"
@@ -33,6 +35,8 @@
             @showFeedback="handleShowFeedback"
           />
         </transition>
+      </template>
+      <template v-if="!loading && showSoftware">
         <transition
           enter-active-class="animated slideInLeft"
           leave-active-class="animated slideOutLeft"
@@ -49,27 +53,30 @@
             @refreshPrice="handleIframeSave"
           />
         </transition>
-        <div class="toolbar">
-          <div
-            :class="['tool-icon-wrapper', toolIndex === 1 ? 'active' : '']"
-            @click="handleSelectTool(1)"
-          >
-            <label class="plane-icon"></label>
-          </div>
-          <div
-            :class="['tool-icon-wrapper', toolIndex === 2 ? 'active' : '']"
-            @click="handleSelectTool(2)"
-          >
-            <label class="texture-icon"></label>
-          </div>
-          <div
-            :class="['tool-icon-wrapper', toolIndex === 3 ? 'active' : '']"
-            @click="handleSelectTool(3)"
-          >
-            <label class="tool-icon"></label>
-          </div>
-        </div>
       </template>
+      <div class="toolbar">
+        <div
+          :class="['tool-icon-wrapper', toolIndex === 1 ? 'active' : '']"
+          @click="handleSelectTool(1)"
+          v-if="!loading && showPlane"
+        >
+          <label class="plane-icon"></label>
+        </div>
+        <div
+          :class="['tool-icon-wrapper', toolIndex === 2 ? 'active' : '']"
+          @click="handleSelectTool(2)"
+          v-if="!loading && showTexture"
+        >
+          <label class="texture-icon"></label>
+        </div>
+        <div
+          :class="['tool-icon-wrapper', toolIndex === 3 ? 'active' : '']"
+          @click="handleSelectTool(3)"
+          v-if="!loading && showSoftware"
+        >
+          <label class="tool-icon"></label>
+        </div>
+      </div>
     </div>
     <el-dialog
       :visible.sync="showFeedback"
@@ -140,7 +147,9 @@ export default {
       url: "",
       loading: true,
       listingId: null,
-      showTool: false,
+      showPlane: false,
+      showTexture: false,
+      showSoftware: false,
       design: {},
       refreshingBrief: false,
       listingBrief: {
@@ -162,8 +171,22 @@ export default {
     ...mapState(["headerUnfold"])
   },
   created() {
-    if (this.$route.query.tool == "true" && this.$route.name === "EditPlan") {
-      this.showTool = true;
+    if (this.$route.name === "EditPlan") {
+      if (this.$route.query.tool == "true") {
+        this.showPlane = true;
+        this.showTexture = true;
+        this.showSoftware = true;
+        return;
+      }
+      if (this.$route.query.plane == "true") {
+        this.showPlane = true;
+      }
+      if (this.$route.query.texture == "true") {
+        this.showTexture = true;
+      }
+      if (this.$route.query.software == "true") {
+        this.showSoftware = true;
+      }
     }
     this.getData();
   },
@@ -225,7 +248,7 @@ export default {
               data &&
               (data.action === "kjl_saved" ||
                 data.action === "kjl_auto_saved") &&
-              this.showTool
+              this.showSoftware
             ) {
               // 监听是否触发保存事件
               this.listingSync();
