@@ -1,5 +1,5 @@
 <template>
-  <div class="my-page">
+  <div class="my-page" v-loading="loading || dataLoading">
     <div class="page-header">
       <div class="container-1180">
         <div class="page-header-left">
@@ -157,6 +157,7 @@ export default {
   },
   created () {
     this.activeTab = this.$route.name;
+    this.getData();
   },
   watch: {
     ["$route"] (val) {
