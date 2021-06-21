@@ -199,6 +199,7 @@ export default {
                     this.menus[0].children[0]) ||
                   this.menus[0] ||
                   {};
+                this.activeImageIndex = 0;
                 this.images = this.getImages(this.menus);
                 this.depth = this.getDepth(this.menus, 0);
               })
@@ -220,6 +221,8 @@ export default {
                 this.menus[0].children[0]) ||
               this.menus[0] ||
               {};
+            this.activeImageIndex = 0;
+
             this.images = this.getImages(this.menus);
             this.depth = this.getDepth(this.menus, 0);
             this.loading = false;
@@ -254,6 +257,8 @@ export default {
           .bibleNode(this.$route.params.id, nav.id)
           .then(children => {
             this.menus = children || [];
+            this.activeImageIndex = 0;
+            this.images = this.getImages(this.menus);
             this.depth = this.getDepth(this.menus, 0);
             this.activeSubMenu =
               ((this.menus[0] || {}).children || [])[0] || {};
@@ -263,6 +268,8 @@ export default {
           });
       } else {
         this.menus = this.activeNav.children || [];
+        this.activeImageIndex = 0;
+        this.images = this.getImages(this.menus);
         this.depth = this.getDepth(this.menus, 0);
         this.activeSubMenu = ((this.menus[0] || {}).children || [])[0] || {};
       }
