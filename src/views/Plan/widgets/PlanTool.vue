@@ -173,6 +173,7 @@
           color: item.color,
           backgroundColor: hex2Rgba(item.color, 0.1)
         }"
+        @click="handleValueRemove(key)"
       >
         {{
           item.type === "search"
@@ -195,7 +196,7 @@
               }mm`
             : item.value.name
         }}
-        <label class="close-icon-wrapper" @click="handleValueRemove(key)">
+        <label class="close-icon-wrapper" @click.stop="handleValueRemove(key)">
           <i class="bgImg close-icon pointer"></i>
         </label>
       </li>
@@ -908,7 +909,7 @@ export default {
       font-size: 12px;
       color: #14af64;
       background-color: #eaf9f2;
-      cursor: auto;
+      cursor: pointer;
       &::before {
         position: absolute;
         top: 0;
