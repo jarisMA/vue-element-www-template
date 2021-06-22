@@ -5,6 +5,7 @@
       :list="menus"
       :theme="theme"
       @showDetail="showDetail"
+      @previewImage="showPreviewImage"
     />
     <ul v-else class="bible-list" v-for="menu of menus" :key="menu.id">
       <label
@@ -29,12 +30,14 @@
         :list="[menu]"
         :theme="theme"
         @showDetail="showDetail"
+        @previewImage="showPreviewImage"
       />
       <detail-list
         v-if="getDepth(menu.children, 1) <= 2"
         :list="menu.children"
         :theme="theme"
         @showDetail="showDetail"
+        @previewImage="showPreviewImage"
       />
       <ul class="bible-sublist" v-else>
         <li v-for="submenu of menu.children" :key="submenu.id">
@@ -58,6 +61,7 @@
             :list="submenu.children"
             :theme="theme"
             @showDetail="showDetail"
+            @previewImage="showPreviewImage"
           />
         </li>
       </ul>
@@ -113,6 +117,9 @@ export default {
   methods: {
     showDetail(data) {
       this.$emit("showDetail", data);
+    },
+    showPreviewImage(url) {
+      this.$emit("previewImage", url);
     }
   }
 };
