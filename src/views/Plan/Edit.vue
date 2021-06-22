@@ -514,14 +514,15 @@ export default {
     top: calc((100% + 264px - 36px) / 2);
     left: 0;
     width: 44px;
-    box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.05);
-    border-radius: 0px 4px 4px 0px;
+
     transform: translateY(22px);
     transition: width 0.1s;
     overflow: hidden;
     &:hover {
       background: #ffffff;
       width: 98px;
+      box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.05);
+      border-radius: 0px 4px 4px 0px;
     }
     .toolbar-item {
       display: flex;
