@@ -10,7 +10,7 @@
           <div class="user-identity">
             <template v-if="isVip()">
               <i class="vip-icon"></i>
-              <span class="identity-text">尊贵会员</span>
+              <span class="identity-text">尊柜会员</span>
             </template>
             <template v-else>
               <i class="unvip-icon"></i>
