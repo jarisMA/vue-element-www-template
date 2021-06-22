@@ -3,15 +3,11 @@
     <the-rich-text
       ref="richText"
       :value.sync="content"
-      placeholder="简单说说..."
+      placeholder="专心写写..."
       @larger="larger"
     />
     <div class="answer-info">
       <div class="answer-user">
-        <the-avatar :size="32" :url="userInfo.avatar_url" />
-        <span class="user-name">
-          {{ userInfo.nickname }}
-        </span>
         <!-- <label class="answer-status">
           草稿保存于 8 分钟前
         </label> -->
@@ -33,7 +29,6 @@
 
 <script>
 import TheRichText from "components/TheRichText";
-import TheAvatar from "components/TheAvatar";
 import questionService from "service/question";
 import { mapState } from "vuex";
 import commonMixins from "mixins/common";
@@ -42,8 +37,7 @@ export default {
   name: "AnswerRichText",
   mixins: [commonMixins],
   components: {
-    TheRichText,
-    TheAvatar
+    TheRichText
   },
   props: {
     id: {
