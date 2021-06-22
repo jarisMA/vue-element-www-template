@@ -88,7 +88,7 @@
                         :layout="layout"
                         :edit="false"
                         :activePointIndex="activePointIndex + 1"
-                        @pointClick="index => handleSwiperSlideTo(index - 1)"
+                        @pointClick="(index) => handleSwiperSlideTo(index - 1)"
                       />
                     </el-carousel-item>
                   </el-carousel>
@@ -105,7 +105,7 @@
                       <i
                         :class="[
                           'point-pagination-prev',
-                          activePointIndex === 0 ? 'disabled' : ''
+                          activePointIndex === 0 ? 'disabled' : '',
                         ]"
                         @click="handleSwiperSlideTo(activePointIndex - 1)"
                       ></i>
@@ -114,7 +114,7 @@
                           'point-pagination-next',
                           activePointIndex === points.length - 1
                             ? 'disabled'
-                            : ''
+                            : '',
                         ]"
                         @click="handleSwiperSlideTo(activePointIndex + 1)"
                       ></i>
@@ -171,13 +171,13 @@
                     <i
                       :class="[
                         'page-brighten-icon',
-                        detail.is_like ? 'active' : ''
+                        detail.is_like ? 'active' : '',
                       ]"
                     ></i>
                     <span
                       :class="[
                         'page-detail-footer-count',
-                        detail.is_like ? 'active' : ''
+                        detail.is_like ? 'active' : '',
                       ]"
                       >{{
                         detail.is_like
@@ -196,13 +196,13 @@
                     <i
                       :class="[
                         'page-collection-icon',
-                        detail.is_favorite ? 'active' : ''
+                        detail.is_favorite ? 'active' : '',
                       ]"
                     ></i>
                     <span
                       :class="[
                         'page-detail-footer-count',
-                        detail.is_favorite ? 'active' : ''
+                        detail.is_favorite ? 'active' : '',
                       ]"
                       >{{ detail.favorite_count }}</span
                     >
@@ -273,7 +273,7 @@
                   <div
                     :class="[
                       'page-answer-order',
-                      answerOrder === 1 ? 'active' : ''
+                      answerOrder === 1 ? 'active' : '',
                     ]"
                     @click="answerOrder = 1"
                   >
@@ -282,7 +282,7 @@
                   <div
                     :class="[
                       'page-answer-order',
-                      answerOrder === 2 ? 'active' : ''
+                      answerOrder === 2 ? 'active' : '',
                     ]"
                     @click="answerOrder = 2"
                   >
@@ -348,14 +348,18 @@
         </li>
       </ul>
       <template v-if="showNavigation">
-        <div class="page-left-operate" @click="handlePrev">
-          <div class="operate-icon left">
-            <i class="left-icon"></i>
+        <div class="page-left-operate">
+          <div class="operate-icon left" @click="handlePrev">
+            <i  class="left-icon"></i>
           </div>
           <span>上一个</span>
         </div>
-        <div class="page-right-operate" @click="handleNext">
-          <div class="operate-icon right">
+        <div class="page-right-operate">
+          <div class="operate-icon right"  @click="goTop">
+            <i class="top-icon"></i>
+          </div>
+          <span style="margin-bottom: 15px">回到顶部</span>
+          <div class="operate-icon right" @click="handleNext">
             <i class="right-icon"></i>
           </div>
           <span>下一个</span>
@@ -386,7 +390,7 @@ import {
   QUESTION_TYPE_QUESTION,
   QUESTION_TYPE_HELP,
   QUESTION_TYPE_VOTE,
-  TYPE_QUESTION
+  TYPE_QUESTION,
 } from "utils/const";
 import commonMixins from "mixins/common";
 import { go404 } from "utils/routes";
@@ -402,19 +406,19 @@ export default {
     LayoutShow,
     Vote,
     TheEmpty,
-    SimpleReply
+    SimpleReply,
   },
   props: {
     visible: {
-      type: Boolean
+      type: Boolean,
     },
     id: {
-      type: Number
+      type: Number,
     },
     showNavigation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -431,16 +435,16 @@ export default {
       pagination: {
         size: 10,
         page: 1,
-        total: 0
+        total: 0,
       },
       largerRichText: false,
       activePointIndex: 0,
       swiperOptions: {
         slidesPerView: 1,
         spaceBetween: 0,
-        autoplay: false
+        autoplay: false,
       },
-      showOperate: false
+      showOperate: false,
     };
   },
   watch: {
@@ -449,7 +453,7 @@ export default {
     },
     id() {
       this.getData();
-    }
+    },
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -457,13 +461,13 @@ export default {
       let points = [];
       const { layouts } = this.detail;
       (layouts || []).forEach((layout, index) => {
-        layout.points.forEach(point => {
+        layout.points.forEach((point) => {
           point.imgIndex = index;
           points.push(point);
         });
       });
       return points;
-    }
+    },
   },
   created() {
     this.getData();
@@ -482,8 +486,8 @@ export default {
           page: 1,
           page_size: this.pagination.size,
           hot: this.answerOrder === 1,
-          showAll: true
-        })
+          showAll: true,
+        }),
       ])
         .then(([detail, res]) => {
           if (detail.deleted_at) {
@@ -496,9 +500,9 @@ export default {
           let index = 1;
           let layouts = detail.layouts;
           layouts
-            ? (layouts || []).forEach(layout => {
+            ? (layouts || []).forEach((layout) => {
                 layout.points = JSON.parse(layout.points);
-                layout.points.forEach(point => {
+                layout.points.forEach((point) => {
                   point.index = index;
                   index++;
                 });
@@ -520,9 +524,9 @@ export default {
           page: start,
           page_size: this.pagination.size,
           hot: this.answerOrder === 1,
-          showAll: true
+          showAll: true,
         })
-        .then(res => {
+        .then((res) => {
           this.answers = res.list;
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
@@ -547,7 +551,9 @@ export default {
     handleLayoutCarouselChange(imgIndex) {
       const point = this.points[this.activePointIndex];
       if (point.imgIndex !== imgIndex) {
-        const index = this.points.findIndex(item => item.imgIndex === imgIndex);
+        const index = this.points.findIndex(
+          (item) => item.imgIndex === imgIndex
+        );
         this.handleSwiperSlideTo(index);
       }
     },
@@ -565,7 +571,7 @@ export default {
       const scrollDom = this.$refs["scroll"];
       scrollDom.scrollTo({
         top: editorDom.offsetTop,
-        behaviour: "smooth"
+        behaviour: "smooth",
       });
     },
     handleBeforeClose() {
@@ -595,7 +601,7 @@ export default {
       if (is_like) {
         this.$notice({
           title: "不可重复擦亮",
-          type: "warning"
+          type: "warning",
         });
       } else {
         if (this.brightening) {
@@ -606,20 +612,20 @@ export default {
           .addLike({
             type: TYPE_QUESTION,
             resource_id: id,
-            count: 1
+            count: 1,
           })
-          .then(res => {
+          .then((res) => {
             detail.is_like = true;
             detail.like_count = like_count + 1;
             if (res.is_gain) {
               this.$notice({
                 title: "暖心+2",
-                type: "success"
+                type: "success",
               });
             } else {
               this.$notice({
                 title: "擦亮成功",
-                type: "success"
+                type: "success",
               });
             }
           })
@@ -645,7 +651,7 @@ export default {
           .then(() => {
             this.$notice({
               title: "取消收藏成功",
-              type: "success"
+              type: "success",
             });
             detail.is_favorite = false;
             detail.favorite_count = favorite_count - 1;
@@ -657,12 +663,12 @@ export default {
         questionService
           .questionFavoriteAdd({
             type,
-            resource_id: id
+            resource_id: id,
           })
           .then(() => {
             this.$notice({
               title: "收藏成功",
-              type: "success"
+              type: "success",
             });
             detail.is_favorite = true;
             detail.favorite_count = favorite_count + 1;
@@ -687,25 +693,25 @@ export default {
       const params = {
         question_id: detail.id,
         vote_id: detail.vote.id,
-        option_ids
+        option_ids,
       };
       this.voting = true;
       questionService
         .vote(params)
-        .then(res => {
+        .then((res) => {
           detail.authVote = {
             ...res,
-            ...params
+            ...params,
           };
           detail.vote_user_count++;
-          detail.vote_options.forEach(option => {
+          detail.vote_options.forEach((option) => {
             if (option_ids.indexOf(option.id) > -1) {
               option.vote_count++;
             }
           });
           this.$notice({
             title: "投票成功",
-            type: "success"
+            type: "success",
           });
         })
         .finally(() => {
@@ -721,7 +727,7 @@ export default {
         ...value,
         question_author: this.detail.user,
         question_accept_id: this.detail.accept_id,
-        question_type: this.detail.type
+        question_type: this.detail.type,
       };
       this.answers.unshift(value);
     },
@@ -738,8 +744,14 @@ export default {
     },
     handleNext() {
       this.$emit("next");
-    }
-  }
+    },
+    goTop() {
+      this.$refs.scroll.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    },
+  },
 };
 </script>
 
@@ -1296,7 +1308,8 @@ export default {
         cursor: pointer;
       }
       .left-icon,
-      .right-icon {
+      .right-icon,
+      .top-icon{
         display: inline-block;
         width: 24px;
         height: 24px;
@@ -1309,6 +1322,9 @@ export default {
       .right-icon {
         background-image: url("~images/question/next.svg");
       }
+      .top-icon {
+      background-image: url("~images/question/gotop.svg");
+    }
       span {
         line-height: 1;
         font-size: 12px;

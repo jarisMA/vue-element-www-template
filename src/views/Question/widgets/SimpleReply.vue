@@ -1,6 +1,9 @@
 <template>
   <div class="reply-wrapper">
     <div class="reply-content">
+         <div class="reply-detail">
+        <img src="~images/question/unfold.svg" @click="theBigText=ture">
+      </div>
       <el-input
         class="reply-input-wrapper"
         v-model="form.content"
@@ -60,6 +63,7 @@ export default {
   data() {
     return {
       submiting: false,
+      theBigText: false,
       form: {
         content: "",
         images: []
@@ -128,6 +132,14 @@ export default {
   padding: 20px;
   background: #fff;
   .reply-content {
+    .reply-detail{
+      position: relative;
+      left: 700px;
+      top: 30px;
+      z-index: 9;
+    }
+
+
     .reply-input-wrapper {
       margin-bottom: 40px;
       /deep/ .el-input__inner {
