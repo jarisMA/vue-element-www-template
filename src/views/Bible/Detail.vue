@@ -87,7 +87,7 @@
           </div>
           <div
             class="preview-image-prev"
-            v-if="activeImageIndex > 1"
+            v-if="activeImageIndex > 0"
             @click.stop="
               handleTogglePreviewImage(images[activeImageIndex - 1].url)
             "
@@ -565,7 +565,7 @@ export default {
     }
     .preview-image-prev {
       top: 50%;
-      left: -30px;
+      left: -90px;
       transform: translateY(-50%);
       .prev-icon {
         display: inline-block;
@@ -577,7 +577,7 @@ export default {
     }
     .preview-image-next {
       top: 50%;
-      right: -30px;
+      right: -90px;
       transform: translateY(-50%);
       .next-icon {
         display: inline-block;
@@ -610,6 +610,7 @@ export default {
         align-items: center;
         justify-content: center;
         width: 100%;
+        height: 5px;
         img {
           max-width: 100%;
           max-height: 100%;
