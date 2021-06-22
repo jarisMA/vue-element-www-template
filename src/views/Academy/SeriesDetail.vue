@@ -69,7 +69,7 @@
                             @click.stop="
                               series.permission
                                 ? goSeriesCourse(series.id, chapter.id, 1)
-                                : null
+                                : handleOrder()
                             "
                             >{{ chapter.name }}</span
                           >
@@ -101,7 +101,7 @@
                         @click.stop="
                           series.permission
                             ? goSeriesCourse(series.id, chapter.id, index + 1)
-                            : null
+                            : handleOrder()
                         "
                       >
                         <div class="section-item-left">

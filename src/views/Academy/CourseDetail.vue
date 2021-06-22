@@ -67,7 +67,9 @@
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
                   @click="
-                    course.permission ? goCourse(course.id, index + 1) : null
+                    course.permission
+                      ? goCourse(course.id, index + 1)
+                      : handleOrder()
                   "
                 >
                   <div class="lesson-item-left">
