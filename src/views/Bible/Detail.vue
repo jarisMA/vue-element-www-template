@@ -87,7 +87,7 @@
           </div>
           <div
             class="preview-image-prev"
-            v-if="activeImageIndex > 1"
+            v-if="activeImageIndex > 0"
             @click.stop="
               handleTogglePreviewImage(images[activeImageIndex - 1].url)
             "
@@ -527,19 +527,20 @@ export default {
     padding: 0;
     width: 100%;
     height: 100%;
+    background: rgba(0, 0, 0, 0.5);
   }
   .preview-image-container {
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 46px 220px;
+    padding: 46px 120px;
     .preview-image-close,
     .preview-image-prev,
     .preview-image-next {
       position: absolute;
       width: 40px;
       height: 40px;
-      background: #222;
+      background: #333;
       border-radius: 50%;
       cursor: pointer;
       &:hover {
@@ -557,26 +558,31 @@ export default {
         background-color: #fff;
       }
     }
+    .preview-image-prev,
+    .preview-image-next {
+      width: 60px;
+      height: 60px;
+    }
     .preview-image-prev {
       top: 50%;
-      left: 0;
+      left: -90px;
       transform: translateY(-50%);
       .prev-icon {
         display: inline-block;
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         mask: url("~images/bible/left.svg") no-repeat center;
         background-color: #fff;
       }
     }
     .preview-image-next {
       top: 50%;
-      right: 0;
+      right: -90px;
       transform: translateY(-50%);
       .next-icon {
         display: inline-block;
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         mask: url("~images/bible/right.svg") no-repeat center;
         background-color: #fff;
       }
@@ -590,6 +596,8 @@ export default {
       width: 100%;
       height: 100%;
       .preview-image-content_title {
+        flex: none;
+        margin-bottom: 20px;
         line-height: 24px;
         font-weight: 600;
         font-size: 16px;
@@ -602,12 +610,15 @@ export default {
         align-items: center;
         justify-content: center;
         width: 100%;
+        height: 5px;
         img {
           max-width: 100%;
           max-height: 100%;
         }
       }
       .preview-image-content_pagination {
+        flex: none;
+        margin-top: 20px;
         line-height: 20px;
         font-weight: 600;
         font-size: 14px;
