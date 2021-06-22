@@ -348,14 +348,18 @@
         </li>
       </ul>
       <template v-if="showNavigation">
-        <div class="page-left-operate" @click="handlePrev">
-          <div class="operate-icon left">
+        <div class="page-left-operate">
+          <div class="operate-icon left" @click="handlePrev">
             <i class="left-icon"></i>
           </div>
           <span>上一个</span>
         </div>
-        <div class="page-right-operate" @click="handleNext">
-          <div class="operate-icon right">
+        <div class="page-right-operate">
+          <div class="operate-icon right" @click="goTop">
+            <i class="top-icon"></i>
+          </div>
+          <span style="margin-bottom: 15px">回到顶部</span>
+          <div class="operate-icon right" @click="handleNext">
             <i class="right-icon"></i>
           </div>
           <span>下一个</span>
@@ -738,6 +742,12 @@ export default {
     },
     handleNext() {
       this.$emit("next");
+    },
+    goTop() {
+      this.$refs.scroll.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
   }
 };
@@ -1296,7 +1306,8 @@ export default {
         cursor: pointer;
       }
       .left-icon,
-      .right-icon {
+      .right-icon,
+      .top-icon {
         display: inline-block;
         width: 24px;
         height: 24px;
@@ -1308,6 +1319,9 @@ export default {
       }
       .right-icon {
         background-image: url("~images/question/next.svg");
+      }
+      .top-icon {
+        background-image: url("~images/question/gotop.svg");
       }
       span {
         line-height: 1;

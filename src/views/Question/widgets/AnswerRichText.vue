@@ -3,7 +3,7 @@
     <the-rich-text
       ref="richText"
       :value.sync="content"
-      placeholder="写回答"
+      placeholder="简单说说..."
       @larger="larger"
     />
     <div class="answer-info">
