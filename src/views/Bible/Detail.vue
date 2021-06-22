@@ -630,51 +630,49 @@ export default {
 </style>
 <style lang="less">
 .pane-content {
-  .homework-card {
-    img {
-      max-width: 100%;
-    }
-    ul li {
-      list-style: disc;
-    }
-    ul,
-    ol {
-      margin-left: 20px;
-    }
-    ol,
-    ol li {
-      list-style: decimal;
-    }
+  img {
+    max-width: 100%;
+  }
+  ul li {
+    list-style: disc;
+  }
+  ul,
+  ol {
+    margin-left: 20px;
+  }
+  ol,
+  ol li {
+    list-style: decimal;
+  }
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: 700;
-      font-size: 0.67em;
-    }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 700;
+    font-size: 0.67em;
+  }
 
-    h5 {
-      font-size: 0.83em;
-    }
+  h5 {
+    font-size: 0.83em;
+  }
 
-    h4 {
-      font-size: 1em;
-    }
+  h4 {
+    font-size: 1em;
+  }
 
-    h3 {
-      font-size: 1.17em;
-    }
+  h3 {
+    font-size: 1.17em;
+  }
 
-    h2 {
-      font-size: 1.5em;
-    }
+  h2 {
+    font-size: 1.5em;
+  }
 
-    h1 {
-      font-size: 2em;
-    }
+  h1 {
+    font-size: 2em;
   }
 }
 </style>
