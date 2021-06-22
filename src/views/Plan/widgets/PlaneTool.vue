@@ -4,79 +4,65 @@
       <el-scrollbar class="scroll-section">
         <ul class="tool-left-list">
           <template v-for="(cat, index) of cats">
-            <li
-              v-show="index < 3 || showMore"
-              :class="['tool-left-item', index === activeIndex ? 'active' : '']"
-              :key="cat.id"
-              @click="handleToggleCat(index)"
-            >
+            <li v-show="index < 3 || showMore"
+                :class="['tool-left-item', index === activeIndex ? 'active' : '']"
+                :key="cat.id"
+                @click="handleToggleCat(index)">
               {{ cat.name }}
             </li>
           </template>
-          <li
-            v-if="cats.length > 3"
-            class="tool-left-more"
-            @click="showMore = !showMore"
-          >
+          <li v-if="cats.length > 3"
+              class="tool-left-more"
+              @click="showMore = !showMore">
             <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
           </li>
         </ul>
       </el-scrollbar>
     </div>
-    <div class="tool-right" v-loading="loading">
+    <div class="tool-right"
+         v-loading="loading">
       <div class="tool-main">
         <div class="tool-main-header">
-          <el-input
-            ref="nameSearch"
-            class="name-search"
-            type="text"
-            placeholder="在「布平面」下搜索"
-            prefix-icon="search-icon bgImg"
-            v-model="name"
-            clearable
-          >
+          <el-input ref="nameSearch"
+                    class="name-search"
+                    type="text"
+                    placeholder="在「布平面」下搜索"
+                    prefix-icon="search-icon bgImg"
+                    v-model="name"
+                    clearable>
           </el-input>
         </div>
         <div class="tool-main-content">
-          <div class="scroll-section" ref="mainScroll">
+          <div class="scroll-section"
+               ref="mainScroll">
             <div class="tool-scroll-wrapper">
               <template v-for="cat of cats">
-                <ul
-                  class="tool-main-cat-list"
-                  v-if="cat.children && cat.children.length > 0"
-                  :key="cat.id"
-                  :id="`cat-${cat.id}`"
-                >
+                <ul class="tool-main-cat-list"
+                    v-if="cat.children && cat.children.length > 0"
+                    :key="cat.id"
+                    :id="`cat-${cat.id}`">
                   <template v-for="subCat of cat.children">
-                    <li
-                      class="tool-main-cat-item"
-                      v-if="subCat.commodities && subCat.commodities.length > 0"
-                      :key="subCat.id"
-                    >
+                    <li class="tool-main-cat-item"
+                        v-if="subCat.commodities && subCat.commodities.length > 0"
+                        :key="subCat.id">
                       <h4 class="tool-main-cat-title">
                         <span>{{ subCat.name }}</span>
                       </h4>
                       <ul class="tool-main-commodity-list">
-                        <li
-                          class="tool-main-commodity-item"
-                          v-for="commodity of subCat.commodities"
-                          :key="commodity.id"
-                          :title="commodity.skus[0].name"
-                          @click="handleAddModel(commodity.skus[0].kjl_sku_id)"
-                        >
+                        <li class="tool-main-commodity-item"
+                            v-for="commodity of subCat.commodities"
+                            :key="commodity.id"
+                            :title="commodity.skus[0].name"
+                            @click="handleAddModel(commodity.skus[0].kjl_sku_id)">
                           <div class="commodity-top">
-                            <the-loading-image
-                              :width="94"
-                              :height="94"
-                              :url="commodity.skus[0].img_id"
-                            />
+                            <the-loading-image :width="94"
+                                               :height="94"
+                                               :url="commodity.skus[0].img_id" />
                             <div class="commodity-top-footer">
-                              <label
-                                class="bgImg feedback"
-                                @click.stop="
+                              <label class="bgImg feedback"
+                                     @click.stop="
                                   handleShowFeedback(commodity.skus[0])
-                                "
-                              >
+                                ">
                                 <i class="feedback-icon"></i>
                               </label>
                               <label class="size-label">
@@ -114,7 +100,7 @@ export default {
   components: {
     TheLoadingImage
   },
-  data() {
+  data () {
     return {
       loading: true,
       name: "",
@@ -124,7 +110,7 @@ export default {
     };
   },
   computed: {
-    cats() {
+    cats () {
       const cats = this.originalCats;
       const name = this.name;
       if (!name) {
@@ -150,11 +136,11 @@ export default {
       });
     }
   },
-  created() {
+  created () {
     this.getData();
   },
   methods: {
-    getData() {
+    getData () {
       commodityService
         .catCommodities(process.env.VUE_APP_PLANE_CAT_ID)
         .then(res => {
@@ -164,10 +150,10 @@ export default {
           this.loading = false;
         });
     },
-    handleShowFeedback(sku) {
+    handleShowFeedback (sku) {
       this.$emit("showFeedback", sku);
     },
-    handleToggleCat(index) {
+    handleToggleCat (index) {
       this.activeIndex = index;
       this.$nextTick(() => {
         const scrollDom = this.$refs["mainScroll"];
@@ -181,7 +167,7 @@ export default {
         }
       });
     },
-    handleAddModel(goodId) {
+    handleAddModel (goodId) {
       this.$emit("addModel", goodId);
     }
   }
@@ -370,7 +356,7 @@ export default {
                     }
                   }
                   /deep/ .cover-img {
-                    background-color: transparent;
+                    background-color: #fafafa;
                   }
                   .commodity-top-footer {
                     position: absolute;
