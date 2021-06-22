@@ -1,14 +1,16 @@
 <template>
   <div class="reply-wrapper">
     <div class="reply-content">
-      <div class="reply-detail">
-        <img src="~images/question/unfold.svg" @click="theBigText = ture" />
-      </div>
       <el-input
         class="reply-input-wrapper"
         v-model="form.content"
         placeholder="简单说说..."
       ></el-input>
+      <div class="reply-detail" @click="handleLarge">
+        <img src="~images/question/unfold.svg" />
+      </div>
+    </div>
+    <div class="reply-footer">
       <ul class="reply-image-list">
         <li
           class="reply-image-item"
@@ -28,12 +30,6 @@
           />
         </li>
       </ul>
-    </div>
-    <div class="reply-footer">
-      <div class="reply-footer-left">
-        <the-avatar :size="32" :url="userInfo && userInfo.avatar_url" />
-        <span class="reply-nickname">{{ userInfo && userInfo.nickname }}</span>
-      </div>
       <div class="reply-footer-right">
         <el-button class="reply-btn" @click="handleSubmit" :loading="submiting"
           >发布回答</el-button
@@ -44,7 +40,6 @@
 </template>
 
 <script>
-import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
 import UploadImage from "components/UploadImage.vue";
 import questionService from "service/question";
@@ -53,7 +48,7 @@ import commonMixins from "mixins/common";
 export default {
   name: "QuestionSimpleReply",
   mixins: [commonMixins],
-  components: { TheAvatar, UploadImage },
+  components: { UploadImage },
   props: {
     id: {
       type: Number,
@@ -74,6 +69,10 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    handleLarge() {
+      this.$emit("large");
+    },
+
     addImage(url) {
       this.form.images.push(url);
     },
@@ -129,15 +128,11 @@ export default {
 
 .reply-wrapper {
   width: 100%;
-  padding: 20px;
+  padding: 40px;
   background: #fff;
   .reply-content {
-    .reply-detail {
-      position: relative;
-      left: 700px;
-      top: 30px;
-      z-index: 9;
-    }
+    display: flex;
+    justify-content: space-between;
 
     .reply-input-wrapper {
       margin-bottom: 40px;
@@ -194,7 +189,7 @@ export default {
   }
   .reply-footer {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
     margin-top: 20px;
     .reply-footer-left {
