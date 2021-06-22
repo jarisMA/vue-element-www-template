@@ -3,7 +3,10 @@
     <div class="slogan-section"></div>
     <div class="people-section">
       <div class="people-title">
-        <img src="https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/Xo406HM7nJmsY0VMoN4jDfiRLIM0AMUXx8nnNBgf.png" class="people-title-img" />
+        <img
+          src="https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/Xo406HM7nJmsY0VMoN4jDfiRLIM0AMUXx8nnNBgf.png"
+          class="people-title-img"
+        />
       </div>
       <div class="people-content">
         <div class="people-img">
@@ -35,7 +38,10 @@
     </div>
     <div class="feedback-section">
       <div class="feedback-tip">
-        <img class="feedback-appre" src="https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/DPsS7Z7mchjt9e5wqzt3dEdWNGAwrm9bbfz6rV1l.png" />
+        <img
+          class="feedback-appre"
+          src="https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/DPsS7Z7mchjt9e5wqzt3dEdWNGAwrm9bbfz6rV1l.png"
+        />
         <p class="feedback-say">体验了我们课程的学员这样说</p>
       </div>
       <div class="feedback-content">
@@ -145,7 +151,7 @@ export default {
 .slogan-section {
   width: 100%;
   height: 890px;
-  background-image: url('https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/fMYUDpX9FaPpC20f7Mq0yTiFsrabtOAHocnabvsp.png');
+  background-image: url("https://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0621/commodity/fMYUDpX9FaPpC20f7Mq0yTiFsrabtOAHocnabvsp.png");
   background-position: center center;
   background-size: 1920px 890px;
   background-repeat: no-repeat;
