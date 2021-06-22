@@ -204,6 +204,9 @@ export default {
       position: relative;
       width: 100%;
     }
+    .cover-img {
+      cursor: pointer;
+    }
     /deep/ .swiper-pagination.swiper-pagination-bullets {
       bottom: -10px;
       left: -10px;
