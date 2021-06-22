@@ -11,7 +11,7 @@
             <div class="page-header-identity">
               <template v-if="isVip()">
                 <i class="vip-icon"></i>
-                <span class="page-header-identity_text">尊贵会员</span>
+                <span class="page-header-identity_text">尊柜会员</span>
               </template>
               <template v-else>
                 <i class="unvip-icon"></i>
