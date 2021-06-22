@@ -70,14 +70,23 @@
                               :height="94"
                               :url="commodity.skus[0].img_id"
                             />
-                            <label
-                              class="bgImg feedback"
-                              @click.stop="
-                                handleShowFeedback(commodity.skus[0])
-                              "
-                            >
-                              <i class="feedback-icon"></i>
-                            </label>
+                            <div class="commodity-top-footer">
+                              <label
+                                class="bgImg feedback"
+                                @click.stop="
+                                  handleShowFeedback(commodity.skus[0])
+                                "
+                              >
+                                <i class="feedback-icon"></i>
+                              </label>
+                              <label class="size-label">
+                                {{
+                                  `${commodity.skus[0].size_x || 0}*${commodity
+                                    .skus[0].size_y || 0}*${commodity.skus[0]
+                                    .size_z || 0}(mm)`
+                                }}
+                              </label>
+                            </div>
                           </div>
                           <div class="commodity-bottom ellipsis">
                             {{ commodity.skus[0].name }}
@@ -355,29 +364,51 @@ export default {
                 }
                 .commodity-top {
                   position: relative;
-                  .feedback {
-                    position: absolute;
-                    bottom: 4px;
-                    left: 4px;
-                    display: flex;
-                    display: none;
-                    align-items: center;
-                    justify-content: center;
-                    width: 16px;
-                    height: 16px;
-                    border-radius: 50%;
-                    background: rgba(255, 255, 255, 0.8);
-                    opacity: 0.8;
-                    cursor: pointer;
-                    &:hover {
-                      opacity: 1;
+                  &:hover {
+                    .commodity-top-footer {
+                      display: block;
                     }
-                    .feedback-icon {
-                      display: inline-block;
+                  }
+                  /deep/ .cover-img {
+                    background-color: transparent;
+                  }
+                  .commodity-top-footer {
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    display: none;
+                    width: 100%;
+                    .feedback {
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      margin: 0 0 5px 4px;
                       width: 16px;
                       height: 16px;
-                      background-image: url("~images/commodity/feedback.svg");
+                      border-radius: 50%;
+                      background: rgba(255, 255, 255, 0.8);
+                      opacity: 0.8;
                       cursor: pointer;
+                      &:hover {
+                        opacity: 1;
+                      }
+                      .feedback-icon {
+                        display: inline-block;
+                        width: 16px;
+                        height: 16px;
+                        background-image: url("~images/commodity/feedback.svg");
+                        cursor: pointer;
+                      }
+                    }
+                    .size-label {
+                      display: inline-block;
+                      width: 100%;
+                      padding: 4px 5px;
+                      line-height: 14px;
+                      font-size: 12px;
+                      word-break: break-all;
+                      color: #666666;
+                      background: rgba(255, 255, 255, 0.8);
                     }
                   }
                 }
