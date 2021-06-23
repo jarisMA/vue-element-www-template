@@ -613,7 +613,9 @@ export default {
   created() {
     this.getAttrs();
     this.getBrands();
-    this.getAttrsByCatId(this.parentCat.id);
+    if (this.parentCat) {
+      this.getAttrsByCatId(this.parentCat.id);
+    }
   },
   methods: {
     hex2Rgba,

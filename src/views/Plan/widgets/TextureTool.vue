@@ -50,7 +50,7 @@
                 </li>
               </ul>
             </div>
-            <ul class="tool-left-list">
+            <ul class="tool-left-list" v-if="activeRootCat.children">
               <template v-for="(cat, index) of activeRootCat.children">
                 <li
                   v-show="index < 3 || showMore"
@@ -82,7 +82,13 @@
                 class="name-search"
                 type="text"
                 :placeholder="
-                  `在「${(rootCats[activeParentCatIndex] || {}).name}」下搜索`
+                  `在「${
+                    (
+                      (activeRootCat.children &&
+                        activeRootCat.children[activeParentCatIndex]) ||
+                      {}
+                    ).name
+                  }」下搜索`
                 "
                 prefix-icon="search-icon bgImg"
                 v-model="name"
@@ -91,7 +97,13 @@
               >
               </el-input>
             </div>
-            <div class="cat-wrapper" v-if="rootCats[activeParentCatIndex]">
+            <div
+              class="cat-wrapper"
+              v-if="
+                activeRootCat.children &&
+                  activeRootCat.children[activeParentCatIndex]
+              "
+            >
               <label
                 :class="['cat-label', 'pointer', !activeCat && 'active']"
                 @click="handleToggleCat(null)"
@@ -115,7 +127,10 @@
               type="texture"
               :showAttr="false"
               :values="values"
-              :parentCat="rootCats[activeParentCatIndex]"
+              :parentCat="
+                activeRootCat.children &&
+                  activeRootCat.children[activeParentCatIndex]
+              "
               :activeCat="activeCat"
               :columns="columns"
               @addValue="handleValueAdd"
@@ -438,7 +453,7 @@ export default {
         this.$refs["commodityAttr"].handleReset("brand");
         this.activeCat = null;
         this.values = [];
-        this.getCats(this.rootCats[index].id);
+        this.getCats(this.activeRootCat.children[index].id);
         this.getCommodity();
       }
     },
