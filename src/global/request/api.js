@@ -114,5 +114,7 @@ export default {
   myCourses: `${WEB_PREFIX}/course/mine`,
   mySeries: `${WEB_PREFIX}/series/mine`,
   myOrder: `${WEB_PREFIX}/order/mine`,
-  myHistory: `${WEB_PREFIX}/vip/mine`
+  myHistory: `${WEB_PREFIX}/vip/mine`,
+  notifications: `${WEB_PREFIX}/notifications`,
+  notification: id => `${WEB_PREFIX}/notifications/${id}`,
 };

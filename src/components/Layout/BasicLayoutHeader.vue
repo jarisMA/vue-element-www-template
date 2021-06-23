@@ -3,7 +3,7 @@
     :class="[
       'page-header',
       theme,
-      theme === 'primary' && visible ? 'primary_active' : ''
+      theme === 'primary' && visible ? 'primary_active' : '',
     ]"
   >
     <div :class="['header-content', theme]">
@@ -40,7 +40,7 @@
               'Notes',
               ['Bible', 'BibleDetail', 'BiblePreview'].indexOf($route.name) > -1
                 ? 'active'
-                : ''
+                : '',
             ]"
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
@@ -49,7 +49,7 @@
             :class="[
               'header-nav-item',
               'Question',
-              ['Question'].indexOf($route.name) > -1 ? 'active' : ''
+              ['Question'].indexOf($route.name) > -1 ? 'active' : '',
             ]"
             @click="(visible || theme !== 'primary') && goQuestion()"
             >互助广场</span
@@ -62,6 +62,18 @@
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
           <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
+          <img
+            src="~images/noti_active.svg"
+            class="noti-icon"
+            v-if="userInfo.notification_count > 0"
+            @click="goNotification()"
+          />
+          <img
+            src="~images/noti_inactive.svg"
+            class="noti-icon"
+            v-else
+            @click="goNotification()"
+          />
           <div class="user-handle-container">
             <el-button
               class="login-button"
@@ -131,7 +143,8 @@ import {
   goBible,
   goQuestion,
   goAcademy,
-  goVip
+  goVip,
+  goNotification,
 } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
@@ -139,32 +152,33 @@ import { isVip } from "utils/function";
 export default {
   name: "BasicLayoutHeader",
   components: {
-    TheAvatar
+    TheAvatar,
   },
   props: {
     theme: {
       type: String,
-      default: "default"
-    }
+      default: "default",
+    },
   },
   data() {
     return {
       visible: false,
-      userLogo: require("images/user_logo.svg")
+      userLogo: require("images/user_logo.svg"),
     };
   },
   watch: {
     visible(val) {
       this.updateHeaderUnfold(val);
-    }
+    },
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
   },
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
     goVip,
+    goNotification,
     goAcademy() {
       if (this.theme === "primary") {
         this.$confirm(`是否确认离开当前页面?`).then(() => {
@@ -231,8 +245,8 @@ export default {
     },
     handleLogout() {
       this.$store.commit("LOGOUT");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -249,6 +263,13 @@ export default {
     width: 18px;
     height: 18px;
     vertical-align: -2px;
+  }
+
+  .noti-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 20px;
+    cursor: pointer;
   }
   .header-content {
     display: flex;

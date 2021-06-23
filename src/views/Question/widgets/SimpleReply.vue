@@ -32,7 +32,7 @@
       </ul>
       <div class="reply-footer-right">
         <el-button class="reply-btn" @click="handleSubmit" :loading="submiting"
-          >发布回答</el-button
+          >发布</el-button
         >
       </div>
     </div>
@@ -210,11 +210,11 @@ export default {
         align-items: center;
         justify-content: center;
         width: 104px;
-        height: 38px;
+        height: 48px;
         padding: 0;
         line-height: 1;
         font-weight: 500;
-        font-size: 14px;
+        font-size: 16px;
         color: #ffffff;
         border: unset;
         background: @primaryColor;
