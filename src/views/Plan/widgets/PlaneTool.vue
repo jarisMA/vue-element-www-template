@@ -222,6 +222,9 @@ export default {
         &.active {
           color: @primaryColor;
         }
+        &:hover {
+          color: #606c66;
+        }
       }
     }
     .tool-left-more {
