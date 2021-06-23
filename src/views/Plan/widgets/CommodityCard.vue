@@ -44,7 +44,7 @@
       </template>
     </div>
     <div class="card-bottom" v-if="type === 'texture'">
-      <label class="card-name ellipsis">{{ skus[0].name }}</label>
+      <label class="card-name ellipsis">{{ skus[0] && skus[0].name }}</label>
     </div>
   </div>
 </template>

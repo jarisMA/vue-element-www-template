@@ -1,101 +1,154 @@
 <template>
   <div class="tool-container" ref="tool">
-    <div class="tool-left">
-      <el-scrollbar class="scroll-section">
-        <ul class="tool-left-list">
-          <template v-for="(cat, index) of rootCats">
+    <div class="tool-wrapper">
+      <div class="cat-container">
+        <div class="cat-top-wrapper">
+          <h3 class="cat-top-title">{{ toolName }}</h3>
+        </div>
+        <div class="cat-bottom-wrapper">
+          <ul class="cat-list">
             <li
-              v-show="index < 3 || showMore"
-              :class="[
-                'tool-left-item',
-                index === activeRootCatIndex ? 'active' : ''
-              ]"
+              class="cat-item pointer"
+              v-for="cat of rootCats"
               :key="cat.id"
-              @click="handleToggleParentCat(index)"
+              @click="handleToggleRootCat(cat)"
             >
-              {{ cat.name }}
+              <label class="cat-name pointer">
+                {{ cat.name }}
+              </label>
+              <label
+                class="cat-cover-img pointer"
+                :style="{ backgroundImage: `url(${cat.cover_url})` }"
+              ></label>
             </li>
-          </template>
-          <li
-            v-if="rootCats.length > 3"
-            class="tool-left-more"
-            @click="showMore = !showMore"
-          >
-            <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
-          </li>
-        </ul>
-      </el-scrollbar>
-    </div>
-    <div class="tool-wrapper" v-if="rootCats[activeRootCatIndex]">
-      <div class="search-container" v-loading="catLoading">
-        <div class="search-header">
-          <el-input
-            ref="nameSearch"
-            class="name-search"
-            type="text"
-            :placeholder="
-              `在「${(rootCats[activeRootCatIndex] || {}).name}」下搜索`
-            "
-            prefix-icon="search-icon bgImg"
-            v-model="name"
-            clearable
-            @keyup.enter.native="handleNameInputConfirm"
-          >
-          </el-input>
+          </ul>
         </div>
-        <div class="cat-wrapper" v-if="rootCats[activeRootCatIndex]">
-          <label
-            :class="['cat-label', 'pointer', !activeCat && 'active']"
-            @click="handleToggleCat(null)"
-          >
-            全部
-          </label>
-          <label
-            :class="[
-              'cat-label',
-              'pointer',
-              activeCat && activeCat.id === cat.id ? 'active' : ''
-            ]"
-            v-for="cat of rootCats[activeRootCatIndex].children"
-            :key="cat.id"
-            @click="handleToggleCat(cat)"
-          >
-            {{ cat.name }}
-          </label>
-        </div>
-        <commodity-attr
-          type="texture"
-          :showAttr="false"
-          :values="values"
-          :parentCat="rootCats[activeRootCatIndex]"
-          :activeCat="activeCat"
-          :columns="columns"
-          @addValue="handleValueAdd"
-        />
-        <div class="commodity-wrapper" v-loading="commodityLoading">
-          <div
-            class="scroll-section"
-            ref="commodityScroll"
-            v-homeplan-infinite="handleCommodityScroll"
-          >
-            <div class="commodity-list" ref="commodityList">
-              <commodity-card
-                v-for="(commodity, index) of commodities"
-                :key="`${commodity.id}-${index}`"
-                type="texture"
-                :commodity="commodity"
-                :values="values"
-                :columns="columns"
-                @detail="handleCommodityDetail(commodity)"
-                @clearTimer="handleCommodityDetail(commodity, false)"
-                @showSkus="skus => handleShowSkus(commodity.id, skus)"
-                @addModel="handleAddModel"
-                @showFeedback="handleShowFeedback"
-              />
+      </div>
+      <transition
+        enter-active-class="animated slideInRight"
+        leave-active-class="animated slideOutRight"
+      >
+        <div class="tool-main-wrapper" v-if="activeRootCat">
+          <div class="tool-left">
+            <div class="scroll-section">
+              <div class="tool-left-back" @click="handleBack">
+                <i class="tool-left-back_icon"></i>
+              </div>
+              <div class="tool-left-parent_cat">
+                <span>{{ activeRootCat.name }}</span>
+                <i class="tool-left-parent_triangle"></i>
+                <ul class="tool-left-parent_cat_list">
+                  <li
+                    :class="[
+                      'tool-left-parent_cat_item',
+                      activeRootCat.id === cat.id ? 'active' : ''
+                    ]"
+                    v-for="cat of rootCats"
+                    :key="cat.id"
+                    @click="handleToggleRootCat(cat)"
+                  >
+                    {{ cat.name }}
+                  </li>
+                </ul>
+              </div>
+              <ul class="tool-left-list">
+                <template v-for="(cat, index) of activeRootCat.children">
+                  <li
+                    v-show="index < 3 || showMore"
+                    :class="[
+                      'tool-left-item',
+                      index === activeParentCatIndex ? 'active' : ''
+                    ]"
+                    :key="cat.id"
+                    @click="handleToggleParentCat(index)"
+                  >
+                    {{ cat.name }}
+                  </li>
+                </template>
+                <li
+                  v-if="
+                    activeRootCat.children && activeRootCat.children.length > 3
+                  "
+                  class="tool-left-more"
+                  @click="showMore = !showMore"
+                >
+                  <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="search-container" v-loading="catLoading">
+            <div class="search-header">
+              <el-input
+                ref="nameSearch"
+                class="name-search"
+                type="text"
+                :placeholder="
+                  `在「${(rootCats[activeParentCatIndex] || {}).name}」下搜索`
+                "
+                prefix-icon="search-icon bgImg"
+                v-model="name"
+                clearable
+                @keyup.enter.native="handleNameInputConfirm"
+              >
+              </el-input>
+            </div>
+            <div class="cat-wrapper" v-if="rootCats[activeParentCatIndex]">
+              <label
+                :class="['cat-label', 'pointer', !activeCat && 'active']"
+                @click="handleToggleCat(null)"
+              >
+                全部
+              </label>
+              <label
+                :class="[
+                  'cat-label',
+                  'pointer',
+                  activeCat && activeCat.id === cat.id ? 'active' : ''
+                ]"
+                v-for="cat of cats"
+                :key="cat.id"
+                @click="handleToggleCat(cat)"
+              >
+                {{ cat.name }}
+              </label>
+            </div>
+            <commodity-attr
+              type="texture"
+              :showAttr="false"
+              :values="values"
+              :parentCat="rootCats[activeParentCatIndex]"
+              :activeCat="activeCat"
+              :columns="columns"
+              @addValue="handleValueAdd"
+              ref="commodityAttr"
+            />
+            <div class="commodity-wrapper" v-loading="commodityLoading">
+              <div
+                class="scroll-section"
+                ref="commodityScroll"
+                v-homeplan-infinite="handleCommodityScroll"
+              >
+                <div class="commodity-list" ref="commodityList">
+                  <commodity-card
+                    v-for="(commodity, index) of commodities"
+                    :key="`${commodity.id}-${index}`"
+                    type="texture"
+                    :commodity="commodity"
+                    :values="values"
+                    :columns="columns"
+                    @detail="handleCommodityDetail(commodity)"
+                    @clearTimer="handleCommodityDetail(commodity, false)"
+                    @showSkus="skus => handleShowSkus(commodity.id, skus)"
+                    @addModel="handleAddModel"
+                    @showFeedback="handleShowFeedback"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </transition>
     </div>
     <ul class="value-list" v-if="values.length > 0">
       <li class="reset-wrapper pointer" @click="handleValueReset">
@@ -114,7 +167,7 @@
       >
         {{
           item.type === "search"
-            ? item.value.name
+            ? item.value && item.value.name
             : item.type === "price"
             ? `${item.value.min_price ? item.value.min_price : "∞"}-${
                 item.value.max_price ? item.value.max_price : "∞"
@@ -131,7 +184,7 @@
             ? `c：${item.value.min_size_z ? item.value.min_size_z : "∞"}-${
                 item.value.max_size_z ? item.value.max_size_z : "∞"
               }mm`
-            : item.value.name
+            : item.value && item.value.name
         }}
         <label class="close-icon-wrapper" @click.stop="handleValueRemove(key)">
           <i class="bgImg close-icon pointer"></i>
@@ -217,10 +270,13 @@ export default {
       commodityLoading: true,
       commodityLoadingMore: false,
       showMore: false,
+      toolName: "",
       name: "",
       columns: 2,
       rootCats: [],
-      activeRootCatIndex: 0,
+      activeParentCatIndex: 0,
+      activeRootCat: null,
+      cats: [],
       activeCat: null,
       values: [],
       commodities: [],
@@ -249,16 +305,20 @@ export default {
       this.getCommodity();
     }
   },
-  computed: {
-    infiniteDisabled() {
-      return this.commodityLoading;
-    }
-  },
   created() {
     this.getData();
   },
   methods: {
     hex2Rgba,
+    handleBack() {
+      this.$refs["commodityAttr"].handleReset("brand");
+      this.activeRootCat = null;
+      this.activeParentCatIndex = 0;
+      this.activeCat = null;
+      this.showMore = false;
+      this.values = [];
+      this.name = "";
+    },
     getData() {
       commodityService
         .cats()
@@ -266,8 +326,19 @@ export default {
           const rootCats = cats.find(
             item => item.id === parseInt(process.env.VUE_APP_TEXTURE_CAT_ID)
           );
+          this.toolName = rootCats && rootCats.name;
           this.rootCats = (rootCats && rootCats.children) || [];
-          this.getCommodity();
+        })
+        .finally(() => {
+          this.catLoading = false;
+        });
+    },
+    getCats(id) {
+      this.catLoading = true;
+      commodityService
+        .cat(id)
+        .then(res => {
+          this.cats = res.children;
         })
         .finally(() => {
           this.catLoading = false;
@@ -297,12 +368,16 @@ export default {
         .map(item => item.value.id);
       const names = this.values
         .filter(item => item.type === "search")
-        .map(item => item.value.name);
+        .map(item => item.value && item.value.name);
       !flag && (this.commodityLoading = true);
       this.commodityLoadingMore = true;
       commodityService
         .commodities({
-          parent_cat_id: this.rootCats[this.activeRootCatIndex].id,
+          parent_cat_id:
+            (this.activeRootCat.children &&
+              this.activeRootCat.children[this.activeParentCatIndex] &&
+              this.activeRootCat.children[this.activeParentCatIndex].id) ||
+            this.activeRootCat.id,
           cat_id: (this.activeCat && this.activeCat.id) || null,
           brand_ids: brandIds,
           name: names ? names[0] || null : null,
@@ -348,10 +423,26 @@ export default {
         this.getCommodity(true);
       }
     },
+    handleToggleRootCat(cat) {
+      if (cat.id !== (this.activeRootCat && this.activeRootCat.id)) {
+        this.activeRootCat && this.handleBack();
+        this.activeRootCat = cat;
+        this.getCats(
+          (cat.children && cat.children[0] && cat.children[0].id) || cat.id
+        );
+        this.getCommodity();
+      }
+    },
     handleToggleParentCat(index) {
-      this.activeRootCatIndex = index;
-      this.activeCat = null;
-      this.values = [];
+      if (this.activeParentCatIndex !== index) {
+        this.activeParentCatIndex = index;
+        this.name = "";
+        this.$refs["commodityAttr"].handleReset("brand");
+        this.activeCat = null;
+        this.values = [];
+        this.getCats(this.rootCats[index].id);
+        this.getCommodity();
+      }
     },
     handleToggleCat(cat) {
       this.activeCat = cat;
@@ -510,11 +601,87 @@ export default {
     top: 0;
     width: 44px;
     max-height: 100%;
-    overflow: auto;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 0px;
+    }
+    .tool-left-back {
+      padding: 2px 10px 8px;
+      cursor: pointer;
+      .tool-left-back_icon {
+        display: inline-block;
+        width: 24px;
+        height: 24px;
+        mask: url("~images/common/left.svg") no-repeat center;
+        background-color: #666;
+      }
+    }
+    .tool-left-parent_cat {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 8px 10px;
+      background: #eff9f4;
+      cursor: pointer;
+      &:hover {
+        .tool-left-parent_triangle {
+          transform: rotate(-90deg);
+        }
+        .tool-left-parent_cat_list {
+          display: block;
+        }
+      }
+      span {
+        line-height: 16px;
+        font-weight: 600;
+        font-size: 12px;
+        color: @primaryColor;
+      }
+      .tool-left-parent_triangle {
+        display: inline-block;
+        margin-top: 6px;
+        width: 0;
+        height: 0;
+        border: 4px solid @primaryColor;
+        border-left-color: transparent;
+        border-right-color: transparent;
+        border-bottom: unset;
+      }
+      .tool-left-parent_cat_list {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 132px;
+        background: #ffffff;
+        box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
+        transform: translate(100%);
+        z-index: 1;
+        .tool-left-parent_cat_item {
+          display: flex;
+          justify-content: center;
+          width: 100%;
+          padding: 8px 0;
+          line-height: 24px;
+          font-size: 14px;
+          color: #2c3330;
+          cursor: pointer;
+          &.active {
+            color: @primaryColor;
+          }
+          &:hover {
+            background: #fafafa;
+          }
+        }
+      }
+    }
     .tool-left-list {
       width: 100%;
       padding: 8px 0;
       background: #fff;
+
       .tool-left-item {
         width: 100%;
         padding: 8px 10px;
@@ -551,7 +718,6 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden;
     border-left: 1px solid #efefef;
     /deep/ .attr-wrapper {
       .attr-list-left {
@@ -566,37 +732,15 @@ export default {
   .cat-container {
     width: 100%;
     height: 100%;
+    background: #ffffff;
     .cat-top-wrapper {
       width: 100%;
-      height: 62px;
-      background: #fafafa;
-      .tab-list {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        .tab-item {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          width: 79px;
-          height: 100%;
-          font-family: PingFang SC;
-          font-weight: 600;
-          font-size: 14px;
-          color: #666666;
-
-          &.active {
-            background: #fff;
-            color: @primaryColor;
-          }
-          .tab-cover-img {
-            width: 24px;
-            height: 24px;
-            background-size: cover;
-            background-repeat: no-repeat;
-          }
-        }
+      padding: 20px 20px 16px;
+      .cat-top-title {
+        font-weight: 600;
+        line-height: 34px;
+        font-size: 24px;
+        color: #2c3330;
       }
     }
     .cat-bottom-wrapper {
@@ -604,7 +748,6 @@ export default {
       height: calc(100% - 62px);
       overflow-y: auto;
       padding: 10px;
-      background: #fff;
       .cat-list {
         .cat-item {
           display: flex;
