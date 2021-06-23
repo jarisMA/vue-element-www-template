@@ -128,11 +128,15 @@ export default {
 
 .reply-wrapper {
   width: 100%;
-  padding: 40px;
+  padding: 20px;
   background: #fff;
   .reply-content {
     display: flex;
     justify-content: space-between;
+
+    .reply-detail {
+      cursor: pointer;
+    }
 
     .reply-input-wrapper {
       margin-bottom: 40px;
@@ -145,6 +149,41 @@ export default {
         &::placeholder {
           color: #8ea098;
         }
+      }
+    }
+  }
+  .reply-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 20px;
+    .reply-footer-left {
+      display: flex;
+      align-items: center;
+      .reply-nickname {
+        display: inline-block;
+        margin-left: 8px;
+        line-height: 28px;
+        font-weight: 500;
+        font-size: 16px;
+        color: #606c66;
+      }
+    }
+    .reply-footer-right {
+      .reply-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 104px;
+        height: 38px;
+        padding: 0;
+        line-height: 1;
+        font-weight: 500;
+        font-size: 14px;
+        color: #ffffff;
+        border: unset;
+        background: @primaryColor;
+        cursor: pointer;
       }
     }
     .reply-image-list {
@@ -184,41 +223,6 @@ export default {
           width: 60px;
           height: 60px;
         }
-      }
-    }
-  }
-  .reply-footer {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-top: 20px;
-    .reply-footer-left {
-      display: flex;
-      align-items: center;
-      .reply-nickname {
-        display: inline-block;
-        margin-left: 8px;
-        line-height: 28px;
-        font-weight: 500;
-        font-size: 16px;
-        color: #606c66;
-      }
-    }
-    .reply-footer-right {
-      .reply-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 104px;
-        height: 38px;
-        padding: 0;
-        line-height: 1;
-        font-weight: 500;
-        font-size: 14px;
-        color: #ffffff;
-        border: unset;
-        background: @primaryColor;
-        cursor: pointer;
       }
     }
   }
