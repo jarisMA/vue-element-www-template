@@ -687,6 +687,9 @@ export default {
     },
     handleReset(type) {
       switch (type) {
+        case "brand":
+          this.brandName = "";
+          break;
         case "price":
           this.form.min_price = null;
           this.form.max_price = null;
