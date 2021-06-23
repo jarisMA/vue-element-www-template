@@ -689,6 +689,9 @@ export default {
       overflow-y: auto;
       padding: 10px;
       background: #fff;
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
       .cat-list {
         .cat-item {
           display: flex;
