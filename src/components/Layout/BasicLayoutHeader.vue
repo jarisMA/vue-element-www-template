@@ -3,7 +3,7 @@
     :class="[
       'page-header',
       theme,
-      theme === 'primary' && visible ? 'primary_active' : '',
+      theme === 'primary' && visible ? 'primary_active' : ''
     ]"
   >
     <div :class="['header-content', theme]">
@@ -40,7 +40,7 @@
               'Notes',
               ['Bible', 'BibleDetail', 'BiblePreview'].indexOf($route.name) > -1
                 ? 'active'
-                : '',
+                : ''
             ]"
             @click="(visible || theme !== 'primary') && goBible()"
             >斗西宝典</span
@@ -49,7 +49,7 @@
             :class="[
               'header-nav-item',
               'Question',
-              ['Question'].indexOf($route.name) > -1 ? 'active' : '',
+              ['Question'].indexOf($route.name) > -1 ? 'active' : ''
             ]"
             @click="(visible || theme !== 'primary') && goQuestion()"
             >互助广场</span
@@ -144,7 +144,7 @@ import {
   goQuestion,
   goAcademy,
   goVip,
-  goNotification,
+  goNotification
 } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
@@ -152,27 +152,27 @@ import { isVip } from "utils/function";
 export default {
   name: "BasicLayoutHeader",
   components: {
-    TheAvatar,
+    TheAvatar
   },
   props: {
     theme: {
       type: String,
-      default: "default",
-    },
+      default: "default"
+    }
   },
   data() {
     return {
       visible: false,
-      userLogo: require("images/user_logo.svg"),
+      userLogo: require("images/user_logo.svg")
     };
   },
   watch: {
     visible(val) {
       this.updateHeaderUnfold(val);
-    },
+    }
   },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo"])
   },
   methods: {
     ...mapMutations(["updateHeaderUnfold"]),
@@ -245,8 +245,8 @@ export default {
     },
     handleLogout() {
       this.$store.commit("LOGOUT");
-    },
-  },
+    }
+  }
 };
 </script>
 

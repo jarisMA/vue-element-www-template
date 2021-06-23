@@ -116,5 +116,5 @@ export default {
   myOrder: `${WEB_PREFIX}/order/mine`,
   myHistory: `${WEB_PREFIX}/vip/mine`,
   notifications: `${WEB_PREFIX}/notifications`,
-  notification: id => `${WEB_PREFIX}/notifications/${id}`,
+  notification: id => `${WEB_PREFIX}/notifications/${id}`
 };

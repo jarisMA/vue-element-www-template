@@ -57,9 +57,33 @@
         </div>
         <div class="noti-right">
           <ul>
-            <li @click="getData(); handleTabChange(1)"  :class="['noti-right-text', activeTab === 1 ? 'text-bold' : '']">回复我的</li>
-            <li @click="getData(1, 'question_answer_like'); handleTabChange(2)"  :class="['noti-right-text', activeTab === 2 ? 'text-bold' : '']">获得鼓掌</li>
-            <li @click="getData(1, 'question_like'); handleTabChange(3)" :class="['noti-right-text', activeTab === 3 ? 'text-bold' : '']">帮忙擦亮</li>
+            <li
+              @click="
+                getData();
+                handleTabChange(1);
+              "
+              :class="['noti-right-text', activeTab === 1 ? 'text-bold' : '']"
+            >
+              回复我的
+            </li>
+            <li
+              @click="
+                getData(1, 'question_answer_like');
+                handleTabChange(2);
+              "
+              :class="['noti-right-text', activeTab === 2 ? 'text-bold' : '']"
+            >
+              获得鼓掌
+            </li>
+            <li
+              @click="
+                getData(1, 'question_like');
+                handleTabChange(3);
+              "
+              :class="['noti-right-text', activeTab === 3 ? 'text-bold' : '']"
+            >
+              帮忙擦亮
+            </li>
           </ul>
 
           <!-- <div class="noti-right-title">
@@ -124,7 +148,7 @@ export default {
       size: 8,
       page: 1,
       total: 0,
-      activeTab: '1',
+      activeTab: "1"
     };
   },
   created() {
@@ -135,7 +159,7 @@ export default {
   methods: {
     formatDate,
     goQuestionDetail,
-    handleTabChange(index){
+    handleTabChange(index) {
       this.activeTab = index;
     },
     handleAll(val) {
@@ -159,9 +183,9 @@ export default {
         .notifications({
           page_size: this.size,
           page: start,
-          type,
+          type
         })
-        .then((res) => {
+        .then(res => {
           this.notifications = res.list;
           this.total = res.pagination.total;
           this.page = start;
@@ -170,8 +194,8 @@ export default {
           console.log(this.notifications);
           console.log(this.patination);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -257,18 +281,18 @@ export default {
         font-weight: 400;
         color: #606c66;
 
-        .noti-right-text{
-          padding-left:  6px;
+        .noti-right-text {
+          padding-left: 6px;
           line-height: 40px;
 
-          &.text-bold{
+          &.text-bold {
             font-weight: 600;
-            color: #14AF64;
+            color: #14af64;
           }
 
-          &:hover{
-            color: #14AF64;
-            background-color: #EFF9F4;
+          &:hover {
+            color: #14af64;
+            background-color: #eff9f4;
             cursor: pointer;
           }
         }
