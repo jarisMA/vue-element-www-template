@@ -510,7 +510,6 @@ export default {
   }
   .toolbar {
     position: absolute;
-    z-index: 2;
     top: calc((100% + 264px - 36px) / 2);
     left: 0;
     width: 44px;
@@ -523,6 +522,7 @@ export default {
       width: 98px;
       box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.05);
       border-radius: 0px 4px 4px 0px;
+      z-index: 2;
     }
     .toolbar-item {
       display: flex;
