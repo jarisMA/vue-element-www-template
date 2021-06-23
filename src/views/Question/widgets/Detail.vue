@@ -94,44 +94,25 @@
                   </el-carousel>
                 </div>
                 <div class="layout-point-wrapper" v-if="points.length > 0">
-                  <div class="layout-point-header">
-                    <div class="point-label-wrapper">
-                      问题
-                      <label class="point-label">{{
-                        activePointIndex + 1
-                      }}</label>
-                    </div>
-                    <div class="point-pagination">
-                      <i
-                        :class="[
-                          'point-pagination-prev',
-                          activePointIndex === 0 ? 'disabled' : ''
-                        ]"
-                        @click="handleSwiperSlideTo(activePointIndex - 1)"
-                      ></i>
-                      <i
-                        :class="[
-                          'point-pagination-next',
-                          activePointIndex === points.length - 1
-                            ? 'disabled'
-                            : ''
-                        ]"
-                        @click="handleSwiperSlideTo(activePointIndex + 1)"
-                      ></i>
-                    </div>
-                  </div>
-                  <div class="point-list">
-                    <swiper
-                      class="swiper-no-swiping"
-                      ref="mySwiper"
-                      :options="swiperOptions"
-                    >
-                      <swiper-slide v-for="item of points" :key="item.id">
-                        <div class="point-item">
-                          {{ item.value }}
+                  <div
+                    class="layout-point-container"
+                    v-for="(item, key) of points"
+                    :key="item.id"
+                  >
+                    <div class="layout-point-header">
+                      <div class="point-label-wrapper">
+                        问题
+                        <label class="point-label">{{ item.index }}</label>
+                        <div
+                          class="point-list"
+                          @mouseover="handleActivePointIndex(key)"
+                        >
+                          <div class="point-item">
+                            {{ item.value }}
+                          </div>
                         </div>
-                      </swiper-slide>
-                    </swiper>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -235,11 +216,11 @@
           <div class="page-content">
             <div class="page-content-main" v-if="userInfo">
               <div
-                :class="['rich-text-wrapper', largerRichText ? 'large' : '']"
+                v-if="largerRichText"
+                class="rich-text-wrapper large"
                 ref="editor"
-                v-if="detail.type !== QUESTION_TYPE_VOTE"
               >
-                <h3 class="content-title" v-if="largerRichText">
+                <h3 class="content-title">
                   {{ detail.title }}
                 </h3>
                 <answer-rich-text
@@ -247,18 +228,21 @@
                   ref="answerRichText"
                   :id="id"
                   @submited="addAnswerSucc"
-                  @larger="larger"
                 />
-                <div
-                  class="recover-operate"
-                  v-if="largerRichText"
-                  @click="recover"
-                >
+                <div class="recover-operate" @click="recover">
                   <span>退出全屏</span>
                 </div>
               </div>
-              <div class="simple-reply-wrapper" ref="editor" v-else>
-                <simple-reply :id="id" @submited="addAnswerSucc" />
+              <div
+                class="simple-reply-wrapper"
+                ref="editor"
+                v-if="!largerRichText"
+              >
+                <simple-reply
+                  :id="id"
+                  @submited="addAnswerSucc"
+                  @large="handleLarge"
+                />
               </div>
             </div>
             <div class="page-content-answers">
@@ -473,6 +457,9 @@ export default {
     this.getData();
   },
   methods: {
+    handleLarge() {
+      this.largerRichText = true;
+    },
     getData() {
       this.loading = true;
       this.detail = null;
@@ -555,12 +542,18 @@ export default {
         this.handleSwiperSlideTo(index);
       }
     },
-    handleSwiperSlideTo(index, speed = 200) {
+    handleSwiperSlideTo(index) {
       const point = this.points[index];
       this.$refs["layoutCarousel"].setActiveItem(point.imgIndex);
-      this.$refs["mySwiper"].$swiper.slideTo(index, speed, false);
       this.activePointIndex = index;
     },
+
+    handleActivePointIndex(index) {
+      console.log(index);
+      this.activePointIndex = index;
+      this.handleSwiperSlideTo(index);
+    },
+
     goReply() {
       if (!this.checkIsLogin()) {
         return;
@@ -728,6 +721,7 @@ export default {
         question_type: this.detail.type
       };
       this.answers.unshift(value);
+      this.largerRichText = false;
     },
     larger() {
       this.largerRichText = true;
@@ -925,6 +919,11 @@ export default {
               width: 100%;
               margin-top: 20px;
               padding: 0 100px;
+
+              .layout-point-container {
+                margin-bottom: 20px;
+              }
+
               .layout-point-header {
                 display: flex;
                 align-items: center;
@@ -977,7 +976,13 @@ export default {
                 margin-top: 4px;
                 line-height: 28px;
                 font-size: 16px;
+                font-weight: 400;
                 color: #606c66;
+
+                & :hover {
+                  color: #2c3330;
+                  cursor: pointer;
+                }
               }
             }
           }
