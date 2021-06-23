@@ -1,27 +1,25 @@
 <template>
   <div class="tool-wrapper">
     <div class="tool-left">
-      <el-scrollbar class="scroll-section">
-        <ul class="tool-left-list">
-          <template v-for="(cat, index) of cats">
-            <li
-              v-show="index < 3 || showMore"
-              :class="['tool-left-item', index === activeIndex ? 'active' : '']"
-              :key="cat.id"
-              @click="handleToggleCat(index)"
-            >
-              {{ cat.name }}
-            </li>
-          </template>
+      <ul class="tool-left-list">
+        <template v-for="(cat, index) of cats">
           <li
-            v-if="cats.length > 3"
-            class="tool-left-more"
-            @click="showMore = !showMore"
+            v-show="index < 3 || showMore"
+            :class="['tool-left-item', index === activeIndex ? 'active' : '']"
+            :key="cat.id"
+            @click="handleToggleCat(index)"
           >
-            <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+            {{ cat.name }}
           </li>
-        </ul>
-      </el-scrollbar>
+        </template>
+        <li
+          v-if="cats.length > 3"
+          class="tool-left-more"
+          @click="showMore = !showMore"
+        >
+          <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+        </li>
+      </ul>
     </div>
     <div class="tool-right" v-loading="loading">
       <div class="tool-main">
@@ -204,7 +202,10 @@ export default {
     top: 0;
     width: 44px;
     max-height: 100%;
-    overflow: auto;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+      width: 0;
+    }
     .tool-left-list {
       width: 100%;
       padding: 8px 0;
