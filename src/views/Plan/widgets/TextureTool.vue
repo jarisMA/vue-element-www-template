@@ -30,52 +30,50 @@
       >
         <div class="tool-main-wrapper" v-if="activeRootCat">
           <div class="tool-left">
-            <div class="scroll-section">
-              <div class="tool-left-back" @click="handleBack">
-                <i class="tool-left-back_icon"></i>
-              </div>
-              <div class="tool-left-parent_cat">
-                <span>{{ activeRootCat.name }}</span>
-                <i class="tool-left-parent_triangle"></i>
-                <ul class="tool-left-parent_cat_list">
-                  <li
-                    :class="[
-                      'tool-left-parent_cat_item',
-                      activeRootCat.id === cat.id ? 'active' : ''
-                    ]"
-                    v-for="cat of rootCats"
-                    :key="cat.id"
-                    @click="handleToggleRootCat(cat)"
-                  >
-                    {{ cat.name }}
-                  </li>
-                </ul>
-              </div>
-              <ul class="tool-left-list">
-                <template v-for="(cat, index) of activeRootCat.children">
-                  <li
-                    v-show="index < 3 || showMore"
-                    :class="[
-                      'tool-left-item',
-                      index === activeParentCatIndex ? 'active' : ''
-                    ]"
-                    :key="cat.id"
-                    @click="handleToggleParentCat(index)"
-                  >
-                    {{ cat.name }}
-                  </li>
-                </template>
+            <div class="tool-left-back" @click="handleBack">
+              <i class="tool-left-back_icon"></i>
+            </div>
+            <div class="tool-left-parent_cat">
+              <span>{{ activeRootCat.name }}</span>
+              <i class="tool-left-parent_triangle"></i>
+              <ul class="tool-left-parent_cat_list">
                 <li
-                  v-if="
-                    activeRootCat.children && activeRootCat.children.length > 3
-                  "
-                  class="tool-left-more"
-                  @click="showMore = !showMore"
+                  :class="[
+                    'tool-left-parent_cat_item',
+                    activeRootCat.id === cat.id ? 'active' : ''
+                  ]"
+                  v-for="cat of rootCats"
+                  :key="cat.id"
+                  @click="handleToggleRootCat(cat)"
                 >
-                  <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+                  {{ cat.name }}
                 </li>
               </ul>
             </div>
+            <ul class="tool-left-list">
+              <template v-for="(cat, index) of activeRootCat.children">
+                <li
+                  v-show="index < 3 || showMore"
+                  :class="[
+                    'tool-left-item',
+                    index === activeParentCatIndex ? 'active' : ''
+                  ]"
+                  :key="cat.id"
+                  @click="handleToggleParentCat(index)"
+                >
+                  {{ cat.name }}
+                </li>
+              </template>
+              <li
+                v-if="
+                  activeRootCat.children && activeRootCat.children.length > 3
+                "
+                class="tool-left-more"
+                @click="showMore = !showMore"
+              >
+                <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
+              </li>
+            </ul>
           </div>
           <div class="search-container" v-loading="catLoading">
             <div class="search-header">
@@ -599,13 +597,13 @@ export default {
     position: absolute;
     left: -44px;
     top: 0;
+    display: flex;
+    flex-direction: column;
     width: 44px;
     max-height: 100%;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      width: 0px;
-    }
+    overflow: visible;
     .tool-left-back {
+      flex: 1;
       padding: 2px 10px 8px;
       cursor: pointer;
       .tool-left-back_icon {
@@ -617,6 +615,7 @@ export default {
       }
     }
     .tool-left-parent_cat {
+      flex: 1;
       position: relative;
       display: flex;
       flex-direction: column;
@@ -678,10 +677,14 @@ export default {
       }
     }
     .tool-left-list {
+      flex: 1;
       width: 100%;
       padding: 8px 0;
       background: #fff;
-
+      overflow-y: scroll;
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
       .tool-left-item {
         width: 100%;
         padding: 8px 10px;
@@ -748,6 +751,9 @@ export default {
       height: calc(100% - 62px);
       overflow-y: auto;
       padding: 10px;
+      &::-webkit-scrollbar {
+        width: 0;
+      }
       .cat-list {
         .cat-item {
           display: flex;
