@@ -214,16 +214,16 @@ export default {
         width: 100%;
         padding: 8px 10px;
         line-height: 16px;
-        font-weight: 600;
         font-size: 12px;
         text-align: center;
         color: #2c3330;
         cursor: pointer;
         &.active {
+          font-weight: 600;
           color: @primaryColor;
         }
         &:hover {
-          color: #606c66;
+          color: @primaryColor;
         }
       }
     }
@@ -241,6 +241,9 @@ export default {
         transition: transform 0.1s;
         &.unexpand {
           transform: rotate(180deg);
+        }
+        &:hover {
+          background: #606c66;
         }
       }
     }
