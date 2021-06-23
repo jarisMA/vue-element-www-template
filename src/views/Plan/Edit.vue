@@ -156,7 +156,7 @@ export default {
       url: "",
       loading: true,
       listingId: null,
-      showPlane: false,
+      showPlane: true,
       showTexture: false,
       showSoftware: false,
       design: {},
@@ -182,12 +182,8 @@ export default {
   created() {
     if (this.$route.name === "EditPlan") {
       if (this.$route.query.tool == "true") {
-        this.showPlane = true;
         this.showTexture = true;
         this.showSoftware = true;
-      }
-      if (this.$route.query.plane == "true") {
-        this.showPlane = true;
       }
       if (this.$route.query.texture == "true") {
         this.showTexture = true;
