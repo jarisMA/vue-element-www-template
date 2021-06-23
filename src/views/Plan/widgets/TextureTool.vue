@@ -358,6 +358,9 @@ export default {
         });
     },
     getCommodity(flag = false) {
+      if (!this.activeRootCat) {
+        return;
+      }
       if (!flag) {
         this.pagination.page = 1;
       } else {
