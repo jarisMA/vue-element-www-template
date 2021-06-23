@@ -156,7 +156,7 @@ export default {
       url: "",
       loading: true,
       listingId: null,
-      showPlane: false,
+      showPlane: true,
       showTexture: false,
       showSoftware: false,
       design: {},
