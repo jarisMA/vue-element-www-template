@@ -24,11 +24,12 @@ export default new Vuex.Store({
     END_DIALOG_SHOW(state) {
       state.loginDialogVisible = 0;
     },
-    LOGOUT() {
+    LOGOUT(state) {
       cookies.remove("web_token", {
         path: "/",
         domain: process.env.VUE_APP_DOMAIN
       });
+      state.userInfo = null;
       goHome();
     },
     updateHeaderTheme(state, theme) {
