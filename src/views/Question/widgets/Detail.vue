@@ -549,7 +549,6 @@ export default {
     },
 
     handleActivePointIndex(index) {
-      console.log(index);
       this.activePointIndex = index;
       this.handleSwiperSlideTo(index);
     },
