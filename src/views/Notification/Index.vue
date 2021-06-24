@@ -222,6 +222,7 @@ export default {
 .noti-section {
   width: 100%;
   height: 100%;
+  background: #fff !important;
 
   .container-1180 {
     width: 1180px;
@@ -349,7 +350,8 @@ export default {
   }
 }
 .pagination {
-  margin-top: 100px;
+  margin-top: 40px;
+  margin-bottom: 80px;
 }
 
 /deep/ .el-checkbox {

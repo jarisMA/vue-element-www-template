@@ -135,8 +135,10 @@ export default {
     justify-content: space-between;
 
     .reply-detail {
-      width: 24px;
-      height: 24px;
+      padding: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
       cursor: pointer;
 
       &:hover {
@@ -225,10 +227,10 @@ export default {
         padding: 0;
         line-height: 1;
         font-weight: 500;
-        font-size: 16px;
+        font-size: 14px;
         color: #ffffff;
         border: unset;
-        background: @primaryColor;
+        background: #14af64;
         cursor: pointer;
       }
     }

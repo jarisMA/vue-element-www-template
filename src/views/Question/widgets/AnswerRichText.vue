@@ -15,13 +15,9 @@
       <div class="answer-submit">
         <!-- <el-select placeholder="设置转载权限">
         </el-select> -->
-        <el-button
-          class="submit-btn"
-          type="primary"
-          :loading="submiting"
-          @click="submit"
-          >发布</el-button
-        >
+        <button class="submit-btn" :loading="submiting" @click="submit">
+          发布
+        </button>
       </div>
     </div>
   </div>
@@ -169,12 +165,19 @@ export default {
     }
   }
   .submit-btn {
-    padding: 8px 24px;
-    span {
-      line-height: 14px;
-      font-weight: normal;
-      font-size: 14px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 40px;
+    padding: 0;
+    line-height: 1;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    border: unset;
+    background: #14af64;
+    cursor: pointer;
   }
 }
 </style>
