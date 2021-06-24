@@ -20,7 +20,7 @@
           type="primary"
           :loading="submiting"
           @click="submit"
-          >发布答案</el-button
+          >发布</el-button
         >
       </div>
     </div>
