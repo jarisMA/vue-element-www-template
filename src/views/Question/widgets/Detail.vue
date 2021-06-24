@@ -55,7 +55,7 @@
                     :key="key"
                   >
                     <el-image
-                      :preview-src-list="[detail.images]"
+                      :preview-src-list="[image]"
                       style="max-width: 600px; max-height: 600px"
                       :src="image"
                       fit="contain"
