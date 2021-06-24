@@ -62,18 +62,21 @@
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
           <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
-          <img
-            src="~images/noti_active.svg"
-            class="noti-icon"
-            v-if="userInfo.notification_count > 0"
-            @click="goNotification()"
-          />
-          <img
-            src="~images/noti_inactive.svg"
-            class="noti-icon"
-            v-else
-            @click="goNotification()"
-          />
+
+          <div v-if="userInfo">
+            <img
+              src="~images/noti_active.svg"
+              class="noti-icon"
+              v-if="userInfo.notification_count > 0"
+              @click="goNotification()"
+            />
+            <img
+              src="~images/noti_inactive.svg"
+              class="noti-icon"
+              v-if="userInfo.notification_count == 0"
+              @click="goNotification()"
+            />
+          </div>
           <div class="user-handle-container">
             <el-button
               class="login-button"

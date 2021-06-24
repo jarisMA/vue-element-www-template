@@ -1,11 +1,11 @@
 <template>
-  <div class="noti-section">
+  <div class="noti-section" v-loading="loading">
     <div class="container-1180">
       <div class="noti-title">
         消息通知
       </div>
       <div class="noti-content">
-        <div class="noti-left">
+        <div class="noti-left" v-if="total > 0">
           <ul>
             <li
               class="noti-left-item"
@@ -38,12 +38,21 @@
               /> -->
               <div>
                 <p>
-                  <span class="item-title">{{ item.data.title }}</span>
+                  <span
+                    class="item-title"
+                    :style="{ color: item.read_at ? '#81948B' : '' }"
+                    >{{ item.data.title }}</span
+                  >
                   <span class="item-time">{{
                     formatDate(item.created_at, (format = "MM/DD"))
                   }}</span>
                 </p>
-                <p class="item-descri">{{ item.data.description }}</p>
+                <p
+                  class="item-descri"
+                  :style="{ color: item.read_at ? '#81948B' : '' }"
+                >
+                  {{ item.data.description }}
+                </p>
               </div>
             </li>
           </ul>
@@ -55,7 +64,12 @@
             @change-page="getData"
           />
         </div>
-        <div class="noti-right">
+        <the-empty
+          v-else-if="!loading"
+          noText="你的信箱空空如也"
+          class="empty-content"
+        />
+        <div class="noti-right" v-if="!loading">
           <ul>
             <li
               @click="
@@ -128,12 +142,14 @@
 <script>
 import notificationService from "service/notification";
 import Pagination from "components/Pagination";
-import { goQuestionDetail } from "utils/routes";
+import { goQuestionDetail, goQuestionAnswer } from "utils/routes";
 import { formatDate } from "utils/moment";
+import TheEmpty from "components/TheEmpty";
+
 const homework = ["作业批复", "作业驳回"];
 const question = ["回复我的", "获得鼓掌", "帮忙擦亮"];
 export default {
-  components: { Pagination },
+  components: { Pagination, TheEmpty },
   name: "Notification",
   data() {
     return {
@@ -148,7 +164,8 @@ export default {
       size: 8,
       page: 1,
       total: 0,
-      activeTab: "1"
+      activeTab: "1",
+      loading: true
     };
   },
   created() {
@@ -159,6 +176,7 @@ export default {
   methods: {
     formatDate,
     goQuestionDetail,
+    goQuestionAnswer,
     handleTabChange(index) {
       this.activeTab = index;
     },
@@ -175,8 +193,10 @@ export default {
       this.checkAnswer = val ? question : [];
     },
     handleNotificationClick(item) {
-      goQuestionDetail(item.data.question_id);
-      item.read_at = true;
+      notificationService.notification(item.id).then((item.read_at = true));
+      if (item.data.question_id) {
+        goQuestionDetail(item.data.question_id);
+      }
     },
     getData(start = 1, type) {
       notificationService
@@ -191,8 +211,7 @@ export default {
           this.page = start;
         })
         .finally(() => {
-          console.log(this.notifications);
-          console.log(this.patination);
+          this.loading = false;
         });
     }
   }
@@ -220,6 +239,11 @@ export default {
       display: flex;
       width: 100%;
       height: 100%;
+
+      .empty-content {
+        width: 860px;
+        height: 100%;
+      }
 
       .noti-left {
         width: 860px;

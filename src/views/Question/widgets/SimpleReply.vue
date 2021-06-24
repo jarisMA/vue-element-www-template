@@ -128,11 +128,21 @@ export default {
 
 .reply-wrapper {
   width: 100%;
-  padding: 40px;
+  padding: 20px;
   background: #fff;
   .reply-content {
     display: flex;
     justify-content: space-between;
+
+    .reply-detail {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
 
     .reply-input-wrapper {
       margin-bottom: 40px;
@@ -147,6 +157,12 @@ export default {
         }
       }
     }
+  }
+  .reply-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 20px;
     .reply-image-list {
       display: flex;
       .reply-image-item {
@@ -158,8 +174,8 @@ export default {
           }
         }
         img {
-          width: 60px;
-          height: 60px;
+          width: 56px;
+          height: 56px;
           object-fit: cover;
         }
         .delete-icon {
@@ -186,12 +202,7 @@ export default {
         }
       }
     }
-  }
-  .reply-footer {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-top: 20px;
+
     .reply-footer-left {
       display: flex;
       align-items: center;
@@ -209,8 +220,8 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 104px;
-        height: 48px;
+        width: 76px;
+        height: 40px;
         padding: 0;
         line-height: 1;
         font-weight: 500;

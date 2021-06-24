@@ -185,7 +185,8 @@
                         'page-detail-footer-count',
                         detail.is_favorite ? 'active' : ''
                       ]"
-                      >{{ detail.favorite_count }}</span
+                      >{{ detail.is_favorite ? "已收藏" : "收藏" }}
+                      {{ detail.favorite_count }}</span
                     >
                   </div>
                   <el-dropdown
@@ -1031,6 +1032,14 @@ export default {
                 display: flex;
                 align-items: center;
                 cursor: pointer;
+
+                //      &:hover {
+                //   .page-detail-footer-count {
+                //     color:#14AF64;
+                //   }
+
+                // }
+
                 & + .page-detail-footer-operate {
                   position: relative;
                   margin-left: 8px;
@@ -1170,8 +1179,6 @@ export default {
                 }
               }
             }
-          }
-          .simple-reply-wrapper {
           }
         }
         .page-content-answers {
