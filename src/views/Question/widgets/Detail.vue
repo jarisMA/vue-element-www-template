@@ -45,7 +45,7 @@
                 "
               >
                 <el-carousel
-                  height="600px"
+                  max-height="600px"
                   arrow="always"
                   :autoplay="false"
                   :loop="false"
@@ -56,8 +56,9 @@
                   >
                     <el-image
                       :preview-src-list="[image]"
-                      style="width: 600px; height: 600px"
+                      style="max-width: 600px; max-height: 600px"
                       :src="image"
+                      fit="contain"
                     >
                     </el-image>
                   </el-carousel-item>
@@ -891,7 +892,7 @@ export default {
           }
           .page-detail-question_image-wrapper {
             width: 100%;
-            height: 600px;
+            max-height: 600px;
             margin: 24px auto 0;
             padding: 0 40px;
             /deep/ .cover-img {
