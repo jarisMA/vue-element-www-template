@@ -652,10 +652,10 @@ export default {
       }
       &:hover {
         span {
-          color: @hoverColor;
+          color: #14AF64;;
         }
         &::before {
-          background-color: @hoverColor;
+          background-color: #14AF64;
         }
       }
     }
@@ -694,6 +694,7 @@ export default {
 .comment-fold-wrapper {
   margin: 20px;
   padding: 20px;
+  border-bottom: 1px solid #EFEFEF;
 }
 .comment-list-wrapper {
   position: relative;
