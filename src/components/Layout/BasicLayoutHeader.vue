@@ -64,16 +64,14 @@
           <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
 
           <div v-if="userInfo">
-            <img
-              src="~images/noti_active.svg"
-              class="noti-icon"
+            <div
+              class="notification-active"
               v-if="userInfo.notification_count > 0"
               @click="goNotification()"
-            />
+            ></div>
             <img
               src="~images/noti_inactive.svg"
-              class="noti-icon"
-              v-if="userInfo.notification_count == 0"
+              class="notification-icon"
               @click="goNotification()"
             />
           </div>
@@ -268,12 +266,24 @@ export default {
     vertical-align: -2px;
   }
 
-  .noti-icon {
+  .notification-icon {
     width: 24px;
     height: 24px;
     margin-right: 20px;
     cursor: pointer;
   }
+
+  .notification-active {
+    position: relative;
+    top: 11px;
+    left: 16px;
+    width: 3px;
+    height: 3px;
+    background-color: #15ae65;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px white;
+  }
+
   .header-content {
     display: flex;
     justify-content: space-between;

@@ -149,11 +149,13 @@
                   <div
                     class="page-detail-footer-operate"
                     @click="handleLikeAdd"
+                    @mouseover="handleHover(1)"
+                    @mouseout="handleHover(0)"
                   >
                     <i
                       :class="[
                         'page-brighten-icon',
-                        detail.is_like ? 'active' : ''
+                        detail.is_like ? 'active' : hover == 1 ? 'hover' : ''
                       ]"
                     ></i>
                     <span
@@ -174,11 +176,17 @@
                   <div
                     class="page-detail-footer-operate"
                     @click="handleFavoriteClick"
+                    @mouseover="handleHover(2)"
+                    @mouseout="handleHover(0)"
                   >
                     <i
                       :class="[
                         'page-collection-icon',
-                        detail.is_favorite ? 'active' : ''
+                        detail.is_favorite
+                          ? 'active'
+                          : hover == 2
+                          ? 'hover'
+                          : ''
                       ]"
                     ></i>
                     <span
@@ -196,7 +204,9 @@
                     trigger="click"
                     v-if="(userInfo && userInfo.id) === detail.user.id"
                   >
-                    <i class="el-icon-more"></i>
+                    <span class="delete-hint"
+                      ><span class="delete-line">｜</span> 删除问题</span
+                    >
                     <el-dropdown-menu slot="dropdown" class="page-dropdown">
                       <el-dropdown-item>
                         <el-popconfirm
@@ -418,6 +428,7 @@ export default {
       voting: false,
       answers: [],
       answerOrder: 1,
+      hover: "",
       pagination: {
         size: 10,
         page: 1,
@@ -461,6 +472,9 @@ export default {
   methods: {
     handleLarge() {
       this.largerRichText = true;
+    },
+    handleHover(index) {
+      this.hover = index;
     },
     getData() {
       this.loading = true;
@@ -783,6 +797,10 @@ export default {
       mask-image: url("~images/question/brighten_active.svg");
       background-color: @primaryColor !important;
     }
+    &.hover {
+      mask-image: url("~images/question/brighten_hover.svg");
+      background-color: @primaryColor !important;
+    }
   }
   .page-collection-icon {
     display: inline-block;
@@ -794,6 +812,10 @@ export default {
     background-color: #2c3330;
     &.active {
       mask-image: url("~images/question/collection_active.svg");
+      background-color: @primaryColor !important;
+    }
+    &.hover {
+      mask-image: url("~images/question/collection_hover.svg");
       background-color: @primaryColor !important;
     }
   }
@@ -1033,49 +1055,45 @@ export default {
                 align-items: center;
                 cursor: pointer;
 
-                //      &:hover {
-                //   .page-detail-footer-count {
-                //     color:#14AF64;
-                //   }
-
-                // }
+                &:hover {
+                  .page-detail-footer-count {
+                    color: #14af64;
+                  }
+                }
 
                 & + .page-detail-footer-operate {
                   position: relative;
                   margin-left: 8px;
                   padding-left: 9px;
-                  &::before {
-                    position: absolute;
-                    top: calc(50% - 6px);
-                    left: 0;
-                    width: 1px;
-                    height: 12px;
-                    content: "";
-                    background: #efefef;
-                  }
                 }
                 .page-brighten-icon,
                 .page-collection-icon {
-                  width: 20px;
-                  height: 20px;
+                  width: 24px;
+                  height: 24px;
                   background-color: #81948b;
                 }
                 .page-detail-footer-count {
-                  line-height: 12px;
-                  font-size: 12px;
+                  line-height: 14px;
+                  font-size: 14px;
                   color: #81948b;
                   &.active {
                     color: @primaryColor;
                   }
                 }
               }
+              .delete-hint {
+                cursor: pointer;
+                font-size: 14px;
+                color: #81948b;
+
+                .delete-line {
+                  opacity: 0.3;
+                }
+              }
+
               /deep/ .page-detail-footer-dropdown-wrapper {
                 margin-left: 16px;
                 padding: 0 !important;
-                .el-icon-more {
-                  color: #c4c4c4;
-                  cursor: pointer;
-                }
               }
             }
           }
@@ -1192,6 +1210,7 @@ export default {
             padding: 0 20px;
             background: #fff;
             border-bottom: 1px solid #efefef;
+
             .page-answers-header-left {
               font-weight: 500;
               font-size: 16px;

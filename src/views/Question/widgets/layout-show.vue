@@ -5,7 +5,15 @@
       ref="wrapper"
       :style="{ width: width + 'px', height: height + 'px' }"
     >
-      <img class="editor-img" ref="editorImg" :src="layout.image_url" />
+      <el-image
+        ref="editorImg"
+        :preview-src-list="[layout.image_url]"
+        class="editor-img"
+        :src="layout.image_url"
+        fit="contain"
+      >
+      </el-image>
+
       <div
         class="editor-point"
         v-for="(item, index) of layout.points"
