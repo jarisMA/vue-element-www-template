@@ -1,7 +1,7 @@
 <template>
   <div class="comment-card" v-loading="loading">
     <div class="card-left">
-      <the-avatar :size="20" :url="comment.user.avatar_url" />
+      <the-avatar :size="24" :url="comment.user.avatar_url" />
     </div>
     <div class="card-right">
       <div class="comment-detail">
@@ -25,9 +25,6 @@
               >
             </template>
           </div>
-          <div class="time-wrapper">
-            {{ formatDate(comment.created_at, "YYYY-MM-DD hh:mm:ss") }}
-          </div>
         </div>
         <div class="card-content">
           <div class="comment-content" v-if="comment.content">
@@ -40,28 +37,35 @@
           </div>
         </div>
         <div class="card-bottom" v-if="userInfo">
-          <div
-            v-if="allowComment"
-            class="reply-operate operate-item"
-            @click="commentVisible = !commentVisible"
-          >
-            {{ commentVisible ? "取消回复" : "回复" }}
+          <div class="time-wrapper">
+            {{ formatDate(comment.created_at, "MM-DD hh:mm") }}
           </div>
-          <el-popconfirm
-            v-if="allowDelete && userInfo.id === comment.user.id"
-            @confirm="deleteComment"
-            title="确定删除此评论吗？"
-          >
-            <div class="delete-operate operate-item" slot="reference">
-              删除
+          <div style="display: flex;">
+            <el-popconfirm
+              style="margin-right: 20px;"
+              v-if="allowDelete && userInfo.id === comment.user.id"
+              @confirm="deleteComment"
+              title="确定删除此评论吗？"
+            >
+              <div class="delete-operate operate-item" slot="reference">
+                &nbsp;删除
+              </div>
+            </el-popconfirm>
+            <div
+              v-if="allowComment"
+              class="reply-operate operate-item"
+              @click="commentVisible = !commentVisible"
+            >
+              &nbsp;
+              {{ commentVisible ? "取消回复" : "回复" }}
             </div>
-          </el-popconfirm>
-          <div
-            class="report-operate operate-item"
-            v-else-if="allowReport && false"
-            @click="reportComment"
-          >
-            举报
+            <div
+              class="report-operate operate-item"
+              v-else-if="allowReport && false"
+              @click="reportComment"
+            >
+              举报
+            </div>
           </div>
         </div>
         <div v-show="commentVisible && userInfo" class="reply-comment">
@@ -223,11 +227,11 @@ export default {
   display: flex;
 
   .card-left {
-    width: 20px;
+    width: 24px;
   }
   .card-right {
     flex: 1;
-    margin-left: 7px;
+    margin-left: 8px;
     width: 5px;
   }
   .comment-detail {
@@ -243,10 +247,10 @@ export default {
       .user-info {
         .user-name {
           display: inline-block;
-          line-height: 21px;
-          font-weight: 500;
+          line-height: 24px;
+          font-weight: 400;
           font-size: 14px;
-          color: #111;
+          color: #81948b;
           &.active {
             color: @primaryColor;
           }
@@ -269,10 +273,10 @@ export default {
     }
     .card-content {
       .comment-content {
-        margin-top: 10px;
-        line-height: 1.67;
-        font-size: 15px;
-        color: #111;
+        margin-top: 4px;
+        line-height: 24px;
+        font-size: 14px;
+        color: #2c3330;
         word-break: break-all;
       }
       .comment-images {
@@ -281,13 +285,16 @@ export default {
     }
     .card-bottom {
       display: flex;
-      margin-top: 10px;
+      justify-content: space-between;
+      margin-top: 8px;
       min-height: 18px;
-      line-height: 18px;
+      line-height: 20px;
       font-size: 12px;
-      color: @baseColor;
+      color: #81948b;
       user-select: none;
       .operate-item {
+        display: flex;
+        align-content: center;
         &:not(:last-child) {
           margin-right: 20px;
         }
@@ -324,7 +331,7 @@ export default {
       }
       .reply-operate {
         &::before {
-          mask-image: url("~images/question/reply.svg");
+          mask-image: url("~images/question/comment.svg");
         }
       }
       .delete-operate {

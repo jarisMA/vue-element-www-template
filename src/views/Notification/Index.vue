@@ -1,46 +1,54 @@
 <template>
-  <div class="noti-section" v-loading="loading">
+  <div class="notification-section" v-loading="loading">
     <div class="container-1180">
-      <div class="noti-title">
+      <div class="notification-title">
         消息通知
       </div>
-      <div class="noti-content">
-        <div class="noti-left" v-if="total > 0">
+      <div class="notification-content">
+        <div class="notification-left" v-if="total > 0">
           <ul>
             <li
-              class="noti-left-item"
+              class="notification-left-item"
               v-for="item of notifications"
               :key="item.id"
               @click="handleNotificationClick(item)"
             >
               <!-- <img
-                class="noti-left-icon"
+                class="notification-left-icon"
                 src="~images/notification/approve.svg"
               /> -->
               <img
-                :class="[item.read_at ? 'grey-scale' : '', 'noti-left-icon']"
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
                 src="~images/notification/highlight.svg"
                 v-if="item.data.type == 'question_like'"
               />
               <img
-                :class="[item.read_at ? 'grey-scale' : '', 'noti-left-icon']"
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
                 src="~images/notification/clap.svg"
                 v-else-if="item.data.type == 'question_answer_like'"
               />
               <img
-                :class="[item.read_at ? 'grey-scale' : '', 'noti-left-icon']"
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
                 src="~images/notification/reply.svg"
                 v-else
               />
               <!-- <img
-                class="noti-left-icon"
+                class="notification-left-icon"
                 src="~images/notification/reject.svg"
               /> -->
               <div>
                 <p>
                   <span
-                    class="item-title"
-                    :style="{ color: item.read_at ? '#81948B' : '' }"
+                    :class="[item.read_at ? 'item-read' : '', 'item-title']"
                     >{{ item.data.title }}</span
                   >
                   <span class="item-time">{{
@@ -48,8 +56,7 @@
                   }}</span>
                 </p>
                 <p
-                  class="item-descri"
-                  :style="{ color: item.read_at ? '#81948B' : '' }"
+                  :class="[item.read_at ? 'item-read' : '', 'item-description']"
                 >
                   {{ item.data.description }}
                 </p>
@@ -69,44 +76,44 @@
           noText="你的信箱空空如也"
           class="empty-content"
         />
-        <div class="noti-right" v-if="!loading">
+        <div class="notification-right" v-if="!loading">
           <ul>
             <li
-              @click="
-                getData();
-                handleTabChange(1);
-              "
-              :class="['noti-right-text', activeTab === 1 ? 'text-bold' : '']"
+              @click="getData(1, '', 1)"
+              :class="[
+                'notification-right-text',
+                activeTab === 1 ? 'text-bold' : ''
+              ]"
             >
               回复我的
             </li>
             <li
-              @click="
-                getData(1, 'question_answer_like');
-                handleTabChange(2);
-              "
-              :class="['noti-right-text', activeTab === 2 ? 'text-bold' : '']"
+              @click="getData(1, 'question_answer_like', 2)"
+              :class="[
+                'notification-right-text',
+                activeTab === 2 ? 'text-bold' : ''
+              ]"
             >
               获得鼓掌
             </li>
             <li
-              @click="
-                getData(1, 'question_like');
-                handleTabChange(3);
-              "
-              :class="['noti-right-text', activeTab === 3 ? 'text-bold' : '']"
+              @click="getData(1, 'question_like', 3)"
+              :class="[
+                'notification-right-text',
+                activeTab === 3 ? 'text-bold' : ''
+              ]"
             >
               帮忙擦亮
             </li>
           </ul>
 
-          <!-- <div class="noti-right-title">
+          <!-- <div class="notification-right-title">
             <span class="noti-filter">筛选</span>
             <el-checkbox v-model="checkAll" @change="handleAll"
               >选择全部</el-checkbox
             >
           </div>
-          <div class="noti-right-content">
+          <div class="notification-right-content">
             <el-checkbox v-model="checkCourse" @change="handleCourse">
               课程消息</el-checkbox
             >
@@ -142,7 +149,7 @@
 <script>
 import notificationService from "service/notification";
 import Pagination from "components/Pagination";
-import { goQuestionDetail, goQuestionAnswer } from "utils/routes";
+import { goQuestionDetail } from "utils/routes";
 import { formatDate } from "utils/moment";
 import TheEmpty from "components/TheEmpty";
 
@@ -176,7 +183,6 @@ export default {
   methods: {
     formatDate,
     goQuestionDetail,
-    goQuestionAnswer,
     handleTabChange(index) {
       this.activeTab = index;
     },
@@ -198,7 +204,8 @@ export default {
         goQuestionDetail(item.data.question_id);
       }
     },
-    getData(start = 1, type) {
+    getData(start = 1, type, index) {
+      this.activeTab = index;
       notificationService
         .notifications({
           page_size: this.size,
@@ -219,7 +226,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.noti-section {
+.notification-section {
   width: 100%;
   height: 100%;
 
@@ -228,14 +235,14 @@ export default {
     height: 100%;
     margin: 0 auto;
 
-    .noti-title {
+    .notification-title {
       padding: 40px 0px;
       font-size: 24px;
       font-weight: 600;
       color: #2c3330;
     }
 
-    .noti-content {
+    .notification-content {
       display: flex;
       width: 100%;
       height: 100%;
@@ -245,11 +252,11 @@ export default {
         height: 100%;
       }
 
-      .noti-left {
+      .notification-left {
         width: 860px;
         height: 100%;
 
-        .noti-left-item {
+        .notification-left-item {
           display: flex;
           align-items: center;
           height: 90px;
@@ -258,12 +265,12 @@ export default {
 
           &:hover {
             .item-title,
-            .item-descri {
+            .item-description {
               color: #606c66;
             }
           }
 
-          .noti-left-icon {
+          .notification-left-icon {
             width: 40px;
             height: 40px;
             margin-right: 16px;
@@ -279,6 +286,10 @@ export default {
             color: #2c3330;
           }
 
+          .item-read {
+            color: #81948b;
+          }
+
           .item-time {
             margin-left: 10px;
             font-size: 16px;
@@ -286,7 +297,7 @@ export default {
             color: #8ea098;
           }
 
-          .item-descri {
+          .item-description {
             margin-top: 15px;
             font-size: 14px;
             font-weight: 400px;
@@ -295,7 +306,7 @@ export default {
         }
       }
 
-      .noti-right {
+      .notification-right {
         margin-left: 40px;
         padding: 16px;
         width: 280px;
@@ -305,7 +316,7 @@ export default {
         font-weight: 400;
         color: #606c66;
 
-        .noti-right-text {
+        .notification-right-text {
           padding-left: 6px;
           line-height: 40px;
 
@@ -321,7 +332,7 @@ export default {
           }
         }
 
-        .noti-right-title {
+        .notification-right-title {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -333,7 +344,7 @@ export default {
           }
         }
 
-        .noti-right-content {
+        .notification-right-content {
           font-size: 14px;
           font-weight: 400px;
           color: #606c66;
@@ -350,9 +361,5 @@ export default {
 }
 .pagination {
   margin-top: 100px;
-}
-
-/deep/ .el-checkbox {
-  margin: 8px;
 }
 </style>
