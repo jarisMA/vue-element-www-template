@@ -1,0 +1,356 @@
+<template>
+  <div :class="['quadrant-container']">
+    <div
+      v-for="(item, key) of axis"
+      :class="'axis-' + key"
+      :key="key"
+      title="坐标名称"
+    >
+      <label
+        class="axis-label"
+        v-if="item.name"
+        :style="{ backgroundColor: item.bgColor }"
+        >{{ item.name }}
+      </label>
+    </div>
+
+    <div class="quadrant-wrapper">
+      <div class="x-axis"></div>
+      <div class="y-axis"></div>
+      <div
+        :class="`quadrant-${key}`"
+        :style="{ backgroundColor: item.bgColor }"
+        v-for="(item, key) of quadrant"
+        :key="key"
+      >
+        <div class="quadrant-label">第{{ item.key }}象限</div>
+        <div class="quadrant-name" title="象限名称">
+          <label class="quadrant-name-label" v-if="item.name">{{
+            item.name
+          }}</label>
+        </div>
+        <div class="quadrant-grid-wrapper">
+          <quadrant-grid
+            :ref="`quadrant-${key}`"
+            :theme="key"
+            :grids.sync="item.grids"
+            :disabled="disabled"
+            @gridClick="data => handleQuadrantGridClick(data, key)"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import QuadrantGrid from "./QuadrantGrid";
+const axis = {
+  x_axis_top: {
+    name: "",
+    bgColor: ""
+  },
+  x_axis_bottom: {
+    name: ""
+  },
+  y_axis_left: {
+    name: ""
+  },
+  y_axis_right: {
+    name: ""
+  }
+};
+const quadrant = {
+  first: {
+    key: 1,
+    name: "",
+    bgColor: "",
+    grids: []
+  },
+  second: {
+    key: 2,
+    name: "",
+    bgColor: "",
+    grids: []
+  },
+  third: {
+    key: 3,
+    name: "",
+    bgColor: "",
+    grids: []
+  },
+  fourth: {
+    key: 4,
+    name: "",
+    bgColor: "",
+    grids: []
+  }
+};
+
+export default {
+  components: { QuadrantGrid },
+  name: "BibleQuadrant",
+  props: {
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    content: {
+      type: String
+    }
+  },
+  data() {
+    return {
+      axis: JSON.parse(JSON.stringify(axis)),
+      quadrant: JSON.parse(JSON.stringify(quadrant)),
+      axisDialogVisible: false,
+      axisDialogFormKey: null,
+      axisDialogForm: {
+        name: "",
+        bgColor: ""
+      },
+      quadrantDialogVisible: false,
+      quadrantDialogFormKey: null,
+      quadrantDialogForm: {
+        name: "",
+        bgColor: ""
+      },
+      quadrantGridDialogVisible: false,
+      quadrantGridDialogFormKey: null,
+      activeQuadrantGridData: null,
+      quadrantGridDialogForm: {
+        quadrant: null
+      }
+    };
+  },
+  watch: {
+    content(val) {
+      if (val) {
+        const content = JSON.parse(val);
+        this.axis = content.axis;
+        this.quadrant = content.quadrant;
+      } else {
+        this.axis = JSON.parse(JSON.stringify(axis));
+        this.quadrant = JSON.parse(JSON.stringify(quadrant));
+      }
+    }
+  },
+  created() {
+    if (this.content) {
+      const content = JSON.parse(this.content);
+      this.axis = content.axis;
+      this.quadrant = content.quadrant;
+    }
+  },
+  methods: {
+    handleQuadrantGridClick(data, key) {
+      console.log(data, key);
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+@import "~styles/variable";
+
+.quadrant-container {
+  position: relative;
+  display: inline-block;
+  padding: 50px;
+  .axis-x_axis_top,
+  .axis-x_axis_bottom,
+  .axis-y_axis_left,
+  .axis-y_axis_right {
+    position: absolute;
+    .axis-label {
+      display: inline-block;
+      padding: 10px;
+      line-height: 20px;
+      font-weight: 600;
+      font-size: 14px;
+      word-break: keep-all;
+      background: @primaryColor;
+      border-radius: 2px;
+    }
+  }
+  .axis-x_axis_top {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .axis-x_axis_bottom {
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .axis-y_axis_left {
+    top: 50%;
+    right: calc(100% - 40px);
+    transform: translateY(-50%);
+  }
+  .axis-y_axis_right {
+    top: 50%;
+    left: calc(100% - 40px);
+    transform: translateY(-50%);
+  }
+  .quadrant-wrapper {
+    position: relative;
+    width: 1028px;
+    height: 864px;
+    .x-axis {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #2c3330;
+      z-index: 1;
+      transform: translateY(-50%);
+      &::before,
+      &::after {
+        position: absolute;
+        top: 0px;
+        width: 8px;
+        height: 8px;
+        border-top: 4px solid #2c3330;
+        border-left: 4px solid #2c3330;
+        content: "";
+      }
+      &::before {
+        left: -4px;
+        transform-origin: center;
+        transform: rotate(-45deg) translate(50%, 0);
+      }
+      &::after {
+        right: 4px;
+        transform: rotate(135deg) translate(-50%, 0);
+      }
+    }
+    .y-axis {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 4px;
+      height: 100%;
+      background: #2c3330;
+      z-index: 1;
+      transform: translateX(-50%);
+      &::before,
+      &::after {
+        position: absolute;
+        left: 0px;
+        width: 8px;
+        height: 8px;
+        border-top: 4px solid #2c3330;
+        border-left: 4px solid #2c3330;
+        content: "";
+      }
+      &::before {
+        top: -4px;
+        transform-origin: center;
+        transform: rotate(45deg) translate(0, 50%);
+      }
+      &::after {
+        bottom: 4px;
+        transform: rotate(-135deg) translate(0, -50%);
+      }
+    }
+    .quadrant-first,
+    .quadrant-second,
+    .quadrant-third,
+    .quadrant-fourth {
+      position: absolute;
+      width: 514px;
+      height: 432px;
+      .quadrant-grid-wrapper {
+        position: absolute;
+      }
+      .quadrant-name {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        .quadrant-name-label {
+          display: inline-block;
+          padding: 10px;
+          line-height: 20px;
+          font-weight: 600;
+          font-size: 14px;
+          color: #81948b;
+        }
+      }
+      .quadrant-label {
+        position: absolute;
+        margin: 10px 0;
+        line-height: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #666666;
+      }
+    }
+    .quadrant-first {
+      left: 0;
+      bottom: 0;
+      background: #f1f7fd;
+      .quadrant-name {
+        bottom: -50px;
+      }
+      .quadrant-label {
+        left: 0;
+        bottom: -50px;
+      }
+      .quadrant-grid-wrapper {
+        top: 7px;
+        right: 7px;
+      }
+    }
+    .quadrant-second {
+      left: 0;
+      top: 0;
+      background: #f1f7fd;
+      .quadrant-name {
+        top: -50px;
+      }
+      .quadrant-label {
+        left: 0;
+        top: -50px;
+      }
+      .quadrant-grid-wrapper {
+        bottom: 7px;
+        right: 7px;
+      }
+    }
+    .quadrant-fourth {
+      right: 0;
+      top: 0;
+      background: #fdf1db;
+      .quadrant-name {
+        top: -50px;
+      }
+      .quadrant-label {
+        right: 0;
+        top: -50px;
+      }
+      .quadrant-grid-wrapper {
+        bottom: 7px;
+        left: 7px;
+      }
+    }
+    .quadrant-third {
+      right: 0;
+      bottom: 0;
+      background: #fdf1db;
+      .quadrant-name {
+        bottom: -50px;
+      }
+      .quadrant-label {
+        right: 0;
+        bottom: -50px;
+      }
+      .quadrant-grid-wrapper {
+        top: 7px;
+        left: 7px;
+      }
+    }
+  }
+}
+</style>
