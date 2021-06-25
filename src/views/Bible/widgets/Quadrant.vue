@@ -40,6 +40,34 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      custom-class="preview-image-wrapper"
+      :visible="showPreviewImage"
+      :show-close="false"
+    >
+      <div
+        class="preview-image-container"
+        @click="showPreviewImage = false"
+        v-if="images.length > 0"
+      >
+        <div class="preview-image-close">
+          <i class="close-icon"></i>
+        </div>
+        <div class="preview-image-content">
+          <div class="preview-image-content_image">
+            <img :src="images[0]" @click.stop />
+          </div>
+          <!-- <div class="preview-image-prev"
+               v-if="false">
+            <i class="prev-icon"></i>
+          </div>
+          <div class="preview-image-next"
+               v-if="false">
+            <i class="next-icon"></i>
+          </div> -->
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -120,7 +148,9 @@ export default {
       activeQuadrantGridData: null,
       quadrantGridDialogForm: {
         quadrant: null
-      }
+      },
+      showPreviewImage: false,
+      images: []
     };
   },
   watch: {
@@ -143,8 +173,9 @@ export default {
     }
   },
   methods: {
-    handleQuadrantGridClick(data, key) {
-      console.log(data, key);
+    handleQuadrantGridClick(data) {
+      this.images = [data.image];
+      this.showPreviewImage = true;
     }
   }
 };

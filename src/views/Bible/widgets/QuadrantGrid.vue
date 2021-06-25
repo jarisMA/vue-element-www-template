@@ -27,10 +27,19 @@
         :i="item.i"
         :key="item.i"
         @click.native="handleGridClick(item)"
+        @mouseover.native="e => handleMouseover(e, item.image)"
+        @mouseout.native="handleMouseout"
       >
         <img v-if="item.image" :src="item.image" />
         <!-- <span v-else>{{ item.i }}</span> -->
       </grid-item>
+      <div
+        class="grid-image-preview"
+        v-if="preview.image"
+        :style="{ top: preview.y + 'px', left: preview.x + 'px' }"
+      >
+        <img :src="preview.image" />
+      </div>
     </grid-layout>
   </div>
 </template>
@@ -62,7 +71,12 @@ export default {
       colNum: 6,
       rowNum: 5,
       rowHeight: 82,
-      margin: 2
+      margin: 2,
+      preview: {
+        image: null,
+        x: null,
+        y: null
+      }
     };
   },
   watch: {
@@ -191,6 +205,23 @@ export default {
       if (data.image) {
         this.$emit("gridClick", data);
       }
+    },
+    handleMouseover(e, image) {
+      console.log(e, image);
+      if (image) {
+        this.preview = {
+          image: image,
+          x: e.pageX + 2,
+          y: e.pageY + 2
+        };
+      }
+    },
+    handleMouseout() {
+      this.preview = {
+        image: null,
+        x: null,
+        y: null
+      };
     }
   }
 };
@@ -198,6 +229,19 @@ export default {
 
 <style lang="less" scoped>
 .quadrant-grid-wrapper {
+  position: relative;
+  .grid-image-preview {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background: #c4c4c4;
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
+    img {
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }
   &.first {
     .grid-upload-wrapper {
       bottom: 0;
