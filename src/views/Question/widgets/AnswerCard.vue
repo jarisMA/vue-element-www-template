@@ -66,10 +66,10 @@
               src="~images/question/claped.svg"
             />
             <img class="clap-icon" v-else src="~images/question/claps.svg" />
-            <span>{{ answer.like_count }}</span>
+            <span :class="[answer.auth_like_count ? '' : 'grey-scale' ]">{{ answer.like_count }}</span>
           </div>
           <div class="comment-wrapper" @click="showComment = !showComment">
-            <span>{{ answer.comment_count }} </span>
+            <span>{{ answer.comment_count }}</span>
           </div>
           <div class="edit-wrapper" v-if="allowEdit" @click="editAnswer">
             <span>编辑回答</span>
@@ -349,6 +349,10 @@ export default {
 
 .answer-card-wrapper {
   background: #fff;
+}
+
+.grey-scale{
+  filter:grayscale(1);
 }
 
 .answer-card {
