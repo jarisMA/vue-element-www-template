@@ -66,7 +66,7 @@
               src="~images/question/claped.svg"
             />
             <img class="clap-icon" v-else src="~images/question/claps.svg" />
-            <span :class="[answer.auth_like_count ? '' : 'grey-scale' ]">{{ answer.like_count }}</span>
+            <span :class="[answer.auth_like_count ? '' : 'grey-scale' , 'fixed-width' ]">{{ answer.like_count }}</span>
           </div>
           <div class="comment-wrapper" @click="showComment = !showComment">
             <span>{{ answer.comment_count }}</span>
@@ -355,6 +355,10 @@ export default {
   filter:grayscale(1);
 }
 
+.fixed-width{
+  width: 8px;
+}
+
 .answer-card {
   position: relative;
   overflow: hidden;
@@ -636,10 +640,10 @@ export default {
       padding: 0 0 0 53px;
       &::before {
         position: absolute;
-        top: 4px;
+        top: 8px;
         left: 24px;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         content: "";
         background-color: @baseColor;
         mask-image: url("~images/question/comment.svg");

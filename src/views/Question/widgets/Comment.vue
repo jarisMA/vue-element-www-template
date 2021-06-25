@@ -9,7 +9,7 @@
     >
       <el-form-item prop="content">
         <el-input
-          focus=""
+          autofocus
           placeholder="写下你的想法"
           v-model="addForm.content"
         ></el-input>
