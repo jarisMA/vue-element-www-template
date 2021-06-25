@@ -93,113 +93,36 @@ export default {
       );
     },
     grids(val) {
-      this.originLayouts = JSON.parse(JSON.stringify(val));
-      this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
-      this.colNum =
-        Math.max.apply(
-          Math,
-          val.map(function(grid) {
-            return grid.x;
-          })
-        ) + 1;
-      this.rowNum =
-        Math.max.apply(
-          Math,
-          val.map(function(grid) {
-            return grid.y;
-          })
-        ) + 1;
+      this.setLayout(val);
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      if (this.grids.length > 0) {
-        this.colNum =
-          Math.max.apply(
-            Math,
-            this.grids.map(function(grid) {
-              return grid.x;
-            })
-          ) + 1;
-        this.rowNum =
-          Math.max.apply(
-            Math,
-            this.grids.map(function(grid) {
-              return grid.y;
-            })
-          ) + 1;
-        this.originLayouts = JSON.parse(JSON.stringify(this.grids));
-        this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
-      } else {
-        this.initLayouts();
-      }
-    });
+  created() {
+    this.setLayout(this.grids);
   },
   methods: {
-    initLayouts() {
-      const widthCol = this.colNum;
-      const heightCol = this.rowNum;
-      const layouts = [];
-      switch (this.theme) {
-        case "first":
-          for (let j = 0; j < heightCol; j++) {
-            for (let i = widthCol - 1; i >= 0; i--) {
-              layouts.push({
-                x: i,
-                y: j,
-                w: 1,
-                h: 1,
-                i: layouts.length,
-                image: null
-              });
-            }
-          }
-          break;
-        case "second":
-          for (let j = heightCol - 1; j >= 0; j--) {
-            for (let i = widthCol - 1; i >= 0; i--) {
-              layouts.push({
-                x: i,
-                y: j,
-                w: 1,
-                h: 1,
-                i: layouts.length,
-                image: null
-              });
-            }
-          }
-          break;
-        case "fourth":
-          for (let j = heightCol - 1; j >= 0; j--) {
-            for (let i = 0; i < widthCol; i++) {
-              layouts.push({
-                x: i,
-                y: j,
-                w: 1,
-                h: 1,
-                i: layouts.length,
-                image: null
-              });
-            }
-          }
-          break;
-        case "third":
-        default:
-          for (let j = 0; j < heightCol; j++) {
-            for (let i = 0; i < widthCol; i++) {
-              layouts.push({
-                x: i,
-                y: j,
-                w: 1,
-                h: 1,
-                i: layouts.length,
-                image: null
-              });
-            }
-          }
-          break;
-      }
-      this.$emit("update:grids", JSON.parse(JSON.stringify(layouts)));
+    setLayout(data) {
+      const grids = data.filter(item => item.image);
+      this.colNum = Math.max(
+        6,
+        Math.max.apply(
+          Math,
+          grids.map(function(grid) {
+            return grid.x;
+          }),
+          6
+        ) + 1
+      );
+      this.rowNum = Math.max(
+        5,
+        Math.max.apply(
+          Math,
+          grids.map(function(grid) {
+            return grid.y;
+          })
+        ) + 1
+      );
+      this.originLayouts = JSON.parse(JSON.stringify(grids));
+      this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
     },
     handleGridClick(data) {
       if (data.image) {
@@ -207,7 +130,6 @@ export default {
       }
     },
     handleMouseover(e, image) {
-      console.log(e, image);
       if (image) {
         this.preview = {
           image: image,
@@ -294,7 +216,6 @@ export default {
 .vue-grid-layout {
   position: relative;
   width: 412px;
-  border: 1px dashed #cccccc;
 }
 .vue-grid-item {
   transition-duration: 100ms;

@@ -321,7 +321,6 @@ export default {
     .quadrant-first {
       left: 0;
       bottom: 0;
-      background: #f1f7fd;
       .quadrant-name {
         bottom: -50px;
       }
@@ -337,7 +336,6 @@ export default {
     .quadrant-second {
       left: 0;
       top: 0;
-      background: #f1f7fd;
       .quadrant-name {
         top: -50px;
       }
@@ -353,7 +351,6 @@ export default {
     .quadrant-fourth {
       right: 0;
       top: 0;
-      background: #fdf1db;
       .quadrant-name {
         top: -50px;
       }
@@ -369,7 +366,6 @@ export default {
     .quadrant-third {
       right: 0;
       bottom: 0;
-      background: #fdf1db;
       .quadrant-name {
         bottom: -50px;
       }
