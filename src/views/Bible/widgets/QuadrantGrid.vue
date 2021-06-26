@@ -1,43 +1,38 @@
 <template>
   <div :class="['quadrant-grid-wrapper', theme]">
-    <grid-layout
-      :style="{
+    <grid-layout :style="{
         width: colNum * rowHeight + margin + 'px',
         height: rowNum * rowHeight + margin + 'px',
         overflow: 'hidden'
       }"
-      :layout="layouts"
-      :colNum="colNum"
-      :row-height="rowHeight - 2"
-      :maxRows="rowNum"
-      :is-draggable="false"
-      :is-resizable="false"
-      :is-mirrored="false"
-      :vertical-compact="false"
-      :margin="[margin, margin]"
-      :use-css-transforms="true"
-      ref="grid"
-    >
-      <grid-item
-        v-for="item in layouts"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :i="item.i"
-        :key="item.i"
-        @click.native="handleGridClick(item)"
-        @mouseover.native="e => handleMouseover(e, item.image)"
-        @mouseout.native="handleMouseout"
-      >
-        <img v-if="item.image" :src="item.image" />
+                 :layout="layouts"
+                 :colNum="colNum"
+                 :row-height="rowHeight - 2"
+                 :maxRows="rowNum"
+                 :is-draggable="false"
+                 :is-resizable="false"
+                 :is-mirrored="false"
+                 :vertical-compact="false"
+                 :margin="[margin, margin]"
+                 :use-css-transforms="true"
+                 ref="grid">
+      <grid-item v-for="item in layouts"
+                 :x="item.x"
+                 :y="item.y"
+                 :w="item.w"
+                 :h="item.h"
+                 :i="item.i"
+                 :key="item.i"
+                 @click.native="handleGridClick(item)"
+                 @mouseover.native="e => handleMouseover(e, item.image)"
+                 @mouseout.native="handleMouseout">
+        <img v-if="item.image"
+             :src="item.image" />
         <!-- <span v-else>{{ item.i }}</span> -->
       </grid-item>
-      <div
-        class="grid-image-preview"
-        v-if="preview.image"
-        :style="{ top: preview.y + 'px', left: preview.x + 'px' }"
-      >
+      <div class="grid-image-preview"
+           v-if="preview.image"
+           :style="{ top: preview.y + 'px', left: preview.x + 'px' }">
         <img :src="preview.image" />
       </div>
     </grid-layout>
@@ -62,10 +57,10 @@ export default {
       required: true
     }
   },
-  data() {
+  data () {
     return {
       maxLayoutWidth: 500,
-      maxLayoutHeight: 418,
+      maxLayoutHeight: 500,
       originLayouts: [],
       layouts: [],
       colNum: 6,
@@ -80,33 +75,33 @@ export default {
     };
   },
   watch: {
-    colNum(val) {
+    colNum (val) {
       this.rowHeight = Math.min(
         Math.floor(this.maxLayoutHeight / this.rowNum),
         Math.floor(this.maxLayoutWidth / val)
       );
     },
-    rowNum(val) {
+    rowNum (val) {
       this.rowHeight = Math.min(
         Math.floor(this.maxLayoutHeight / val),
         Math.floor(this.maxLayoutWidth / this.colNum)
       );
     },
-    grids(val) {
+    grids (val) {
       this.setLayout(val);
     }
   },
-  created() {
+  created () {
     this.setLayout(this.grids);
   },
   methods: {
-    setLayout(data) {
+    setLayout (data) {
       const grids = data.filter(item => item.image);
       this.colNum = Math.max(
         6,
         Math.max.apply(
           Math,
-          grids.map(function(grid) {
+          grids.map(function (grid) {
             return grid.x;
           }),
           6
@@ -116,7 +111,7 @@ export default {
         5,
         Math.max.apply(
           Math,
-          grids.map(function(grid) {
+          grids.map(function (grid) {
             return grid.y;
           })
         ) + 1
@@ -124,12 +119,12 @@ export default {
       this.originLayouts = JSON.parse(JSON.stringify(grids));
       this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
     },
-    handleGridClick(data) {
+    handleGridClick (data) {
       if (data.image) {
         this.$emit("gridClick", data);
       }
     },
-    handleMouseover(e, image) {
+    handleMouseover (e, image) {
       if (image && this.preview.image !== image) {
         this.preview = {
           image: image,
@@ -138,7 +133,7 @@ export default {
         };
       }
     },
-    handleMouseout() {
+    handleMouseout () {
       this.preview = {
         image: null,
         x: null,
