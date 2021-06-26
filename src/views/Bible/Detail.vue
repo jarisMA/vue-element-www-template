@@ -24,24 +24,27 @@
     <div class="bible-body">
       <div ref="bibleBody" class="scroll-inner">
         <div class="container-1200">
-          <detail-menu
-            :menus="menus"
-            :activeSubMenu="activeSubMenu"
-            :color="color"
-            :depth="depth"
-            @foldChange="foldChange"
-            @toggleMenu="toggleMenu"
-          />
-          <div :class="['bible-content', depth < 2 ? 'more' : '']">
-            <detail-content
+          <template v-if="activeNav.type == 0">
+            <detail-menu
               :menus="menus"
               :activeSubMenu="activeSubMenu"
               :color="color"
               :depth="depth"
-              @showDetail="showDetail"
-              @previewImage="handleShowPreviewImage"
+              @foldChange="foldChange"
+              @toggleMenu="toggleMenu"
             />
-          </div>
+            <div :class="['bible-content', depth < 2 ? 'more' : '']">
+              <detail-content
+                :menus="menus"
+                :activeSubMenu="activeSubMenu"
+                :color="color"
+                :depth="depth"
+                @showDetail="showDetail"
+                @previewImage="handleShowPreviewImage"
+              />
+            </div>
+          </template>
+          <detail-quadrant v-if="activeNav.type == 1" :menus="menus" />
         </div>
       </div>
     </div>
@@ -117,6 +120,7 @@ import DetailContent from "./widgets/DetailContent";
 
 import { goBible } from "utils/routes";
 import { detailMixin } from "./mixin";
+import DetailQuadrant from "./widgets/DetailQuadrant";
 
 export default {
   name: "BibleDetail",
@@ -124,7 +128,8 @@ export default {
   components: {
     DetailMenu,
     DetailNav,
-    DetailContent
+    DetailContent,
+    DetailQuadrant
   },
   data() {
     return {
@@ -316,16 +321,18 @@ export default {
             menus.concat([menu.name])
           );
         } else {
-          let newImages = menu.cover_url.split(",");
-          newImages = newImages
-            .filter(item => !!item)
-            .map(item => {
-              return {
-                url: item,
-                menu: menus.concat([menu.name]).join("/")
-              };
-            });
-          images = images.concat(newImages);
+          if (menu.cover_url) {
+            let newImages = menu.cover_url.split(",");
+            newImages = newImages
+              .filter(item => !!item)
+              .map(item => {
+                return {
+                  url: item,
+                  menu: menus.concat([menu.name]).join("/")
+                };
+              });
+            images = images.concat(newImages);
+          }
         }
       });
       return images;
