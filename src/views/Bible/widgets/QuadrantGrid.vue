@@ -46,7 +46,8 @@
 
 <script>
 import VueGridLayout from "vue-grid-layout";
-
+const colNum = 6;
+const rowNum = 6;
 export default {
   name: "BibleQuadrantGrid",
   components: {
@@ -65,11 +66,11 @@ export default {
   data() {
     return {
       maxLayoutWidth: 500,
-      maxLayoutHeight: 418,
+      maxLayoutHeight: 500,
       originLayouts: [],
       layouts: [],
-      colNum: 6,
-      rowNum: 5,
+      colNum,
+      rowNum,
       rowHeight: 82,
       margin: 2,
       preview: {
@@ -103,7 +104,7 @@ export default {
     setLayout(data) {
       const grids = data.filter(item => item.image);
       this.colNum = Math.max(
-        6,
+        colNum,
         Math.max.apply(
           Math,
           grids.map(function(grid) {
@@ -113,7 +114,7 @@ export default {
         ) + 1
       );
       this.rowNum = Math.max(
-        5,
+        rowNum,
         Math.max.apply(
           Math,
           grids.map(function(grid) {

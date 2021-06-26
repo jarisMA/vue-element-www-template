@@ -264,7 +264,7 @@ export default {
   .quadrant-wrapper {
     position: relative;
     width: 1028px;
-    height: 864px;
+    height: 1028px;
     .x-axis {
       position: absolute;
       top: 50%;
