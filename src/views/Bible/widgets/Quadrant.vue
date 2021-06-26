@@ -1,81 +1,99 @@
 <template>
   <div :class="['quadrant-container']">
-    <div v-for="(item, key) of axis"
-         :class="'axis-' + key"
-         :key="key"
-         title="坐标名称">
-      <label class="axis-label"
-             v-if="item.name"
-             :style="{ backgroundColor: item.bgColor }">{{ item.name }}
+    <div
+      v-for="(item, key) of axis"
+      :class="'axis-' + key"
+      :key="key"
+      title="坐标名称"
+    >
+      <label
+        class="axis-label"
+        v-if="item.name"
+        :style="{ backgroundColor: item.bgColor }"
+        >{{ item.name }}
       </label>
     </div>
 
     <div class="quadrant-wrapper">
       <div class="x-axis"></div>
       <div class="y-axis"></div>
-      <div :class="`quadrant-${key}`"
-           :style="{ backgroundColor: item.bgColor }"
-           v-for="(item, key) of quadrant"
-           :key="key">
+      <div
+        :class="`quadrant-${key}`"
+        :style="{ backgroundColor: item.bgColor }"
+        v-for="(item, key) of quadrant"
+        :key="key"
+      >
         <div class="quadrant-label">第{{ item.key }}象限</div>
-        <div class="quadrant-name"
-             title="象限名称">
-          <label class="quadrant-name-label"
-                 v-if="item.name">{{
+        <div class="quadrant-name" title="象限名称">
+          <label class="quadrant-name-label" v-if="item.name">{{
             item.name
           }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
-          <quadrant-grid :ref="`quadrant-${key}`"
-                         :theme="key"
-                         :grids.sync="item.grids"
-                         :disabled="disabled"
-                         @gridClick="data => handleQuadrantGridClick(data.image, key)" />
+          <quadrant-grid
+            :ref="`quadrant-${key}`"
+            :theme="key"
+            :grids.sync="item.grids"
+            :disabled="disabled"
+            @gridClick="data => handleQuadrantGridClick(data.image, key)"
+          />
         </div>
       </div>
     </div>
-    <el-dialog custom-class="preview-image-wrapper"
-               :visible="showPreviewImage"
-               :show-close="false">
-      <div class="preview-image-container"
-           @click="showPreviewImage = false"
-           v-if="images[activeImageKey.quadrant].length > 0">
+    <el-dialog
+      custom-class="preview-image-wrapper"
+      :visible="showPreviewImage"
+      :show-close="false"
+    >
+      <div
+        class="preview-image-container"
+        @click="showPreviewImage = false"
+        v-if="images[activeImageKey.quadrant].length > 0"
+      >
         <div class="preview-image-close">
           <i class="close-icon"></i>
         </div>
 
         <div class="preview-image-content">
           <div class="preview-image-content_image">
-            <img :src="images[activeImageKey.quadrant][activeImageKey.image]"
-                 @click.stop />
+            <img
+              :src="images[activeImageKey.quadrant][activeImageKey.image]"
+              @click.stop
+            />
           </div>
           <div class="preview-image-content_pagination">
             {{ activeImageKey.image + 1 }}/{{
               images[activeImageKey.quadrant].length
             }}
           </div>
-          <div class="preview-image-prev"
-               v-if="activeImageKey.image > 0"
-               @click.stop="
+          <div
+            class="preview-image-prev"
+            v-if="activeImageKey.image > 0"
+            @click.stop="
               handleQuadrantGridClick(
                 images[activeImageKey.quadrant][activeImageKey.image - 1],
                 activeImageKey.quadrant
               )
-            ">
+            "
+          >
             <i class="prev-icon"></i>
           </div>
-          <div class="preview-image-next"
-               v-if="
+          <div
+            class="preview-image-next"
+            v-if="
               activeImageKey.image + 1 < images[activeImageKey.quadrant].length
             "
-               @click.stop="
+            @click.stop="
               handleQuadrantGridClick(
                 images[activeImageKey.quadrant][activeImageKey.image + 1],
                 activeImageKey.quadrant
               )
-            ">
-            <i class="
-               next-icon"></i>
+            "
+          >
+            <i
+              class="
+               next-icon"
+            ></i>
           </div>
         </div>
       </div>
@@ -145,7 +163,7 @@ export default {
       type: String
     }
   },
-  data () {
+  data() {
     return {
       axis: JSON.parse(JSON.stringify(axis)),
       quadrant: JSON.parse(JSON.stringify(quadrant)),
@@ -158,7 +176,7 @@ export default {
     };
   },
   watch: {
-    content (val) {
+    content(val) {
       if (val) {
         const content = JSON.parse(val);
         this.axis = content.axis;
@@ -175,7 +193,7 @@ export default {
       }
     }
   },
-  created () {
+  created() {
     if (this.content) {
       const content = JSON.parse(this.content);
       this.axis = content.axis;
@@ -188,7 +206,7 @@ export default {
     }
   },
   methods: {
-    handleQuadrantGridClick (url, key) {
+    handleQuadrantGridClick(url, key) {
       if (url) {
         this.activeImageKey.quadrant = key;
         this.activeImageKey.image =
