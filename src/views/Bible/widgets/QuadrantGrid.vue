@@ -130,11 +130,11 @@ export default {
       }
     },
     handleMouseover(e, image) {
-      if (image) {
+      if (image && this.preview.image !== image) {
         this.preview = {
           image: image,
-          x: e.pageX + 2,
-          y: e.pageY + 2
+          x: e.clientX + 2,
+          y: e.clientY + 2
         };
       }
     },
