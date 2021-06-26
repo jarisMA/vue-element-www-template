@@ -35,7 +35,7 @@
             :theme="key"
             :grids.sync="item.grids"
             :disabled="disabled"
-            @gridClick="data => handleQuadrantGridClick(data, key)"
+            @gridClick="data => handleQuadrantGridClick(data.image, key)"
           />
         </div>
       </div>
@@ -48,23 +48,53 @@
       <div
         class="preview-image-container"
         @click="showPreviewImage = false"
-        v-if="images.length > 0"
+        v-if="images[activeImageKey.quadrant].length > 0"
       >
         <div class="preview-image-close">
           <i class="close-icon"></i>
         </div>
+
         <div class="preview-image-content">
           <div class="preview-image-content_image">
-            <img :src="images[0]" @click.stop />
+            <img
+              :src="images[activeImageKey.quadrant][activeImageKey.image]"
+              @click.stop
+            />
           </div>
-          <!-- <div class="preview-image-prev"
-               v-if="false">
+          <div class="preview-image-content_pagination">
+            {{ activeImageKey.image + 1 }}/{{
+              images[activeImageKey.quadrant].length
+            }}
+          </div>
+          <div
+            class="preview-image-prev"
+            v-if="activeImageKey.image > 0"
+            @click.stop="
+              handleQuadrantGridClick(
+                images[activeImageKey.quadrant][activeImageKey.image - 1],
+                activeImageKey.quadrant
+              )
+            "
+          >
             <i class="prev-icon"></i>
           </div>
-          <div class="preview-image-next"
-               v-if="false">
-            <i class="next-icon"></i>
-          </div> -->
+          <div
+            class="preview-image-next"
+            v-if="
+              activeImageKey.image + 1 < images[activeImageKey.quadrant].length
+            "
+            @click.stop="
+              handleQuadrantGridClick(
+                images[activeImageKey.quadrant][activeImageKey.image + 1],
+                activeImageKey.quadrant
+              )
+            "
+          >
+            <i
+              class="
+               next-icon"
+            ></i>
+          </div>
         </div>
       </div>
     </el-dialog>
@@ -115,6 +145,12 @@ const quadrant = {
   }
 };
 
+const images = {
+  first: [],
+  second: [],
+  third: [],
+  fourth: []
+};
 export default {
   components: { QuadrantGrid },
   name: "BibleQuadrant",
@@ -131,26 +167,12 @@ export default {
     return {
       axis: JSON.parse(JSON.stringify(axis)),
       quadrant: JSON.parse(JSON.stringify(quadrant)),
-      axisDialogVisible: false,
-      axisDialogFormKey: null,
-      axisDialogForm: {
-        name: "",
-        bgColor: ""
-      },
-      quadrantDialogVisible: false,
-      quadrantDialogFormKey: null,
-      quadrantDialogForm: {
-        name: "",
-        bgColor: ""
-      },
-      quadrantGridDialogVisible: false,
-      quadrantGridDialogFormKey: null,
-      activeQuadrantGridData: null,
-      quadrantGridDialogForm: {
-        quadrant: null
-      },
       showPreviewImage: false,
-      images: []
+      images: JSON.parse(JSON.stringify(images)),
+      activeImageKey: {
+        quadrant: "first",
+        image: 0
+      }
     };
   },
   watch: {
@@ -159,9 +181,15 @@ export default {
         const content = JSON.parse(val);
         this.axis = content.axis;
         this.quadrant = content.quadrant;
+        Object.keys(this.quadrant).map(key => {
+          this.images[key] = this.quadrant[key].grids
+            .filter(item => item.image)
+            .map(item => item.image);
+        });
       } else {
         this.axis = JSON.parse(JSON.stringify(axis));
         this.quadrant = JSON.parse(JSON.stringify(quadrant));
+        this.images = JSON.parse(JSON.stringify(images));
       }
     }
   },
@@ -170,12 +198,21 @@ export default {
       const content = JSON.parse(this.content);
       this.axis = content.axis;
       this.quadrant = content.quadrant;
+      Object.keys(this.quadrant).map(key => {
+        this.images[key] = this.quadrant[key].grids
+          .filter(item => item.image)
+          .map(item => item.image);
+      });
     }
   },
   methods: {
-    handleQuadrantGridClick(data) {
-      this.images = [data.image];
-      this.showPreviewImage = true;
+    handleQuadrantGridClick(url, key) {
+      if (url) {
+        this.activeImageKey.quadrant = key;
+        this.activeImageKey.image =
+          this.images[key].findIndex(item => item === url) || 0;
+        this.showPreviewImage = true;
+      }
     }
   }
 };
