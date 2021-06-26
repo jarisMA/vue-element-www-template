@@ -329,7 +329,7 @@ export default {
     .quadrant-fourth {
       position: absolute;
       width: 514px;
-      height: 432px;
+      height: 514px;
       .quadrant-grid-wrapper {
         position: absolute;
       }
