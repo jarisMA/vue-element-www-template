@@ -354,7 +354,7 @@
           <div class="operate-icon right" @click="goTop">
             <i class="top-icon"></i>
           </div>
-          <span style="margin-bottom: 15px">回到顶部</span>
+          <span style="margin-bottom: 40px">回到顶部</span>
           <div class="operate-icon right" @click="handleNext">
             <i class="right-icon"></i>
           </div>
@@ -1074,6 +1074,7 @@ export default {
                 }
                 .page-detail-footer-count {
                   line-height: 14px;
+                  margin-left: 4px;
                   font-size: 14px;
                   color: #81948b;
                   &.active {
@@ -1310,12 +1311,12 @@ export default {
     }
     .page-left-operate {
       position: fixed;
-      bottom: 80px;
+      bottom: 40px;
       left: calc(50vw - 1120px / 2);
     }
     .page-right-operate {
       position: fixed;
-      bottom: 80px;
+      bottom: 40px;
       right: calc(50vw - 1120px / 2);
     }
     .page-left-operate,
@@ -1331,8 +1332,7 @@ export default {
         width: 50px;
         height: 50px;
         margin-bottom: 10px;
-        background: rgba(255, 255, 255, 0.2);
-        box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+        background-color: #686868;
         border-radius: 50%;
         cursor: pointer;
       }
