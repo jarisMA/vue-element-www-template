@@ -1,12 +1,12 @@
 <template>
   <div class="login_container">
     <div class="header">
-      <!-- <img
+      <img
         src="~images/close_logo.svg"
         alt=""
         class="header-cancel"
         @click="handleClose"
-      /> -->
+      />
     </div>
     <img src="~images/logo_2.svg" alt="" class="logo" />
     <div class="content">
