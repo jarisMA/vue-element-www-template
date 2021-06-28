@@ -230,7 +230,7 @@ export default {
         font-size: 14px;
         color: #ffffff;
         border: unset;
-        background: #14af64;
+        background: @primaryColor;
         cursor: pointer;
       }
     }

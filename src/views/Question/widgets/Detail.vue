@@ -361,7 +361,7 @@
           <div class="operate-icon right" @click="goTop">
             <i class="top-icon"></i>
           </div>
-          <span style="margin-bottom: 40px">回到顶部</span>
+          <span class="operate-top">回到顶部</span>
           <div class="operate-icon right" @click="handleNext">
             <i class="right-icon"></i>
           </div>
@@ -1334,6 +1334,11 @@ export default {
       bottom: 40px;
       right: calc(50vw - 1120px / 2);
     }
+    .operate-top{
+      margin-bottom: 40px;
+    }
+
+
     .page-left-operate,
     .page-right-operate {
       display: flex;

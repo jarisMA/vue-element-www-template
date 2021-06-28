@@ -40,9 +40,9 @@
           <div class="time-wrapper">
             {{ formatDate(comment.created_at, "MM-DD hh:mm") }}
           </div>
-          <div style="display: flex;">
+          <div class="card-delete">
             <el-popconfirm
-              style="margin-right: 20px;"
+              class="confirm-delete"
               v-if="allowDelete && userInfo.id === comment.user.id"
               @confirm="deleteComment"
               title="确定删除此评论吗？"
@@ -291,6 +291,15 @@ export default {
       font-size: 12px;
       color: #81948b;
       user-select: none;
+
+.card-delete{
+  display: flex;
+
+  .confirm-delete{
+    margin-right: 20px;
+  }
+}
+
       .operate-item {
         display: flex;
         align-content: center;

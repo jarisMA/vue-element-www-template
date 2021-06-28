@@ -71,7 +71,9 @@
             }}</span>
           </div>
           <div
-            :class="[showComment ? 'active' : '', 'comment-wrapper']"
+            :class="[ 
+              showComment ? 'active' : '' , 'comment-wrapper'
+            ]"
             @click="autoFocus"
           >
             <span :class="[showComment ? 'comment-active' : '']">{{
@@ -658,19 +660,19 @@ export default {
       }
       &:hover {
         span {
-          color: #14af64;
+          color: @primaryColor;
         }
 
         &::before {
-          background-color: #14af64;
+          background-color: @primaryColor;
         }
       }
 
       &.active::before {
-        background-color: #14af64;
+        background-color: @primaryColor;
       }
       .comment-active {
-        color: #14af64;
+        color: @primaryColor;
       }
     }
     .edit-wrapper {

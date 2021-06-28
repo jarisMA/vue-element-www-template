@@ -137,6 +137,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 .answer-rich-text-wrapper {
   .answer-info {
     display: flex;
@@ -176,7 +177,7 @@ export default {
     font-size: 14px;
     color: #ffffff;
     border: unset;
-    background: #14af64;
+    background: @primaryColor;
     cursor: pointer;
   }
 }

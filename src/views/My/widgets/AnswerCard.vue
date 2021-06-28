@@ -100,6 +100,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
+
 .card-wrapper {
   width: 100%;
   box-sizing: border-box;
@@ -143,7 +145,7 @@ export default {
         line-height: 1;
         font-weight: normal;
         font-size: 12px;
-        color: #14af64;
+        color: @primaryColor;
       }
       .card-header-vote_icon {
         margin-right: 2px;
