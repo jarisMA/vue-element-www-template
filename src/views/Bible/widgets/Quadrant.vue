@@ -23,7 +23,6 @@
         v-for="(item, key) of quadrant"
         :key="key"
       >
-        <div class="quadrant-label">第{{ item.key }}象限</div>
         <div class="quadrant-name" title="象限名称">
           <label class="quadrant-name-label" v-if="item.name">{{
             item.name
@@ -346,23 +345,11 @@ export default {
           color: #81948b;
         }
       }
-      .quadrant-label {
-        position: absolute;
-        margin: 10px 0;
-        line-height: 20px;
-        font-weight: 600;
-        font-size: 14px;
-        color: #666666;
-      }
     }
     .quadrant-first {
       left: 0;
       bottom: 0;
       .quadrant-name {
-        bottom: -50px;
-      }
-      .quadrant-label {
-        left: 0;
         bottom: -50px;
       }
       .quadrant-grid-wrapper {
@@ -376,10 +363,6 @@ export default {
       .quadrant-name {
         top: -50px;
       }
-      .quadrant-label {
-        left: 0;
-        top: -50px;
-      }
       .quadrant-grid-wrapper {
         bottom: 7px;
         right: 7px;
@@ -391,10 +374,6 @@ export default {
       .quadrant-name {
         top: -50px;
       }
-      .quadrant-label {
-        right: 0;
-        top: -50px;
-      }
       .quadrant-grid-wrapper {
         bottom: 7px;
         left: 7px;
@@ -404,10 +383,6 @@ export default {
       right: 0;
       bottom: 0;
       .quadrant-name {
-        bottom: -50px;
-      }
-      .quadrant-label {
-        right: 0;
         bottom: -50px;
       }
       .quadrant-grid-wrapper {
