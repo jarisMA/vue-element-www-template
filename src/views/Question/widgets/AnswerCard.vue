@@ -488,9 +488,6 @@ export default {
       a {
         text-decoration: none;
       }
-      p {
-        margin-bottom: 1em;
-      }
       .ql-syntax {
         background-color: #23241f;
         color: #f8f8f2;
