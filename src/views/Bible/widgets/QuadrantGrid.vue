@@ -130,12 +130,52 @@ export default {
         this.$emit("gridClick", data);
       }
     },
+    getOffsetLeft(obj) {
+      let tmp = obj.offsetLeft;
+      let val = obj.offsetParent;
+      while (val != null) {
+        tmp += val.offsetLeft;
+        val = val.offsetParent;
+      }
+      return tmp;
+    },
+    getOffsetTop(obj) {
+      let tmp = obj.offsetTop;
+      let val = obj.offsetParent;
+      while (val != null) {
+        tmp += val.offsetTop;
+        val = val.offsetParent;
+      }
+      return tmp;
+    },
     handleMouseover(e, image) {
+      var st = window.getComputedStyle(e.target.offsetParent, null);
+      var tr =
+        st.getPropertyValue("-webkit-transform") ||
+        st.getPropertyValue("-moz-transform") ||
+        st.getPropertyValue("-ms-transform") ||
+        st.getPropertyValue("-o-transform") ||
+        st.getPropertyValue("transform") ||
+        "FAIL";
+      // 矩阵的各个值 matrix(scaleX, skewY, skewX, scaleY, translateX, translateY)
+      var values = tr
+        .split("(")[1]
+        .split(")")[0]
+        .split(",");
       if (image && this.preview.image !== image) {
         this.preview = {
           image: image,
-          x: e.clientX + 2,
-          y: e.clientY + 2
+          x:
+            this.getOffsetLeft(e.target) +
+            parseInt(values[4]) +
+            e.clientX -
+            e.pageX,
+          y:
+            this.getOffsetTop(e.target) +
+            e.target.clientHeight +
+            parseInt(values[5]) +
+            e.clientY -
+            e.pageY
         };
       }
     },
