@@ -66,21 +66,30 @@
               src="~images/question/claped.svg"
             />
             <img class="clap-icon" v-else src="~images/question/claps.svg" />
-            <span :class="[answer.auth_like_count ? '' : 'grey-scale' , 'fixed-width' ]">{{ answer.like_count }}</span>
+            <span
+              :class="[
+                answer.auth_like_count ? '' : 'grey-scale',
+                'fixed-width'
+              ]"
+              >{{ answer.like_count }}</span
+            >
           </div>
-          <div class="comment-wrapper" @click="showComment = !showComment">
-            <span>{{ answer.comment_count }}</span>
+          <div
+            :class="[
+              showComment ? 'comment-wrapper active' : 'comment-wrapper'
+            ]"
+            @click="autoFocus"
+          >
+            <span :class="[showComment ? 'comment-active' : '']">{{
+              answer.comment_count
+            }}</span>
           </div>
           <div class="edit-wrapper" v-if="allowEdit" @click="editAnswer">
             <span>编辑回答</span>
           </div>
         </div>
         <div class="operate-right">
-          <label
-            class="fold-wrapper"
-            v-if="showComment"
-            @click="showComment = !showComment"
-          >
+          <label class="fold-wrapper" v-if="!fold" @click="fold = true">
             <img src="~images/question/drop_up.svg" />
             <span>收起</span>
           </label>
@@ -114,6 +123,7 @@
 
     <div class="comment-fold-wrapper" v-if="showComment">
       <comment
+        ref="commentInput"
         class="comment-wrapper"
         :answerId="answer.id"
         @commented="commented"
@@ -221,6 +231,15 @@ export default {
   },
   methods: {
     formatDate,
+    autoFocus() {
+      this.showComment = !this.showComment;
+      this.$nextTick(() => {
+        if (this.showComment) {
+          this.$refs.commentInput.inputFocus();
+        }
+      });
+    },
+
     deleteAnswer() {
       if (!this.checkIsLogin()) {
         return;
@@ -351,11 +370,11 @@ export default {
   background: #fff;
 }
 
-.grey-scale{
-  filter:grayscale(1);
+.grey-scale {
+  filter: grayscale(1);
 }
 
-.fixed-width{
+.fixed-width {
   width: 8px;
 }
 
@@ -415,7 +434,7 @@ export default {
     }
   }
   .card-content {
-    margin-top: 24px;
+    margin-top: 16px;
     font-size: 15px;
     line-height: 1.67;
     word-break: break-all;
@@ -468,9 +487,6 @@ export default {
       }
       a {
         text-decoration: none;
-      }
-      p {
-        margin-bottom: 1em;
       }
       .ql-syntax {
         background-color: #23241f;
@@ -601,7 +617,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: 15px 0;
+    padding: 16px 0;
     background: #fff;
     z-index: 1;
     border-bottom: 1px solid #efefef;
@@ -613,9 +629,9 @@ export default {
     .comment-wrapper,
     .edit-wrapper {
       display: flex;
+      line-height: 24px;
       align-items: center;
       justify-content: center;
-      height: 32px;
       cursor: pointer;
       user-select: none;
       img {
@@ -640,7 +656,7 @@ export default {
       padding: 0 0 0 53px;
       &::before {
         position: absolute;
-        top: 8px;
+        top: 3px;
         left: 24px;
         width: 20px;
         height: 20px;
@@ -652,11 +668,19 @@ export default {
       }
       &:hover {
         span {
-          color: #14AF64;;
+          color: #14af64;
         }
+
         &::before {
-          background-color: #14AF64;
+          background-color: #14af64;
         }
+      }
+
+      &.active::before {
+        background-color: #14af64;
+      }
+      .comment-active {
+        color: #14af64;
       }
     }
     .edit-wrapper {
@@ -692,12 +716,12 @@ export default {
   }
 }
 .comment-fold-wrapper {
-  margin: 20px;
-  padding: 20px;
-  border-bottom: 1px solid #EFEFEF;
+  padding: 16px 20px 20px;
+  border-bottom: 1px solid #efefef;
 }
 .comment-list-wrapper {
   position: relative;
+  margin-top: 8px;
   padding: @padding;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &::before {

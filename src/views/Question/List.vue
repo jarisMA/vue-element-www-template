@@ -430,7 +430,7 @@ export default {
   }
 }
 .detail-dialog {
-  background: rgba(0, 0, 0, 0.9);
+  background: rgba(0, 0, 0, 0.75);
   /deep/ .el-dialog {
     height: 100%;
     margin: 0 auto !important;

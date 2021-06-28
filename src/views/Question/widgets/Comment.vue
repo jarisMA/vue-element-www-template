@@ -1,5 +1,5 @@
 <template>
-  <div class="comment-wrapper">
+  <div class="comment-wrapper" @click="inputFocus">
     <the-avatar :size="32" :url="userInfo && userInfo.avatar_url" />
     <el-form
       class="add-form"
@@ -12,6 +12,7 @@
           autofocus
           placeholder="写下你的想法"
           v-model="addForm.content"
+          ref="commentContent"
         ></el-input>
       </el-form-item>
       <el-form-item class="form-item-wrapper" prop="images">
@@ -20,13 +21,9 @@
           :theme="addForm.images.length > 0 ? 'active_comment' : 'comment'"
           @added="addImage"
         />
-        <el-button
-          class="submit-btn"
-          type="primary"
-          :loading="submiting"
-          @click="submit"
-          >回复</el-button
-        >
+        <button class="submit-btn" :loading="submiting" @click="submit">
+          发布
+        </button>
       </el-form-item>
     </el-form>
     <div class="images-wrapper" v-if="addForm.images.length > 0">
@@ -101,6 +98,9 @@ export default {
     ...mapState(["userInfo"])
   },
   methods: {
+    inputFocus() {
+      this.$refs.commentContent.focus();
+    },
     submit() {
       if (!this.checkIsLogin()) {
         return;
@@ -127,7 +127,6 @@ export default {
         .addComment(this.answerId, params)
         .then(res => {
           const { id, nickname, avatar_url } = this.userInfo;
-
           this.$emit("commented", {
             ...params,
             ...res,
@@ -166,6 +165,10 @@ export default {
     flex: 1;
     margin-left: 15px;
     width: 678px;
+    .el-form-item {
+      margin-bottom: 8px;
+    }
+
     .form-item-wrapper {
       .el-form-item {
         margin-bottom: 0;
@@ -177,10 +180,24 @@ export default {
         display: flex;
         width: 100%;
         .upload-image-wrapper {
+          display: flex;
+          align-items: center;
           flex: 1;
         }
         .submit-btn {
-          padding: 8px 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 76px;
+          height: 40px;
+          padding: 0;
+          line-height: 1;
+          font-weight: 500;
+          font-size: 14px;
+          color: #ffffff;
+          border: unset;
+          background: #14af64;
+          cursor: pointer;
         }
       }
     }

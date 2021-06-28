@@ -48,7 +48,7 @@
               title="确定删除此评论吗？"
             >
               <div class="delete-operate operate-item" slot="reference">
-                &nbsp;删除
+                删除
               </div>
             </el-popconfirm>
             <div
@@ -56,7 +56,6 @@
               class="reply-operate operate-item"
               @click="commentVisible = !commentVisible"
             >
-              &nbsp;
               {{ commentVisible ? "取消回复" : "回复" }}
             </div>
             <div
@@ -273,7 +272,7 @@ export default {
     }
     .card-content {
       .comment-content {
-        margin-top: 4px;
+        margin: 16px 0px;
         line-height: 24px;
         font-size: 14px;
         color: #2c3330;
@@ -309,8 +308,8 @@ export default {
         cursor: pointer;
         &::before {
           position: absolute;
-          top: 0;
-          left: 0;
+          top: 1px;
+          left: -4px;
           width: 18px;
           height: 18px;
           content: "";
