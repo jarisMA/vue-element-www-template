@@ -30,7 +30,10 @@
         @mouseover.native="e => handleMouseover(e, item.image)"
         @mouseout.native="handleMouseout"
       >
-        <img v-if="item.image" :src="item.image" />
+        <img
+          v-if="item.image"
+          :src="item.image + '?x-oss-process=style/pc_bible_300wh'"
+        />
         <!-- <span v-else>{{ item.i }}</span> -->
       </grid-item>
       <div
@@ -38,7 +41,7 @@
         v-if="preview.image"
         :style="{ top: preview.y + 'px', left: preview.x + 'px' }"
       >
-        <img :src="preview.image" />
+        <img :src="preview.image + '?x-oss-process=style/pc_bible_300wh'" />
       </div>
     </grid-layout>
   </div>
