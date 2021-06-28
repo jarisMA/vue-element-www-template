@@ -56,6 +56,7 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 .bible-quadrant-container {
+  margin: auto;
   padding: 0 0 30px;
   .bible-submenu-list {
     display: flex;
