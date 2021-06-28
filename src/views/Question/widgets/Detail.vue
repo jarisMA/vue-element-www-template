@@ -51,11 +51,11 @@
                   :loop="false"
                 >
                   <el-carousel-item
-                    v-for="(image, key) in detail.images"
+                    v-for="(image, key) of detail.images"
                     :key="key"
                   >
                     <el-image
-                      :preview-src-list="[image]"
+                      :preview-src-list="detail.images"
                       style="max-width: 600px; max-height: 600px"
                       :src="image"
                       fit="contain"
@@ -81,10 +81,11 @@
                     @change="handleLayoutCarouselChange"
                   >
                     <el-carousel-item
-                      v-for="(layout, key) in detail.layouts"
+                      v-for="(layout, key) of detail.layouts"
                       :key="key"
                     >
                       <layout-show
+                        :layoutSrc="srcLayout"
                         class="layout-wrapper"
                         :layout="layout"
                         :edit="false"
@@ -123,15 +124,20 @@
               >
                 <div class="vote-image-wrapper" v-if="detail.images">
                   <el-image
-                    :preview-src-list="[detail.images]"
-                     style="max-width: 600px; max-height: 600px"
+                    :preview-src-list="detail.images"
+                    style="max-width: 600px; max-height: 600px"
                     :src="detail.images"
-                     fit="contain"
+                    fit="contain"
                   >
                   </el-image>
                 </div>
                 <div class="vote-wrapper">
-                  <vote :question="detail" @vote="handleVote" />
+                  <vote
+                    :question="detail"
+                    @vote="handleVote"
+                    ref="vote"
+                    :voteSrc="srcVote"
+                  />
                 </div>
               </div>
             </div>
@@ -442,7 +448,9 @@ export default {
         spaceBetween: 0,
         autoplay: false
       },
-      showOperate: false
+      showOperate: false,
+      srcLayout: [],
+      srcVote: []
     };
   },
   watch: {
@@ -470,6 +478,7 @@ export default {
   created() {
     this.getData();
   },
+
   methods: {
     handleLarge() {
       this.largerRichText = true;
@@ -519,6 +528,12 @@ export default {
         })
         .finally(() => {
           this.loading = false;
+          if (this.detail.type === QUESTION_TYPE_HELP) {
+            this.srcLayout = this.detail.layouts.map(item => item.image_url);
+          }
+          if (this.detail.type === QUESTION_TYPE_VOTE) {
+            this.srcVote = this.detail.vote_options.map(item => item.image_url);
+          }
         });
     },
     getAnswers(start = 1) {

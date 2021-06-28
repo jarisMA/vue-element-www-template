@@ -272,7 +272,7 @@ export default {
     }
     .card-content {
       .comment-content {
-        margin: 16px 0px;
+        margin: 4px 0px 8px;
         line-height: 24px;
         font-size: 14px;
         color: #2c3330;

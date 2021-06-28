@@ -24,7 +24,7 @@
             :class="activeTab === 'MyClasses' ? 'menu-active' : 'menu-inactive'"
           >
             <img class="menu-icon" src="~/images/term/class.svg" />
-            <span>我的班级</span>
+            <span>我的训练营</span>
           </div>
           <div
             v-if="false"

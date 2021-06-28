@@ -66,13 +66,9 @@
               src="~images/question/claped.svg"
             />
             <img class="clap-icon" v-else src="~images/question/claps.svg" />
-            <span
-              :class="[
-                answer.auth_like_count ? '' : 'grey-scale',
-                'fixed-width'
-              ]"
-              >{{ answer.like_count }}</span
-            >
+            <span :class="[answer.auth_like_count ? '' : 'grey-scale']">{{
+              answer.like_count
+            }}</span>
           </div>
           <div
             :class="[
@@ -374,10 +370,6 @@ export default {
   filter: grayscale(1);
 }
 
-.fixed-width {
-  width: 8px;
-}
-
 .answer-card {
   position: relative;
   overflow: hidden;
@@ -629,9 +621,9 @@ export default {
     .comment-wrapper,
     .edit-wrapper {
       display: flex;
+      min-width: 40px;
       line-height: 24px;
       align-items: center;
-      justify-content: center;
       cursor: pointer;
       user-select: none;
       img {

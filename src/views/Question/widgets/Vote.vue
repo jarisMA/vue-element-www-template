@@ -72,12 +72,11 @@
             <label class="vote-label">
               {{ VOTE_OPTION_INDEX[key] }}
             </label>
-            <the-preview-image
+            <el-image
               class="vote-img"
               v-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC"
-              width="40px"
-              height="40px"
-              :srcList="[option.image_url]"
+              :src="option.image_url"
+              :preview-src-list="voteSrc"
             />
             <span class="vote-value">{{ option.title }}</span>
           </div>
@@ -134,6 +133,10 @@ export default {
     question: {
       type: Object,
       required: true
+    },
+    voteSrc: {
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -141,7 +144,8 @@ export default {
       VOTE_OPTION_INDEX,
       VOTE_RESOURCE_TYPE_WORD,
       VOTE_RESOURCE_TYPE_PIC,
-      selected: []
+      selected: [],
+      srcList: []
     };
   },
   watch: {
@@ -180,6 +184,10 @@ export default {
     this.getSelected();
   },
   methods: {
+    // handleVoteSrc(){
+    //   this.srcList = this.question.vote_options.map(item => item.image_url);
+    //   console.log(this.srcList);
+    // },
     getSelected() {
       const question = this.question;
       if (question && question.authVote) {
@@ -245,6 +253,11 @@ export default {
     cursor: pointer;
   }
 }
+.vote-img {
+  width: 40px;
+  height: 40px;
+}
+
 .vote-list {
   display: flex;
   flex-wrap: wrap;

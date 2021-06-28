@@ -3,10 +3,10 @@
     <p class="homework-tips">
       <img class="warning-icon" src="~images/term/warning.png" /><span
         class="primary"
-        >最佳截止日期</span
+        >最佳日期</span
       >之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span
         class="danger"
-        >最迟截止日期</span
+        >截止日期</span
       >，则本节课作业无法提交。（注：不影响下次作业提交）
     </p>
     <ul class="homework-list">
