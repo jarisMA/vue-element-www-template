@@ -305,6 +305,15 @@ export const goPurchase = (type = "_self") => {
   );
 };
 
+export const goNotification = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Notification"
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&
