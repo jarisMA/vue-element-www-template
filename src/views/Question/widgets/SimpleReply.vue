@@ -6,6 +6,11 @@
         v-model="form.content"
         placeholder="简单说说..."
       ></el-input>
+      <div class="reply-detail" @click="handleLarge" v-if="!isVote">
+        <img src="~images/question/unfold.svg" />
+      </div>
+    </div>
+    <div class="reply-footer">
       <ul class="reply-image-list">
         <li
           class="reply-image-item"
@@ -25,15 +30,9 @@
           />
         </li>
       </ul>
-    </div>
-    <div class="reply-footer">
-      <div class="reply-footer-left">
-        <the-avatar :size="32" :url="userInfo && userInfo.avatar_url" />
-        <span class="reply-nickname">{{ userInfo && userInfo.nickname }}</span>
-      </div>
       <div class="reply-footer-right">
         <el-button class="reply-btn" @click="handleSubmit" :loading="submiting"
-          >发布回答</el-button
+          >发布</el-button
         >
       </div>
     </div>
@@ -41,7 +40,6 @@
 </template>
 
 <script>
-import TheAvatar from "components/TheAvatar";
 import { mapState } from "vuex";
 import UploadImage from "components/UploadImage.vue";
 import questionService from "service/question";
@@ -50,26 +48,40 @@ import commonMixins from "mixins/common";
 export default {
   name: "QuestionSimpleReply",
   mixins: [commonMixins],
-  components: { TheAvatar, UploadImage },
+  components: { UploadImage },
   props: {
     id: {
       type: Number,
+      required: true
+    },
+    simple: {
+      type: String
+    },
+    isVote: {
+      type: Boolean,
       required: true
     }
   },
   data() {
     return {
       submiting: false,
+      theBigText: false,
       form: {
         content: "",
-        images: []
+        images: [],
+        prop: ""
       }
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+
   methods: {
+    handleLarge() {
+      this.$emit("large");
+    },
+
     addImage(url) {
       this.form.images.push(url);
     },
@@ -128,6 +140,21 @@ export default {
   padding: 20px;
   background: #fff;
   .reply-content {
+    display: flex;
+    justify-content: space-between;
+
+    .reply-detail {
+      padding: 4px;
+      width: 32px;
+      height: 32px;
+      border-radius: 2px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #fafafa;
+      }
+    }
+
     .reply-input-wrapper {
       margin-bottom: 40px;
       /deep/ .el-input__inner {
@@ -141,6 +168,12 @@ export default {
         }
       }
     }
+  }
+  .reply-footer {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 20px;
     .reply-image-list {
       display: flex;
       .reply-image-item {
@@ -152,8 +185,8 @@ export default {
           }
         }
         img {
-          width: 60px;
-          height: 60px;
+          width: 56px;
+          height: 56px;
           object-fit: cover;
         }
         .delete-icon {
@@ -180,12 +213,7 @@ export default {
         }
       }
     }
-  }
-  .reply-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 20px;
+
     .reply-footer-left {
       display: flex;
       align-items: center;
@@ -203,8 +231,8 @@ export default {
         display: flex;
         align-items: center;
         justify-content: center;
-        width: 104px;
-        height: 38px;
+        width: 76px;
+        height: 40px;
         padding: 0;
         line-height: 1;
         font-weight: 500;
