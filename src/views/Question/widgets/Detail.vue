@@ -212,7 +212,7 @@
                     >
                       <div slot="reference">
                         <span class="delete-hint"
-                          ><span class="delete-line">｜</span> 删除问题</span
+                          >删除问题</span
                         >
                       </div>
                     </el-popconfirm>
@@ -1098,8 +1098,11 @@ export default {
                 font-size: 14px;
                 color: #81948b;
 
-                .delete-line {
-                  opacity: 0.3;
+                &::before{
+                  position: relative;
+                  top: 2px;
+                  margin: 0px 10px;
+                  content: url(~images/question/vertical.svg)
                 }
               }
 
