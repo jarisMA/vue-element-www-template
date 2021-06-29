@@ -44,11 +44,12 @@
             :key="option.id"
             @click="handleOptionSelect(option.id)"
           >
-            <the-preview-image
+            <el-image
               class="vote-item-top"
               width="238px"
               height="236px"
-              :srcList="[option.image_url]"
+              :src="option.image_url"
+              :preview-src-list="voteSrc"
             />
             <div class="vote-item-bottom">
               <label class="vote-label">{{ VOTE_OPTION_INDEX[key] }}</label>
@@ -122,12 +123,11 @@ import {
   VOTE_RESOURCE_TYPE_PIC
 } from "utils/const";
 import { getCalDate, dateCompare } from "utils/moment";
-import ThePreviewImage from "components/ThePreviewImage";
 
 export default {
   name: "QuestionVote",
   components: {
-    ThePreviewImage
+
   },
   props: {
     question: {

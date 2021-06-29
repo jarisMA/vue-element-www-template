@@ -59,17 +59,17 @@
           <!-- <span @click.stop="showTips">
             <icon-svg svg-class="clock-icon"
                       svg-name="clock" />
-          </span> -->
-          最佳日期：<span style="font-weight: 600">{{
+          </span> --> 
+          最佳日期：<span class="homework-time">{{
             formatDate(homework.best_at)
           }}</span>
         </span>
         <span class="homework-end">
-          <img src="~images/term/homework-end.svg" style="margin-right: 4px" />
-          截止日期：<span style="font-weight: 600">{{
+          <img src="~images/term/homework-end.svg" class="homework-margin" />
+          截止日期：<span class="homework-time">{{
             formatDate(homework.end_at)
           }}</span>
-          <template v-if="formNowFormatDay(homework.end_at) > -1">
+          <template v-if="formNowFormatDay(homework.end_at) > -1" class="homework-time" >
             （剩余{{
               formNowFormatDay(homework.end_at) > 0
                 ? formNowFormatDay(homework.end_at) + "天"
@@ -446,6 +446,14 @@ export default {
       font-weight: 400;
       background-color: #f4f4f4;
       color: #606c66;
+
+        .homework-margin{
+          margin-right: 4px;
+        }
+
+    }
+    .homework-time{
+      font-weight: 600;
     }
   }
   .fold-wrapper {

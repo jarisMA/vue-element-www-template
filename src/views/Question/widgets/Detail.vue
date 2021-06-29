@@ -124,7 +124,7 @@
               >
                 <div class="vote-image-wrapper" v-if="detail.images">
                   <el-image
-                    :preview-src-list="detail.images"
+                    :preview-src-list="[detail.images]"
                     style="max-width: 600px; max-height: 600px"
                     :src="detail.images"
                     fit="contain"
@@ -1029,6 +1029,7 @@ export default {
             .vote-image-wrapper {
               width: 600px;
               margin: 24px auto 0;
+              text-align: center;
               /deep/ .cover-img {
                 background: #f4f4f4;
                 .cover {
