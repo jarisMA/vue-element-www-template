@@ -622,14 +622,14 @@ export default {
     overflow: visible;
     .tool-left-back {
       flex: 1;
-      padding: 2px 10px 8px;
+      padding: 8px 10px;
       background: #fff;
       cursor: pointer;
       .tool-left-back_icon {
         display: inline-block;
         width: 24px;
         height: 24px;
-        mask: url("~images/common/left.svg") no-repeat center;
+        mask: url("~images/commodity/chevron-left.svg") no-repeat center;
         background-color: #666;
       }
     }
@@ -721,7 +721,7 @@ export default {
         width: 100%;
         padding: 8px 10px;
         line-height: 16px;
-        font-weight: 600;
+        font-weight: 400;
         font-size: 12px;
         text-align: left;
         color: #2c3330;
@@ -733,6 +733,7 @@ export default {
           text-overflow: "";
           overflow: hidden;
         }
+        &:hover,
         &.active {
           color: @primaryColor;
         }
