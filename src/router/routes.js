@@ -6,6 +6,7 @@ import routesError from "./routesError";
 import routesAcademy from "./routesAcademy";
 import routesMy from "./routesMy";
 import routesVip from "./routesVip";
+import routersNotification from "./routersNotification";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -33,6 +34,7 @@ const routes = [
       ...routesAcademy,
       ...routesMy,
       ...routesVip,
+      ...routersNotification,
       ...routesError
     ]
   },

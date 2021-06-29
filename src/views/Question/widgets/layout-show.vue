@@ -5,7 +5,15 @@
       ref="wrapper"
       :style="{ width: width + 'px', height: height + 'px' }"
     >
-      <img class="editor-img" ref="editorImg" :src="layout.image_url" />
+      <el-image
+        ref="editorImg"
+        :preview-src-list="layoutSrc"
+        class="editor-img"
+        :src="layout.image_url"
+        fit="contain"
+      >
+      </el-image>
+
       <div
         class="editor-point"
         v-for="(item, index) of layout.points"
@@ -52,6 +60,10 @@ export default {
     activePointIndex: {
       type: Number,
       default: 0
+    },
+    layoutSrc: {
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -176,6 +188,8 @@ export default {
   }
   .editor-img-wrapper {
     display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     width: 100%;
     height: 100%;

@@ -1,0 +1,303 @@
+<template>
+  <div class="notification-section" v-loading="loading">
+    <div class="container-1180">
+      <div class="notification-title">
+        消息通知
+      </div>
+      <div class="notification-content">
+        <div class="notification-left">
+          <ul v-if="total > 0">
+            <li
+              class="notification-left-item"
+              v-for="item of notifications"
+              :key="item.id"
+              @click="handleNotificationClick(item)"
+            >
+              <img
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
+                src="~images/notification/highlight.svg"
+                v-if="item.data.type == 'question_like'"
+              />
+              <img
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
+                src="~images/notification/clap.svg"
+                v-else-if="item.data.type == 'question_answer_like'"
+              />
+              <img
+                :class="[
+                  item.read_at ? 'grey-scale' : '',
+                  'notification-left-icon'
+                ]"
+                src="~images/notification/reply.svg"
+                v-else
+              />
+              <div>
+                <p>
+                  <span
+                    :class="[item.read_at ? 'item-read' : '', 'item-title']"
+                    >{{ item.data.title }}</span
+                  >
+                  <span class="item-time">{{
+                    formatDate(item.created_at, (format = "MM/DD"))
+                  }}</span>
+                </p>
+                <p
+                  :class="[item.read_at ? 'item-read' : '', 'item-description']"
+                >
+                  {{ item.data.description }}
+                </p>
+              </div>
+            </li>
+          </ul>
+          <the-empty
+            v-else-if="!loading"
+            noText="你的信箱空空如也"
+            class="empty-content"
+          />
+          <pagination
+            class="pagination"
+            :pageSize="size"
+            :current-page="page"
+            :total="total"
+            @change-page="getData"
+          />
+        </div>
+        <div class="notification-right" v-if="!loading">
+          <ul>
+            <li
+              @click="getData(1, '', 1)"
+              :class="[
+                'notification-right-text',
+                activeTab === 1 ? 'text-bold' : ''
+              ]"
+            >
+              回复我的
+            </li>
+            <li
+              @click="getData(1, 'question_answer_like', 2)"
+              :class="[
+                'notification-right-text',
+                activeTab === 2 ? 'text-bold' : ''
+              ]"
+            >
+              获得鼓掌
+            </li>
+            <li
+              @click="getData(1, 'question_like', 3)"
+              :class="[
+                'notification-right-text',
+                activeTab === 3 ? 'text-bold' : ''
+              ]"
+            >
+              帮忙擦亮
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import notificationService from "service/notification";
+import Pagination from "components/Pagination";
+import { goQuestionDetail } from "utils/routes";
+import { formatDate } from "utils/moment";
+import TheEmpty from "components/TheEmpty";
+
+export default {
+  components: { Pagination, TheEmpty },
+  name: "Notification",
+  data() {
+    return {
+      notifications: [],
+      size: 8,
+      page: 1,
+      total: 0,
+      activeTab: 1,
+      loading: true
+    };
+  },
+  created() {
+    this.getData();
+  },
+
+  methods: {
+    formatDate,
+    goQuestionDetail,
+    handleTabChange(index) {
+      this.activeTab = index;
+    },
+    handleNotificationClick(item) {
+      notificationService.notification(item.id).then((item.read_at = true));
+      if (item.data.question_id) {
+        goQuestionDetail(item.data.question_id);
+      }
+    },
+    getData(start = 1, type, index) {
+      this.activeTab = index;
+      notificationService
+        .notifications({
+          page_size: this.size,
+          page: start,
+          type
+        })
+        .then(res => {
+          this.notifications = res.list;
+          this.total = res.pagination.total;
+          this.page = start;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    }
+  }
+};
+</script>
+
+<style lang="less" scoped>
+.notification-section {
+  width: 100%;
+  height: 100%;
+  background: #fff !important;
+
+  .container-1180 {
+    width: 1180px;
+    height: 100%;
+    margin: 0 auto;
+
+    .notification-title {
+      padding: 40px 0px;
+      font-size: 24px;
+      font-weight: 600;
+      color: #2c3330;
+    }
+
+    .notification-content {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      .empty-content {
+        width: 860px;
+        height: 100%;
+      }
+
+      .notification-left {
+        width: 860px;
+        height: 100%;
+
+        .notification-left-item {
+          display: flex;
+          align-items: center;
+          height: 90px;
+          border-bottom: 1px solid #efefef;
+          cursor: pointer;
+
+          &:hover {
+            .item-title,
+            .item-description {
+              color: #606c66;
+            }
+          }
+
+          .notification-left-icon {
+            width: 40px;
+            height: 40px;
+            margin-right: 16px;
+          }
+
+          .grey-scale {
+            filter: grayscale(1);
+          }
+
+          .item-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3330;
+          }
+
+          .item-read {
+            color: #81948b;
+          }
+
+          .item-time {
+            margin-left: 10px;
+            font-size: 16px;
+            font-weight: 500;
+            color: #8ea098;
+          }
+
+          .item-description {
+            margin-top: 15px;
+            font-size: 14px;
+            font-weight: 400px;
+            color: #2c3330;
+          }
+        }
+      }
+
+      .notification-right {
+        margin-left: 40px;
+        padding: 16px;
+        width: 280px;
+        height: 152px;
+        border: 1px solid #efefef;
+        font-size: 14px;
+        font-weight: 400;
+        color: #606c66;
+
+        .notification-right-text {
+          padding-left: 6px;
+          line-height: 40px;
+
+          &.text-bold {
+            font-weight: 600;
+            color: #14af64;
+          }
+
+          &:hover {
+            color: #14af64;
+            background-color: #eff9f4;
+            cursor: pointer;
+          }
+        }
+
+        .notification-right-title {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .noti-filter {
+            font-size: 16px;
+            font-weight: 500;
+            color: #2c3330;
+          }
+        }
+
+        .notification-right-content {
+          font-size: 14px;
+          font-weight: 400px;
+          color: #606c66;
+
+          .sub-checkbox {
+            display: block;
+            margin-left: 35px;
+            margin-bottom: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+.pagination {
+  margin-top: 40px;
+  margin-bottom: 80px;
+}
+</style>

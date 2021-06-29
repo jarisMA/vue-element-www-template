@@ -4,7 +4,7 @@
       <div class="card-wrapper" ref="card">
         <div class="card-top">
           <div class="card-top-left">
-            <the-avatar :size="40" :url="answer.user.avatar_url" />
+            <the-avatar :size="36" :url="answer.user.avatar_url" />
             <div class="user-content">
               <span
                 :class="[
@@ -14,7 +14,7 @@
                 >{{ answer.user.nickname }}</span
               >
               <div class="create-time">
-                {{ formatDate(answer.created_at, "YYYY-MM-DD hh:mm:ss") }}
+                {{ formatDate(answer.created_at, "MM-DD hh:mm") }}
               </div>
             </div>
           </div>
@@ -57,56 +57,77 @@
       </div>
     </div>
     <div class="answer-operate">
-      <div class="operate-left">
-        <div class="claps-wrapper" @click="handleToggleClap">
-          <img
-            :class="['clap-icon']"
-            v-if="answer.auth_like_count"
-            src="~images/question/claped.svg"
-          />
-          <img class="clap-icon" v-else src="~images/question/claps.svg" />
-          <span>{{ answer.like_count }}</span>
+      <div class="answer-inner">
+        <div class="operate-left">
+          <div class="claps-wrapper" @click="handleToggleClap">
+            <img
+              :class="['clap-icon']"
+              v-if="answer.auth_like_count"
+              src="~images/question/claped.svg"
+            />
+            <img class="clap-icon" v-else src="~images/question/claps.svg" />
+            <span :class="[answer.auth_like_count ? '' : 'grey-scale']">{{
+              answer.like_count
+            }}</span>
+          </div>
+          <div
+            :class="[showComment ? 'active' : '', 'comment-wrapper']"
+            @click="autoFocus"
+          >
+            <span :class="[showComment ? 'comment-active' : '']">{{
+              answer.comment_count
+            }}</span>
+          </div>
+          <div class="edit-wrapper" v-if="allowEdit" @click="editAnswer">
+            <span>编辑回答</span>
+          </div>
         </div>
-        <div class="comment-wrapper" @click="showComment = !showComment">
-          <span v-if="!showComment">{{ answer.comment_count }} 评论</span>
-          <span v-else>收起评论</span>
+        <div class="operate-right">
+          <label class="fold-wrapper" v-if="!fold" @click="fold = true">
+            <img src="~images/question/drop_up.svg" />
+            <span>收起</span>
+          </label>
+          <el-dropdown
+            class="dropdown-wrapper"
+            placement="top-end"
+            trigger="click"
+            v-if="userInfo && userInfo.id === answer.user.id"
+          >
+            <i class="el-icon-more"></i>
+            <el-dropdown-menu slot="dropdown" class="question-dropdown">
+              <el-dropdown-item v-if="userInfo.id === answer.user.id">
+                <el-popconfirm
+                  @confirm="deleteAnswer"
+                  title="确定删除此回答吗？"
+                >
+                  <div slot="reference">
+                    <i class="el-icon-delete"></i>
+                    <span class="delete-tip">删除</span>
+                  </div>
+                </el-popconfirm>
+              </el-dropdown-item>
+              <el-dropdown-item v-else @click.native="reportAnswer"
+                >举报</el-dropdown-item
+              >
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
-        <div class="edit-wrapper" v-if="allowEdit" @click="editAnswer">
-          <span>编辑回答</span>
-        </div>
-      </div>
-      <div class="operate-right">
-        <label class="fold-wrapper" v-if="!fold" @click="fold = true">
-          <img src="~images/question/drop_up.svg" />
-          <span>收起</span>
-        </label>
-        <el-dropdown
-          class="dropdown-wrapper"
-          placement="top-end"
-          trigger="click"
-          v-if="userInfo && userInfo.id === answer.user.id"
-        >
-          <i class="el-icon-more"></i>
-          <el-dropdown-menu slot="dropdown" class="question-dropdown">
-            <el-dropdown-item v-if="userInfo.id === answer.user.id">
-              <el-popconfirm @confirm="deleteAnswer" title="确定删除此回答吗？">
-                <div slot="reference">
-                  <i class="el-icon-delete"></i>
-                  <span class="delete-tip">删除</span>
-                </div>
-              </el-popconfirm>
-            </el-dropdown-item>
-            <el-dropdown-item v-else @click.native="reportAnswer"
-              >举报</el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </el-dropdown>
       </div>
     </div>
+
     <div class="comment-fold-wrapper" v-if="showComment">
-      <div class="comment-list-wrapper" ref="comment">
-        <div class="comment-tips">{{ answer.comment_count }} 条评论</div>
-        <ul class="comment-list" v-if="answer.comments">
+      <comment
+        ref="commentInput"
+        class="comment-wrapper"
+        :answerId="answer.id"
+        @commented="commented"
+      />
+      <div
+        class="comment-list-wrapper"
+        ref="comment"
+        v-if="answer.comments.length > 0"
+      >
+        <ul class="comment-list">
           <li
             class="comment-item"
             v-for="(item, key) of answer.comments"
@@ -122,11 +143,6 @@
             />
           </li>
         </ul>
-        <comment
-          class="comment-wrapper"
-          :answerId="answer.id"
-          @commented="commented"
-        />
       </div>
     </div>
   </div>
@@ -209,6 +225,15 @@ export default {
   },
   methods: {
     formatDate,
+    autoFocus() {
+      this.showComment = !this.showComment;
+      this.$nextTick(() => {
+        if (this.showComment) {
+          this.$refs.commentInput.inputFocus();
+        }
+      });
+    },
+
     deleteAnswer() {
       if (!this.checkIsLogin()) {
         return;
@@ -287,8 +312,8 @@ export default {
         return;
       }
       if (!this.accepting) {
-        this.$confirm("提示", "确定采纳这条回答吗？", {
-          confirmButtonText: "确定",
+        this.$confirm("", "是否确认采纳这条回答？", {
+          confirmButtonText: "确认",
           cancelButtonText: "取消"
         }).then(() => {
           this.accepting = true;
@@ -338,10 +363,15 @@ export default {
 .answer-card-wrapper {
   background: #fff;
 }
+
+.grey-scale {
+  filter: grayscale(1);
+}
+
 .answer-card {
   position: relative;
   overflow: hidden;
-  padding: @padding;
+  padding: @padding @padding 0;
   background: #fff;
   .card-top {
     display: flex;
@@ -365,9 +395,10 @@ export default {
           }
         }
         .create-time {
-          line-height: 18px;
+          line-height: 16px;
           font-size: 12px;
-          color: #c8d0cc;
+          font-weight: 400;
+          color: #8ea098;
         }
       }
     }
@@ -393,7 +424,7 @@ export default {
     }
   }
   .card-content {
-    margin-top: 24px;
+    margin-top: 16px;
     font-size: 15px;
     line-height: 1.67;
     word-break: break-all;
@@ -446,9 +477,6 @@ export default {
       }
       a {
         text-decoration: none;
-      }
-      p {
-        margin-bottom: 1em;
       }
       .ql-syntax {
         background-color: #23241f;
@@ -568,26 +596,32 @@ export default {
     }
   }
 }
+
 .answer-operate {
   // position: sticky;
   // bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding: @padding;
-  background: #fff;
-  z-index: 1;
+  padding: 0 @padding;
+
+  .answer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 16px 0;
+    background: #fff;
+    z-index: 1;
+    border-bottom: 1px solid #efefef;
+  }
+
   .operate-left {
     display: flex;
     .claps-wrapper,
     .comment-wrapper,
     .edit-wrapper {
       display: flex;
+      min-width: 40px;
+      line-height: 24px;
       align-items: center;
-      justify-content: center;
-      padding: 0 24px 0 16px;
-      height: 32px;
       cursor: pointer;
       user-select: none;
       img {
@@ -601,7 +635,6 @@ export default {
     }
     .claps-wrapper {
       position: relative;
-      background: #e9fff4;
       cursor: pointer;
       span {
         color: @primaryColor;
@@ -613,10 +646,10 @@ export default {
       padding: 0 0 0 53px;
       &::before {
         position: absolute;
-        top: 4px;
+        top: 3px;
         left: 24px;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         content: "";
         background-color: @baseColor;
         mask-image: url("~images/question/comment.svg");
@@ -625,11 +658,19 @@ export default {
       }
       &:hover {
         span {
-          color: @hoverColor;
+          color: @primaryColor;
         }
+
         &::before {
-          background-color: @hoverColor;
+          background-color: @primaryColor;
         }
+      }
+
+      &.active::before {
+        background-color: @primaryColor;
+      }
+      .comment-active {
+        color: @primaryColor;
       }
     }
     .edit-wrapper {
@@ -665,12 +706,14 @@ export default {
   }
 }
 .comment-fold-wrapper {
-  // overflow: hidden;
-  // transition: max-height 0.2s;
+  padding: 16px 20px 20px;
+  border-bottom: 1px solid #efefef;
 }
 .comment-list-wrapper {
   position: relative;
+  margin-top: 8px;
   padding: @padding;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   &::before {
     position: absolute;
     top: 0;

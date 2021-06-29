@@ -3,15 +3,11 @@
     <the-rich-text
       ref="richText"
       :value.sync="content"
-      placeholder="写回答"
+      placeholder="专心写写..."
       @larger="larger"
     />
     <div class="answer-info">
       <div class="answer-user">
-        <the-avatar :size="32" :url="userInfo.avatar_url" />
-        <span class="user-name">
-          {{ userInfo.nickname }}
-        </span>
         <!-- <label class="answer-status">
           草稿保存于 8 分钟前
         </label> -->
@@ -19,13 +15,9 @@
       <div class="answer-submit">
         <!-- <el-select placeholder="设置转载权限">
         </el-select> -->
-        <el-button
-          class="submit-btn"
-          type="primary"
-          :loading="submiting"
-          @click="submit"
-          >发布答案</el-button
-        >
+        <button class="submit-btn" :loading="submiting" @click="submit">
+          发布
+        </button>
       </div>
     </div>
   </div>
@@ -33,7 +25,6 @@
 
 <script>
 import TheRichText from "components/TheRichText";
-import TheAvatar from "components/TheAvatar";
 import questionService from "service/question";
 import { mapState } from "vuex";
 import commonMixins from "mixins/common";
@@ -42,8 +33,7 @@ export default {
   name: "AnswerRichText",
   mixins: [commonMixins],
   components: {
-    TheRichText,
-    TheAvatar
+    TheRichText
   },
   props: {
     id: {
@@ -147,6 +137,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~styles/variable";
 .answer-rich-text-wrapper {
   .answer-info {
     display: flex;
@@ -175,12 +166,19 @@ export default {
     }
   }
   .submit-btn {
-    padding: 8px 24px;
-    span {
-      line-height: 14px;
-      font-weight: normal;
-      font-size: 14px;
-    }
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 76px;
+    height: 40px;
+    padding: 0;
+    line-height: 1;
+    font-weight: 500;
+    font-size: 14px;
+    color: #ffffff;
+    border: unset;
+    background: @primaryColor;
+    cursor: pointer;
   }
 }
 </style>

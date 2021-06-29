@@ -62,6 +62,14 @@
       >
         <div class="header-ft" v-show="theme !== 'primary' || visible">
           <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
+
+          <div v-if="userInfo" @click="goNotification()">
+            <div
+              class="notification-active"
+              v-if="userInfo.notification_count > 0"
+            ></div>
+            <img src="~images/noti_inactive.svg" class="notification-icon" />
+          </div>
           <div class="user-handle-container">
             <el-button
               class="login-button"
@@ -131,7 +139,8 @@ import {
   goBible,
   goQuestion,
   goAcademy,
-  goVip
+  goVip,
+  goNotification
 } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
@@ -165,6 +174,7 @@ export default {
     ...mapMutations(["updateHeaderUnfold"]),
     isVip,
     goVip,
+    goNotification,
     goAcademy() {
       if (this.theme === "primary") {
         this.$confirm(`是否确认离开当前页面?`).then(() => {
@@ -250,6 +260,25 @@ export default {
     height: 18px;
     vertical-align: -2px;
   }
+
+  .notification-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 20px;
+    cursor: pointer;
+  }
+
+  .notification-active {
+    position: relative;
+    top: 11px;
+    left: 16px;
+    width: 3px;
+    height: 3px;
+    background-color: #15ae65;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px white;
+  }
+
   .header-content {
     display: flex;
     justify-content: space-between;
