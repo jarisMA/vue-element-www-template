@@ -53,6 +53,9 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    simple: {
+      type: String
     }
   },
   data() {
@@ -61,13 +64,15 @@ export default {
       theBigText: false,
       form: {
         content: "",
-        images: []
+        images: [],
+        prop: ""
       }
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+
   methods: {
     handleLarge() {
       this.$emit("large");

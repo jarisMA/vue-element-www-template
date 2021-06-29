@@ -235,7 +235,7 @@
           <div class="page-content">
             <div class="page-content-main" v-if="userInfo">
               <div
-                v-if="largerRichText"
+                v-show="largerRichText"
                 class="rich-text-wrapper large"
                 ref="editor"
               >
@@ -255,7 +255,7 @@
               <div
                 class="simple-reply-wrapper"
                 ref="editor"
-                v-if="!largerRichText"
+                v-show="!largerRichText"
               >
                 <simple-reply
                   :id="id"
@@ -450,7 +450,8 @@ export default {
       },
       showOperate: false,
       srcLayout: [],
-      srcVote: []
+      srcVote: [],
+      temp: ""
     };
   },
   watch: {
@@ -1335,10 +1336,9 @@ export default {
       bottom: 40px;
       right: calc(50vw - 1120px / 2);
     }
-    .operate-top{
+    .operate-top {
       margin-bottom: 40px;
     }
-
 
     .page-left-operate,
     .page-right-operate {

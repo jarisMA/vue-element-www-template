@@ -126,9 +126,7 @@ import { getCalDate, dateCompare } from "utils/moment";
 
 export default {
   name: "QuestionVote",
-  components: {
-
-  },
+  components: {},
   props: {
     question: {
       type: Object,

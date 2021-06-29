@@ -292,13 +292,13 @@ export default {
       color: #81948b;
       user-select: none;
 
-.card-delete{
-  display: flex;
+      .card-delete {
+        display: flex;
 
-  .confirm-delete{
-    margin-right: 20px;
-  }
-}
+        .confirm-delete {
+          margin-right: 20px;
+        }
+      }
 
       .operate-item {
         display: flex;
