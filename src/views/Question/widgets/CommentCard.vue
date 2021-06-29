@@ -260,7 +260,7 @@ export default {
           line-height: 21px;
           font-weight: normal;
           font-size: 14px;
-          color: @baseColor;
+          color: #2c3330;
         }
       }
       .time-wrapper {

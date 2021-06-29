@@ -312,8 +312,8 @@ export default {
         return;
       }
       if (!this.accepting) {
-        this.$confirm("提示", "确定采纳这条回答吗？", {
-          confirmButtonText: "确定",
+        this.$confirm("是否确认采纳这条回答？", {
+          confirmButtonText: "确认",
           cancelButtonText: "取消"
         }).then(() => {
           this.accepting = true;
