@@ -253,14 +253,16 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  .vote-item-top {
-    width: 238px;
-    height: 236px;
+  /deep/ .el-image__inner {
+    width: 236px;
+    height: 238px;
+    object-fit: cover;
   }
 
   .vote-item {
     position: relative;
     margin-bottom: 16px;
+    overflow: hidden;
     .vote-label {
       display: inline-block;
       width: 24px;
@@ -276,6 +278,7 @@ export default {
     }
     .vote-value {
       line-height: 24px;
+      margin-left: 10px;
       font-size: 14px;
       color: #2c3330;
     }
