@@ -90,7 +90,7 @@
                         :layout="layout"
                         :edit="false"
                         :activePointIndex="activePointIndex + 1"
-                        @pointClick="index => handleSwiperSlideTo(index - 1)"
+                        @pointClick="(index) => handleSwiperSlideTo(index - 1)"
                       />
                     </el-carousel-item>
                   </el-carousel>
@@ -162,13 +162,13 @@
                     <i
                       :class="[
                         'page-brighten-icon',
-                        detail.is_like ? 'active' : hover == 1 ? 'hover' : ''
+                        detail.is_like ? 'active' : hover == 1 ? 'hover' : '',
                       ]"
                     ></i>
                     <span
                       :class="[
                         'page-detail-footer-count',
-                        detail.is_like ? 'active' : ''
+                        detail.is_like ? 'active' : '',
                       ]"
                       >{{
                         detail.is_like
@@ -193,41 +193,30 @@
                           ? 'active'
                           : hover == 2
                           ? 'hover'
-                          : ''
+                          : '',
                       ]"
                     ></i>
                     <span
                       :class="[
                         'page-detail-footer-count',
-                        detail.is_favorite ? 'active' : ''
+                        detail.is_favorite ? 'active' : '',
                       ]"
                       >{{ detail.is_favorite ? "已收藏" : "收藏" }}
                       {{ detail.favorite_count }}</span
                     >
                   </div>
-                  <el-dropdown
-                    class="page-detail-footer-dropdown-wrapper"
-                    placement="top-end"
-                    trigger="click"
-                    v-if="(userInfo && userInfo.id) === detail.user.id"
-                  >
-                    <span class="delete-hint"
-                      ><span class="delete-line">｜</span> 删除问题</span
+                  <div v-if="(userInfo && userInfo.id) === detail.user.id">
+                    <el-popconfirm
+                      @confirm="handleDeleteQuestion"
+                      title="确定删除此问题吗？"
                     >
-                    <el-dropdown-menu slot="dropdown" class="page-dropdown">
-                      <el-dropdown-item>
-                        <el-popconfirm
-                          @confirm="handleDeleteQuestion"
-                          title="确定删除此问题吗？"
+                      <div slot="reference">
+                        <span class="delete-hint"
+                          ><span class="delete-line">｜</span> 删除问题</span
                         >
-                          <div slot="reference">
-                            <i class="el-icon-delete"></i>
-                            <span class="delete-tip">删除</span>
-                          </div>
-                        </el-popconfirm>
-                      </el-dropdown-item>
-                    </el-dropdown-menu>
-                  </el-dropdown>
+                      </div>
+                    </el-popconfirm>
+                  </div>
                 </div>
               </div>
             </div>
@@ -261,7 +250,6 @@
                   :id="id"
                   @submited="addAnswerSucc"
                   @large="handleLarge"
-                  :isVote="this.detail.type === QUESTION_TYPE_VOTE"
                 />
               </div>
             </div>
@@ -277,7 +265,7 @@
                   <div
                     :class="[
                       'page-answer-order',
-                      answerOrder === 1 ? 'active' : ''
+                      answerOrder === 1 ? 'active' : '',
                     ]"
                     @click="answerOrder = 1"
                   >
@@ -286,7 +274,7 @@
                   <div
                     :class="[
                       'page-answer-order',
-                      answerOrder === 2 ? 'active' : ''
+                      answerOrder === 2 ? 'active' : '',
                     ]"
                     @click="answerOrder = 2"
                   >
@@ -394,7 +382,7 @@ import {
   QUESTION_TYPE_QUESTION,
   QUESTION_TYPE_HELP,
   QUESTION_TYPE_VOTE,
-  TYPE_QUESTION
+  TYPE_QUESTION,
 } from "utils/const";
 import commonMixins from "mixins/common";
 import { go404 } from "utils/routes";
@@ -410,19 +398,19 @@ export default {
     LayoutShow,
     Vote,
     TheEmpty,
-    SimpleReply
+    SimpleReply,
   },
   props: {
     visible: {
-      type: Boolean
+      type: Boolean,
     },
     id: {
-      type: Number
+      type: Number,
     },
     showNavigation: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -440,19 +428,19 @@ export default {
       pagination: {
         size: 10,
         page: 1,
-        total: 0
+        total: 0,
       },
       largerRichText: false,
       activePointIndex: 0,
       swiperOptions: {
         slidesPerView: 1,
         spaceBetween: 0,
-        autoplay: false
+        autoplay: false,
       },
       showOperate: false,
       srcLayout: [],
       srcVote: [],
-      isVote: false
+      temp: "",
     };
   },
   watch: {
@@ -461,7 +449,7 @@ export default {
     },
     id() {
       this.getData();
-    }
+    },
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -469,13 +457,13 @@ export default {
       let points = [];
       const { layouts } = this.detail;
       (layouts || []).forEach((layout, index) => {
-        layout.points.forEach(point => {
+        layout.points.forEach((point) => {
           point.imgIndex = index;
           points.push(point);
         });
       });
       return points;
-    }
+    },
   },
   created() {
     this.getData();
@@ -501,8 +489,8 @@ export default {
           page: 1,
           page_size: this.pagination.size,
           hot: this.answerOrder === 1,
-          showAll: true
-        })
+          showAll: true,
+        }),
       ])
         .then(([detail, res]) => {
           if (detail.deleted_at) {
@@ -515,9 +503,9 @@ export default {
           let index = 1;
           let layouts = detail.layouts;
           layouts
-            ? (layouts || []).forEach(layout => {
+            ? (layouts || []).forEach((layout) => {
                 layout.points = JSON.parse(layout.points);
-                layout.points.forEach(point => {
+                layout.points.forEach((point) => {
                   point.index = index;
                   index++;
                 });
@@ -531,10 +519,12 @@ export default {
         .finally(() => {
           this.loading = false;
           if (this.detail.type === QUESTION_TYPE_HELP) {
-            this.srcLayout = this.detail.layouts.map(item => item.image_url);
+            this.srcLayout = this.detail.layouts.map((item) => item.image_url);
           }
           if (this.detail.type === QUESTION_TYPE_VOTE) {
-            this.srcVote = this.detail.vote_options.map(item => item.image_url);
+            this.srcVote = this.detail.vote_options.map(
+              (item) => item.image_url
+            );
           }
         });
     },
@@ -545,9 +535,9 @@ export default {
           page: start,
           page_size: this.pagination.size,
           hot: this.answerOrder === 1,
-          showAll: true
+          showAll: true,
         })
-        .then(res => {
+        .then((res) => {
           this.answers = res.list;
           this.pagination.page = start;
           this.pagination.total = res.pagination.total;
@@ -572,7 +562,9 @@ export default {
     handleLayoutCarouselChange(imgIndex) {
       const point = this.points[this.activePointIndex];
       if (point.imgIndex !== imgIndex) {
-        const index = this.points.findIndex(item => item.imgIndex === imgIndex);
+        const index = this.points.findIndex(
+          (item) => item.imgIndex === imgIndex
+        );
         this.handleSwiperSlideTo(index);
       }
     },
@@ -595,7 +587,7 @@ export default {
       const scrollDom = this.$refs["scroll"];
       scrollDom.scrollTo({
         top: editorDom.offsetTop,
-        behaviour: "smooth"
+        behaviour: "smooth",
       });
     },
     handleBeforeClose() {
@@ -625,7 +617,7 @@ export default {
       if (is_like) {
         this.$notice({
           title: "不可重复擦亮",
-          type: "warning"
+          type: "warning",
         });
       } else {
         if (this.brightening) {
@@ -636,20 +628,20 @@ export default {
           .addLike({
             type: TYPE_QUESTION,
             resource_id: id,
-            count: 1
+            count: 1,
           })
-          .then(res => {
+          .then((res) => {
             detail.is_like = true;
             detail.like_count = like_count + 1;
             if (res.is_gain) {
               this.$notice({
                 title: "暖心+2",
-                type: "success"
+                type: "success",
               });
             } else {
               this.$notice({
                 title: "擦亮成功",
-                type: "success"
+                type: "success",
               });
             }
           })
@@ -675,7 +667,7 @@ export default {
           .then(() => {
             this.$notice({
               title: "取消收藏成功",
-              type: "success"
+              type: "success",
             });
             detail.is_favorite = false;
             detail.favorite_count = favorite_count - 1;
@@ -687,12 +679,12 @@ export default {
         questionService
           .questionFavoriteAdd({
             type,
-            resource_id: id
+            resource_id: id,
           })
           .then(() => {
             this.$notice({
               title: "收藏成功",
-              type: "success"
+              type: "success",
             });
             detail.is_favorite = true;
             detail.favorite_count = favorite_count + 1;
@@ -717,25 +709,25 @@ export default {
       const params = {
         question_id: detail.id,
         vote_id: detail.vote.id,
-        option_ids
+        option_ids,
       };
       this.voting = true;
       questionService
         .vote(params)
-        .then(res => {
+        .then((res) => {
           detail.authVote = {
             ...res,
-            ...params
+            ...params,
           };
           detail.vote_user_count++;
-          detail.vote_options.forEach(option => {
+          detail.vote_options.forEach((option) => {
             if (option_ids.indexOf(option.id) > -1) {
               option.vote_count++;
             }
           });
           this.$notice({
             title: "投票成功",
-            type: "success"
+            type: "success",
           });
         })
         .finally(() => {
@@ -751,7 +743,7 @@ export default {
         ...value,
         question_author: this.detail.user,
         question_accept_id: this.detail.accept_id,
-        question_type: this.detail.type
+        question_type: this.detail.type,
       };
       this.answers.unshift(value);
       this.largerRichText = false;
@@ -773,10 +765,10 @@ export default {
     goTop() {
       this.$refs.scroll.scrollTo({
         top: 0,
-        behavior: "smooth"
+        behavior: "smooth",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
