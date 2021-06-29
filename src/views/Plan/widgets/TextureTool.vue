@@ -450,6 +450,9 @@ export default {
       }
     },
     handleToggleParentCat(index) {
+      if (index === 2) {
+        this.showMore = true;
+      }
       if (this.activeParentCatIndex !== index) {
         this.activeParentCatIndex = index;
         this.name = "";
