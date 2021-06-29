@@ -45,7 +45,7 @@
                 "
               >
                 <el-carousel
-                  class="img-max"
+                  max-height="600px"
                   arrow="always"
                   :autoplay="false"
                   :loop="false"
@@ -779,11 +779,6 @@ export default {
       padding-top: 0;
     }
   }
-  .img-max {
-    max-width: 600px;
-    max-height: 600px;
-  }
-
   .page-close-icon {
     position: fixed;
     top: 15px;
@@ -1388,5 +1383,9 @@ export default {
   .el-dropdown-menu__item:focus {
     background-color: #fafafa;
   }
+}
+.img-max {
+  max-width: 600px;
+  max-height: 600px;
 }
 </style>
