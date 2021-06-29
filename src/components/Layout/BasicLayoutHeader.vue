@@ -63,17 +63,12 @@
         <div class="header-ft" v-show="theme !== 'primary' || visible">
           <div class="plan-go-enter" v-if="userInfo" @click="goMyPlan()"></div>
 
-          <div v-if="userInfo">
+          <div v-if="userInfo" @click="goNotification()">
             <div
               class="notification-active"
               v-if="userInfo.notification_count > 0"
-              @click="goNotification()"
             ></div>
-            <img
-              src="~images/noti_inactive.svg"
-              class="notification-icon"
-              @click="goNotification()"
-            />
+            <img src="~images/noti_inactive.svg" class="notification-icon" />
           </div>
           <div class="user-handle-container">
             <el-button

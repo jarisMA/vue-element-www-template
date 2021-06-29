@@ -66,18 +66,12 @@
               src="~images/question/claped.svg"
             />
             <img class="clap-icon" v-else src="~images/question/claps.svg" />
-            <span
-              :class="[
-                answer.auth_like_count ? '' : 'grey-scale',
-                'fixed-width'
-              ]"
-              >{{ answer.like_count }}</span
-            >
+            <span :class="[answer.auth_like_count ? '' : 'grey-scale']">{{
+              answer.like_count
+            }}</span>
           </div>
           <div
-            :class="[
-              showComment ? 'comment-wrapper active' : 'comment-wrapper'
-            ]"
+            :class="[showComment ? 'active' : '', 'comment-wrapper']"
             @click="autoFocus"
           >
             <span :class="[showComment ? 'comment-active' : '']">{{
@@ -318,8 +312,8 @@ export default {
         return;
       }
       if (!this.accepting) {
-        this.$confirm("提示", "确定采纳这条回答吗？", {
-          confirmButtonText: "确定",
+        this.$confirm("是否确认采纳这条回答？", {
+          confirmButtonText: "确认",
           cancelButtonText: "取消"
         }).then(() => {
           this.accepting = true;
@@ -372,10 +366,6 @@ export default {
 
 .grey-scale {
   filter: grayscale(1);
-}
-
-.fixed-width {
-  width: 8px;
 }
 
 .answer-card {
@@ -629,9 +619,9 @@ export default {
     .comment-wrapper,
     .edit-wrapper {
       display: flex;
+      min-width: 40px;
       line-height: 24px;
       align-items: center;
-      justify-content: center;
       cursor: pointer;
       user-select: none;
       img {
@@ -668,19 +658,19 @@ export default {
       }
       &:hover {
         span {
-          color: #14af64;
+          color: @primaryColor;
         }
 
         &::before {
-          background-color: #14af64;
+          background-color: @primaryColor;
         }
       }
 
       &.active::before {
-        background-color: #14af64;
+        background-color: @primaryColor;
       }
       .comment-active {
-        color: #14af64;
+        color: @primaryColor;
       }
     }
     .edit-wrapper {

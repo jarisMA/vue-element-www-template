@@ -6,7 +6,7 @@
         v-model="form.content"
         placeholder="简单说说..."
       ></el-input>
-      <div class="reply-detail" @click="handleLarge">
+      <div class="reply-detail" @click="handleLarge" v-if="!isVote">
         <img src="~images/question/unfold.svg" />
       </div>
     </div>
@@ -53,6 +53,13 @@ export default {
     id: {
       type: Number,
       required: true
+    },
+    simple: {
+      type: String
+    },
+    isVote: {
+      type: Boolean,
+      required: true
     }
   },
   data() {
@@ -61,13 +68,15 @@ export default {
       theBigText: false,
       form: {
         content: "",
-        images: []
+        images: [],
+        prop: ""
       }
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+
   methods: {
     handleLarge() {
       this.$emit("large");
@@ -230,7 +239,7 @@ export default {
         font-size: 14px;
         color: #ffffff;
         border: unset;
-        background: #14af64;
+        background: @primaryColor;
         cursor: pointer;
       }
     }

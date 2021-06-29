@@ -52,15 +52,27 @@
       </div>
       <div class="homework-time-wrapper">
         <span class="homework-start">
+          <img
+            src="~images/term/homework-start.svg"
+            style="margin-right: 4px"
+          />
           <!-- <span @click.stop="showTips">
             <icon-svg svg-class="clock-icon"
                       svg-name="clock" />
           </span> -->
-          最佳提交日期：{{ formatDate(homework.best_at) }}
+          最佳日期：<span class="homework-time">{{
+            formatDate(homework.best_at)
+          }}</span>
         </span>
-        <span class="homework-end"
-          >最迟截止日期：{{ formatDate(homework.end_at) }}
-          <template v-if="formNowFormatDay(homework.end_at) > -1">
+        <span class="homework-end">
+          <img src="~images/term/homework-end.svg" class="homework-margin" />
+          截止日期：<span class="homework-time">{{
+            formatDate(homework.end_at)
+          }}</span>
+          <template
+            v-if="formNowFormatDay(homework.end_at) > -1"
+            class="homework-time"
+          >
             （剩余{{
               formNowFormatDay(homework.end_at) > 0
                 ? formNowFormatDay(homework.end_at) + "天"
@@ -307,7 +319,7 @@ export default {
         img: warningImg,
         theme: "img_w_100",
         content:
-          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳提交日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
+          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
         confirmBtnText: "知道了",
         showCancelBtn: false,
         showCloseBtn: false
@@ -340,13 +352,13 @@ export default {
   // height: 82px;
   background: #ffffff;
   .homework-info {
-    padding: 25px 20px 24px;
+    padding: 20px 20px 34px;
     cursor: pointer;
   }
   .homework-name-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 11px;
+    margin-bottom: 24px;
     .homework-name {
       max-width: 690px;
       line-height: 20px;
@@ -411,6 +423,14 @@ export default {
     font-size: 14px;
     font-weight: 400;
     .homework-start {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      line-height: 16px;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 400;
+      background-color: #eff9f4;
       color: @primaryColor;
       .clock-icon {
         display: inline-block;
@@ -419,9 +439,23 @@ export default {
       }
     }
     .homework-end {
-      display: inline-block;
-      margin-left: 15px;
-      color: #d40000ff;
+      display: inline-flex;
+      margin-left: 8px;
+      justify-content: center;
+      align-items: center;
+      line-height: 16px;
+      padding: 8px;
+      font-size: 12px;
+      font-weight: 400;
+      background-color: #f4f4f4;
+      color: #606c66;
+
+      .homework-margin {
+        margin-right: 4px;
+      }
+    }
+    .homework-time {
+      font-weight: 600;
     }
   }
   .fold-wrapper {

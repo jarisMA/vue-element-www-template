@@ -5,8 +5,8 @@
         消息通知
       </div>
       <div class="notification-content">
-        <div class="notification-left" v-if="total > 0">
-          <ul>
+        <div class="notification-left">
+          <ul v-if="total > 0">
             <li
               class="notification-left-item"
               v-for="item of notifications"
@@ -63,6 +63,11 @@
               </div>
             </li>
           </ul>
+          <the-empty
+            v-else-if="!loading"
+            noText="你的信箱空空如也"
+            class="empty-content"
+          />
           <pagination
             class="pagination"
             :pageSize="size"
@@ -71,11 +76,6 @@
             @change-page="getData"
           />
         </div>
-        <the-empty
-          v-else-if="!loading"
-          noText="你的信箱空空如也"
-          class="empty-content"
-        />
         <div class="notification-right" v-if="!loading">
           <ul>
             <li
@@ -153,31 +153,30 @@ import { goQuestionDetail } from "utils/routes";
 import { formatDate } from "utils/moment";
 import TheEmpty from "components/TheEmpty";
 
-const homework = ["作业批复", "作业驳回"];
-const question = ["回复我的", "获得鼓掌", "帮忙擦亮"];
+// const homework = ["作业批复", "作业驳回"];
+// const question = ["回复我的", "获得鼓掌", "帮忙擦亮"];
 export default {
   components: { Pagination, TheEmpty },
   name: "Notification",
   data() {
     return {
-      checkAll: true,
-      checkCourse: true,
-      checkQuestion: true,
-      homeworks: homework,
-      questions: question,
-      checkHomework: ["作业批复", "作业驳回"],
-      checkAnswer: ["回复我的", "获得鼓掌", "帮忙擦亮"],
+      // checkAll: true,
+      // checkCourse: true,
+      // checkQuestion: true,
+      // homeworks: homework,
+      // questions: question,
+      // checkHomework: ["作业批复", "作业驳回"],
+      // checkAnswer: ["回复我的", "获得鼓掌", "帮忙擦亮"],
       notifications: [],
       size: 8,
       page: 1,
       total: 0,
-      activeTab: "1",
+      activeTab: 1,
       loading: true
     };
   },
   created() {
     this.getData();
-    this.activeTab = 1;
   },
 
   methods: {
@@ -186,18 +185,18 @@ export default {
     handleTabChange(index) {
       this.activeTab = index;
     },
-    handleAll(val) {
-      this.checkHomework = val ? homework : [];
-      this.checkAnswer = val ? question : [];
-      this.checkCourse = val;
-      this.checkQuestion = val;
-    },
-    handleCourse(val) {
-      this.checkHomework = val ? homework : [];
-    },
-    handleQuestion(val) {
-      this.checkAnswer = val ? question : [];
-    },
+    // handleAll(val) {
+    //   this.checkHomework = val ? homework : [];
+    //   this.checkAnswer = val ? question : [];
+    //   this.checkCourse = val;
+    //   this.checkQuestion = val;
+    // },
+    // handleCourse(val) {
+    //   this.checkHomework = val ? homework : [];
+    // },
+    // handleQuestion(val) {
+    //   this.checkAnswer = val ? question : [];
+    // },
     handleNotificationClick(item) {
       notificationService.notification(item.id).then((item.read_at = true));
       if (item.data.question_id) {

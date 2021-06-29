@@ -44,11 +44,12 @@
             :key="option.id"
             @click="handleOptionSelect(option.id)"
           >
-            <the-preview-image
+            <el-image
               class="vote-item-top"
               width="238px"
               height="236px"
-              :srcList="[option.image_url]"
+              :src="option.image_url"
+              :preview-src-list="voteSrc"
             />
             <div class="vote-item-bottom">
               <label class="vote-label">{{ VOTE_OPTION_INDEX[key] }}</label>
@@ -72,12 +73,11 @@
             <label class="vote-label">
               {{ VOTE_OPTION_INDEX[key] }}
             </label>
-            <the-preview-image
+            <el-image
               class="vote-img"
               v-if="question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC"
-              width="40px"
-              height="40px"
-              :srcList="[option.image_url]"
+              :src="option.image_url"
+              :preview-src-list="voteSrc"
             />
             <span class="vote-value">{{ option.title }}</span>
           </div>
@@ -123,16 +123,17 @@ import {
   VOTE_RESOURCE_TYPE_PIC
 } from "utils/const";
 import { getCalDate, dateCompare } from "utils/moment";
-import ThePreviewImage from "components/ThePreviewImage";
 
 export default {
   name: "QuestionVote",
-  components: {
-    ThePreviewImage
-  },
+  components: {},
   props: {
     question: {
       type: Object,
+      required: true
+    },
+    voteSrc: {
+      type: Array,
       required: true
     }
   },
@@ -141,7 +142,8 @@ export default {
       VOTE_OPTION_INDEX,
       VOTE_RESOURCE_TYPE_WORD,
       VOTE_RESOURCE_TYPE_PIC,
-      selected: []
+      selected: [],
+      srcList: []
     };
   },
   watch: {
@@ -180,6 +182,10 @@ export default {
     this.getSelected();
   },
   methods: {
+    // handleVoteSrc(){
+    //   this.srcList = this.question.vote_options.map(item => item.image_url);
+    //   console.log(this.srcList);
+    // },
     getSelected() {
       const question = this.question;
       if (question && question.authVote) {
@@ -245,6 +251,11 @@ export default {
     cursor: pointer;
   }
 }
+.vote-img {
+  width: 40px;
+  height: 40px;
+}
+
 .vote-list {
   display: flex;
   flex-wrap: wrap;

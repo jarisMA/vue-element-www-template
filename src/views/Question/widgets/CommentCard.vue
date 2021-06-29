@@ -40,9 +40,9 @@
           <div class="time-wrapper">
             {{ formatDate(comment.created_at, "MM-DD hh:mm") }}
           </div>
-          <div style="display: flex;">
+          <div class="card-delete">
             <el-popconfirm
-              style="margin-right: 20px;"
+              class="confirm-delete"
               v-if="allowDelete && userInfo.id === comment.user.id"
               @confirm="deleteComment"
               title="确定删除此评论吗？"
@@ -260,7 +260,7 @@ export default {
           line-height: 21px;
           font-weight: normal;
           font-size: 14px;
-          color: @baseColor;
+          color: #2c3330;
         }
       }
       .time-wrapper {
@@ -272,7 +272,7 @@ export default {
     }
     .card-content {
       .comment-content {
-        margin: 16px 0px;
+        margin: 4px 0px 8px;
         line-height: 24px;
         font-size: 14px;
         color: #2c3330;
@@ -291,6 +291,15 @@ export default {
       font-size: 12px;
       color: #81948b;
       user-select: none;
+
+      .card-delete {
+        display: flex;
+
+        .confirm-delete {
+          margin-right: 20px;
+        }
+      }
+
       .operate-item {
         display: flex;
         align-content: center;
