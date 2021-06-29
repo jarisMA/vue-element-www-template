@@ -166,6 +166,9 @@ export default {
       this.$emit("showFeedback", sku);
     },
     handleToggleCat(index) {
+      if (index === 2) {
+        this.showMore = true;
+      }
       this.activeIndex = index;
       this.$nextTick(() => {
         const scrollDom = this.$refs["mainScroll"];
