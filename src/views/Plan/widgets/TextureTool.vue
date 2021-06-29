@@ -613,7 +613,7 @@ export default {
   user-select: none;
   .tool-left {
     position: absolute;
-    left: -44px;
+    left: -45px;
     top: 0;
     display: flex;
     flex-direction: column;
@@ -623,6 +623,7 @@ export default {
     .tool-left-back {
       flex: 1;
       padding: 2px 10px 8px;
+      background: #fff;
       cursor: pointer;
       .tool-left-back_icon {
         display: inline-block;
