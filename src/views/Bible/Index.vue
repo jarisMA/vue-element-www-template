@@ -39,39 +39,46 @@
       </div>
     </div>
     <div class="bible-bottom">
-      <ul class="bible-list">
-        <li
-          :class="['bible-item', bible.status === 0 ? 'gray' : '']"
-          v-for="bible of bibles"
-          :key="bible.id"
-          @click="bibleClick(bible)"
-        >
-          <div class="bible-book">
-            <book-svg
-              class="book-svg"
-              :style="{ fill: bible.color + ' !important' }"
-            ></book-svg>
-            <div class="bible-book-content">
-              <div class="bible-book-title">
-                {{ bible.name }}
+      <div class="bible-list">
+        <swiper ref="mySwiper" :options="swiperOptions">
+          <swiper-slide
+            class="bible-item-container"
+            v-for="bible of bibles"
+            :key="bible.id"
+          >
+            <div
+              :class="['bible-item', bible.status === 0 ? 'gray' : '']"
+              @click="bibleClick(bible)"
+            >
+              <div class="bible-book">
+                <book-svg
+                  class="book-svg"
+                  :style="{ fill: bible.color + ' !important' }"
+                ></book-svg>
+                <div class="bible-book-content">
+                  <div class="bible-book-title">
+                    {{ bible.name }}
+                  </div>
+                  <div class="bible-book-desc">
+                    <p
+                      v-for="(desc, key) of (bible.description || '').split(
+                        '\n'
+                      ) || []"
+                      :key="key"
+                    >
+                      {{ desc }}
+                    </p>
+                  </div>
+                </div>
               </div>
-              <div class="bible-book-desc">
-                <p
-                  v-for="(desc, key) of (bible.description || '').split('\n') ||
-                    []"
-                  :key="key"
-                >
-                  {{ desc }}
-                </p>
-              </div>
+              <div
+                class="bible-cover"
+                :style="{ backgroundImage: `url(${bible.cover_url})` }"
+              ></div>
             </div>
-          </div>
-          <div
-            class="bible-cover"
-            :style="{ backgroundImage: `url(${bible.cover_url})` }"
-          ></div>
-        </li>
-      </ul>
+          </swiper-slide>
+        </swiper>
+      </div>
     </div>
     <el-dialog
       class="bible-dialog"
@@ -114,7 +121,12 @@ export default {
       bibles: [],
       visible: false,
       activeBible: {},
-      authBibleIds: null
+      authBibleIds: null,
+      swiperOptions: {
+        slidesPerView: "auto",
+        slidesPerGroup: 1,
+        spaceBetween: 0
+      }
     };
   },
   computed: {
@@ -269,103 +281,119 @@ export default {
     .bible-list {
       display: flex;
       justify-content: center;
-      width: 1064px;
+      width: 100%;
       margin: auto;
+      margin-top: -322px;
     }
-    .bible-item {
-      position: relative;
+    .bible-item-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
       width: 126px;
-      height: 178px;
-      cursor: pointer;
-      .bible-cover {
+      height: 500px;
+      &:first-child {
+        width: 233px;
+        padding-left: 107px;
+      }
+      &:last-child {
+        width: 233px;
+        padding-right: 107px;
+      }
+      .bible-item {
+        position: relative;
         width: 126px;
-        height: 150px;
-        background-size: cover;
-        background-repeat: no-repeat;
-        transition: all @duration;
-      }
-      .bible-book {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        width: 340px;
-        height: 222px;
-        transform: translateX(-50%) scale(0.1);
-        transition: all @duration;
-        transform-origin: center top;
-        opacity: 0;
-        overflow: hidden;
-        .book-svg {
-          position: absolute;
-          top: 0;
-          left: 0;
-          fill: @primaryColor;
-        }
-        .bible-book-content {
-          position: relative;
-          padding: 40px 55px;
-          .bible-book-title {
-            margin-bottom: 10px;
-            font-size: 20px;
-            font-weight: 600;
-            color: #333333;
-            line-height: 28px;
-            text-align: center;
-          }
-          .bible-book-desc {
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 4;
-            overflow: hidden;
-            p {
-              line-height: 20px;
-              font-size: 14px;
-              font-weight: 400;
-              color: #333333;
-            }
-          }
-        }
-      }
-      &::after {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 66px;
-        height: 16px;
-        background: rgba(0, 0, 0, 0.1);
-        border-radius: 50%;
-        transform: translateX(-50%);
-        content: "";
-        transition: all @duration;
-      }
-      &:hover {
+        height: 178px;
+        cursor: pointer;
         .bible-cover {
-          transform: translateY(-20px);
+          width: 126px;
+          height: 150px;
+          background-size: cover;
+          background-repeat: no-repeat;
+          transition: all @duration;
         }
         .bible-book {
-          opacity: 1;
-          top: -242px;
-          transform: translateX(-50%) scale(1);
-        }
-        &::after {
-          transform: translateX(-50%) scale(0.7);
-        }
-      }
-      &.gray {
-        .bible-cover {
-          position: relative;
-          filter: grayscale(1);
-          &::after {
+          position: absolute;
+          top: 0;
+          left: 50%;
+          width: 340px;
+          height: 222px;
+          transform: translateX(-50%) scale(0.1);
+          transition: all @duration;
+          transform-origin: center top;
+          opacity: 0;
+          overflow: hidden;
+          .book-svg {
             position: absolute;
             top: 0;
             left: 0;
-            width: 126px;
-            height: 150px;
-            content: "";
-            background-image: url("~images/bible/dashed.svg");
-            background-size: cover;
-            background-repeat: no-repeat;
-            z-index: 10;
+            fill: @primaryColor;
+          }
+          .bible-book-content {
+            position: relative;
+            padding: 40px 55px;
+            .bible-book-title {
+              margin-bottom: 10px;
+              font-size: 20px;
+              font-weight: 600;
+              color: #333333;
+              line-height: 28px;
+              text-align: center;
+            }
+            .bible-book-desc {
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 4;
+              overflow: hidden;
+              p {
+                line-height: 20px;
+                font-size: 14px;
+                font-weight: 400;
+                color: #333333;
+              }
+            }
+          }
+        }
+        &::after {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          width: 66px;
+          height: 16px;
+          background: rgba(0, 0, 0, 0.1);
+          border-radius: 50%;
+          transform: translateX(-50%);
+          content: "";
+          transition: all @duration;
+        }
+        &:hover {
+          .bible-cover {
+            transform: translateY(-20px);
+          }
+          .bible-book {
+            opacity: 1;
+            top: -242px;
+            transform: translateX(-50%) scale(1);
+          }
+          &::after {
+            transform: translateX(-50%) scale(0.7);
+          }
+        }
+        &.gray {
+          .bible-cover {
+            position: relative;
+            filter: grayscale(1);
+            &::after {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 126px;
+              height: 150px;
+              content: "";
+              background-image: url("~images/bible/dashed.svg");
+              background-size: cover;
+              background-repeat: no-repeat;
+              z-index: 10;
+            }
           }
         }
       }
