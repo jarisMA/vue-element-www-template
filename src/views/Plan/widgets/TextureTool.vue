@@ -736,8 +736,11 @@ export default {
           text-overflow: "";
           overflow: hidden;
         }
-        &:hover,
         &.active {
+          font-weight: 600;
+          color: @primaryColor;
+        }
+        &:hover {
           color: @primaryColor;
         }
       }
