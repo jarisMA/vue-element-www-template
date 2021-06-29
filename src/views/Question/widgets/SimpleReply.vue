@@ -64,7 +64,7 @@ export default {
       submiting: false,
       form: {
         content: "",
-        images: [],
+        images: []
       }
     };
   },

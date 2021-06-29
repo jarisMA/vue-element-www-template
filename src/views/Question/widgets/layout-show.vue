@@ -104,7 +104,7 @@ export default {
         }
       ],
       width: null,
-      height: null,
+      height: null
     };
   },
   watch: {
