@@ -6,7 +6,7 @@
         v-model="form.content"
         placeholder="简单说说..."
       ></el-input>
-      <div class="reply-detail" @click="handleLarge">
+      <div class="reply-detail" @click="handleLarge" v-if="!isVote">
         <img src="~images/question/unfold.svg" />
       </div>
     </div>
@@ -56,6 +56,10 @@ export default {
     },
     simple: {
       type: String
+    },
+    isVote: {
+      type: Boolean,
+      required: true
     }
   },
   data() {

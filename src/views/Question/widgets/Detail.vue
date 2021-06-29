@@ -261,6 +261,7 @@
                   :id="id"
                   @submited="addAnswerSucc"
                   @large="handleLarge"
+                  :isVote="this.detail.type === QUESTION_TYPE_VOTE"
                 />
               </div>
             </div>
@@ -451,7 +452,7 @@ export default {
       showOperate: false,
       srcLayout: [],
       srcVote: [],
-      temp: ""
+      isVote: false
     };
   },
   watch: {
