@@ -250,6 +250,7 @@
                   :id="id"
                   @submited="addAnswerSucc"
                   @large="handleLarge"
+                  :isVote="this.detail.type === QUESTION_TYPE_VOTE"
                 />
               </div>
             </div>
