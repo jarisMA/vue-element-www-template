@@ -25,8 +25,8 @@
         </div>
       </div>
       <transition
-        enter-active-class="animated slideInRight"
-        leave-active-class="animated slideOutRight"
+        enter-active-class="animated slideInLeft"
+        leave-active-class="animated slideOutLeft"
       >
         <div class="tool-main-wrapper" v-if="activeRootCat">
           <div class="tool-left">
@@ -780,6 +780,9 @@ export default {
     }
   }
   .cat-container {
+    position: absolute;
+    left: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background: #ffffff;
@@ -826,174 +829,177 @@ export default {
       }
     }
   }
-  .search-container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
+  .tool-main-wrapper {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: #fff;
-    .search-header {
+    .search-container {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 10px 0 0;
+      flex-direction: column;
       width: 100%;
-      height: 40px;
-      border-bottom: 1px solid #efefef;
-      .cat-name {
-        flex: 1;
+      height: 100%;
+      background: #fff;
+      .search-header {
         display: flex;
         align-items: center;
-        justify-content: flex-start;
-        .back-icon-wrapper {
-          flex: none;
+        justify-content: space-between;
+        padding: 0 10px 0 0;
+        width: 100%;
+        height: 40px;
+        border-bottom: 1px solid #efefef;
+        .cat-name {
+          flex: 1;
           display: flex;
           align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          cursor: pointer;
-          .back-icon {
-            width: 24px;
-            height: 24px;
-            background-image: url("~images/common/back.svg");
-          }
-        }
-        h3 {
-          flex: 1;
-          width: 5px;
-          line-height: 24px;
-          font-weight: 600;
-          font-size: 16px;
-          color: #666666;
-        }
-      }
-      .search-icon {
-        flex: none;
-        width: 24px;
-        height: 24px;
-        background-image: url("~images/common/search.svg");
-      }
-      /deep/ .name-search {
-        margin-left: 10px;
-        width: calc(100% - 10px);
-        .el-input__inner {
-          width: 100%;
-          height: 28px;
-          background: #fafafa;
-          border: unset;
-          font-size: 12px;
-          border-radius: 2px;
-          &::placeholder {
-            color: #999999;
-          }
-        }
-        .el-input__icon {
-          margin-top: 2px;
-          line-height: 24px;
-          &.search-icon {
-            width: 24px;
-            height: 24px;
-            background: url("~images/common/search.svg");
-          }
-        }
-        .el-input__suffix {
-          right: 2px;
-          .el-input__suffix-inner {
-            .el-input__icon {
-              background: red;
+          justify-content: flex-start;
+          .back-icon-wrapper {
+            flex: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            .back-icon {
               width: 24px;
               height: 24px;
-              background: url("~images/commodity/cancel.svg") no-repeat;
-              border: unset;
-              &::before {
-                display: none;
+              background-image: url("~images/common/back.svg");
+            }
+          }
+          h3 {
+            flex: 1;
+            width: 5px;
+            line-height: 24px;
+            font-weight: 600;
+            font-size: 16px;
+            color: #666666;
+          }
+        }
+        .search-icon {
+          flex: none;
+          width: 24px;
+          height: 24px;
+          background-image: url("~images/common/search.svg");
+        }
+        /deep/ .name-search {
+          margin-left: 10px;
+          width: calc(100% - 10px);
+          .el-input__inner {
+            width: 100%;
+            height: 28px;
+            background: #fafafa;
+            border: unset;
+            font-size: 12px;
+            border-radius: 2px;
+            &::placeholder {
+              color: #999999;
+            }
+          }
+          .el-input__icon {
+            margin-top: 2px;
+            line-height: 24px;
+            &.search-icon {
+              width: 24px;
+              height: 24px;
+              background: url("~images/common/search.svg");
+            }
+          }
+          .el-input__suffix {
+            right: 2px;
+            .el-input__suffix-inner {
+              .el-input__icon {
+                background: red;
+                width: 24px;
+                height: 24px;
+                background: url("~images/commodity/cancel.svg") no-repeat;
+                border: unset;
+                &::before {
+                  display: none;
+                }
               }
             }
           }
         }
       }
-    }
-    .cat-wrapper {
-      padding: 0 10px 10px;
-      .cat-label {
-        display: inline-block;
-        padding: 3px 4px;
-        margin-top: 10px;
-        margin-right: 14px;
-        line-height: 1;
-        font-size: 12px;
-        color: #111111;
-        background: #f4f4f4;
-        border-radius: 10px;
-        &.active {
-          color: #ffffff;
-          background: @primaryColor;
-        }
-      }
-    }
-
-    .commodity-wrapper {
-      flex-grow: 1;
-      width: 100%;
-      height: 5px;
-      overflow: hidden;
-      .scroll-section {
-        padding: 5px 15px 53px;
-        width: calc(100% + 15px);
-        height: 100%;
-        overflow-y: scroll;
-        .commodity-list {
-          display: flex;
-          justify-content: flex-start;
-          flex-wrap: wrap;
-          width: 100%;
-          & > div {
-            margin: 5px;
+      .cat-wrapper {
+        padding: 0 10px 10px;
+        .cat-label {
+          display: inline-block;
+          padding: 3px 4px;
+          margin-top: 10px;
+          margin-right: 14px;
+          line-height: 1;
+          font-size: 12px;
+          color: #111111;
+          background: #f4f4f4;
+          border-radius: 10px;
+          &.active {
+            color: #ffffff;
+            background: @primaryColor;
           }
         }
       }
-    }
-    .unfold-icon {
-      position: absolute;
-      top: 50%;
-      right: 0;
-      width: 8px;
-      height: 30px;
-      background: rgba(0, 0, 0, 0.05);
-      transform: translateY(-50%);
-      cursor: pointer;
-      &::after {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 3px;
-        height: 6px;
-        background-image: url("~images/commodity/unfold.svg");
-        background-repeat: no-repeat;
-        background-size: cover;
-        content: "";
-        transform: translate(-50%, -50%);
-        transition: transform @transitionDuration;
-      }
-      &.fold-icon {
-        &::after {
-          transform: translate(-50%, -50%) rotate(180deg);
+
+      .commodity-wrapper {
+        flex-grow: 1;
+        width: 100%;
+        height: 5px;
+        overflow: hidden;
+        .scroll-section {
+          padding: 5px 15px 53px;
+          width: calc(100% + 15px);
+          height: 100%;
+          overflow-y: scroll;
+          .commodity-list {
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            width: 100%;
+            & > div {
+              margin: 5px;
+            }
+          }
         }
       }
-    }
-    .commodity-list-wrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      transform: translateY(calc(100% - 48px));
-      transition: transform @transitionDuration * 10;
-      &.show {
-        transform: translateY(0);
+      .unfold-icon {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        width: 8px;
+        height: 30px;
+        background: rgba(0, 0, 0, 0.05);
+        transform: translateY(-50%);
+        cursor: pointer;
+        &::after {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          width: 3px;
+          height: 6px;
+          background-image: url("~images/commodity/unfold.svg");
+          background-repeat: no-repeat;
+          background-size: cover;
+          content: "";
+          transform: translate(-50%, -50%);
+          transition: transform @transitionDuration;
+        }
+        &.fold-icon {
+          &::after {
+            transform: translate(-50%, -50%) rotate(180deg);
+          }
+        }
+      }
+      .commodity-list-wrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        transform: translateY(calc(100% - 48px));
+        transition: transform @transitionDuration * 10;
+        &.show {
+          transform: translateY(0);
+        }
       }
     }
   }
