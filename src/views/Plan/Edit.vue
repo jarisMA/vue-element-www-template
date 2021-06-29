@@ -63,7 +63,7 @@
           <div class="tool-icon-wrapper">
             <label class="plane-icon"></label>
           </div>
-          <label class="tool-icon-label">平面</label>
+          <label class="tool-icon-label">布局</label>
         </div>
         <div
           :class="['toolbar-item', toolIndex === 2 ? 'active' : '']"

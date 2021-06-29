@@ -2,16 +2,6 @@
   <div class="tool-wrapper">
     <div class="tool-left">
       <ul class="tool-left-list">
-        <template v-for="(cat, index) of cats">
-          <li
-            v-show="index < 3 || showMore"
-            :class="['tool-left-item', index === activeIndex ? 'active' : '']"
-            :key="cat.id"
-            @click="handleToggleCat(index)"
-          >
-            {{ cat.name }}
-          </li>
-        </template>
         <li
           v-if="cats.length > 3"
           class="tool-left-more"
@@ -19,6 +9,16 @@
         >
           <i :class="['expand-icon', showMore ? 'unexpand' : '']"></i>
         </li>
+        <template v-for="(cat, index) of cats">
+          <li
+            v-show="index < 3 || showMore"
+            :class="['tool-left-item', index === activeIndex ? 'active' : '']"
+            :key="cat.id"
+            @click="handleToggleCat(index)"
+          >
+            <span class="tool-left-item-name">{{ cat.name }}</span>
+          </li>
+        </template>
       </ul>
     </div>
     <div class="tool-right" v-loading="loading">
@@ -202,7 +202,21 @@ export default {
     top: 0;
     width: 44px;
     max-height: 100%;
+    background: #fff;
     overflow-y: scroll;
+    &:hover {
+      width: 80px;
+      box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.05);
+      z-index: 2;
+      .tool-left-list {
+        .tool-left-item {
+          text-align: left;
+          .tool-left-item-name {
+            width: 100%;
+          }
+        }
+      }
+    }
     &::-webkit-scrollbar {
       width: 0;
     }
@@ -215,9 +229,16 @@ export default {
         padding: 8px 10px;
         line-height: 16px;
         font-size: 12px;
-        text-align: center;
+        text-align: left;
         color: #2c3330;
         cursor: pointer;
+        .tool-left-item-name {
+          display: inline-block;
+          width: 24px;
+          white-space: nowrap;
+          text-overflow: "";
+          overflow: hidden;
+        }
         &.active {
           font-weight: 600;
           color: @primaryColor;
@@ -228,22 +249,20 @@ export default {
       }
     }
     .tool-left-more {
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      padding-left: 10px;
       cursor: pointer;
       .expand-icon {
         display: inline-block;
         width: 24px;
         height: 24px;
         mask: url("~images/commodity/expand.svg") no-repeat center;
-        background: #2c3330;
+        background: #81948b;
         transition: transform 0.1s;
         &.unexpand {
           transform: rotate(180deg);
         }
         &:hover {
-          background: #606c66;
+          background: #2c3330;
         }
       }
     }
