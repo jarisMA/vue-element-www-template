@@ -6,7 +6,7 @@
       question.vote.resource_type === VOTE_RESOURCE_TYPE_PIC &&
       closeDayDiff > 0
         ? 'larger'
-        : ''
+        : '',
     ]"
   >
     <template v-if="!question.authVote && closeDayDiff > 0">
@@ -18,7 +18,7 @@
           <div
             :class="[
               'vote-item',
-              selected.indexOf(option.id) > -1 ? 'active' : ''
+              selected.indexOf(option.id) > -1 ? 'active' : '',
             ]"
             v-for="(option, key) of question.vote_options"
             :key="option.id"
@@ -38,7 +38,7 @@
           <div
             :class="[
               'vote-item',
-              selected.indexOf(option.id) > -1 ? 'active' : ''
+              selected.indexOf(option.id) > -1 ? 'active' : '',
             ]"
             v-for="(option, key) of question.vote_options"
             :key="option.id"
@@ -46,8 +46,6 @@
           >
             <el-image
               class="vote-item-top"
-              width="238px"
-              height="236px"
               :src="option.image_url"
               :preview-src-list="voteSrc"
             />
@@ -64,7 +62,7 @@
         <div
           :class="[
             'vote-item',
-            selected.indexOf(option.id) > -1 ? 'active' : ''
+            selected.indexOf(option.id) > -1 ? 'active' : '',
           ]"
           v-for="(option, key) of question.vote_options"
           :key="option.id"
@@ -120,7 +118,7 @@ import {
   VOTE_OPTION_INDEX,
   VOTE_TYPE_MULTI,
   VOTE_RESOURCE_TYPE_WORD,
-  VOTE_RESOURCE_TYPE_PIC
+  VOTE_RESOURCE_TYPE_PIC,
 } from "utils/const";
 import { getCalDate, dateCompare } from "utils/moment";
 
@@ -130,12 +128,12 @@ export default {
   props: {
     question: {
       type: Object,
-      required: true
+      required: true,
     },
     voteSrc: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -143,7 +141,6 @@ export default {
       VOTE_RESOURCE_TYPE_WORD,
       VOTE_RESOURCE_TYPE_PIC,
       selected: [],
-      srcList: []
     };
   },
   watch: {
@@ -151,8 +148,8 @@ export default {
       handler() {
         this.getSelected();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
     closeDayDiff() {
@@ -169,23 +166,19 @@ export default {
       }, 0);
     },
     precent() {
-      return count => {
+      return (count) => {
         const total = this.totalVotes;
         if (total <= 0) {
           return 0;
         }
         return Math.floor((count * 100) / total);
       };
-    }
+    },
   },
   created() {
     this.getSelected();
   },
   methods: {
-    // handleVoteSrc(){
-    //   this.srcList = this.question.vote_options.map(item => item.image_url);
-    //   console.log(this.srcList);
-    // },
     getSelected() {
       const question = this.question;
       if (question && question.authVote) {
@@ -193,7 +186,7 @@ export default {
           question.authVote.option_ids instanceof Array
             ? question.authVote.option_ids
             : question.authVote.option_ids.split(",");
-        this.selected = option_ids.map(item => parseInt(item));
+        this.selected = option_ids.map((item) => parseInt(item));
       } else {
         this.selected = [];
       }
@@ -216,13 +209,13 @@ export default {
       if (this.selected.length < 1) {
         this.$notice({
           title: "至少选择一项投票",
-          type: "warning"
+          type: "warning",
         });
         return;
       }
       this.$emit("vote", this.selected);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -260,6 +253,11 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  .vote-item-top {
+    width: 238px;
+    height: 236px;
+  }
+
   .vote-item {
     position: relative;
     margin-bottom: 16px;

@@ -54,9 +54,6 @@ export default {
       type: Number,
       required: true
     },
-    simple: {
-      type: String
-    },
     isVote: {
       type: Boolean,
       required: true
@@ -65,11 +62,9 @@ export default {
   data() {
     return {
       submiting: false,
-      theBigText: false,
       form: {
         content: "",
         images: [],
-        prop: ""
       }
     };
   },

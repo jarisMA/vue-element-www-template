@@ -13,10 +13,6 @@
               :key="item.id"
               @click="handleNotificationClick(item)"
             >
-              <!-- <img
-                class="notification-left-icon"
-                src="~images/notification/approve.svg"
-              /> -->
               <img
                 :class="[
                   item.read_at ? 'grey-scale' : '',
@@ -41,10 +37,6 @@
                 src="~images/notification/reply.svg"
                 v-else
               />
-              <!-- <img
-                class="notification-left-icon"
-                src="~images/notification/reject.svg"
-              /> -->
               <div>
                 <p>
                   <span
@@ -106,40 +98,6 @@
               帮忙擦亮
             </li>
           </ul>
-
-          <!-- <div class="notification-right-title">
-            <span class="noti-filter">筛选</span>
-            <el-checkbox v-model="checkAll" @change="handleAll"
-              >选择全部</el-checkbox
-            >
-          </div>
-          <div class="notification-right-content">
-            <el-checkbox v-model="checkCourse" @change="handleCourse">
-              课程消息</el-checkbox
-            >
-            <el-checkbox-group v-model="checkHomework">
-              <el-checkbox
-                class="sub-checkbox"
-                v-for="homework in homeworks"
-                :label="homework"
-                :key="homework"
-                >{{ homework }}</el-checkbox
-              >
-            </el-checkbox-group>
-
-            <el-checkbox v-model="checkQuestion" @change="handleQuestion">
-              问答消息</el-checkbox
-            >
-            <el-checkbox-group v-model="checkAnswer">
-              <el-checkbox
-                class="sub-checkbox"
-                v-for="question in questions"
-                :label="question"
-                :key="question"
-                >{{ question }}</el-checkbox
-              >
-            </el-checkbox-group>
-          </div> -->
         </div>
       </div>
     </div>
@@ -153,20 +111,11 @@ import { goQuestionDetail } from "utils/routes";
 import { formatDate } from "utils/moment";
 import TheEmpty from "components/TheEmpty";
 
-// const homework = ["作业批复", "作业驳回"];
-// const question = ["回复我的", "获得鼓掌", "帮忙擦亮"];
 export default {
   components: { Pagination, TheEmpty },
   name: "Notification",
   data() {
     return {
-      // checkAll: true,
-      // checkCourse: true,
-      // checkQuestion: true,
-      // homeworks: homework,
-      // questions: question,
-      // checkHomework: ["作业批复", "作业驳回"],
-      // checkAnswer: ["回复我的", "获得鼓掌", "帮忙擦亮"],
       notifications: [],
       size: 8,
       page: 1,
@@ -185,18 +134,6 @@ export default {
     handleTabChange(index) {
       this.activeTab = index;
     },
-    // handleAll(val) {
-    //   this.checkHomework = val ? homework : [];
-    //   this.checkAnswer = val ? question : [];
-    //   this.checkCourse = val;
-    //   this.checkQuestion = val;
-    // },
-    // handleCourse(val) {
-    //   this.checkHomework = val ? homework : [];
-    // },
-    // handleQuestion(val) {
-    //   this.checkAnswer = val ? question : [];
-    // },
     handleNotificationClick(item) {
       notificationService.notification(item.id).then((item.read_at = true));
       if (item.data.question_id) {

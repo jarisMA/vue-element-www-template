@@ -45,7 +45,7 @@
                 "
               >
                 <el-carousel
-                  max-height="600px"
+                  class="max-height"
                   arrow="always"
                   :autoplay="false"
                   :loop="false"
@@ -56,7 +56,7 @@
                   >
                     <el-image
                       :preview-src-list="detail.images"
-                      style="max-width: 600px; max-height: 600px"
+                      class="max-width max-height"
                       :src="image"
                       fit="contain"
                     >
@@ -125,7 +125,7 @@
                 <div class="vote-image-wrapper" v-if="detail.images">
                   <el-image
                     :preview-src-list="[detail.images]"
-                    style="max-width: 600px; max-height: 600px"
+                    class="max-width max-height"
                     :src="detail.images"
                     fit="contain"
                   >
@@ -784,6 +784,12 @@ export default {
     .page {
       padding-top: 0;
     }
+  }
+  .max-width{
+    max-width: 600px;
+  }
+  .max-height{
+    max-height: 600px;
   }
   .page-close-icon {
     position: fixed;
