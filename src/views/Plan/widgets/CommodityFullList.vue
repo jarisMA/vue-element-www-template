@@ -1,11 +1,13 @@
 <template>
-  <el-drawer :class="['list-wrapper']"
-             :visible="full_screen"
-             :show-close="false"
-             :modal-append-to-body="false"
-             :before-close="toggleFullScreen"
-             direction="ltr"
-             size="1260px">
+  <el-drawer
+    :class="['list-wrapper']"
+    :visible="full_screen"
+    :show-close="false"
+    :modal-append-to-body="false"
+    :before-close="toggleFullScreen"
+    direction="ltr"
+    size="1260px"
+  >
     <div :class="['full-main-wrapper', headerUnfold ? 'unfold' : '']">
       <div class="container-1180-wrapper">
         <div class="container-1180">
@@ -13,8 +15,10 @@
             <div class="list-content-top">
               <h3 class="list-title">
                 商品清单
-                <label class="close-icon bgImg"
-                       @click="toggleFullScreen"></label>
+                <label
+                  class="close-icon bgImg"
+                  @click="toggleFullScreen"
+                ></label>
               </h3>
               <div class="plan-desc">
                 <label class="plan-name">
@@ -36,9 +40,11 @@
             <div class="list-content-main">
               <div class="list-desc">
                 <template v-for="(item, key) of listing.list">
-                  <div class="list-section"
-                       v-if="number(item.softOutfits) > 0"
-                       :key="key">
+                  <div
+                    class="list-section"
+                    v-if="number(item.softOutfits) > 0"
+                    :key="key"
+                  >
                     <h3 class="list-spec">
                       {{ item.typeName }}
                     </h3>
@@ -58,16 +64,20 @@
                         <label class="remark-label">通用备注</label>
                       </li>
                       <template v-for="(good, gid) of item.softOutfits">
-                        <li class="table-tr"
-                            v-if="good.sku"
-                            :key="good.brandGoodId">
+                        <li
+                          class="table-tr"
+                          v-if="good.sku"
+                          :key="good.brandGoodId"
+                        >
                           <label class="order-label">{{
                             `${key + 1}-${gid + 1}`
                           }}</label>
                           <label class="img-label">
-                            <the-loading-image :width="50"
-                                               :height="50"
-                                               :url="good.sku.img_id" />
+                            <the-loading-image
+                              :width="50"
+                              :height="50"
+                              :url="good.sku.img_id"
+                            />
                           </label>
                           <label class="name-label">{{ good.sku.name }}</label>
                           <label class="brand-label">{{
@@ -79,19 +89,27 @@
                           }}</label>
                           <label class="number-label">{{ good.number }}</label>
                           <label class="unit-label">{{ good.unit }}</label>
-                          <label class="price-label">¥{{ good.sku.unit_price || "-" }}</label>
-                          <label class="total-label">¥{{
+                          <label class="price-label"
+                            >¥{{ good.sku.unit_price || "-" }}</label
+                          >
+                          <label class="total-label"
+                            >¥{{
                               (good.sku.unit_price * good.number).toFixed(2)
-                            }}</label>
-                          <label :class="['link-label', 'bgImg']"
-                                 @click="
+                            }}</label
+                          >
+                          <label
+                            :class="['link-label', 'bgImg']"
+                            @click="
                               goRoute(
                                 purchase_url(good.sku.purchase_url),
                                 '_blank'
                               )
-                            ">
+                            "
+                          >
                           </label>
-                          <label class="amount-label">¥{{ good.sku.cashback_amount || "-" }}</label>
+                          <label class="amount-label"
+                            >¥{{ good.sku.cashback_amount || "-" }}</label
+                          >
                           <label class="remark-label">{{
                             good.sku.remark || "-"
                           }}</label>
@@ -115,18 +133,21 @@
       </div>
       <div class="list-footer">
         <div class="footer-content">
-          <div class="footer-content-left"
-               v-if="!refreshing">
+          <div class="footer-content-left" v-if="!refreshing">
             <label class="price-wrapper">
-              <label class="price"><span class="price-unit">¥</span>{{ totalPrice }}</label>
-              <label class="refresh-price ellipsis"
-                     @click="!refreshing ? handleRefreshPrice() : null">
-                <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i>更新总价
+              <label class="price"
+                ><span class="price-unit">¥</span>{{ totalPrice }}</label
+              >
+              <label
+                class="refresh-price ellipsis"
+                @click="!refreshing ? handleRefreshPrice() : null"
+              >
+                <i :class="['refresh-icon', refreshing ? 'refreshing' : '']"></i
+                >更新总价
               </label>
             </label>
           </div>
-          <div class="refreshing-wrapper animation"
-               v-else>
+          <div class="refreshing-wrapper animation" v-else>
             <div class="refreshing-icon icon-1"></div>
             <div class="refreshing-icon icon-2"></div>
             <div class="refreshing-icon icon-3"></div>
@@ -136,8 +157,7 @@
             <label class="number"> 共 {{ totalNumber }} 件商品 </label>
           </div>
         </div>
-        <div class="footer-operate"
-             @click="download">
+        <div class="footer-operate" @click="download">
           <label class="export-icon bgImg"></label>导出Excel
         </div>
       </div>
@@ -174,12 +194,12 @@ export default {
       default: "primary"
     }
   },
-  data () {
+  data() {
     return {};
   },
   computed: {
     ...mapState(["headerUnfold", "userInfo"]),
-    listing () {
+    listing() {
       const res = JSON.parse(JSON.stringify(this.listingBrief));
       const { list, skus, goods } = res;
 
@@ -215,7 +235,7 @@ export default {
         skus
       };
     },
-    number () {
+    number() {
       return arr => {
         let count = 0;
         arr.map(item => {
@@ -224,7 +244,7 @@ export default {
         return count;
       };
     },
-    price () {
+    price() {
       return arr => {
         let price = 0;
         arr.map(item => {
@@ -235,7 +255,7 @@ export default {
         return price.toFixed(2);
       };
     },
-    totalPrice () {
+    totalPrice() {
       const goods = this.listing.goods;
       let total = 0;
       goods.map(good => {
@@ -245,7 +265,7 @@ export default {
       });
       return total.toFixed(2);
     },
-    totalNumber () {
+    totalNumber() {
       const goods = this.listing.goods;
       let total = 0;
       goods.map(good => {
@@ -255,7 +275,7 @@ export default {
       });
       return total;
     },
-    purchase_url () {
+    purchase_url() {
       return url => {
         if (!url) {
           return false;
@@ -268,16 +288,16 @@ export default {
       };
     }
   },
-  created () { },
+  created() {},
   methods: {
     goRoute,
-    toggleUp () {
+    toggleUp() {
       this.$emit("update:up", !this.up);
     },
-    toggleFullScreen () {
+    toggleFullScreen() {
       this.$emit("update:full_screen", !this.full_screen);
     },
-    download () {
+    download() {
       // 列标题
       let str = `<tr>
                   <td colspan="13">
@@ -285,7 +305,7 @@ export default {
                     <label>设计师: ${this.userInfo.nickname}</label><br />
                     <label>
                       房型信息: ${this.design.srcArea || "-"}㎡ | ${this.design
-          .specName || "-"}
+        .specName || "-"}
                     </label>
                   </td>
                 </tr>
@@ -319,20 +339,21 @@ export default {
                     <td>${(good.sku.brand && good.sku.brand.name) || "-"}\t</td>
                     <td>
                       ${`${good.sku.size_x || 0}*${good.sku.size_y || 0}*${good
-                .sku.size_z || 0}`}\t
+                        .sku.size_z || 0}`}\t
                     </td>
                     <td>${good.number}\t</td>
                     <td>${good.unit}\t</td>
                     <td>¥${good.sku.unit_price || "-" + ""}\t</td>
                     <td>
-                      ${this.purchase_url(good.sku.purchase_url)
-                ? `<a href='${this.purchase_url(
-                  good.sku.purchase_url
-                )}'>
+                      ${
+                        this.purchase_url(good.sku.purchase_url)
+                          ? `<a href='${this.purchase_url(
+                              good.sku.purchase_url
+                            )}'>
                         ${this.purchase_url(good.sku.purchase_url)}
                         </a>`
-                : "-"
-              }\t
+                          : "-"
+                      }\t
                     </td>
                     <td>¥${good.sku.cashback_amount || "-" + ""}\t</td>
                     <td>${good.sku.remark || "-"}\t</td>
@@ -372,7 +393,7 @@ export default {
       document.body.removeChild(eleLink);
       window.URL.revokeObjectURL(eleLink.href);
     },
-    handleRefreshPrice () {
+    handleRefreshPrice() {
       this.$emit("refreshPrice");
     }
   }
