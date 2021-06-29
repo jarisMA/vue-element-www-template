@@ -254,8 +254,8 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   /deep/ .el-image__inner {
-    width: 236px;
-    height: 238px;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
   }
 
@@ -263,6 +263,10 @@ export default {
     position: relative;
     margin-bottom: 16px;
     overflow: hidden;
+    .vote-item-top{
+      width: 236px;
+      height: 238px;
+    }
     .vote-label {
       display: inline-block;
       width: 24px;
