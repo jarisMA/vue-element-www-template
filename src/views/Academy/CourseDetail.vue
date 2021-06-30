@@ -20,7 +20,7 @@
               >
               <el-button
                 :class="[
-                  isVip && course.permission ? 'vip-btn' : 'page-main-btn'
+                  course.is_vip ? 'vip-btn' : 'page-main-btn'
                 ]"
                 type="primary"
                 @click="
@@ -31,7 +31,7 @@
               </el-button>
               <el-button
                 class="vip-free"
-                v-if="course.origin_price > 0 && !isVip()"
+                v-if="course.is_vip && !isVip()"
                 @click="goVip()"
               >
                 <span style="font-weight:600">开通VIP</span>
