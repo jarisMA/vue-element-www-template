@@ -91,9 +91,6 @@ export default {
   cursor: pointer;
   &:hover {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    .card-bottom-footer-right {
-      display: flex !important;
-    }
   }
   .card-bottom {
     display: flex;
@@ -116,7 +113,7 @@ export default {
       margin-top: 8px;
       padding: 4px 0;
       .card-bottom-footer-right {
-        display: none;
+        display: flex;
         align-items: center;
         line-height: 24px;
         font-weight: 600;
