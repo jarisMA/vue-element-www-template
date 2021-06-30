@@ -372,10 +372,17 @@ export default {
             background-image: url("~images/xs_hover.png");
           }
         }
-        &:active,
-        &.active {
+        &:active {
           &::before {
             background-image: url("~images/xs_pressing.png");
+          }
+        }
+        &.active {
+          &::before {
+            background-image: url("~images/xs_normal.png");
+          }
+          .header-nav-item_name {
+            color: @primaryColor;
           }
         }
       }
@@ -390,10 +397,17 @@ export default {
             background-image: url("~images/bd_hover.png");
           }
         }
-        &:active,
-        &.active {
+        &:active {
           &::before {
             background-image: url("~images/bd_pressing.png");
+          }
+        }
+        &.active {
+          &::before {
+            background-image: url("~images/bd_normal.png");
+          }
+          .header-nav-item_name {
+            color: @primaryColor;
           }
         }
       }
@@ -411,10 +425,17 @@ export default {
             background-image: url("~images/gc_hover.png");
           }
         }
-        &:active,
-        &.active {
+        &:active {
           &::before {
             background-image: url("~images/gc_pressing.png");
+          }
+        }
+        &.active {
+          &::before {
+            background-image: url("~images/gc_normal.png");
+          }
+          .header-nav-item_name {
+            color: @primaryColor;
           }
         }
         .header-nav-item_name {
