@@ -46,7 +46,7 @@
             @change-page="getSeries"
           ></pagination>
         </template>
-        <the-empty v-else-if="!loading" noText="暂无视频课" />
+        <the-empty v-else-if="!loading" noText="暂无体系课" />
       </div>
     </div>
   </div>

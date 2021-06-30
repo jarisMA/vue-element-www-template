@@ -263,7 +263,7 @@ export default {
     position: relative;
     margin-bottom: 16px;
     overflow: hidden;
-    .vote-item-top{
+    .vote-item-top {
       width: 236px;
       height: 238px;
     }
