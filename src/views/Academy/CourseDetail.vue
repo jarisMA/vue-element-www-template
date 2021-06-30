@@ -226,8 +226,7 @@ export default {
             .courses({
               page_size: 4,
               page: 1,
-              withoutIds,
-              cat_id: process.env.VUE_APP_COURSE_CAT_1
+              withoutIds
             })
             .then(relation => {
               this.relations = relation.list;
