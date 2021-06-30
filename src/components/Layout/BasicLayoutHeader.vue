@@ -349,13 +349,13 @@ export default {
           color: #000000;
           z-index: 2;
         }
-        &:hover {
+        &:hover,
+        &.active {
           .header-nav-item_name {
             color: #fff;
           }
         }
-        &:active,
-        &.active {
+        &:active {
           .header-nav-item_name {
             color: @primaryColor;
           }
@@ -367,7 +367,8 @@ export default {
           height: 31px;
           background-image: url("~images/xs_normal.png");
         }
-        &:hover {
+        &:hover,
+        &.active {
           &::before {
             background-image: url("~images/xs_hover.png");
           }
@@ -377,14 +378,6 @@ export default {
             background-image: url("~images/xs_pressing.png");
           }
         }
-        &.active {
-          &::before {
-            background-image: url("~images/xs_normal.png");
-          }
-          .header-nav-item_name {
-            color: @primaryColor;
-          }
-        }
       }
       .Notes {
         &:before {
@@ -392,7 +385,8 @@ export default {
           height: 31px;
           background-image: url("~images/bd_normal.png");
         }
-        &:hover {
+        &:hover,
+        &.active {
           &::before {
             background-image: url("~images/bd_hover.png");
           }
@@ -400,14 +394,6 @@ export default {
         &:active {
           &::before {
             background-image: url("~images/bd_pressing.png");
-          }
-        }
-        &.active {
-          &::before {
-            background-image: url("~images/bd_normal.png");
-          }
-          .header-nav-item_name {
-            color: @primaryColor;
           }
         }
       }
@@ -420,7 +406,8 @@ export default {
           height: 36px;
           background-image: url("~images/gc_normal.png");
         }
-        &:hover {
+        &:hover,
+        &.active {
           &::before {
             background-image: url("~images/gc_hover.png");
           }
@@ -428,14 +415,6 @@ export default {
         &:active {
           &::before {
             background-image: url("~images/gc_pressing.png");
-          }
-        }
-        &.active {
-          &::before {
-            background-image: url("~images/gc_normal.png");
-          }
-          .header-nav-item_name {
-            color: @primaryColor;
           }
         }
         .header-nav-item_name {
