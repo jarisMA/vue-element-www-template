@@ -1,13 +1,8 @@
 <template>
-  <div
-    class="card"
-    @click="goAcademyCourseDetail(course.id)"
-    @mouseover="getData()"
-    @mouseleave="clearData()"
-  >
+  <div class="card" @click="goAcademyCourseDetail(course.id)">
     <div class="card-top">
       <div class="card-price">
-        <div class="vip-free" v-if="fee > 0 && vip == '1'">
+        <div class="vip-free" v-if="course.is_vip">
           <span class="vip">VIP</span
           ><span style="margin-left: 4px;">免费学</span>
         </div>
@@ -73,17 +68,11 @@ export default {
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
-      COURSE_LEVEL,
-      fee: "",
-      vip: ""
+      COURSE_LEVEL
     };
   },
   methods: {
     goAcademyCourseDetail,
-    getData() {
-      this.fee = this.course.origin_price;
-      this.vip = this.course.is_vip;
-    },
     clearData() {
       this.fee = "";
       this.vip = "";
