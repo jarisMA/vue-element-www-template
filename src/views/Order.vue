@@ -274,10 +274,12 @@ export default {
             this.status = PAY_STATUS_PENDING;
             this.showStatus = true;
           }
-          const timer = setTimeout(() => {
-            this.handlePayCheck();
-            clearTimeout(timer);
-          }, 1000 * 1);
+          if (this.showStatus) {
+            const timer = setTimeout(() => {
+              this.handlePayCheck();
+              clearTimeout(timer);
+            }, 1000 * 1);
+          }
         }
       });
     },
