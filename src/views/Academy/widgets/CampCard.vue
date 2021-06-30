@@ -1,6 +1,9 @@
 <template>
   <div class="card">
-    <the-loading-image :url="camp.cover_file_url" class="card-cover" />
+    <the-loading-image
+      :url="camp.cover_file_url + '?x-oss-process=style/pc_camp_index'"
+      class="card-cover"
+    />
     <div class="card-content">
       <span class="card-label">// CAMP:</span>
       <h3 class="card-title ellipsis" :style="{ color: camp.title_color }">

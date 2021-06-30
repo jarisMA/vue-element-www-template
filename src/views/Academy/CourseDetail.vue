@@ -5,8 +5,8 @@
         <div class="page-main-left">
           <the-loading-image
             :width="780"
-            :height="439"
-            :url="course.cover_url"
+            :height="440"
+            :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
           />
           <div class="page-main-info">
             <label class="page-main-price">{{
@@ -19,9 +19,7 @@
                 >{{ course.study_count }}人正在学</label
               >
               <el-button
-                :class="[
-                  course.is_vip ? 'vip-btn' : 'page-main-btn'
-                ]"
+                :class="[course.is_vip ? 'vip-btn' : 'page-main-btn']"
                 type="primary"
                 @click="
                   course.permission ? goCourse(course.id, 1) : handleOrder()
