@@ -6,7 +6,11 @@
     @mouseleave="clearData()"
   >
     <div class="card-top">
-      <the-loading-image :width="378" :height="224" :url="series.cover_url" />
+      <the-loading-image
+        :width="378"
+        :height="224"
+        :url="series.cover_url + '?x-oss-process=style/pc_course_index'"
+      />
     </div>
     <div class="card-bottom">
       <div class="card-bottom-content">

@@ -5,8 +5,8 @@
         <div class="page-main-left">
           <the-loading-image
             :width="780"
-            :height="439"
-            :url="series.cover_url"
+            :height="440"
+            :url="series.cover_url + '?x-oss-process=style/pc_course_show'"
           />
           <div class="page-main-info">
             <label class="page-main-price">
