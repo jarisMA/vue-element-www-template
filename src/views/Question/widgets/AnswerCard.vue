@@ -312,7 +312,7 @@ export default {
         return;
       }
       if (!this.accepting) {
-        this.$confirm("是否确认采纳这条回答？", {
+        this.$confirm("", "是否确认采纳这条回答？", {
           confirmButtonText: "确认",
           cancelButtonText: "取消"
         }).then(() => {

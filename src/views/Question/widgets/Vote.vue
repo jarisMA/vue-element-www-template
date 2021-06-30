@@ -46,8 +46,6 @@
           >
             <el-image
               class="vote-item-top"
-              width="238px"
-              height="236px"
               :src="option.image_url"
               :preview-src-list="voteSrc"
             />
@@ -260,9 +258,20 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  /deep/ .el-image__inner {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
   .vote-item {
     position: relative;
     margin-bottom: 16px;
+    overflow: hidden;
+    .vote-item-top {
+      width: 236px;
+      height: 238px;
+    }
     .vote-label {
       display: inline-block;
       width: 24px;
@@ -278,6 +287,7 @@ export default {
     }
     .vote-value {
       line-height: 24px;
+      margin-left: 10px;
       font-size: 14px;
       color: #2c3330;
     }

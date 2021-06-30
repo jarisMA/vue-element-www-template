@@ -54,9 +54,6 @@ export default {
       type: Number,
       required: true
     },
-    simple: {
-      type: String
-    },
     isVote: {
       type: Boolean,
       required: true
