@@ -29,10 +29,10 @@
             @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
             >斗西学社</span
           > -->
-          <span
+          <label
             class="header-nav-item My"
             @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
-            >斗西学社</span
+            ><span class="header-nav-item_name">斗西家学社</span></label
           >
           <span
             :class="[
@@ -43,7 +43,7 @@
                 : ''
             ]"
             @click="(visible || theme !== 'primary') && goBible()"
-            >斗西宝典</span
+            >斗西家宝典</span
           >
           <span
             :class="[
@@ -52,7 +52,7 @@
               ['Question'].indexOf($route.name) > -1 ? 'active' : ''
             ]"
             @click="(visible || theme !== 'primary') && goQuestion()"
-            >互助广场</span
+            >斗西家广场</span
           >
         </nav>
       </div>
@@ -307,6 +307,7 @@ export default {
       }
     }
     .header-nav {
+      position: relative;
       display: flex;
       height: 100%;
       .header-nav-item {
@@ -316,24 +317,33 @@ export default {
         height: 100%;
         width: 170px;
         line-height: 24px;
-        font-size: 16px;
+        font-size: 14px;
         color: #333333;
-        font-weight: 500;
+        font-weight: 600;
         cursor: pointer;
+        .header-nav-item_name{
+          position: relative;
+          z-index: 2;
+        }
         &.active,
         &:hover {
           color: @primaryColor;
         }
+         &:active {
+          color: white;
+        }
       }
       .My {
         &:before {
+          position: absolute;
           content: "";
-          display: inline-block;
-          width: 34px;
-          height: 24px;
-          background: url("~images/link_logo-2.svg") no-repeat center;
+          width: 131px;
+          height: 31px;
+          background: url("~images/xs_normal.png") no-repeat; 
+          background-size:100% 100%;
           vertical-align: middle;
           margin-right: 2px;
+          z-index: 1;
         }
       }
       .Notes {
@@ -365,15 +375,14 @@ export default {
     display: flex;
     align-items: center;
     .plan-go-enter {
-      background-color: #15ae65;
-      width: 139px;
-      height: 32px;
+      width: 142px;
+      height: 30px;
       margin-right: 20px;
-      background: url("~images/plan-go.jpg");
+      background: url("~images/plango.svg");
       background-size: 139px 32px;
       cursor: pointer;
-      &:hover {
-        opacity: 0.8;
+      &:active {
+      background: url("~images/plango-active.svg");
       }
     }
     .user-handle-container {
