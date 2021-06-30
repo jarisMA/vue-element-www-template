@@ -99,59 +99,26 @@
       />
     </div>
     <div class="academy-content">
-      <div class="container-1180">
+      <div class="container-1200">
         <template>
           <div
             class="academy-courses"
             v-if="courses1.length > 0 || courses2.length > 0"
           >
-            <div class="academy-content-header">
-              <h3 class="academy-content-title">
-                家计划<span class="primary">视频课</span>
-              </h3>
-              <div class="academy-content-more" @click="goAcademyCourseList()">
+            <div class="academy-content-header yellow">
+              <div class="academy-content-title reconstruction">
+                {{ courseCategory2.name }}
+              </div>
+              <div
+                class="academy-content-more"
+                @click="goAcademyCourseList({ catId: VUE_APP_COURSE_CAT_2 })"
+              >
                 查看全部<i class="more-icon"></i>
               </div>
             </div>
-            <div class="academy-course-wrapper" v-if="courses1.length > 0">
-              <div class="course-wrapper-left">
-                <h4 class="course-cat-title">{{ courseCategory1.name }}</h4>
-                <div
-                  class="course-cat-btn"
-                  @click="
-                    goAcademyCourseList({
-                      catId: VUE_APP_COURSE_CAT_1
-                    })
-                  "
-                >
-                  全部<i class="more-icon"></i>
-                </div>
-              </div>
-              <div class="academy-course-list">
-                <course-card
-                  class="academy-course-item"
-                  v-for="item of courses1"
-                  :key="item.id"
-                  :course="item"
-                />
-              </div>
-            </div>
             <div class="academy-course-wrapper" v-if="courses2.length > 0">
-              <div class="course-wrapper-left">
-                <h4 class="course-cat-title">{{ courseCategory2.name }}</h4>
-                <div
-                  class="course-cat-btn"
-                  @click="
-                    goAcademyCourseList({
-                      catId: VUE_APP_COURSE_CAT_2
-                    })
-                  "
-                >
-                  全部<i class="more-icon"></i>
-                </div>
-              </div>
               <div class="academy-course-list">
-                <course-card
+                <course-card-front
                   class="academy-course-item"
                   v-for="item of courses2"
                   :key="item.id"
@@ -159,11 +126,26 @@
                 />
               </div>
             </div>
-            <div
-              class="academy-content-more center"
-              @click="goAcademyCourseList()"
-            >
-              查看全部视频课<i class="more-icon"></i>
+            <div class="academy-content-header red">
+              <div class="academy-content-title relayout">
+                {{ courseCategory1.name }}
+              </div>
+              <div
+                class="academy-content-more"
+                @click="goAcademyCourseList({ catId: VUE_APP_COURSE_CAT_1 })"
+              >
+                查看全部<i class="more-icon"></i>
+              </div>
+            </div>
+            <div class="academy-course-wrapper" v-if="courses1.length > 0">
+              <div class="academy-course-list">
+                <course-card-front
+                  class="academy-course-item"
+                  v-for="item of courses1"
+                  :key="item.id"
+                  :course="item"
+                />
+              </div>
             </div>
           </div>
           <div class="academy-series" v-if="series.length > 0">
@@ -186,11 +168,11 @@
           </div>
         </template>
         <div class="academy-camp" v-if="camps.length > 0">
-          <div class="academy-content-header">
-            <h3 class="academy-content-title">
+          <div class="academy-camp-header">
+            <h3 class="academy-camp-title">
               家计划<span class="primary">训练营</span>
             </h3>
-            <div class="academy-content-more" @click="goAcademyCampList()">
+            <div class="academy-camp-more" @click="goAcademyCampList()">
               查看全部<i class="more-icon"></i>
             </div>
           </div>
@@ -220,7 +202,6 @@ import XgSvg from "./widgets/svg/XgSvg.vue";
 import YzSvg from "./widgets/svg/YzSvg.vue";
 import ZwjSvg from "./widgets/svg/ZwjSvg.vue";
 import ZzSvg from "./widgets/svg/ZzSvg.vue";
-
 import campService from "service/camp";
 import courseService from "service/course";
 import {
@@ -230,7 +211,7 @@ import {
 } from "utils/routes";
 import CampCard from "./widgets/CampCard";
 import SetCard from "./widgets/SetCard";
-import CourseCard from "./widgets/CourseCard";
+import CourseCardFront from "./widgets/CourseCardFront.vue";
 
 export default {
   name: "Academy",
@@ -253,7 +234,7 @@ export default {
     ZzSvg,
     CampCard,
     SetCard,
-    CourseCard
+    CourseCardFront
   },
   data() {
     return {
@@ -412,9 +393,11 @@ export default {
 <style lang="less" scoped>
 @import "~styles/variable";
 @baseLeft: calc((100vw - 1200px) / 2);
-.academy-page {
-  background: #fff !important;
+
+.container-1200 {
+  width: 1200px;
 }
+
 .academy-banner {
   position: relative;
   width: 100%;
@@ -512,33 +495,79 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 36px;
+    width: 1200px;
+    height: 42px;
+    padding-right: 45px;
+
     .academy-content-title {
-      line-height: 48px;
+      display: flex;
+      align-items: center;
+      line-height: 39px;
       font-weight: 600;
-      font-size: 36px;
-      color: #2c3330;
+      font-size: 28px;
+      color: white;
+    }
+    .reconstruction {
+      &:before {
+        position: relative;
+        top: -20px;
+        left: 10px;
+        margin-right: 25px;
+        content: url("~images/academy/television.svg");
+      }
+    }
+    .relayout {
+      &:before {
+        position: relative;
+        top: -20px;
+        left: 10px;
+        margin-right: 25px;
+        content: url("~images/academy/layout.svg");
+      }
     }
   }
+  .yellow {
+    background-image: url("~images/academy/title-yellow.svg");
+  }
+  .red {
+    background-image: url("~images/academy/title-red.svg");
+  }
+
   .academy-content-more {
     line-height: 24px;
     font-size: 16px;
-    color: #606c66;
+    font-weight: 600;
+    color: white;
     cursor: pointer;
     .more-icon {
       display: inline-block;
       margin-left: 4px;
       width: 24px;
       height: 24px;
-      mask: url("~images/academy/vector.svg") no-repeat center;
-      background: #606c66;
+      mask: url("~images/academy/read-more.svg") no-repeat center;
+      background: white;
       vertical-align: bottom;
     }
   }
+  .academy-camp-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 36px;
+    .academy-camp-title {
+      line-height: 48px;
+      font-weight: 600;
+      font-size: 36px;
+      color: #2c3330;
+    }
+  }
+
   .academy-courses {
-    padding: 80px 0;
+    padding: 110px 0 0;
     .academy-course-wrapper {
       display: flex;
+      margin-bottom: 90px;
+      width: 100%;
       & + .academy-course-wrapper {
         margin-top: 80px;
       }
@@ -579,12 +608,10 @@ export default {
       }
       .academy-course-list {
         display: flex;
-        .academy-course-item {
-          &:nth-child(2) {
-            margin-left: 20px;
-            margin-right: 20px;
-          }
-        }
+        justify-content: space-between;
+        width: 100%;
+        padding: 20px 26px;
+        background-color: white;
       }
     }
     .academy-content-more.center {
@@ -605,12 +632,27 @@ export default {
     }
   }
   .academy-camp {
-    padding: 100px 0 160px;
+    padding-bottom: 160px;
     .academy-camp-list {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
+    }
+    .academy-camp-more {
+      line-height: 24px;
+      font-size: 16px;
+      color: #606c66;
+      cursor: pointer;
+      .more-icon {
+        display: inline-block;
+        margin-left: 4px;
+        width: 24px;
+        height: 24px;
+        mask: url("~images/academy/vector.svg") no-repeat center;
+        background: #606c66;
+        vertical-align: bottom;
+      }
     }
   }
 }

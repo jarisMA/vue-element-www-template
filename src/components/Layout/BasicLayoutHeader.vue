@@ -23,38 +23,51 @@
           <icon-svg svg-class="more-icon"
                     svg-name="more" />
         </span> -->
-        <nav class="header-nav">
-          <!-- <span
+        <transition
+          enter-active-class="animated fadeIn"
+          leave-active-class="animated fadeOut"
+        >
+          <nav class="header-nav" v-show="theme !== 'primary' || visible">
+            <!-- <span
             class="header-nav-item My"
             @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
             >斗西学社</span
           > -->
-          <span
-            class="header-nav-item My"
-            @click="(visible || theme !== 'primary') && loginDialogVisible(6)"
-            >斗西学社</span
-          >
-          <span
-            :class="[
-              'header-nav-item',
-              'Notes',
-              ['Bible', 'BibleDetail', 'BiblePreview'].indexOf($route.name) > -1
-                ? 'active'
-                : ''
-            ]"
-            @click="(visible || theme !== 'primary') && goBible()"
-            >斗西宝典</span
-          >
-          <span
-            :class="[
-              'header-nav-item',
-              'Question',
-              ['Question'].indexOf($route.name) > -1 ? 'active' : ''
-            ]"
-            @click="(visible || theme !== 'primary') && goQuestion()"
-            >互助广场</span
-          >
-        </nav>
+            <label
+              :class="[
+                'header-nav-item',
+                'My',
+                ['Academy'].indexOf($route.name) > -1 ? 'active' : ''
+              ]"
+              @click="(visible || theme !== 'primary') && goAcademy()"
+            >
+              <span class="header-nav-item_name">斗西家学社</span>
+            </label>
+            <label
+              :class="[
+                'header-nav-item',
+                'Notes',
+                ['Bible', 'BibleDetail', 'BiblePreview'].indexOf($route.name) >
+                -1
+                  ? 'active'
+                  : ''
+              ]"
+              @click="(visible || theme !== 'primary') && goBible()"
+            >
+              <span class="header-nav-item_name">斗西家宝典</span>
+            </label>
+            <label
+              :class="[
+                'header-nav-item',
+                'Question',
+                ['Question'].indexOf($route.name) > -1 ? 'active' : ''
+              ]"
+              @click="(visible || theme !== 'primary') && goQuestion()"
+            >
+              <span class="header-nav-item_name">斗西家广场</span>
+            </label>
+          </nav>
+        </transition>
       </div>
       <transition
         enter-active-class="animated fadeIn"
@@ -118,11 +131,10 @@
           </div>
           <div
             class="vip-btn"
-            v-if="userInfo && !isVip() && false"
             @click="goVip()"
+            v-if="userInfo && !isVip() && false"
           >
-            <i class="vip-icon"></i>
-            <span>成为会员</span>
+            <span class="vip-btn-span">成为会员</span>
           </div>
         </div>
       </transition>
@@ -307,56 +319,107 @@ export default {
       }
     }
     .header-nav {
+      position: relative;
       display: flex;
+      align-items: center;
       height: 100%;
       .header-nav-item {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100%;
-        width: 170px;
-        line-height: 24px;
-        font-size: 16px;
-        color: #333333;
-        font-weight: 500;
+        position: relative;
+        height: 31px;
+        width: 131px;
         cursor: pointer;
-        &.active,
+        &::before {
+          content: "";
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          vertical-align: middle;
+        }
+        & + .header-nav-item {
+          margin-left: 85px;
+        }
+        .header-nav-item_name {
+          position: absolute;
+          right: 13px;
+          font-weight: 600;
+          line-height: 31px;
+          font-size: 14px;
+          color: #000000;
+          z-index: 2;
+        }
         &:hover {
-          color: @primaryColor;
+          .header-nav-item_name {
+            color: #fff;
+          }
+        }
+        &:active,
+        &.active {
+          .header-nav-item_name {
+            color: @primaryColor;
+          }
         }
       }
       .My {
-        &:before {
-          content: "";
-          display: inline-block;
-          width: 34px;
-          height: 24px;
-          background: url("~images/link_logo-2.svg") no-repeat center;
-          vertical-align: middle;
-          margin-right: 2px;
+        &::before {
+          width: 131px;
+          height: 31px;
+          background-image: url("~images/xs_normal.png");
+        }
+        &:hover {
+          &::before {
+            background-image: url("~images/xs_hover.png");
+          }
+        }
+        &:active,
+        &.active {
+          &::before {
+            background-image: url("~images/xs_pressing.png");
+          }
         }
       }
       .Notes {
         &:before {
-          content: "";
-          display: inline-block;
-          width: 30px;
-          height: 24px;
-          background: url("~images/link_logo-3.svg") no-repeat center;
-          vertical-align: middle;
-          margin-right: 4px;
+          width: 131px;
+          height: 31px;
+          background-image: url("~images/bd_normal.png");
+        }
+        &:hover {
+          &::before {
+            background-image: url("~images/bd_hover.png");
+          }
+        }
+        &:active,
+        &.active {
+          &::before {
+            background-image: url("~images/bd_pressing.png");
+          }
         }
       }
       .Question {
+        margin-top: -5px;
+        width: 128px;
+        height: 36px;
         &:before {
-          content: "";
-          display: inline-block;
-          width: 30px;
-          height: 24px;
-          mask: url("~images/header/wdghz2.svg") no-repeat center;
-          background: @primaryColor;
-          vertical-align: middle;
-          margin-right: 4px;
+          width: 128px;
+          height: 36px;
+          background-image: url("~images/gc_normal.png");
+        }
+        &:hover {
+          &::before {
+            background-image: url("~images/gc_hover.png");
+          }
+        }
+        &:active,
+        &.active {
+          &::before {
+            background-image: url("~images/gc_pressing.png");
+          }
+        }
+        .header-nav-item_name {
+          top: 5px;
+          line-height: 31px;
         }
       }
     }
@@ -365,15 +428,16 @@ export default {
     display: flex;
     align-items: center;
     .plan-go-enter {
-      background-color: #15ae65;
-      width: 139px;
-      height: 32px;
+      width: 142px;
+      height: 34px;
       margin-right: 20px;
-      background: url("~images/plan-go.jpg");
-      background-size: 139px 32px;
+      background-image: url("~images/plango.svg");
+      background-size: 100%;
+      background-repeat: no-repeat;
       cursor: pointer;
-      &:hover {
-        opacity: 0.8;
+      &:active {
+        height: 30px;
+        background-image: url("~images/plango-active.svg");
       }
     }
     .user-handle-container {
@@ -544,22 +608,12 @@ export default {
     }
     .vip-btn {
       margin-left: 16px;
-      padding: 7px;
-      line-height: 24px;
-      font-weight: 600;
-      font-size: 14px;
-      color: @primaryColor;
-      border: 1px solid @primaryColor;
-      background: #fff;
+      width: 96px;
+      height: 23px;
+      background-image: url("~images/member.svg");
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
       cursor: pointer;
-      .vip-icon {
-        display: inline-block;
-        margin-right: 2px;
-        width: 24px;
-        height: 24px;
-        background: url("~images/vip/vip.svg") no-repeat center;
-        vertical-align: bottom;
-      }
     }
   }
 }
@@ -569,51 +623,8 @@ export default {
   overflow: hidden;
   transition: all 0.5s ease;
   &.primary_active {
-    height: 52px;
+    height: 54px;
     overflow: visible;
-    .header-nav {
-      .header-nav-item {
-        cursor: pointer;
-        &:hover {
-          background-color: #38ca83;
-          color: #fff;
-          &.My {
-            &::before {
-              background-image: url("~images/link_logo-2_white.svg");
-            }
-          }
-          &.Notes {
-            &::before {
-              background-image: url("~images/link_logo-3_white.svg");
-            }
-          }
-        }
-        &.Question {
-          &::before {
-            background: #fff;
-          }
-        }
-      }
-    }
-    .header-nav {
-      .header-nav-item {
-        cursor: pointer;
-        &:hover {
-          background-color: #38ca83;
-          color: #fff;
-          &.My {
-            &::before {
-              background-image: url("~images/link_logo-2_white.svg");
-            }
-          }
-          &.Notes {
-            &::before {
-              background-image: url("~images/link_logo-3_white.svg");
-            }
-          }
-        }
-      }
-    }
     .header-ft {
       .user-handle_show {
         top: 50px;
@@ -645,26 +656,6 @@ export default {
     }
     .more-icon {
       font-size: 30px;
-    }
-  }
-  .header-nav {
-    height: 100%;
-    overflow: hidden;
-    .header-nav-item {
-      // padding: 20px 0;
-      height: 52px;
-      color: #fff;
-      cursor: auto;
-      &.My {
-        &::before {
-          background-image: url("~images/link_logo-2_white.svg");
-        }
-      }
-      &.Notes {
-        &::before {
-          background-image: url("~images/link_logo-3_white.svg");
-        }
-      }
     }
   }
 }
