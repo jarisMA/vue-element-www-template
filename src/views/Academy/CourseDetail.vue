@@ -15,7 +15,7 @@
                 : "免费"
             }}</label>
             <div class="page-main-info-right">
-              <label class="page-main-study-count"
+              <label v-if="false" class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
               >
               <el-button

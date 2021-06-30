@@ -251,7 +251,7 @@ export default {
           break;
       }
     },
-    handlePayCheck(show = false) {
+    handlePayCheck(show = false, once = false) {
       orderService.orderCheck(this.$route.params.no).then(res => {
         if (res.status === PAY_STATUS_SUCCESS) {
           this.showWechatQrcode = false;
@@ -274,10 +274,12 @@ export default {
             this.status = PAY_STATUS_PENDING;
             this.showStatus = true;
           }
-          const timer = setTimeout(() => {
-            this.handlePayCheck();
-            clearTimeout(timer);
-          }, 1000 * 1);
+          if (this.showStatus && !once) {
+            const timer = setTimeout(() => {
+              this.handlePayCheck();
+              clearTimeout(timer);
+            }, 1000 * 1);
+          }
         }
       });
     },
@@ -288,7 +290,7 @@ export default {
       } else if (this.status === PAY_STATUS_SUCCESS) {
         this.handleSucess();
       } else {
-        this.handlePayCheck();
+        this.handlePayCheck(false, true);
       }
     },
     handleSucess() {

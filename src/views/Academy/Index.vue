@@ -100,7 +100,7 @@
     </div>
     <div class="academy-content">
       <div class="container-1180">
-        <template v-if="false">
+        <template>
           <div
             class="academy-courses"
             v-if="courses1.length > 0 || courses2.length > 0"
@@ -222,7 +222,7 @@ import ZwjSvg from "./widgets/svg/ZwjSvg.vue";
 import ZzSvg from "./widgets/svg/ZzSvg.vue";
 
 import campService from "service/camp";
-// import courseService from "service/course";
+import courseService from "service/course";
 import {
   goAcademyCourseList,
   goAcademySeriesList,
@@ -297,18 +297,18 @@ export default {
     goAcademyCampList,
     getData() {
       Promise.all([
-        // courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
-        // courseService.courseCategory(this.VUE_APP_COURSE_CAT_2),
-        // courseService.courses({
-        //   page_size: 3,
-        //   page: 1,
-        //   cat_id: this.VUE_APP_COURSE_CAT_1
-        // }),
-        // courseService.courses({
-        //   page_size: 3,
-        //   page: 1,
-        //   cat_id: this.VUE_APP_COURSE_CAT_2
-        // }),
+        courseService.courseCategory(this.VUE_APP_COURSE_CAT_1),
+        courseService.courseCategory(this.VUE_APP_COURSE_CAT_2),
+        courseService.courses({
+          page_size: 3,
+          page: 1,
+          cat_id: this.VUE_APP_COURSE_CAT_1
+        }),
+        courseService.courses({
+          page_size: 3,
+          page: 1,
+          cat_id: this.VUE_APP_COURSE_CAT_2
+        }),
         // courseService.series({
         //   page_size: 3,
         //   page: 1
@@ -320,17 +320,17 @@ export default {
       ])
         .then(
           ([
-            // courseCategory1,
-            // courseCategory2,
-            // courses1,
-            // courses2,
+            courseCategory1,
+            courseCategory2,
+            courses1,
+            courses2,
             // series,
             camps
           ]) => {
-            // this.courseCategory1 = courseCategory1;
-            // this.courseCategory2 = courseCategory2;
-            // this.courses1 = courses1.list;
-            // this.courses2 = courses2.list;
+            this.courseCategory1 = courseCategory1;
+            this.courseCategory2 = courseCategory2;
+            this.courses1 = courses1.list;
+            this.courses2 = courses2.list;
             // this.series = series.list;
             this.camps = camps.list;
           }
