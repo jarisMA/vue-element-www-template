@@ -378,7 +378,7 @@ export default {
         }
         &.active {
           &::before {
-            background-image: url("~images/xs_normal.svg");
+            background-image: url("~images/xs_hover.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
@@ -403,7 +403,7 @@ export default {
         }
         &.active {
           &::before {
-            background-image: url("~images/bd_normal.svg");
+            background-image: url("~images/bd_hover.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
@@ -430,7 +430,7 @@ export default {
         }
         &.active {
           &::before {
-            background-image: url("~images/gc_normal.svg");
+            background-image: url("~images/gc_hover.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
