@@ -419,8 +419,7 @@ export default {
           page: this.pagination.page,
           page_size: this.pagination.size
         })
-        .then(res => {
-          const { data } = res;
+        .then(data => {
           if (flag) {
             this.commodities = this.commodities.concat(data.list);
           } else {
