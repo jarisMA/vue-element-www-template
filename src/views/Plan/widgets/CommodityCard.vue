@@ -78,58 +78,58 @@ export default {
       if (!this.values || this.values.length < 1) {
         return skus;
       }
-      const size_x = this.values.filter(item => item.type === "size_x");
-      const size_y = this.values.filter(item => item.type === "size_y");
-      const size_z = this.values.filter(item => item.type === "size_z");
-      const values = this.values
-        .filter(item => item.type === "value")
-        .map(item => item.value.id);
-      skus = skus.filter(sku => {
-        let flag = true;
-        if (size_x.length > 0) {
-          if (size_x[0].value.min_size_x) {
-            if (sku.size_x < size_x[0].value.min_size_x) {
-              flag = false;
-            }
-          }
-          if (size_x[0].value.max_size_x) {
-            if (sku.size_x > size_x[0].value.max_size_x) {
-              flag = false;
-            }
-          }
-        }
-        if (size_y.length > 0) {
-          if (size_y[0].value.min_size_y) {
-            if (sku.size_y < size_y[0].value.min_size_y) {
-              flag = false;
-            }
-          }
-          if (size_y[0].value.max_size_y) {
-            if (sku.size_y > size_y[0].value.max_size_y) {
-              flag = false;
-            }
-          }
-        }
-        if (size_z.length > 0) {
-          if (size_z[0].value.min_size_z) {
-            if (sku.size_z < size_z[0].value.min_size_z) {
-              flag = false;
-            }
-          }
-          if (size_z[0].value.max_size_z) {
-            if (sku.size_z > size_z[0].value.max_size_z) {
-              flag = false;
-            }
-          }
-        }
-        return (
-          flag &&
-          (values.length > 0
-            ? sku.values.filter(item => values.indexOf(item.value_id) > -1)
-                .length > 0
-            : true)
-        );
-      });
+      // const size_x = this.values.filter(item => item.type === "size_x");
+      // const size_y = this.values.filter(item => item.type === "size_y");
+      // const size_z = this.values.filter(item => item.type === "size_z");
+      // const values = this.values
+      //   .filter(item => item.type === "value")
+      //   .map(item => item.value.id);
+      // skus = skus.filter(sku => {
+      //   let flag = true;
+      //   if (size_x.length > 0) {
+      //     if (size_x[0].value.min_size_x) {
+      //       if (sku.size_x < size_x[0].value.min_size_x) {
+      //         flag = false;
+      //       }
+      //     }
+      //     if (size_x[0].value.max_size_x) {
+      //       if (sku.size_x > size_x[0].value.max_size_x) {
+      //         flag = false;
+      //       }
+      //     }
+      //   }
+      //   if (size_y.length > 0) {
+      //     if (size_y[0].value.min_size_y) {
+      //       if (sku.size_y < size_y[0].value.min_size_y) {
+      //         flag = false;
+      //       }
+      //     }
+      //     if (size_y[0].value.max_size_y) {
+      //       if (sku.size_y > size_y[0].value.max_size_y) {
+      //         flag = false;
+      //       }
+      //     }
+      //   }
+      //   if (size_z.length > 0) {
+      //     if (size_z[0].value.min_size_z) {
+      //       if (sku.size_z < size_z[0].value.min_size_z) {
+      //         flag = false;
+      //       }
+      //     }
+      //     if (size_z[0].value.max_size_z) {
+      //       if (sku.size_z > size_z[0].value.max_size_z) {
+      //         flag = false;
+      //       }
+      //     }
+      //   }
+      //   return (
+      //     flag &&
+      //     (values.length > 0
+      //       ? sku.values.filter(item => values.indexOf(item.value_id) > -1)
+      //         .length > 0
+      //       : true)
+      //   );
+      // });
       return skus;
     }
   },
