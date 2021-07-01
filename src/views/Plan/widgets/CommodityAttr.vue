@@ -346,7 +346,7 @@
           <div class="size-content">
             <img
               :src="
-                activeCat
+                activeCat && activeCat.size_legend_url
                   ? activeCat.size_legend_url
                   : parentCat.size_legend_url
               "
