@@ -114,7 +114,10 @@ export default {
         .then(([res, attaches]) => {
           this.detail = res.camp_term;
           this.feedback = res.feedback;
-          this.categories = res.categories;
+          this.categories = res.categories.filter(
+            item =>
+            item.type != 3
+          );
           this.homeworks = res.homeworks.filter(
             item =>
               item.is_online === 1 &&
