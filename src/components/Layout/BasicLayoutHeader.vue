@@ -348,13 +348,13 @@ export default {
           color: #000000;
           z-index: 2;
         }
-        &:hover,
-        &.active {
+        &:hover {
           .header-nav-item_name {
             color: #fff;
           }
         }
-        &:active {
+        &:active,
+        &.active {
           .header-nav-item_name {
             color: @primaryColor;
           }
@@ -366,8 +366,7 @@ export default {
           height: 60px;
           background-image: url("~images/xs_normal.svg");
         }
-        &:hover,
-        &.active {
+        &:hover {
           &::before {
             background-image: url("~images/xs_hover.svg");
           }
@@ -377,8 +376,6 @@ export default {
             background-image: url("~images/xs_pressing.svg");
           }
         }
-<<<<<<< HEAD
-=======
         &.active {
           &::before {
             background-image: url("~images/xs_normal.svg");
@@ -387,7 +384,6 @@ export default {
             color: @primaryColor;
           }
         }
->>>>>>> hotfix-header
       }
       .Notes {
         &:before {
@@ -395,8 +391,7 @@ export default {
           height: 60px;
           background-image: url("~images/bd_normal.svg");
         }
-        &:hover,
-        &.active {
+        &:hover {
           &::before {
             background-image: url("~images/bd_hover.svg");
           }
@@ -406,8 +401,6 @@ export default {
             background-image: url("~images/bd_pressing.svg");
           }
         }
-<<<<<<< HEAD
-=======
         &.active {
           &::before {
             background-image: url("~images/bd_normal.svg");
@@ -416,7 +409,6 @@ export default {
             color: @primaryColor;
           }
         }
->>>>>>> hotfix-header
       }
       .Question {
         width: 160px;
@@ -426,8 +418,7 @@ export default {
           height: 60px;
           background-image: url("~images/gc_normal.svg");
         }
-        &:hover,
-        &.active {
+        &:hover {
           &::before {
             background-image: url("~images/gc_hover.svg");
           }
@@ -437,8 +428,6 @@ export default {
             background-image: url("~images/gc_pressing.svg");
           }
         }
-<<<<<<< HEAD
-=======
         &.active {
           &::before {
             background-image: url("~images/gc_normal.svg");
@@ -447,7 +436,6 @@ export default {
             color: @primaryColor;
           }
         }
->>>>>>> hotfix-header
         .header-nav-item_name {
           top: 5px;
           line-height: 31px;
