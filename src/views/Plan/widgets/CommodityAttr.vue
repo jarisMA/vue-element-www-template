@@ -557,11 +557,21 @@ export default {
     };
   },
   watch: {
+    parentCat(val) {
+      if (val) {
+        this.getBrands(val.id);
+        this.getAttrsByCatId(val.id);
+      }
+    },
     activeCat(val) {
       if (val) {
+        this.getBrands(val.id);
         this.getAttrsByCatId(val.id);
       } else {
-        this.getAttrsByCatId(this.parentCat.id);
+        if (this.parentCat) {
+          this.getBrands(this.parentCat.id);
+          this.getAttrsByCatId(this.parentCat.id);
+        }
       }
     }
   },
@@ -612,8 +622,8 @@ export default {
   },
   created() {
     this.getAttrs();
-    this.getBrands();
     if (this.parentCat) {
+      this.getBrands(this.parentCat.id);
       this.getAttrsByCatId(this.parentCat.id);
     }
   },
@@ -630,10 +640,14 @@ export default {
         }
       });
     },
-    getBrands() {
-      commodityService.brands().then(res => {
-        this.brands = res;
-      });
+    getBrands(catId) {
+      commodityService
+        .brands({
+          cat_id: catId
+        })
+        .then(res => {
+          this.brands = res;
+        });
     },
     getAttrsByCatId(catId) {
       commodityService.catAttrs(catId).then(res => {

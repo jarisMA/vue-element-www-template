@@ -8,8 +8,8 @@ const commodityService = {
   cat: id => {
     return request.get(API.commodityCat(id));
   },
-  brands: () => {
-    return request.get(API.commodityBrands);
+  brands: (params = {}) => {
+    return request.get(API.commodityBrands, params);
   },
   commodities: (params = {}) => {
     return request.post(API.commodities, params);
