@@ -41,7 +41,7 @@
               ]"
               @click="(visible || theme !== 'primary') && goAcademy()"
             >
-              <span class="header-nav-item_name">斗西家学社</span>
+              
             </label>
             <label
               :class="[
@@ -54,7 +54,7 @@
               ]"
               @click="(visible || theme !== 'primary') && goBible()"
             >
-              <span class="header-nav-item_name">斗西家宝典</span>
+              
             </label>
             <label
               :class="[
@@ -64,7 +64,7 @@
               ]"
               @click="(visible || theme !== 'primary') && goQuestion()"
             >
-              <span class="header-nav-item_name">斗西家广场</span>
+            
             </label>
           </nav>
         </transition>
@@ -328,8 +328,7 @@ export default {
         align-items: center;
         justify-content: center;
         position: relative;
-        height: 31px;
-        width: 131px;
+ 
         cursor: pointer;
         &::before {
           content: "";
@@ -338,7 +337,7 @@ export default {
           vertical-align: middle;
         }
         & + .header-nav-item {
-          margin-left: 85px;
+          margin-left: 65px;
         }
         .header-nav-item_name {
           position: absolute;
@@ -363,23 +362,23 @@ export default {
       }
       .My {
         &::before {
-          width: 131px;
-          height: 31px;
-          background-image: url("~images/xs_normal.png");
+          width: 160px;
+          height: 60px;
+          background-image: url("~images/xs_normal.svg");
         }
         &:hover {
           &::before {
-            background-image: url("~images/xs_hover.png");
+            background-image: url("~images/xs_hover.svg");
           }
         }
         &:active {
           &::before {
-            background-image: url("~images/xs_pressing.png");
+            background-image: url("~images/xs_pressing.svg");
           }
         }
         &.active {
           &::before {
-            background-image: url("~images/xs_normal.png");
+            background-image: url("~images/xs_normal.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
@@ -388,23 +387,23 @@ export default {
       }
       .Notes {
         &:before {
-          width: 131px;
-          height: 31px;
-          background-image: url("~images/bd_normal.png");
+          width: 160px;
+          height: 60px;
+          background-image: url("~images/bd_normal.svg");
         }
         &:hover {
           &::before {
-            background-image: url("~images/bd_hover.png");
+            background-image: url("~images/bd_hover.svg");
           }
         }
         &:active {
           &::before {
-            background-image: url("~images/bd_pressing.png");
+            background-image: url("~images/bd_pressing.svg");
           }
         }
         &.active {
           &::before {
-            background-image: url("~images/bd_normal.png");
+            background-image: url("~images/bd_normal.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
@@ -412,27 +411,26 @@ export default {
         }
       }
       .Question {
-        margin-top: -5px;
-        width: 128px;
-        height: 36px;
+        width: 160px;
+        height: 60px;
         &:before {
-          width: 128px;
-          height: 36px;
-          background-image: url("~images/gc_normal.png");
+          width: 160px;
+          height: 60px;
+          background-image: url("~images/gc_normal.svg");
         }
         &:hover {
           &::before {
-            background-image: url("~images/gc_hover.png");
+            background-image: url("~images/gc_hover.svg");
           }
         }
         &:active {
           &::before {
-            background-image: url("~images/gc_pressing.png");
+            background-image: url("~images/gc_pressing.svg");
           }
         }
         &.active {
           &::before {
-            background-image: url("~images/gc_normal.png");
+            background-image: url("~images/gc_normal.svg");
           }
           .header-nav-item_name {
             color: @primaryColor;
