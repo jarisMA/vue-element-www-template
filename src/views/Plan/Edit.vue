@@ -181,15 +181,12 @@ export default {
   },
   created() {
     if (this.$route.name === "EditPlan") {
+      this.showSoftware = true;
       if (this.$route.query.tool == "true") {
         this.showTexture = true;
-        this.showSoftware = true;
       }
       if (this.$route.query.texture == "true") {
         this.showTexture = true;
-      }
-      if (this.$route.query.software == "true") {
-        this.showSoftware = true;
       }
     }
     this.getData();
