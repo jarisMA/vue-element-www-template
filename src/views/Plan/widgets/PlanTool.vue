@@ -342,6 +342,7 @@ export default {
       }
     },
     activeCat() {
+      this.handleValueReset();
       if (this.activeParentCat) {
         this.getCommodity();
       }

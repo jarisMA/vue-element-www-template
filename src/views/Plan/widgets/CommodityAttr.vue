@@ -564,6 +564,7 @@ export default {
       }
     },
     activeCat(val) {
+      this.attrFocusId = 0;
       if (val) {
         this.getBrands(val.id);
         this.getAttrsByCatId(val.id);
@@ -621,7 +622,6 @@ export default {
     }
   },
   created() {
-    this.getAttrs();
     if (this.parentCat) {
       this.getBrands(this.parentCat.id);
       this.getAttrsByCatId(this.parentCat.id);
@@ -629,17 +629,6 @@ export default {
   },
   methods: {
     hex2Rgba,
-    getAttrs() {
-      commodityService.attrs().then(res => {
-        if (this.type === "texture") {
-          this.attrs = res.filter(
-            item => item.id != process.env.VUE_APP_TOOL_TEXTURE_ATTR_ID
-          );
-        } else {
-          this.attrs = res;
-        }
-      });
-    },
     getBrands(catId) {
       commodityService
         .brands({
@@ -651,7 +640,16 @@ export default {
     },
     getAttrsByCatId(catId) {
       commodityService.catAttrs(catId).then(res => {
-        this.moreAttrs = res;
+        if (this.type === "texture") {
+          this.attrs = res.filter(
+            item =>
+              item.id != process.env.VUE_APP_TOOL_TEXTURE_ATTR_ID &&
+              item.is_system_attr
+          );
+        } else {
+          this.attrs = res.filter(item => item.is_system_attr);
+        }
+        this.moreAttrs = res.filter(item => !item.is_system_attr);
       });
     },
     handleAttrFocusChange(id) {
