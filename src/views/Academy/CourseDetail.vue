@@ -23,13 +23,9 @@
               >{{ "¥" + course.current_price }}</label
             >
             <label
-              class="page-main-price"
-              v-else-if="
-                course.price_type === COURSE_PRICE_TYPE_PAY && course.permission
-              "
-              >已购买</label
+              class="page-vip-benefit"
+              v-else-if="course.is_vip && isVip()"
             >
-            <label class="page-vip-benefit" v-if="course.is_vip && isVip()">
               <label class="page-main-price page-vip-price">{{
                 "¥" + course.current_price
               }}</label>
@@ -38,6 +34,14 @@
                 <label class="page-freestudy">免费学</label>
               </div>
             </label>
+
+            <label
+              class="page-main-price"
+              v-else-if="
+                course.price_type === COURSE_PRICE_TYPE_PAY && course.permission
+              "
+              >已购买</label
+            >
             <div class="page-main-info-right">
               <label v-if="false" class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
