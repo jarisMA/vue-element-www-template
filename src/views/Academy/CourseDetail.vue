@@ -9,11 +9,35 @@
             :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
           />
           <div class="page-main-info">
-            <label class="page-main-price">{{
-              course.price_type === COURSE_PRICE_TYPE_PAY
-                ? "¥" + course.current_price
-                : "免费"
-            }}</label>
+            <label
+              class="page-main-price"
+              v-if="course.price_type !== COURSE_PRICE_TYPE_PAY"
+              >免费</label
+            >
+            <label
+              class="page-main-price"
+              v-else-if="
+                course.price_type === COURSE_PRICE_TYPE_PAY &&
+                  !course.permission
+              "
+              >{{ "¥" + course.current_price }}</label
+            >
+            <label
+              class="page-main-price"
+              v-else-if="
+                course.price_type === COURSE_PRICE_TYPE_PAY && course.permission
+              "
+              >已购买</label
+            >
+            <label class="page-vip-benefit" v-if="course.is_vip && isVip()">
+              <label class="page-main-price page-vip-price">{{
+                "¥" + course.current_price
+              }}</label>
+              <div class="page-vip-hint">
+                <label class="page-vip">VIP</label>
+                <label class="page-freestudy">免费学</label>
+              </div>
+            </label>
             <div class="page-main-info-right">
               <label v-if="false" class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
@@ -231,6 +255,7 @@ export default {
             })
             .finally(() => {
               this.loading = false;
+              console.log(this.course);
             });
           this.loading = false;
         })
@@ -288,6 +313,33 @@ export default {
           font-size: 24px;
           color: @primaryColor;
         }
+        .page-vip-benefit {
+          display: flex;
+        }
+        .page-vip-hint {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 85px;
+          height: 32px;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 16px;
+          background-color: #efefef;
+
+          .page-vip {
+            margin-right: 7px;
+            color: #ffbd12;
+          }
+          .page-freestudy {
+            color: #000;
+          }
+        }
+        .page-vip-price {
+          margin-right: 8px;
+          text-decoration: line-through;
+        }
+
         .page-main-info-right {
           display: flex;
           align-items: center;
