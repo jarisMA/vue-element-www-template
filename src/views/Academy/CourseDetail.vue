@@ -5,8 +5,8 @@
         <div class="page-main-left">
           <the-loading-image
             :width="780"
-            :height="439"
-            :url="course.cover_url"
+            :height="440"
+            :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
           />
           <div class="page-main-info">
             <label
@@ -43,7 +43,7 @@
                 >{{ course.study_count }}人正在学</label
               >
               <el-button
-                :class="[course.isvip ? 'vip-btn' : 'page-main-btn']"
+                :class="[course.is_vip ? 'vip-btn' : 'page-main-btn']"
                 type="primary"
                 @click="
                   course.permission ? goCourse(course.id, 1) : handleOrder()
@@ -53,7 +53,7 @@
               </el-button>
               <el-button
                 class="vip-free"
-                v-if="course.isvip && !isVip()"
+                v-if="course.is_vip && !isVip()"
                 @click="goVip()"
               >
                 <span style="font-weight:600">开通VIP</span>
@@ -84,7 +84,7 @@
                   :class="[
                     'page-lesson-item',
                     lessonStatus(index) === 3 ? 'active' : '',
-                    lessonStatus(index) === 4 ? 'completed' : '',
+                    lessonStatus(index) === 4 ? 'completed' : ''
                   ]"
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
@@ -96,7 +96,7 @@
                     <i
                       :class="[
                         'lesson-item-icon',
-                        lessonStatusIconClass(index),
+                        lessonStatusIconClass(index)
                       ]"
                     ></i>
                     <h5 class="lesson-item-title ellipsis">
@@ -160,19 +160,19 @@ export default {
       COURSE_PRICE_TYPE_PAY,
       loading: true,
       course: {},
-      relations: [],
+      relations: []
     };
   },
   watch: {
     ["$route"]() {
       this.getData();
-    },
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放， 5 不能播放
-      return (index) => {
+      return index => {
         const { lessons, permission } = this.course;
         if (!permission) {
           return 5;
@@ -188,7 +188,7 @@ export default {
       };
     },
     lessonStatusText() {
-      return (index) => {
+      return index => {
         const status = this.lessonStatus(index);
         const { lessons } = this.course;
         const lesson = lessons[index];
@@ -206,7 +206,7 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return (index) => {
+      return index => {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -225,7 +225,7 @@ export default {
         }
         return iconClass;
       };
-    },
+    }
   },
   created() {
     this.getData();
@@ -239,16 +239,16 @@ export default {
       this.loading = true;
       courseSerive
         .course(this.$route.params.id)
-        .then((course) => {
+        .then(course => {
           this.course = course;
           const withoutIds = [this.$route.params.id];
           courseSerive
             .courses({
               page_size: 4,
               page: 1,
-              withoutIds,
+              withoutIds
             })
-            .then((relation) => {
+            .then(relation => {
               this.relations = relation.list;
             })
             .finally(() => {
@@ -264,8 +264,8 @@ export default {
     goDetail(id) {
       this.$router.push({
         params: {
-          id,
-        },
+          id
+        }
       });
     },
     handleOrder() {
@@ -277,13 +277,13 @@ export default {
         .addOrder({
           type: ORDER_TYPE_COURSE,
           resource_id: this.course.id,
-          remark: "购买课程",
+          remark: "购买课程"
         })
-        .then((res) => {
+        .then(res => {
           goOrder(res.no);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
