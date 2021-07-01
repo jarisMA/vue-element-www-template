@@ -9,19 +9,41 @@
             :url="course.cover_url"
           />
           <div class="page-main-info">
-            <label class="page-main-price">{{
-              course.price_type === COURSE_PRICE_TYPE_PAY
-                ? "¥" + course.current_price
-                : "免费"
-            }}</label>
+            <label
+              class="page-main-price"
+              v-if="course.price_type !== COURSE_PRICE_TYPE_PAY"
+              >免费</label
+            >
+            <label
+              class="page-main-price"
+              v-if="
+                course.price_type === COURSE_PRICE_TYPE_PAY &&
+                  !course.permission
+              "
+              >{{ "¥" + course.current_price }}</label
+            >
+            <label
+              class="page-main-price"
+              v-if="
+                course.price_type === COURSE_PRICE_TYPE_PAY && course.permission
+              "
+              >已购买</label
+            >
+            <label class="page-vip-benefit" v-if="course.is_vip && isVip()">
+              <label class="page-main-price page-vip-price">{{
+                "¥" + course.current_price
+              }}</label>
+              <div class="page-vip-hint">
+                <label class="page-vip">VIP</label>
+                <label class="page-freestudy">免费学</label>
+              </div>
+            </label>
             <div class="page-main-info-right">
               <label v-if="false" class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
               >
               <el-button
-                :class="[
-                  course.is_vip ? 'vip-btn' : 'page-main-btn'
-                ]"
+                :class="[course.isvip ? 'vip-btn' : 'page-main-btn']"
                 type="primary"
                 @click="
                   course.permission ? goCourse(course.id, 1) : handleOrder()
@@ -31,7 +53,7 @@
               </el-button>
               <el-button
                 class="vip-free"
-                v-if="course.is_vip && !isVip()"
+                v-if="course.isvip && !isVip()"
                 @click="goVip()"
               >
                 <span style="font-weight:600">开通VIP</span>
@@ -62,7 +84,7 @@
                   :class="[
                     'page-lesson-item',
                     lessonStatus(index) === 3 ? 'active' : '',
-                    lessonStatus(index) === 4 ? 'completed' : ''
+                    lessonStatus(index) === 4 ? 'completed' : '',
                   ]"
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
@@ -74,7 +96,7 @@
                     <i
                       :class="[
                         'lesson-item-icon',
-                        lessonStatusIconClass(index)
+                        lessonStatusIconClass(index),
                       ]"
                     ></i>
                     <h5 class="lesson-item-title ellipsis">
@@ -138,19 +160,19 @@ export default {
       COURSE_PRICE_TYPE_PAY,
       loading: true,
       course: {},
-      relations: []
+      relations: [],
     };
   },
   watch: {
     ["$route"]() {
       this.getData();
-    }
+    },
   },
   computed: {
     ...mapState(["userInfo"]),
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放， 5 不能播放
-      return index => {
+      return (index) => {
         const { lessons, permission } = this.course;
         if (!permission) {
           return 5;
@@ -166,7 +188,7 @@ export default {
       };
     },
     lessonStatusText() {
-      return index => {
+      return (index) => {
         const status = this.lessonStatus(index);
         const { lessons } = this.course;
         const lesson = lessons[index];
@@ -184,7 +206,7 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return index => {
+      return (index) => {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -203,7 +225,7 @@ export default {
         }
         return iconClass;
       };
-    }
+    },
   },
   created() {
     this.getData();
@@ -217,20 +239,21 @@ export default {
       this.loading = true;
       courseSerive
         .course(this.$route.params.id)
-        .then(course => {
+        .then((course) => {
           this.course = course;
           const withoutIds = [this.$route.params.id];
           courseSerive
             .courses({
               page_size: 4,
               page: 1,
-              withoutIds
+              withoutIds,
             })
-            .then(relation => {
+            .then((relation) => {
               this.relations = relation.list;
             })
             .finally(() => {
               this.loading = false;
+              console.log(this.course);
             });
           this.loading = false;
         })
@@ -241,8 +264,8 @@ export default {
     goDetail(id) {
       this.$router.push({
         params: {
-          id
-        }
+          id,
+        },
       });
     },
     handleOrder() {
@@ -254,13 +277,13 @@ export default {
         .addOrder({
           type: ORDER_TYPE_COURSE,
           resource_id: this.course.id,
-          remark: "购买课程"
+          remark: "购买课程",
         })
-        .then(res => {
+        .then((res) => {
           goOrder(res.no);
         });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -288,6 +311,33 @@ export default {
           font-size: 24px;
           color: @primaryColor;
         }
+        .page-vip-benefit {
+          display: flex;
+        }
+        .page-vip-hint {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 85px;
+          height: 32px;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 16px;
+          background-color: #efefef;
+
+          .page-vip {
+            margin-right: 7px;
+            color: #ffbd12;
+          }
+          .page-freestudy {
+            color: #000;
+          }
+        }
+        .page-vip-price {
+          margin-right: 8px;
+          text-decoration: line-through;
+        }
+
         .page-main-info-right {
           display: flex;
           align-items: center;
