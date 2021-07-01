@@ -45,7 +45,7 @@
             homework.user_homework
               ? HOMEWORK_STATUS[homework.user_homework.status]
               : isExpired
-              ? "已过期"
+              ? "已截止"
               : "待提交"
           }}
         </label>
@@ -60,25 +60,22 @@
             <icon-svg svg-class="clock-icon"
                       svg-name="clock" />
           </span> -->
-          最佳日期：<span class="homework-time">{{
-            formatDate(homework.best_at)
+          最佳日期<span class="bold">{{
+            formatDate(homework.best_at, "YYYY.MM.DD")
           }}</span>
         </span>
-        <span class="homework-end">
-          <img src="~images/term/homework-end.svg" class="homework-margin" />
-          截止日期：<span class="homework-time">{{
-            formatDate(homework.end_at)
-          }}</span>
-          <template
-            v-if="formNowFormatDay(homework.end_at) > -1"
-            class="homework-time"
-          >
-            （剩余{{
-              formNowFormatDay(homework.end_at) > 0
-                ? formNowFormatDay(homework.end_at) + "天"
-                : countDownTime
-            }}）
-          </template>
+        <span class="homework-end"
+          >截止日期
+          <span class="bold">
+            {{ formatDate(homework.end_at, "YYYY.MM.DD") }}
+            <template v-if="formNowFormatDay(homework.end_at) > -1">
+              剩余{{
+                formNowFormatDay(homework.end_at) > 0
+                  ? formNowFormatDay(homework.end_at) + "天"
+                  : countDownTime
+              }}
+            </template>
+          </span>
         </span>
       </div>
     </div>
@@ -217,16 +214,15 @@ import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
 import ThePreviewImage from "components/ThePreviewImage";
 import TheFold from "components/TheFold";
-
 import { formatDate, formNowFormatDay } from "utils/moment";
 import { USER_HOMEWORK_SCORE } from "utils/const";
 import warningImg from "images/warning.png";
 
 const HOMEWORK_STATUS = {
-  0: "待批复",
-  1: "待批复", // 保存草稿
-  2: "已批复",
-  3: "被驳回" // 已驳回
+  0: "待批改",
+  1: "待提交", // 保存草稿
+  2: "批改完成",
+  3: "已驳回，待修改" // 已驳回
 };
 
 const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
@@ -358,7 +354,7 @@ export default {
   .homework-name-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 24px;
+    margin-bottom: 20px;
     .homework-name {
       max-width: 690px;
       line-height: 20px;
@@ -372,47 +368,68 @@ export default {
     .homework-status {
       position: relative;
       margin-left: 15px;
-      height: 20px;
-      padding: 0 7px;
-      line-height: 20px;
+      padding: 4px 12px 4px 20px;
+      line-height: 16px;
       font-size: 12px;
       font-weight: 400;
-      color: @unsubmit;
-      border: 1px solid @unsubmit;
-      &.unsubmit,
-      &.rejected {
-        color: #fff;
-        background: @unsubmit;
+      border-radius: 12px;
+      &.unsubmit {
+        color: #e6752a;
+        background: #f9f3ef;
         &::after {
           position: absolute;
-          left: -4px;
-          top: -4px;
-          width: 8px;
-          height: 8px;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
           content: "";
-          background: @unsubmit;
+          background: #e6752a;
           border: 1px solid #fff;
           border-radius: 50%;
         }
       }
       &.expired {
-        color: @expired;
-        border-color: @expired;
+        color: #606c66;
+        background: #f4f4f4;
       }
       &.uncorrected {
-        color: @uncorrected;
-        border-color: @uncorrected;
+        color: #4c5adc;
+        background: #eff0f9;
+        &::after {
+          position: absolute;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
+          content: "";
+          background: #4c5adc;
+          border: 1px solid #fff;
+          border-radius: 50%;
+        }
       }
       &.corrected {
         color: @primaryColor;
-        border-color: @primaryColor;
+        background: #e7f9f2;
+        &::after {
+          position: absolute;
+          left: 5px;
+          top: 6px;
+          content: url("~images/term/tick.svg");
+        }
       }
       &.rejected {
-        color: #fff;
-        background: @rejected;
-        border-color: @rejected;
+        color: #c84c4c;
+        background: #fcecec;
         &::after {
-          background: @rejected;
+          position: absolute;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
+          content: "";
+          background: #c84c4c;
+          border: 1px solid #fff;
+          border-radius: 50%;
         }
       }
     }
@@ -423,15 +440,15 @@ export default {
     font-size: 14px;
     font-weight: 400;
     .homework-start {
-      display: inline-flex;
-      justify-content: center;
-      align-items: center;
-      line-height: 16px;
       padding: 8px;
-      font-size: 12px;
-      font-weight: 400;
       background-color: #eff9f4;
       color: @primaryColor;
+      &::before {
+        position: relative;
+        top: 3px;
+        content: url("~images/term/best-before.svg");
+      }
+
       .clock-icon {
         display: inline-block;
         margin-right: 6px;
@@ -439,23 +456,17 @@ export default {
       }
     }
     .homework-end {
-      display: inline-flex;
-      margin-left: 8px;
-      justify-content: center;
-      align-items: center;
-      line-height: 16px;
+      display: inline-block;
       padding: 8px;
-      font-size: 12px;
-      font-weight: 400;
-      background-color: #f4f4f4;
+      margin-left: 15px;
       color: #606c66;
-
-      .homework-margin {
+      background-color: #f4f4f4;
+      &::before {
+        position: relative;
+        top: 3px;
         margin-right: 4px;
+        content: url("~images/term/deadline.svg");
       }
-    }
-    .homework-time {
-      font-weight: 600;
     }
   }
   .fold-wrapper {
@@ -885,5 +896,9 @@ blockquote {
 
 .ql-indent-1 {
   padding-left: 3em;
+}
+.bold {
+  margin-left: 4px;
+  font-weight: 600;
 }
 </style>

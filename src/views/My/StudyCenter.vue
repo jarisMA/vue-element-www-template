@@ -104,16 +104,14 @@ export default {
 
 <style lang="less" scoped>
 .page-content {
-  display: flex;
-  align-items: center;
-  height: 100%;
+  height: 5px;
   padding-top: 20px;
   padding-bottom: 20px;
 
   .container-1180 {
     display: flex;
     width: 1180px;
-    height: 1180px;
+    height: 100%;
     background-color: #fff;
 
     .page-left {
@@ -188,24 +186,15 @@ export default {
     }
 
     .page-right {
-      position: relative;
       width: 955px;
       height: 100%;
       padding: 40px 0 0 40px;
-      overflow: hidden;
 
       .pagination {
-        position: absolute;
-        top: 95%;
-        left: 30%;
+        margin-top: 80px;
         font-size: 12px;
         line-height: 12px;
-        /* identical to box height, or 100% */
-
         text-align: center;
-
-        /* Font/gray */
-
         color: #606c66;
       }
     }
