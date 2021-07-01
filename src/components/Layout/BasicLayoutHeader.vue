@@ -152,7 +152,7 @@ import {
   goQuestion,
   goAcademy,
   goVip,
-  goNotification,
+  goNotification
 } from "utils/routes";
 import TheAvatar from "../TheAvatar.vue";
 import { isVip } from "utils/function";
@@ -386,7 +386,7 @@ export default {
         }
       }
       .Notes {
-        &:before {
+        &::before {
           width: 160px;
           height: 60px;
           background-image: url("~images/bd_normal.svg");
