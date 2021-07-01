@@ -8,40 +8,11 @@
             :height="440"
             :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
           />
-          <div class="page-main-info">
-            <label
-              class="page-main-price"
-              v-if="course.price_type === COURSE_PRICE_TYPE_FREE"
-              >免费</label
-            >
-            <label
-              class="page-vip-benefit"
-              v-else-if="
-                course.price_type === COURSE_PRICE_TYPE_PAY &&
-                  course.is_vip &&
-                  isVip()
-              "
-            >
-              <label class="page-main-price page-vip-price">{{
-                "¥" + course.current_price
-              }}</label>
-              <div class="page-vip-hint">
-                <label class="page-vip">VIP</label>
-                <label class="page-freestudy">免费学</label>
-              </div>
-            </label>
-            <label
-              class="page-main-price"
-              v-else-if="
-                course.price_type === COURSE_PRICE_TYPE_PAY &&
-                  course.permission &&
-                  !course.is_vip
-              "
-              >已购买</label
-            >
-
-            <label class="page-main-price" v-else>{{
-              "¥" + course.current_price
+          <div class="page-main-info" v-show="!loading">
+            <label class="page-main-price">{{
+              course.price_type === COURSE_PRICE_TYPE_PAY
+                ? "¥" + course.current_price
+                : "免费"
             }}</label>
 
             <div class="page-main-info-right">

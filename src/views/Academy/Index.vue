@@ -3,97 +3,97 @@
     <div class="academy-banner" ref="banner">
       <day-logo-svg
         ref="dayLogoSvg"
-        @mousedown="e => mousedown(e, 'dayLogoSvg')"
+        @mousedown="(e) => mousedown(e, 'dayLogoSvg')"
         class="day-logo-svg"
         :style="{ zIndex: 2 }"
       />
       <docee-svg
         ref="doceeSvg"
-        @mousedown="e => mousedown(e, 'doceeSvg')"
+        @mousedown="(e) => mousedown(e, 'doceeSvg')"
         class="docee-svg"
         :style="{ zIndex: 3 }"
       />
       <dog-svg
         ref="dogSvg"
-        @mousedown="e => mousedown(e, 'dogSvg')"
+        @mousedown="(e) => mousedown(e, 'dogSvg')"
         class="dog-svg"
         :style="{ zIndex: 1 }"
       />
       <dxjxs-svg
         ref="dxjxsSvg"
-        @mousedown="e => mousedown(e, 'dxjxsSvg')"
+        @mousedown="(e) => mousedown(e, 'dxjxsSvg')"
         class="dxjxs-svg"
         :style="{ zIndex: 1 }"
       />
       <dz-svg
         ref="dzSvg"
-        @mousedown="e => mousedown(e, 'dzSvg')"
+        @mousedown="(e) => mousedown(e, 'dzSvg')"
         class="dz-svg"
         :style="{ zIndex: 1 }"
       />
       <gz-svg
         ref="gzSvg"
-        @mousedown="e => mousedown(e, 'gzSvg')"
+        @mousedown="(e) => mousedown(e, 'gzSvg')"
         class="gz-svg"
         :style="{ zIndex: 1 }"
       />
       <hb-svg
         ref="hbSvg"
-        @mousedown="e => mousedown(e, 'hbSvg')"
+        @mousedown="(e) => mousedown(e, 'hbSvg')"
         class="hb-svg"
         :style="{ zIndex: 1 }"
       />
       <jz-svg
         ref="jzSvg"
-        @mousedown="e => mousedown(e, 'jzSvg')"
+        @mousedown="(e) => mousedown(e, 'jzSvg')"
         class="jz-svg"
         :style="{ zIndex: 1 }"
       />
       <ldd-svg
         ref="lddSvg"
-        @mousedown="e => mousedown(e, 'lddSvg')"
+        @mousedown="(e) => mousedown(e, 'lddSvg')"
         class="ldd-svg"
         :style="{ zIndex: 2 }"
       />
       <lsy-svg
         ref="lsySvg"
-        @mousedown="e => mousedown(e, 'lsySvg')"
+        @mousedown="(e) => mousedown(e, 'lsySvg')"
         class="lsy-svg"
         :style="{ zIndex: 2 }"
       />
       <sf-svg
         ref="sfSvg"
-        @mousedown="e => mousedown(e, 'sfSvg')"
+        @mousedown="(e) => mousedown(e, 'sfSvg')"
         class="sf-svg"
         :style="{ zIndex: 2 }"
       />
       <sz-svg
         ref="szSvg"
-        @mousedown="e => mousedown(e, 'szSvg')"
+        @mousedown="(e) => mousedown(e, 'szSvg')"
         class="sz-svg"
         :style="{ zIndex: 1 }"
       />
       <xg-svg
         ref="xgSvg"
-        @mousedown="e => mousedown(e, 'xgSvg')"
+        @mousedown="(e) => mousedown(e, 'xgSvg')"
         class="xg-svg"
         :style="{ zIndex: 1 }"
       />
       <yz-svg
         ref="yzSvg"
-        @mousedown="e => mousedown(e, 'yzSvg')"
+        @mousedown="(e) => mousedown(e, 'yzSvg')"
         class="yz-svg"
         :style="{ zIndex: 1 }"
       />
       <zwj-svg
         ref="zwjSvg"
-        @mousedown="e => mousedown(e, 'zwjSvg')"
+        @mousedown="(e) => mousedown(e, 'zwjSvg')"
         class="zwj-svg"
         :style="{ zIndex: 1 }"
       />
       <zz-svg
         ref="zzSvg"
-        @mousedown="e => mousedown(e, 'zzSvg')"
+        @mousedown="(e) => mousedown(e, 'zzSvg')"
         class="zz-svg"
         :style="{ zIndex: 4 }"
       />
@@ -207,7 +207,7 @@ import courseService from "service/course";
 import {
   goAcademyCourseList,
   goAcademySeriesList,
-  goAcademyCampList
+  goAcademyCampList,
 } from "utils/routes";
 import CampCard from "./widgets/CampCard";
 import SetCard from "./widgets/SetCard";
@@ -234,7 +234,7 @@ export default {
     ZzSvg,
     CampCard,
     SetCard,
-    CourseCardFront
+    CourseCardFront,
   },
   data() {
     return {
@@ -251,7 +251,7 @@ export default {
       courses1: [],
       courses2: [],
       series: [],
-      camps: []
+      camps: [],
     };
   },
   created() {
@@ -283,12 +283,12 @@ export default {
         courseService.courses({
           page_size: 3,
           page: 1,
-          cat_id: this.VUE_APP_COURSE_CAT_1
+          cat_id: this.VUE_APP_COURSE_CAT_1,
         }),
         courseService.courses({
           page_size: 3,
           page: 1,
-          cat_id: this.VUE_APP_COURSE_CAT_2
+          cat_id: this.VUE_APP_COURSE_CAT_2,
         }),
         // courseService.series({
         //   page_size: 3,
@@ -296,8 +296,8 @@ export default {
         // }),
         campService.camps({
           page_size: 2,
-          page: 1
-        })
+          page: 1,
+        }),
       ])
         .then(
           ([
@@ -306,7 +306,7 @@ export default {
             courses1,
             courses2,
             // series,
-            camps
+            camps,
           ]) => {
             this.courseCategory1 = courseCategory1;
             this.courseCategory2 = courseCategory2;
@@ -364,7 +364,7 @@ export default {
       const maxX = minX + el.clientWidth;
       const maxY = minY + el.clientHeight;
       let zIndex = el.style.zIndex - 0;
-      doms.forEach(dom => {
+      doms.forEach((dom) => {
         const dMinX = dom.offsetLeft;
         const dMinY = dom.offsetTop;
         const dMaxX = dom.offsetLeft + dom.clientWidth;
@@ -385,8 +385,8 @@ export default {
         }
       });
       el.style.zIndex = zIndex - 0 + 1;
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -608,10 +608,16 @@ export default {
       }
       .academy-course-list {
         display: flex;
-        justify-content: space-between;
         width: 100%;
         padding: 20px 26px;
         background-color: white;
+
+        .academy-course-item {
+          &:nth-child(2) {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+        }
       }
     }
     .academy-content-more.center {
