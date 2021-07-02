@@ -10,8 +10,7 @@
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
                   category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
-                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
-                  category.type === null ? 'default-icon' : ''
+                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
                 ]"
               ></i>
             </div>
@@ -346,6 +345,7 @@ export default {
       background-color: #2c3330;
       mask-repeat: no-repeat;
       mask-size: cover;
+      mask-image: url("~images/academy/note.svg");
       &.active {
         background-color: @primaryColor;
       }
@@ -367,9 +367,6 @@ export default {
       }
       &.complete-icon {
         mask-image: url("~images/academy/complete.svg");
-      }
-      &.default-icon {
-        mask-image: url("~images/academy/note.svg");
       }
     }
   }
