@@ -143,7 +143,6 @@ export default {
                 type: "success",
                 title: "删除成功"
               });
-              this.plans.splice(index, 1);
               this.getPlan();
             });
         })
