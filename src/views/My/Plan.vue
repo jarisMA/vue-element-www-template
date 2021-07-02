@@ -134,6 +134,7 @@ export default {
           showCloseBtn: false
         })
         .then(async () => {
+          this.loading = true;
           kujialeService
             .deleteDesign({
               plan_id: plan.planId
@@ -143,11 +144,19 @@ export default {
                 type: "success",
                 title: "删除成功"
               });
-              this.getPlan();
+              if (this.planTotalCount <= this.planCount) {
+                this.plans.splice(index, 1);
+                this.loading = false;
+              } else {
+                const timer = setTimeout(() => {
+                  this.getPlan();
+                  clearTimeout(timer);
+                }, 300);
+              }
             });
         })
         .catch(() => {
-          // ...
+          this.loading = false;
         });
     },
     beforeCloseDialog(done) {
