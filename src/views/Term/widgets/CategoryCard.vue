@@ -1,7 +1,7 @@
 <template>
   <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
     <el-collapse>
-      <el-collapse-item>
+      <el-collapse-item :disabled="category.type === null">
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -10,7 +10,8 @@
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
                   category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
-                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
+                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
+                  category.type === null ? 'default-icon' : ''
                 ]"
               ></i>
             </div>
@@ -366,6 +367,9 @@ export default {
       }
       &.complete-icon {
         mask-image: url("~images/academy/complete.svg");
+      }
+      &.default-icon {
+        mask-image: url("~images/academy/note.svg");
       }
     }
   }

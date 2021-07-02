@@ -108,7 +108,6 @@ export default {
       padding: 4px 0;
 
       .current-price {
-        line-height: 30px;
         padding: 5px 12px;
         margin-right: 5px;
         font-weight: 600;
