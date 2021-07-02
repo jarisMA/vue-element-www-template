@@ -157,9 +157,6 @@ export default {
         })
         .catch(() => {
           this.loading = false;
-        })
-        .catch(() => {
-          // ...
         });
     },
     beforeCloseDialog(done) {
