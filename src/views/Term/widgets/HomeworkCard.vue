@@ -38,14 +38,14 @@
             corrected:
               homework.user_homework && homework.user_homework.status === 2,
             rejected:
-              homework.user_homework && homework.user_homework.status === 3
+              homework.user_homework && homework.user_homework.status === 3,
           }"
         >
           {{
             homework.user_homework
               ? HOMEWORK_STATUS[homework.user_homework.status]
               : isExpired
-              ? "已过期"
+              ? "已截止"
               : "待提交"
           }}
         </label>
@@ -56,17 +56,26 @@
             <icon-svg svg-class="clock-icon"
                       svg-name="clock" />
           </span> -->
-          最佳提交日期：{{ formatDate(homework.best_at) }}
+          最佳日期<span class="bold">{{
+            formatDate(homework.best_at, "YYYY.MM.DD")
+          }}</span>
         </span>
         <span class="homework-end"
-          >最迟截止日期：{{ formatDate(homework.end_at) }}
-          <template v-if="formNowFormatDay(homework.end_at) > -1">
-            （剩余{{
-              formNowFormatDay(homework.end_at) > 0
-                ? formNowFormatDay(homework.end_at) + "天"
-                : countDownTime
-            }}）
-          </template>
+          >截止日期
+          <span class="bold">
+            {{ formatDate(homework.end_at, "YYYY.MM.DD") }}
+            <template v-if="formNowFormatDay(homework.end_at) > -1">
+              剩余
+              <span class="homework-rest">
+                {{
+                  formNowFormatDay(homework.end_at) > 0
+                    ? formNowFormatDay(homework.end_at)
+                    : countDownTime
+                }}
+                天
+              </span>
+            </template>
+          </span>
         </span>
       </div>
     </div>
@@ -111,22 +120,8 @@
       >
         <div class="homework-desc">
           <label class="homework-label">
-            设计阐述与说明：
+            设计方案与阐述：
           </label>
-          <div class="homework-desc-content">
-            <the-fold :maxHeight="224" :isFold="fold">
-              <div class="homework-desc-content_info">
-                <div class="homework-desc-info">
-                  <p v-for="(desc, key) of q_content.split('\n')" :key="key">
-                    {{ desc }}
-                  </p>
-                </div>
-                <div class="homework-desc-image" v-if="q_images.length > 0">
-                  <the-preview-image :srcList="q_images" />
-                </div>
-              </div>
-            </the-fold>
-          </div>
         </div>
         <div class="homework-plan-card">
           <div class="card-left">
@@ -141,11 +136,14 @@
               {{ homework.user_homework.study_design_name }}
             </h4>
             <div class="card-desc">
-              <label>详细信息：</label>
-              <span class="card-type">
-                {{ parseInt(homework.user_homework.study_design_src_area) }}㎡ |
-                {{ homework.user_homework.study_design_spec_name }}
-              </span>
+              <div>
+                <span class="card-type">
+                  {{ parseInt(homework.user_homework.study_design_src_area) }}㎡
+                </span>
+                <span class="card-structure">
+                  {{ homework.user_homework.study_design_spec_name }}
+                </span>
+              </div>
               <span class="card-address">
                 <i class="el-icon-location-outline"></i>
                 {{ homework.user_homework.study_design_city }}
@@ -153,6 +151,20 @@
               </span>
             </div>
           </div>
+        </div>
+        <div class="homework-desc-content">
+          <the-fold :maxHeight="224" :isFold="fold">
+            <div class="homework-desc-content_info">
+              <div class="homework-desc-info">
+                <p v-for="(desc, key) of q_content.split('\n')" :key="key">
+                  {{ desc }}
+                </p>
+              </div>
+              <div class="homework-desc-image" v-if="q_images.length > 0">
+                <the-preview-image :srcList="q_images" />
+              </div>
+            </div>
+          </the-fold>
         </div>
       </div>
       <div
@@ -205,23 +217,22 @@ import TheLoadingImage from "components/TheLoadingImage";
 import TheAvatar from "components/TheAvatar";
 import ThePreviewImage from "components/ThePreviewImage";
 import TheFold from "components/TheFold";
-
 import { formatDate, formNowFormatDay } from "utils/moment";
 import { USER_HOMEWORK_SCORE } from "utils/const";
 import warningImg from "images/warning.png";
 
 const HOMEWORK_STATUS = {
-  0: "待批复",
-  1: "待批复", // 保存草稿
-  2: "已批复",
-  3: "被驳回" // 已驳回
+  0: "待批改",
+  1: "待提交", // 保存草稿
+  2: "批改完成",
+  3: "已驳回，待修改", // 已驳回
 };
 
 const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
   0: "作业已提交",
   1: "作业已提交",
   2: "作业已批改",
-  3: "重新提交" // 已驳回
+  3: "重新提交", // 已驳回
 };
 
 export default {
@@ -230,13 +241,13 @@ export default {
     TheLoadingImage,
     TheAvatar,
     ThePreviewImage,
-    TheFold
+    TheFold,
   },
   props: {
     homework: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -248,7 +259,7 @@ export default {
       q_content: "",
       q_images: [],
       countDownTime: "",
-      timer: null
+      timer: null,
     };
   },
   watch: {
@@ -257,7 +268,7 @@ export default {
       this.q_images = [];
       this.parseContent(val.user_homework && val.user_homework.q_content);
       this.judgeExpired();
-    }
+    },
   },
   created() {
     this.judgeExpired();
@@ -307,10 +318,10 @@ export default {
         img: warningImg,
         theme: "img_w_100",
         content:
-          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳提交日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">最迟截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
+          '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
         confirmBtnText: "知道了",
         showCancelBtn: false,
-        showCloseBtn: false
+        showCloseBtn: false,
       });
     },
     countDown(dis) {
@@ -320,8 +331,8 @@ export default {
       dis -= minute * 1000 * 60;
       const second = Math.floor(dis / 1000);
       this.countDownTime = hour + "小时" + minute + "分钟" + second + "秒";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -340,13 +351,13 @@ export default {
   // height: 82px;
   background: #ffffff;
   .homework-info {
-    padding: 25px 20px 24px;
+    padding: 20px 20px 34px;
     cursor: pointer;
   }
   .homework-name-wrapper {
     display: flex;
     align-items: center;
-    margin-bottom: 11px;
+    margin-bottom: 20px;
     .homework-name {
       max-width: 690px;
       line-height: 20px;
@@ -360,47 +371,69 @@ export default {
     .homework-status {
       position: relative;
       margin-left: 15px;
-      height: 20px;
-      padding: 0 7px;
-      line-height: 20px;
+      padding: 4px 12px 4px 20px;
+      line-height: 16px;
       font-size: 12px;
       font-weight: 400;
-      color: @unsubmit;
-      border: 1px solid @unsubmit;
-      &.unsubmit,
-      &.rejected {
-        color: #fff;
-        background: @unsubmit;
+      border-radius: 12px;
+      &.unsubmit {
+        color: #e6752a;
+        background: #f9f3ef;
         &::after {
           position: absolute;
-          left: -4px;
-          top: -4px;
-          width: 8px;
-          height: 8px;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
           content: "";
-          background: @unsubmit;
+          background: #e6752a;
           border: 1px solid #fff;
           border-radius: 50%;
         }
       }
       &.expired {
-        color: @expired;
-        border-color: @expired;
+        padding: 4px 12px;
+        color: #606c66;
+        background: #f4f4f4;
       }
       &.uncorrected {
-        color: @uncorrected;
-        border-color: @uncorrected;
+        color: #4c5adc;
+        background: #eff0f9;
+        &::after {
+          position: absolute;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
+          content: "";
+          background: #4c5adc;
+          border: 1px solid #fff;
+          border-radius: 50%;
+        }
       }
       &.corrected {
         color: @primaryColor;
-        border-color: @primaryColor;
+        background: #e7f9f2;
+        &::after {
+          position: absolute;
+          left: 5px;
+          top: 6px;
+          content: url("~images/term/tick.svg");
+        }
       }
       &.rejected {
-        color: #fff;
-        background: @rejected;
-        border-color: @rejected;
+        color: #c84c4c;
+        background: #fcecec;
         &::after {
-          background: @rejected;
+          position: absolute;
+          left: 10px;
+          top: 9px;
+          width: 4px;
+          height: 4px;
+          content: "";
+          background: #c84c4c;
+          border: 1px solid #fff;
+          border-radius: 50%;
         }
       }
     }
@@ -411,7 +444,15 @@ export default {
     font-size: 14px;
     font-weight: 400;
     .homework-start {
+      padding: 8px;
+      background-color: #eff9f4;
       color: @primaryColor;
+      &::before {
+        position: relative;
+        top: 3px;
+        content: url("~images/term/best-before.svg");
+      }
+
       .clock-icon {
         display: inline-block;
         margin-right: 6px;
@@ -420,8 +461,19 @@ export default {
     }
     .homework-end {
       display: inline-block;
+      padding: 8px;
       margin-left: 15px;
-      color: #d40000ff;
+      color: #606c66;
+      background-color: #f4f4f4;
+      &::before {
+        position: relative;
+        top: 3px;
+        margin-right: 4px;
+        content: url("~images/term/deadline.svg");
+      }
+      .homework-rest {
+        margin: 0px 2px;
+      }
     }
   }
   .fold-wrapper {
@@ -430,8 +482,6 @@ export default {
   .homework-desc-wrapper {
     padding: 20px 0;
     min-height: 64px;
-    display: flex;
-    align-items: flex-start;
     border-top: 1px dashed #e6e6e6ff;
     .homework-whole {
       position: relative;
@@ -461,7 +511,7 @@ export default {
       position: relative;
       width: 100%;
       min-height: 75px;
-      background: #f5f5f5;
+      background: #fafafa;
 
       .homework-desc-content_info {
         padding: 10px;
@@ -473,7 +523,7 @@ export default {
   }
   .homework-reply-wrapper {
     margin: 0 0 40px;
-    padding: 20px 20px 0;
+    padding: 20px 0;
     width: 100%;
     border-top: 1px dashed #e6e6e6ff;
     .reply-teacher-info {
@@ -488,7 +538,7 @@ export default {
       margin-top: 12px;
       position: relative;
       min-height: 156px;
-      background: #f5f5f5;
+      background: #fafafa;
       &::after {
         position: absolute;
         top: -10px;
@@ -538,12 +588,11 @@ export default {
     }
     .homework-plan-card {
       display: flex;
-      margin-top: 27px;
-      width: 50%;
-      height: 224px;
-      padding: 10px;
-      background: #fbfbfb;
-      box-shadow: 0px 0px 12px 0px #cccccc;
+      margin: 12px 0px 12px;
+      width: 100%;
+      height: 216px;
+      padding: 8px;
+      background: #fafafa;
       .card-left {
         width: 200px;
         height: 200px;
@@ -563,7 +612,7 @@ export default {
         .card-desc {
           display: flex;
           flex-direction: column;
-          line-height: 1;
+          line-height: 18px;
           font-size: 12px;
           font-weight: 400;
           color: #ababab;
@@ -575,6 +624,21 @@ export default {
           span {
             display: inline-block;
             margin-top: 10px;
+          }
+          .card-type {
+            margin-right: 10px;
+            &::before {
+              position: relative;
+              top: 3px;
+              content: url("~images/term/area.svg");
+            }
+          }
+          .card-structure {
+            &::before {
+              position: relative;
+              top: 3px;
+              content: url("~images/term/structure.svg");
+            }
           }
         }
       }
@@ -604,13 +668,13 @@ export default {
 .fold-label {
   position: absolute;
   right: 21px;
-  bottom: 10px;
+  bottom: 24px;
   height: 16px;
   cursor: pointer;
   .unfold-icon,
   .fold-icon {
     width: 24px;
-    height: 16px;
+    height: 24px;
   }
 }
 .score-icon {
@@ -851,5 +915,9 @@ blockquote {
 
 .ql-indent-1 {
   padding-left: 3em;
+}
+.bold {
+  margin-left: 4px;
+  font-weight: 600;
 }
 </style>
