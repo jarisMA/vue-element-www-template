@@ -38,7 +38,7 @@
             corrected:
               homework.user_homework && homework.user_homework.status === 2,
             rejected:
-              homework.user_homework && homework.user_homework.status === 3
+              homework.user_homework && homework.user_homework.status === 3,
           }"
         >
           {{
@@ -136,11 +136,14 @@
               {{ homework.user_homework.study_design_name }}
             </h4>
             <div class="card-desc">
-              <label>详细信息：</label>
-              <span class="card-type">
-                {{ parseInt(homework.user_homework.study_design_src_area) }}㎡ |
-                {{ homework.user_homework.study_design_spec_name }}
-              </span>
+              <div>
+                <span class="card-type">
+                  {{ parseInt(homework.user_homework.study_design_src_area) }}㎡
+                </span>
+                <span class="card-structure">
+                  {{ homework.user_homework.study_design_spec_name }}
+                </span>
+              </div>
               <span class="card-address">
                 <i class="el-icon-location-outline"></i>
                 {{ homework.user_homework.study_design_city }}
@@ -222,14 +225,14 @@ const HOMEWORK_STATUS = {
   0: "待批改",
   1: "待提交", // 保存草稿
   2: "批改完成",
-  3: "已驳回，待修改" // 已驳回
+  3: "已驳回，待修改", // 已驳回
 };
 
 const HOMEWORK_STATUS_UPLOAD_DISPLAY = {
   0: "作业已提交",
   1: "作业已提交",
   2: "作业已批改",
-  3: "重新提交" // 已驳回
+  3: "重新提交", // 已驳回
 };
 
 export default {
@@ -238,13 +241,13 @@ export default {
     TheLoadingImage,
     TheAvatar,
     ThePreviewImage,
-    TheFold
+    TheFold,
   },
   props: {
     homework: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -256,7 +259,7 @@ export default {
       q_content: "",
       q_images: [],
       countDownTime: "",
-      timer: null
+      timer: null,
     };
   },
   watch: {
@@ -265,7 +268,7 @@ export default {
       this.q_images = [];
       this.parseContent(val.user_homework && val.user_homework.q_content);
       this.judgeExpired();
-    }
+    },
   },
   created() {
     this.judgeExpired();
@@ -318,7 +321,7 @@ export default {
           '<p style="font-size:20px;line-height:30px;color:#333;text-align:left;"><span style="color:#14AF64FF;">最佳日期</span>之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span style="color:#D0021BFF;">截止日期</span>，则本节课作业无法提交。（注：不影响下次作业提交）</p>',
         confirmBtnText: "知道了",
         showCancelBtn: false,
-        showCloseBtn: false
+        showCloseBtn: false,
       });
     },
     countDown(dis) {
@@ -328,8 +331,8 @@ export default {
       dis -= minute * 1000 * 60;
       const second = Math.floor(dis / 1000);
       this.countDownTime = hour + "小时" + minute + "分钟" + second + "秒";
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -585,7 +588,7 @@ export default {
     }
     .homework-plan-card {
       display: flex;
-      margin: 12px 0px 16px;
+      margin: 12px 0px 12px;
       width: 100%;
       height: 216px;
       padding: 8px;
@@ -609,7 +612,7 @@ export default {
         .card-desc {
           display: flex;
           flex-direction: column;
-          line-height: 1;
+          line-height: 18px;
           font-size: 12px;
           font-weight: 400;
           color: #ababab;
@@ -621,6 +624,21 @@ export default {
           span {
             display: inline-block;
             margin-top: 10px;
+          }
+          .card-type {
+            margin-right: 10px;
+            &::before {
+              position: relative;
+              top: 3px;
+              content: url("~images/term/area.svg");
+            }
+          }
+          .card-structure {
+            &::before {
+              position: relative;
+              top: 3px;
+              content: url("~images/term/structure.svg");
+            }
           }
         }
       }
