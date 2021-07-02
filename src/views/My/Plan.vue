@@ -143,7 +143,10 @@ export default {
                 type: "success",
                 title: "删除成功"
               });
-              this.plans.splice(index, 1);
+            const timer = setTimeout(() => {
+              this.getPlan();
+              clearTimeout(timer);
+            }, 2000);
             });
         })
         .catch(() => {
