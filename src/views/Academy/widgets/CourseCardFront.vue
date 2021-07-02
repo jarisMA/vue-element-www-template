@@ -12,7 +12,11 @@
         <h4 class="card-title">{{ course.name }}</h4>
         <div class="card-info">
           <div>
-           <label class="current-price" v-if="course.price_type === COURSE_PRICE_TYPE_FREE">免费</label>
+            <label
+              class="current-price"
+              v-if="course.price_type === COURSE_PRICE_TYPE_FREE"
+              >免费</label
+            >
             <label class="card-info-text" v-if="COURSE_LEVEL[course.level]">
               {{ COURSE_LEVEL[course.level] }}
             </label>
@@ -36,7 +40,11 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
-import { COURSE_LEVEL, COURSE_PRICE_TYPE_PAY, COURSE_PRICE_TYPE_FREE } from "utils/const";
+import {
+  COURSE_LEVEL,
+  COURSE_PRICE_TYPE_PAY,
+  COURSE_PRICE_TYPE_FREE
+} from "utils/const";
 import { goAcademyCourseDetail } from "utils/routes";
 
 export default {
@@ -99,16 +107,15 @@ export default {
       margin-top: 8px;
       padding: 4px 0;
 
-        .current-price {
-    line-height: 30px;
-    padding: 5px 12px;
-    margin-right: 5px;
-    font-weight: 600;
-    font-size: 12px;
-    color: white;
-    background-color: @primaryColor;
-    cursor: pointer;
-  }
+      .current-price {
+        padding: 5px 12px;
+        margin-right: 5px;
+        font-weight: 600;
+        font-size: 12px;
+        color: white;
+        background-color: @primaryColor;
+        cursor: pointer;
+      }
       .card-bottom-footer-right {
         display: flex;
         align-items: center;

@@ -41,7 +41,6 @@
               ]"
               @click="(visible || theme !== 'primary') && goAcademy()"
             >
-              
             </label>
             <label
               :class="[
@@ -54,7 +53,6 @@
               ]"
               @click="(visible || theme !== 'primary') && goBible()"
             >
-              
             </label>
             <label
               :class="[
@@ -64,7 +62,6 @@
               ]"
               @click="(visible || theme !== 'primary') && goQuestion()"
             >
-            
             </label>
           </nav>
         </transition>
@@ -328,7 +325,7 @@ export default {
         align-items: center;
         justify-content: center;
         position: relative;
- 
+
         cursor: pointer;
         &::before {
           content: "";
