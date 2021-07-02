@@ -69,11 +69,15 @@
           <span class="bold">
             {{ formatDate(homework.end_at, "YYYY.MM.DD") }}
             <template v-if="formNowFormatDay(homework.end_at) > -1">
-              剩余{{
-                formNowFormatDay(homework.end_at) > 0
-                  ? formNowFormatDay(homework.end_at) + "天"
-                  : countDownTime
-              }}
+              剩余
+              <span class="homework-rest">
+                {{
+                  formNowFormatDay(homework.end_at) > 0
+                    ? formNowFormatDay(homework.end_at)
+                    : countDownTime
+                }}
+                天
+              </span>
             </template>
           </span>
         </span>
@@ -120,22 +124,8 @@
       >
         <div class="homework-desc">
           <label class="homework-label">
-            设计阐述与说明：
+            设计方案与阐述：
           </label>
-          <div class="homework-desc-content">
-            <the-fold :maxHeight="224" :isFold="fold">
-              <div class="homework-desc-content_info">
-                <div class="homework-desc-info">
-                  <p v-for="(desc, key) of q_content.split('\n')" :key="key">
-                    {{ desc }}
-                  </p>
-                </div>
-                <div class="homework-desc-image" v-if="q_images.length > 0">
-                  <the-preview-image :srcList="q_images" />
-                </div>
-              </div>
-            </the-fold>
-          </div>
         </div>
         <div class="homework-plan-card">
           <div class="card-left">
@@ -162,6 +152,20 @@
               </span>
             </div>
           </div>
+        </div>
+        <div class="homework-desc-content">
+          <the-fold :maxHeight="224" :isFold="fold">
+            <div class="homework-desc-content_info">
+              <div class="homework-desc-info">
+                <p v-for="(desc, key) of q_content.split('\n')" :key="key">
+                  {{ desc }}
+                </p>
+              </div>
+              <div class="homework-desc-image" v-if="q_images.length > 0">
+                <the-preview-image :srcList="q_images" />
+              </div>
+            </div>
+          </the-fold>
         </div>
       </div>
       <div
@@ -389,6 +393,7 @@ export default {
         }
       }
       &.expired {
+        padding: 4px 12px;
         color: #606c66;
         background: #f4f4f4;
       }
@@ -467,6 +472,9 @@ export default {
         margin-right: 4px;
         content: url("~images/term/deadline.svg");
       }
+      .homework-rest {
+        margin: 0px 2px;
+      }
     }
   }
   .fold-wrapper {
@@ -475,8 +483,6 @@ export default {
   .homework-desc-wrapper {
     padding: 20px 0;
     min-height: 64px;
-    display: flex;
-    align-items: flex-start;
     border-top: 1px dashed #e6e6e6ff;
     .homework-whole {
       position: relative;
@@ -506,7 +512,7 @@ export default {
       position: relative;
       width: 100%;
       min-height: 75px;
-      background: #f5f5f5;
+      background: #fafafa;
 
       .homework-desc-content_info {
         padding: 10px;
@@ -518,7 +524,7 @@ export default {
   }
   .homework-reply-wrapper {
     margin: 0 0 40px;
-    padding: 20px 20px 0;
+    padding: 20px 0;
     width: 100%;
     border-top: 1px dashed #e6e6e6ff;
     .reply-teacher-info {
@@ -533,7 +539,7 @@ export default {
       margin-top: 12px;
       position: relative;
       min-height: 156px;
-      background: #f5f5f5;
+      background: #fafafa;
       &::after {
         position: absolute;
         top: -10px;
@@ -583,12 +589,11 @@ export default {
     }
     .homework-plan-card {
       display: flex;
-      margin-top: 27px;
-      width: 50%;
-      height: 224px;
-      padding: 10px;
-      background: #fbfbfb;
-      box-shadow: 0px 0px 12px 0px #cccccc;
+      margin: 12px 0px 16px;
+      width: 100%;
+      height: 216px;
+      padding: 8px;
+      background: #fafafa;
       .card-left {
         width: 200px;
         height: 200px;
@@ -649,13 +654,13 @@ export default {
 .fold-label {
   position: absolute;
   right: 21px;
-  bottom: 10px;
+  bottom: 24px;
   height: 16px;
   cursor: pointer;
   .unfold-icon,
   .fold-icon {
     width: 24px;
-    height: 16px;
+    height: 24px;
   }
 }
 .score-icon {
