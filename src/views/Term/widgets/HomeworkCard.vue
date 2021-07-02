@@ -52,10 +52,6 @@
       </div>
       <div class="homework-time-wrapper">
         <span class="homework-start">
-          <img
-            src="~images/term/homework-start.svg"
-            style="margin-right: 4px"
-          />
           <!-- <span @click.stop="showTips">
             <icon-svg svg-class="clock-icon"
                       svg-name="clock" />
