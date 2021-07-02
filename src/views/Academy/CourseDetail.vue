@@ -8,7 +8,7 @@
             :height="440"
             :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
           />
-          <div class="page-main-info">
+          <div class="page-main-info" v-show="!loading">
             <label class="page-main-price">{{
               course.price_type === COURSE_PRICE_TYPE_PAY
                 ? "¥" + course.current_price

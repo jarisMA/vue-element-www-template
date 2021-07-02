@@ -1,22 +1,6 @@
 <template>
   <div class="card" @click="goAcademyCourseDetail(course.id)">
     <div class="card-top">
-      <div class="card-price">
-        <div class="vip-free" v-if="course.is_vip">
-          <span class="vip">VIP</span
-          ><span style="margin-left: 4px;">免费学</span>
-        </div>
-        <div class="not-free" v-else>
-          <label class="current-price">{{
-            course.price_type === COURSE_PRICE_TYPE_PAY
-              ? "¥" + course.current_price
-              : "免费"
-          }}</label>
-          <label class="orgin-price" v-if="course.origin_price > 0"
-            >¥{{ course.origin_price }}</label
-          >
-        </div>
-      </div>
       <the-loading-image
         :width="368"
         :height="200"
@@ -28,6 +12,11 @@
         <h4 class="card-title">{{ course.name }}</h4>
         <div class="card-info">
           <div>
+            <label
+              class="current-price"
+              v-if="course.price_type === COURSE_PRICE_TYPE_FREE"
+              >免费</label
+            >
             <label class="card-info-text" v-if="COURSE_LEVEL[course.level]">
               {{ COURSE_LEVEL[course.level] }}
             </label>
@@ -51,7 +40,11 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
-import { COURSE_LEVEL, COURSE_PRICE_TYPE_PAY } from "utils/const";
+import {
+  COURSE_LEVEL,
+  COURSE_PRICE_TYPE_PAY,
+  COURSE_PRICE_TYPE_FREE
+} from "utils/const";
 import { goAcademyCourseDetail } from "utils/routes";
 
 export default {
@@ -68,6 +61,7 @@ export default {
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
+      COURSE_PRICE_TYPE_FREE,
       COURSE_LEVEL
     };
   },
@@ -112,6 +106,17 @@ export default {
       justify-content: space-between;
       margin-top: 8px;
       padding: 4px 0;
+
+      .current-price {
+        line-height: 30px;
+        padding: 5px 12px;
+        margin-right: 5px;
+        font-weight: 600;
+        font-size: 12px;
+        color: white;
+        background-color: @primaryColor;
+        cursor: pointer;
+      }
       .card-bottom-footer-right {
         display: flex;
         align-items: center;
@@ -185,15 +190,6 @@ export default {
     }
   }
 
-  .current-price {
-    line-height: 30px;
-    padding: 6px 12px;
-    font-weight: 600;
-    font-size: 12px;
-    color: white;
-    background-color: @primaryColor;
-    cursor: pointer;
-  }
   .orgin-price {
     margin-left: 4px;
     line-height: 24px;
