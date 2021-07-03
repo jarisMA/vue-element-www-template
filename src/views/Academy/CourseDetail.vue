@@ -20,7 +20,9 @@
                 >{{ course.study_count }}人正在学</label
               >
               <el-button
-                :class="[course.is_vip && isVip() ? 'vip-btn' : 'page-main-btn']"
+                :class="[
+                  course.is_vip && isVip() ? 'vip-btn' : 'page-main-btn'
+                ]"
                 type="primary"
                 @click="
                   course.permission ? goCourse(course.id, 1) : handleOrder()

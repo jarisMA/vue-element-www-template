@@ -615,7 +615,7 @@ export default {
           line-height: 18px;
           font-size: 12px;
           font-weight: 400;
-          color: #81948B;
+          color: #81948b;
           label {
             font-size: 14px;
             font-weight: 400;
