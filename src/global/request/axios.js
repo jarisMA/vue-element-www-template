@@ -35,7 +35,7 @@ const handleErrorRequest = error => {
     if (status === 401) {
       Vue.prototype.$notice({
         type: "danger",
-        title: "未登录，请登录重试"
+        title: "登录状态已过期，请重新登录"
       });
       Store.commit("LOGOUT");
     } else if (status === 402) {
