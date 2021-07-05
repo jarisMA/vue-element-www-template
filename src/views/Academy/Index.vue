@@ -608,10 +608,16 @@ export default {
       }
       .academy-course-list {
         display: flex;
-        justify-content: space-between;
         width: 100%;
         padding: 20px 26px;
         background-color: white;
+
+        .academy-course-item {
+          &:nth-child(2) {
+            margin-left: 20px;
+            margin-right: 20px;
+          }
+        }
       }
     }
     .academy-content-more.center {

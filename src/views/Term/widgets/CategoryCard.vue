@@ -1,7 +1,7 @@
 <template>
   <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
     <el-collapse>
-      <el-collapse-item>
+      <el-collapse-item :disabled="category.type === null">
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -345,6 +345,7 @@ export default {
       background-color: #2c3330;
       mask-repeat: no-repeat;
       mask-size: cover;
+      mask-image: url("~images/academy/note.svg");
       &.active {
         background-color: @primaryColor;
       }

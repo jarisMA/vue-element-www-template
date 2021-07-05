@@ -1,13 +1,13 @@
 <template>
   <div class="homework-wrapper">
     <p class="homework-tips">
-      <img class="warning-icon" src="~images/term/warning.png" /><span
-        class="primary"
-        >最佳截止日期</span
-      >之前提交的作业，会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span
-        class="danger"
-        >最迟截止日期</span
-      >，则本节课作业无法提交。（注：不影响下次作业提交）
+      <img class="warning-icon" src="~images/term/warning.svg" /><span
+        class="bold"
+        >最佳日期</span
+      >之前提交的作业会被老师们优先批复，并有机会选为案例或神来之笔。一旦超过<span
+        class="bold"
+        >截止日期</span
+      >，则本节课作业无法提交，但不影响下次作业提交。
     </p>
     <ul class="homework-list">
       <li v-for="homework of homeworks" :key="homework.id">
@@ -173,7 +173,7 @@ import PlanList from "components/PlanList";
 import TheEmpty from "components/TheEmpty";
 import UploadImage from "components/UploadImage";
 import TheLoadingImage from "components/TheLoadingImage";
-
+import { goDrawPlan } from "utils/routes";
 import termService from "service/term";
 import kujialeService from "service/kujiale";
 import submit_hw_img from "images/submit_hw.png";
@@ -223,6 +223,7 @@ export default {
     this.getPlans();
   },
   methods: {
+    goDrawPlan,
     getPlans(start = 1) {
       this.planLoading = true;
       kujialeService
@@ -363,7 +364,7 @@ export default {
     margin-bottom: 5px;
     padding: 10px;
     line-height: 20px;
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 400;
     color: #333;
     background: #f5f5f5;
@@ -379,6 +380,9 @@ export default {
     }
     .danger {
       color: #d0021bff;
+    }
+    .bold {
+      font-weight: 600;
     }
   }
   .homework-list {
