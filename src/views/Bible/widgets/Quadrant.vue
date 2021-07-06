@@ -1,40 +1,69 @@
 <template>
   <div :class="['quadrant-container']">
     <div
+      :class="['quadrant-risk', showRisk ? '' : 'grey']"
+      @click="handleShowRisk"
+    >
+      <img src="~images/bible/risk.svg" />
+    </div>
+    <div
       v-for="(item, key) of axis"
       :class="'axis-' + key"
       :key="key"
       title="坐标名称"
+      :style="{
+        backgroundColor: item.bgColor
+      }"
     >
-      <label
-        class="axis-label"
-        v-if="item.name"
-        :style="{ backgroundColor: item.bgColor }"
-        >{{ item.name }}
-      </label>
+      <label class="axis-label" v-if="item.name">{{ item.name }} </label>
     </div>
 
     <div class="quadrant-wrapper">
-      <div class="x-axis"></div>
-      <div class="y-axis"></div>
+      <img class="x-axis" src="~images/bible/x-axis.svg" />
+      <i
+        class="x-fill"
+        :style="{
+          background: `linear-gradient(to right, ${axis.y_axis_left.bgColor}, ${axis.y_axis_right.bgColor})`
+        }"
+      />
+      <img class="y-axis" src="~images/bible/y-axis.svg" />
+      <i
+        class="y-fill"
+        :style="{
+          background: `linear-gradient(to bottom, ${axis.x_axis_top.bgColor}, ${axis.x_axis_bottom.bgColor})`
+        }"
+      />
       <div
         :class="`quadrant-${key}`"
-        :style="{ backgroundColor: item.bgColor }"
+        :style="{ 'border-color': item.bgColor }"
         v-for="(item, key) of quadrant"
         :key="key"
       >
-        <div class="quadrant-name" title="象限名称">
+        <div
+          class="quadrant-name"
+          title="象限名称"
+          :style="{ backgroundColor: item.bgColor }"
+        >
           <label class="quadrant-name-label" v-if="item.name">{{
             item.name
           }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
+          <div
+            v-show="showRisk"
+            class="quadrant-tips"
+            :style="{ backgroundColor: item.risk ? item.risk.bgColor : '' }"
+          >
+            {{ item.risk ? item.risk.name : "" }}
+          </div>
+
           <quadrant-grid
             :ref="`quadrant-${key}`"
             :theme="key"
             :grids.sync="item.grids"
             :disabled="disabled"
             @gridClick="data => handleQuadrantGridClick(data.image, key)"
+            v-show="!showRisk"
           />
         </div>
       </div>
@@ -171,7 +200,8 @@ export default {
       activeImageKey: {
         quadrant: "first",
         image: 0
-      }
+      },
+      showRisk: false
     };
   },
   watch: {
@@ -212,6 +242,9 @@ export default {
           this.images[key].findIndex(item => item === url) || 0;
         this.showPreviewImage = true;
       }
+    },
+    handleShowRisk() {
+      this.showRisk = !this.showRisk;
     }
   }
 };
@@ -224,6 +257,22 @@ export default {
   position: relative;
   display: inline-block;
   padding: 50px;
+  margin-top: 40px;
+  .quadrant-risk {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    background-color: #ffe7e7;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .grey {
+    filter: grayscale(1);
+  }
+
   .axis-x_axis_top,
   .axis-x_axis_bottom,
   .axis-y_axis_left,
@@ -231,163 +280,222 @@ export default {
     position: absolute;
     .axis-label {
       display: inline-block;
-      padding: 10px;
-      line-height: 20px;
+      line-height: 46px;
       font-weight: 600;
-      font-size: 14px;
+      font-size: 20px;
       word-break: keep-all;
-      background: @primaryColor;
-      border-radius: 2px;
+      color: white;
     }
   }
   .axis-x_axis_top {
-    top: 0;
+    top: -40px;
     left: 50%;
+    width: 112px;
+    height: 46px;
+    text-align: center;
     transform: translateX(-50%);
+    border-radius: 28px;
+    &::before {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100px;
+      height: 34px;
+      border: 6px solid rgba(0, 0, 0, 0.2);
+      border-radius: 28px;
+      background: transparent;
+      content: "";
+    }
   }
   .axis-x_axis_bottom {
-    bottom: 0;
+    bottom: 5px;
     left: 50%;
+    width: 112px;
+    height: 46px;
+    text-align: center;
     transform: translateX(-50%);
+    border-radius: 28px;
+    &::before {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 100px;
+      height: 34px;
+      border: 6px solid rgba(0, 0, 0, 0.2);
+      border-radius: 28px;
+      background: transparent;
+      content: "";
+    }
   }
   .axis-y_axis_left {
     top: 50%;
-    right: calc(100% - 40px);
-    transform: translateY(-50%);
+    right: calc(100% - 35px);
+    transform: translateY(-73%);
+    width: 46px;
+    height: 112px;
+    text-align: center;
+    writing-mode: vertical-rl;
+    border-radius: 28px;
+    &::before {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 34px;
+      height: 100px;
+      border: 6px solid rgba(0, 0, 0, 0.2);
+      border-radius: 28px;
+      background: transparent;
+      content: "";
+    }
   }
   .axis-y_axis_right {
     top: 50%;
-    left: calc(100% - 40px);
-    transform: translateY(-50%);
+    left: calc(100% - 35px);
+    transform: translateY(-73%);
+    width: 46px;
+    height: 112px;
+    text-align: center;
+    writing-mode: vertical-rl;
+    border-radius: 28px;
+    &::before {
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      width: 34px;
+      height: 100px;
+      border: 6px solid rgba(0, 0, 0, 0.2);
+      border-radius: 28px;
+      background: transparent;
+      content: "";
+    }
   }
   .quadrant-wrapper {
     position: relative;
-    width: 1028px;
-    height: 1028px;
+    width: 864px;
+    height: 920px;
     .x-axis {
       position: absolute;
-      top: 50%;
+      top: 432px;
       left: 0;
       width: 100%;
-      height: 4px;
-      background: #2c3330;
-      z-index: 1;
+      height: 48px;
       transform: translateY(-50%);
-      &::before,
-      &::after {
-        position: absolute;
-        top: 0px;
-        width: 8px;
-        height: 8px;
-        border-top: 4px solid #2c3330;
-        border-left: 4px solid #2c3330;
-        content: "";
-      }
-      &::before {
-        left: -4px;
-        transform-origin: center;
-        transform: rotate(-45deg) translate(50%, 0);
-      }
-      &::after {
-        right: 4px;
-        transform: rotate(135deg) translate(-50%, 0);
-      }
+      z-index: 4;
     }
+    .x-fill {
+      position: absolute;
+      top: 432px;
+      left: 0;
+      width: 100%;
+      height: 48px;
+      transform: translateY(-50%);
+      z-index: 3;
+      mask-image: url(~images/bible/x-fill.svg);
+    }
+
     .y-axis {
       position: absolute;
-      top: 0;
+      top: -28px;
       left: 50%;
-      width: 4px;
+      width: 100px;
       height: 100%;
-      background: #2c3330;
-      z-index: 1;
+      z-index: 2;
       transform: translateX(-50%);
-      &::before,
-      &::after {
-        position: absolute;
-        left: 0px;
-        width: 8px;
-        height: 8px;
-        border-top: 4px solid #2c3330;
-        border-left: 4px solid #2c3330;
-        content: "";
-      }
-      &::before {
-        top: -4px;
-        transform-origin: center;
-        transform: rotate(45deg) translate(0, 50%);
-      }
-      &::after {
-        bottom: 4px;
-        transform: rotate(-135deg) translate(0, -50%);
-      }
+    }
+    .y-fill {
+      position: absolute;
+      top: 432px;
+      left: 408px;
+      width: 48px;
+      height: 100%;
+      transform: translateY(-50%);
+      z-index: 1;
+      mask-image: url(~images/bible/y-fill.svg);
     }
     .quadrant-first,
     .quadrant-second,
     .quadrant-third,
     .quadrant-fourth {
       position: absolute;
-      width: 514px;
-      height: 514px;
+      width: 432px;
+      height: 460px;
+      border-width: 12px;
+      border-style: solid;
       .quadrant-grid-wrapper {
         position: absolute;
       }
+
+      .quadrant-tips {
+        line-height: 52px;
+        padding-top: 124px;
+        margin: 45px;
+        width: 300px;
+        height: 300px;
+        text-align: center;
+        font-weight: 800;
+        font-size: 36px;
+        border-radius: 50%;
+      }
+
       .quadrant-name {
         position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        border-radius: 15px;
         .quadrant-name-label {
           display: inline-block;
-          padding: 10px;
-          line-height: 20px;
+          padding: 12px 30px;
+          line-height: 16px;
           font-weight: 600;
-          font-size: 14px;
-          color: #81948b;
+          font-size: 16px;
+          color: #2c3330;
         }
       }
     }
     .quadrant-first {
       left: 0;
-      bottom: 0;
+      bottom: 28px;
       .quadrant-name {
-        bottom: -50px;
+        bottom: -12px;
+        left: -12px;
       }
       .quadrant-grid-wrapper {
-        top: 7px;
-        right: 7px;
+        top: -1px;
+        right: -1px;
       }
     }
     .quadrant-second {
       left: 0;
-      top: 0;
+      top: -28px;
       .quadrant-name {
-        top: -50px;
+        left: -12px;
+        top: -12px;
       }
       .quadrant-grid-wrapper {
-        bottom: 7px;
-        right: 7px;
+        bottom: -1px;
+        right: -1px;
       }
     }
     .quadrant-fourth {
       right: 0;
-      top: 0;
+      top: -28px;
       .quadrant-name {
-        top: -50px;
+        top: -12px;
+        right: -12px;
       }
       .quadrant-grid-wrapper {
-        bottom: 7px;
-        left: 7px;
+        bottom: -1px;
+        left: -1px;
       }
     }
     .quadrant-third {
       right: 0;
-      bottom: 0;
+      bottom: 28px;
       .quadrant-name {
-        bottom: -50px;
+        bottom: -12px;
+        right: -12px;
       }
       .quadrant-grid-wrapper {
-        top: 7px;
-        left: 7px;
+        top: -1px;
+        left: -1px;
       }
     }
   }

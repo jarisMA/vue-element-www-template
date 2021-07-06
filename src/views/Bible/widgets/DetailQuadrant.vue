@@ -59,12 +59,18 @@ export default {
   margin: auto;
   padding: 0 0 30px;
   .bible-submenu-list {
+    position: fixed;
+    top: 136px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 26px 0 30px;
+    background-color: white;
+    z-index: 99;
     .bible-submenu-item {
-      line-height: 20px;
+      line-height: 40px;
       font-size: 14px;
       color: #81948b;
       cursor: pointer;

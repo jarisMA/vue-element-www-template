@@ -414,7 +414,7 @@ export default {
   width: 100%;
   height: 76px;
   background: @primaryColor;
-  z-index: 2;
+  z-index: 3;
   .container-1200 {
     display: flex;
   }
@@ -440,7 +440,8 @@ export default {
   }
 }
 .bible-body {
-  padding-top: 100px;
+  padding-top: 130px;
+  padding-bottom: 50px;
   .container-1200 {
     display: flex;
     position: relative;
