@@ -113,8 +113,8 @@ export default {
           grids.map(function(grid) {
             return grid.x;
           }),
-          6
-        )
+          6 
+        ) 
       );
       this.rowNum = Math.max(
         rowNum,
@@ -123,7 +123,7 @@ export default {
           grids.map(function(grid) {
             return grid.y;
           })
-        )
+        ) 
       );
       this.originLayouts = JSON.parse(JSON.stringify(grids));
       this.layouts = JSON.parse(JSON.stringify(this.originLayouts));

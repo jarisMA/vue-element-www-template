@@ -3,6 +3,7 @@
     <div
       :class="['quadrant-risk', showRisk ? '' : 'grey']"
       @click="handleShowRisk"
+       v-if="quadrant.first.risk"
     >
       <img src="~images/bible/risk.svg" />
     </div>
@@ -260,7 +261,7 @@ export default {
   margin-top: 40px;
   .quadrant-risk {
     position: absolute;
-    top: 0px;
+    top: -28px;
     right: 0px;
     background-color: #ffe7e7;
     width: 32px;
@@ -288,7 +289,7 @@ export default {
     }
   }
   .axis-x_axis_top {
-    top: -40px;
+    top: -34px;
     left: 50%;
     width: 112px;
     height: 46px;
@@ -308,7 +309,7 @@ export default {
     }
   }
   .axis-x_axis_bottom {
-    bottom: 5px;
+    bottom: 22px;
     left: 50%;
     width: 112px;
     height: 46px;
@@ -329,7 +330,7 @@ export default {
   }
   .axis-y_axis_left {
     top: 50%;
-    right: calc(100% - 35px);
+    right: calc(100% - 40px);
     transform: translateY(-73%);
     width: 46px;
     height: 112px;
@@ -350,7 +351,7 @@ export default {
   }
   .axis-y_axis_right {
     top: 50%;
-    left: calc(100% - 35px);
+    left: calc(100% - 40px);
     transform: translateY(-73%);
     width: 46px;
     height: 112px;
