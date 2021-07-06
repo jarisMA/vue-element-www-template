@@ -12,7 +12,7 @@
       :key="key"
       title="坐标名称"
       :style="{
-        backgroundColor: item.bgColor,
+        backgroundColor: item.bgColor
       }"
     >
       <label class="axis-label" v-if="item.name">{{ item.name }} </label>
@@ -23,14 +23,14 @@
       <i
         class="x-fill"
         :style="{
-          background: `linear-gradient(to right, ${axis.y_axis_left.bgColor}, ${axis.y_axis_right.bgColor})`,
+          background: `linear-gradient(to right, ${axis.y_axis_left.bgColor}, ${axis.y_axis_right.bgColor})`
         }"
       />
       <img class="y-axis" src="~images/bible/y-axis.svg" />
       <i
         class="y-fill"
         :style="{
-          background: `linear-gradient(to bottom, ${axis.x_axis_top.bgColor}, ${axis.x_axis_bottom.bgColor})`,
+          background: `linear-gradient(to bottom, ${axis.x_axis_top.bgColor}, ${axis.x_axis_bottom.bgColor})`
         }"
       />
       <div
@@ -62,7 +62,7 @@
             :theme="key"
             :grids.sync="item.grids"
             :disabled="disabled"
-            @gridClick="(data) => handleQuadrantGridClick(data.image, key)"
+            @gridClick="data => handleQuadrantGridClick(data.image, key)"
             v-show="!showRisk"
           />
         </div>
@@ -134,50 +134,50 @@ import QuadrantGrid from "./QuadrantGrid";
 const axis = {
   x_axis_top: {
     name: "",
-    bgColor: "",
+    bgColor: ""
   },
   x_axis_bottom: {
-    name: "",
+    name: ""
   },
   y_axis_left: {
-    name: "",
+    name: ""
   },
   y_axis_right: {
-    name: "",
-  },
+    name: ""
+  }
 };
 const quadrant = {
   first: {
     key: 1,
     name: "",
     bgColor: "",
-    grids: [],
+    grids: []
   },
   second: {
     key: 2,
     name: "",
     bgColor: "",
-    grids: [],
+    grids: []
   },
   third: {
     key: 3,
     name: "",
     bgColor: "",
-    grids: [],
+    grids: []
   },
   fourth: {
     key: 4,
     name: "",
     bgColor: "",
-    grids: [],
-  },
+    grids: []
+  }
 };
 
 const images = {
   first: [],
   second: [],
   third: [],
-  fourth: [],
+  fourth: []
 };
 export default {
   components: { QuadrantGrid },
@@ -185,11 +185,11 @@ export default {
   props: {
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     content: {
-      type: String,
-    },
+      type: String
+    }
   },
   data() {
     return {
@@ -199,9 +199,9 @@ export default {
       images: JSON.parse(JSON.stringify(images)),
       activeImageKey: {
         quadrant: "first",
-        image: 0,
+        image: 0
       },
-      showRisk: false,
+      showRisk: false
     };
   },
   watch: {
@@ -210,27 +210,27 @@ export default {
         const content = JSON.parse(val);
         this.axis = content.axis;
         this.quadrant = content.quadrant;
-        Object.keys(this.quadrant).map((key) => {
+        Object.keys(this.quadrant).map(key => {
           this.images[key] = this.quadrant[key].grids
-            .filter((item) => item.image)
-            .map((item) => item.image);
+            .filter(item => item.image)
+            .map(item => item.image);
         });
       } else {
         this.axis = JSON.parse(JSON.stringify(axis));
         this.quadrant = JSON.parse(JSON.stringify(quadrant));
         this.images = JSON.parse(JSON.stringify(images));
       }
-    },
+    }
   },
   created() {
     if (this.content) {
       const content = JSON.parse(this.content);
       this.axis = content.axis;
       this.quadrant = content.quadrant;
-      Object.keys(this.quadrant).map((key) => {
+      Object.keys(this.quadrant).map(key => {
         this.images[key] = this.quadrant[key].grids
-          .filter((item) => item.image)
-          .map((item) => item.image);
+          .filter(item => item.image)
+          .map(item => item.image);
       });
     }
   },
@@ -239,14 +239,14 @@ export default {
       if (url) {
         this.activeImageKey.quadrant = key;
         this.activeImageKey.image =
-          this.images[key].findIndex((item) => item === url) || 0;
+          this.images[key].findIndex(item => item === url) || 0;
         this.showPreviewImage = true;
       }
     },
     handleShowRisk() {
       this.showRisk = !this.showRisk;
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -352,12 +352,12 @@ export default {
     top: 50%;
     left: calc(100% - 35px);
     transform: translateY(-73%);
-        width: 46px;
+    width: 46px;
     height: 112px;
     text-align: center;
     writing-mode: vertical-rl;
     border-radius: 28px;
-        &::before {
+    &::before {
       position: absolute;
       left: 0px;
       top: 0px;
