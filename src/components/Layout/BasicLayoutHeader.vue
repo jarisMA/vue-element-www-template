@@ -262,7 +262,7 @@ export default {
   height: 60px;
   background-color: #fff;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
-  z-index: 3;
+  z-index: 9;
   .user-icon {
     margin-left: 10px;
     width: 18px;
@@ -343,7 +343,7 @@ export default {
           line-height: 31px;
           font-size: 14px;
           color: #000000;
-          z-index: 2;
+          z-index: 9;
         }
         &:hover {
           .header-nav-item_name {
