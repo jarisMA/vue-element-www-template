@@ -197,7 +197,7 @@ export default {
     riskBtnShow: function() {
       const { first, second, third, fourth } = this.quadrant;
       return [first, second, third, fourth].some(
-        d => d.risk.bgColor || d.risk.name
+        d => d.risk && (d.risk.bgColor || d.risk.name)
       );
     }
   },
