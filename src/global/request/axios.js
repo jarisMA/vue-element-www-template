@@ -3,6 +3,8 @@ import cookies from "js-cookie";
 import Store from "@/store/index.js";
 import { goRoute } from "utils/routes";
 import Vue from "vue";
+import douxiGif from "images/douxi2.gif";
+
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
 
@@ -33,7 +35,18 @@ const handleErrorRequest = error => {
     if (status === 401) {
       Vue.prototype.$notice({
         type: "danger",
-        title: "未登录，请登录重试"
+        title: "登录状态已过期，请重新登录"
+      });
+      Store.commit("LOGOUT");
+    } else if (status === 402) {
+      Vue.prototype.$msgBox.showMsgBox({
+        theme: "chrome_other_tips",
+        img: douxiGif,
+        content: "<p>您的账号在异地登录<p>请重新登录！</p><p>",
+        showCancelBtn: false,
+        showConfirmBtn: true,
+        showCloseBtn: false,
+        maskCancel: true
       });
       Store.commit("LOGOUT");
     } else if (status === 403) {

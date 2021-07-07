@@ -52,7 +52,7 @@
                       <li class="table-header">
                         <label class="order-label">序号</label>
                         <label class="img-label">产品图</label>
-                        <label class="name-label">产品名称</label>
+                        <label class="name-label">商品名称</label>
                         <label class="brand-label">品牌</label>
                         <label class="size-label">尺寸(mm)</label>
                         <label class="number-label">数量</label>
@@ -314,8 +314,9 @@ export default {
                 </tr>
                 <tr>
                   <td>区域</td>
-                  <td width="120">产品图</td>
                   <td>产品名称</td>
+                  <td width="120">产品图</td>
+                  <td>商品名称</td>
                   <td>品牌</td>
                   <td>尺寸(mm)</td>
                   <td>数量</td>
@@ -332,6 +333,7 @@ export default {
           if (good.sku) {
             str += `<tr>
                     <td>${list.typeName}\t</td>
+                    <td>${good.sku.commodity_name || "-"}\t</td>
                     <td height="120">
                       <img width="60" height="60" src="${good.sku.img_id}" />\t
                     </td>

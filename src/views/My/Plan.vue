@@ -151,7 +151,7 @@ export default {
                 const timer = setTimeout(() => {
                   this.getPlan();
                   clearTimeout(timer);
-                }, 300);
+                }, 2000);
               }
             });
         })

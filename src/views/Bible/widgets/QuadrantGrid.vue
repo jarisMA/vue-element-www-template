@@ -106,24 +106,20 @@ export default {
   methods: {
     setLayout(data) {
       const grids = data.filter(item => item.image);
-      this.colNum = Math.max(
-        colNum,
+      this.colNum =
         Math.max.apply(
           Math,
-          grids.map(function(grid) {
+          data.map(function(grid) {
             return grid.x;
           })
-        ) + 1
-      );
-      this.rowNum = Math.max(
-        rowNum,
+        ) + 1;
+      this.rowNum =
         Math.max.apply(
           Math,
-          grids.map(function(grid) {
+          data.map(function(grid) {
             return grid.y;
           })
-        ) + 1
-      );
+        ) + 1;
       this.originLayouts = JSON.parse(JSON.stringify(grids));
       this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
     },

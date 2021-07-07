@@ -342,8 +342,9 @@ export default {
       }
     },
     activeCat() {
-      this.handleValueReset();
-      if (this.activeParentCat) {
+      if (this.values.length > 0) {
+        this.handleValueReset();
+      } else if (this.activeParentCat) {
         this.getCommodity();
       }
     },
@@ -386,6 +387,9 @@ export default {
     getCommodity(flag = false) {
       if (!flag) {
         this.pagination.page = 1;
+        this.commodityLoading = true;
+        this.commodities = [];
+        this.pagination.total = 0;
       } else {
         if (this.pagination.page < this.pagination.total) {
           this.pagination.page += 1;
@@ -408,7 +412,6 @@ export default {
       const names = this.values
         .filter(item => item.type === "search")
         .map(item => item.value.name);
-      !flag && (this.commodityLoading = true);
       this.commodityLoadingMore = true;
       commodityService
         .commodities({
