@@ -202,7 +202,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 6;
     background: #c4c4c4;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
     img {
