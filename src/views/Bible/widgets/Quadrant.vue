@@ -3,7 +3,7 @@
     <div
       :class="['quadrant-risk', showRisk ? '' : 'grey']"
       @click="handleShowRisk"
-       v-if="quadrant.first.risk"
+      v-if="quadrant.first.risk"
     >
       <img src="~images/bible/risk.svg" />
     </div>

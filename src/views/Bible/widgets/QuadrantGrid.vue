@@ -112,9 +112,8 @@ export default {
           Math,
           grids.map(function(grid) {
             return grid.x;
-          }),
-          6 
-        ) 
+          })
+        ) + 1
       );
       this.rowNum = Math.max(
         rowNum,
@@ -123,7 +122,7 @@ export default {
           grids.map(function(grid) {
             return grid.y;
           })
-        ) 
+        ) + 1
       );
       this.originLayouts = JSON.parse(JSON.stringify(grids));
       this.layouts = JSON.parse(JSON.stringify(this.originLayouts));
@@ -151,6 +150,7 @@ export default {
       }
       return tmp;
     },
+
     handleMouseover(e, image) {
       var st = window.getComputedStyle(e.target.offsetParent, null);
       var tr =
@@ -172,13 +172,15 @@ export default {
             this.getOffsetLeft(e.target) +
             parseInt(values[4]) +
             e.clientX -
-            e.pageX,
+            e.pageX +
+            12,
           y:
             this.getOffsetTop(e.target) +
             e.target.clientHeight +
             parseInt(values[5]) +
             e.clientY -
-            e.pageY
+            e.pageY +
+            12
         };
       }
     },
