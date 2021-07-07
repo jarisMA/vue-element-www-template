@@ -3,7 +3,7 @@
     <div
       :class="['quadrant-risk', showRisk ? '' : 'grey']"
       @click="handleShowRisk"
-       v-if="quadrant.first.risk"
+      v-if="quadrant.first.risk || quadrant.second.risk || quadrant.third.risk || quadrant.fourth.risk" 
     >
       <img src="~images/bible/risk.svg" />
     </div>
@@ -398,7 +398,7 @@ export default {
       position: absolute;
       top: -28px;
       left: 50%;
-      width: 100px;
+      width: 48px;
       height: 100%;
       z-index: 2;
       transform: translateX(-50%);
