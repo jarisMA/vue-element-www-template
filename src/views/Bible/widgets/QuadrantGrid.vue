@@ -49,8 +49,8 @@
 
 <script>
 import VueGridLayout from "vue-grid-layout";
-const colNum = 6;
-const rowNum = 6;
+const colNum = 5;
+const rowNum = 5;
 export default {
   name: "BibleQuadrantGrid",
   components: {
@@ -68,8 +68,8 @@ export default {
   },
   data() {
     return {
-      maxLayoutWidth: 500,
-      maxLayoutHeight: 500,
+      maxLayoutWidth: 408,
+      maxLayoutHeight: 408,
       originLayouts: [],
       layouts: [],
       colNum,
@@ -146,6 +146,7 @@ export default {
       }
       return tmp;
     },
+
     handleMouseover(e, image) {
       var st = window.getComputedStyle(e.target.offsetParent, null);
       var tr =
@@ -167,13 +168,15 @@ export default {
             this.getOffsetLeft(e.target) +
             parseInt(values[4]) +
             e.clientX -
-            e.pageX,
+            e.pageX +
+            12,
           y:
             this.getOffsetTop(e.target) +
             e.target.clientHeight +
             parseInt(values[5]) +
             e.clientY -
-            e.pageY
+            e.pageY +
+            12
         };
       }
     },
@@ -195,7 +198,7 @@ export default {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1;
+    z-index: 6;
     background: #c4c4c4;
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.1);
     img {
@@ -254,7 +257,8 @@ export default {
 }
 .vue-grid-layout {
   position: relative;
-  width: 412px;
+  width: 408px;
+  height: 408px;
 }
 .vue-grid-item {
   transition-duration: 100ms;
