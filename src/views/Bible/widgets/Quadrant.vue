@@ -1,9 +1,9 @@
 <template>
   <div :class="['quadrant-container']">
     <div
+      v-if="riskBtnShow"
       :class="['quadrant-risk', showRisk ? '' : 'grey']"
       @click="handleShowRisk"
-      
     >
       <img src="~images/bible/risk.svg" />
     </div>
@@ -180,6 +180,7 @@ const images = {
   third: [],
   fourth: []
 };
+
 export default {
   components: { QuadrantGrid },
   name: "BibleQuadrant",
@@ -190,6 +191,14 @@ export default {
     },
     content: {
       type: String
+    }
+  },
+  computed: {
+    riskBtnShow: function() {
+      const { first, second, third, fourth } = this.quadrant;
+      return [first, second, third, fourth].some(
+        d => d.risk.bgColor || d.risk.name
+      );
     }
   },
   data() {
