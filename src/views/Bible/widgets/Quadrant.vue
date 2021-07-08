@@ -13,7 +13,7 @@
       :key="key"
       title="坐标名称"
       :style="{
-        backgroundColor: item.bgColor
+        backgroundColor: item.bgColor ? item.bgColor : ''
       }"
     >
       <label class="axis-label" v-if="item.name">{{ item.name }} </label>
@@ -36,14 +36,14 @@
       />
       <div
         :class="`quadrant-${key}`"
-        :style="{ 'border-color': item.bgColor }"
+        :style="{ 'border-color': item.bgColor ? item.bgColor : '' }"
         v-for="(item, key) of quadrant"
         :key="key"
       >
         <div
           class="quadrant-name"
           title="象限名称"
-          :style="{ backgroundColor: item.bgColor }"
+          :style="{ backgroundColor: item.bgColor ? item.bgColor : '' }"
         >
           <label class="quadrant-name-label" v-if="item.name">{{
             item.name
