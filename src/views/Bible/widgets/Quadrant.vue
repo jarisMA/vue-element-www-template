@@ -43,10 +43,10 @@
         <div
           class="quadrant-name"
           title="象限名称"
-          :style="{ backgroundColor: item.bgColor ? item.bgColor : '' }"
+          :style="{ backgroundColor: item.bgColor ? item.bgColor : (item.key == 1 || item.key == 2 ? '#BADFCE' : '#FCEECE') }"
         >
-          <label class="quadrant-name-label" v-if="item.name">{{
-            item.name
+          <label class="quadrant-name-label">{{
+            item.name ? item.name : (item.key == 1 || item.key == 2 ? '普适象限区' : '特色象限区')
           }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
