@@ -1057,7 +1057,7 @@ export default {
         color: #111111;
       }
       .card-price {
-        line-height: 17px;
+        line-height: 16px;
         font-size: 12px;
         color: #666666;
       }
@@ -1065,11 +1065,12 @@ export default {
         display: inline-block;
         width: 16px;
         height: 16px;
-        margin: 20px 0px 0px 65px;
+        margin-left: 65px;
         mask-image: url("~images/commodity/shopping_cart.svg");
         mask-repeat: no-repeat;
         mask-size: cover;
         background: #666666;
+        vertical-align: text-bottom;
         &:hover {
           background: black;
           cursor: pointer;
