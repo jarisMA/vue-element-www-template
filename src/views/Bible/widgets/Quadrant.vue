@@ -305,6 +305,7 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     border-radius: 28px;
+    background: #EC656D;
     &::before {
       position: absolute;
       left: 0px;
@@ -325,6 +326,7 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     border-radius: 28px;
+    background: #4883D5;
     &::before {
       position: absolute;
       left: 0px;
@@ -346,6 +348,7 @@ export default {
     text-align: center;
     writing-mode: vertical-rl;
     border-radius: 28px;
+    background: #54995A;
     &::before {
       position: absolute;
       left: 0px;
@@ -367,6 +370,7 @@ export default {
     text-align: center;
     writing-mode: vertical-rl;
     border-radius: 28px;
+    background: #753EC2;
     &::before {
       position: absolute;
       left: 0px;
@@ -401,6 +405,7 @@ export default {
       transform: translateY(-50%);
       z-index: 3;
       mask-image: url(~images/bible/x-fill.svg);
+      background: linear-gradient(to right, #54995A, #753EC2);
     }
 
     .y-axis {
@@ -421,6 +426,7 @@ export default {
       transform: translateY(-50%);
       z-index: 1;
       mask-image: url(~images/bible/y-fill.svg);
+      background: linear-gradient(to bottom, #EC656D, #4883D5);
     }
     .quadrant-first,
     .quadrant-second,
@@ -463,6 +469,7 @@ export default {
     .quadrant-first {
       left: 0;
       bottom: 28px;
+      border-color: #BADFCE;
       .quadrant-name {
         bottom: -12px;
         left: -12px;
@@ -475,6 +482,7 @@ export default {
     .quadrant-second {
       left: 0;
       top: -28px;
+      border-color: #BADFCE;
       .quadrant-name {
         left: -12px;
         top: -12px;
@@ -487,6 +495,7 @@ export default {
     .quadrant-fourth {
       right: 0;
       top: -28px;
+      border-color: #FCEECE;
       .quadrant-name {
         top: -12px;
         right: -12px;
@@ -499,6 +508,7 @@ export default {
     .quadrant-third {
       right: 0;
       bottom: 28px;
+      border-color: #FCEECE;
       .quadrant-name {
         bottom: -12px;
         right: -12px;
