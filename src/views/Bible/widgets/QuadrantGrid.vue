@@ -15,7 +15,7 @@
       :is-mirrored="false"
       :vertical-compact="false"
       :margin="[margin, margin]"
-      :use-css-transforms="true"
+      :use-css-transforms="false"
       ref="grid"
     >
       <grid-item
