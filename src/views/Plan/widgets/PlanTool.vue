@@ -135,15 +135,10 @@
                     @showFeedback="handleShowFeedback"
                   />
                 </div>
-                <div
-                  class="loading-wrapper"
-                  ref="loading"
-                  v-if="commodityLoadingMore"
-                  v-loading="commodityLoadingMore"
-                ></div>
+
                 <end
                   :total="pagination.total"
-                  v-else-if="
+                  v-if="
                     !commodityLoading && pagination.total === pagination.page
                   "
                 />
