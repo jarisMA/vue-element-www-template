@@ -224,6 +224,7 @@ export default {
             player.on("timeupdate", this.handleTimeUpdate);
             player.on("ended", this.handleEnded);
             player.on("completeSeek", this.handleCompleteSeek);
+            player.on("error", this.handleError);
           }
         );
       });
@@ -316,6 +317,9 @@ export default {
         this.player.play();
       }
       // document.querySelector(".player-container .prism-play-btn").click();
+    },
+    handleError() {
+      this.handleClearTimer();
     }
   }
 };
