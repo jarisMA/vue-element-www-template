@@ -135,6 +135,13 @@
                     @showFeedback="handleShowFeedback"
                   />
                 </div>
+
+                <end
+                  :total="pagination.total"
+                  v-if="
+                    !commodityLoading && pagination.total === pagination.page
+                  "
+                />
               </div>
             </div>
             <label
@@ -247,6 +254,15 @@
         <span class="card-price"
           >参考价 ¥{{ activeCommodity.unit_price }}
         </span>
+
+        <i
+          v-if="
+            activeCommodity.purchase_url !== null &&
+              activeCommodity.purchase_url.length >= 1
+          "
+          class="card-shopping"
+          @click="goShopping(activeCommodity.purchase_url[0].url)"
+        ></i>
       </div>
     </div>
     <commodity-sku-list
@@ -269,6 +285,8 @@ import TheLoadingImage from "components/TheLoadingImage";
 import CommoditySkuList from "./CommoditySkuList";
 import CommodityBriefList from "./CommodityBriefList";
 import CommodityFullList from "./CommodityFullList";
+import { goRoute } from "utils/routes";
+import End from "../../Question/widgets/End";
 
 export default {
   name: "PlanTool",
@@ -278,7 +296,8 @@ export default {
     TheLoadingImage,
     CommoditySkuList,
     CommodityBriefList,
-    CommodityFullList
+    CommodityFullList,
+    End
   },
   props: {
     design: {
@@ -359,6 +378,7 @@ export default {
   },
   methods: {
     hex2Rgba,
+    goRoute,
     getRootCats() {
       this.catLoading = true;
       commodityService
@@ -452,6 +472,7 @@ export default {
         .finally(() => {
           this.commodityLoading = false;
           this.commodityLoadingMore = false;
+          console.log(this.commodities);
         });
     },
     handleCommodityScroll() {
@@ -615,6 +636,9 @@ export default {
     },
     handleRefreshPrice() {
       this.$emit("refreshPrice");
+    },
+    goShopping(url) {
+      window.open(url);
     }
   }
 };
@@ -1028,9 +1052,24 @@ export default {
         color: #111111;
       }
       .card-price {
-        line-height: 17px;
+        line-height: 16px;
         font-size: 12px;
         color: #666666;
+      }
+      .card-shopping {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-left: 65px;
+        mask-image: url("~images/commodity/shopping_cart.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background: #666666;
+        vertical-align: text-bottom;
+        &:hover {
+          background: black;
+          cursor: pointer;
+        }
       }
     }
   }
@@ -1051,6 +1090,13 @@ export default {
   border-radius: 2px !important;
   &.is-dark {
     background: #333 !important;
+  }
+}
+.loading-wrapper {
+  width: 100%;
+  height: 120px;
+  /deep/ .el-loading-mask {
+    background: transparent;
   }
 }
 </style>

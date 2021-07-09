@@ -13,7 +13,7 @@
       :key="key"
       title="坐标名称"
       :style="{
-        backgroundColor: item.bgColor
+        backgroundColor: item.bgColor ? item.bgColor : ''
       }"
     >
       <label class="axis-label" v-if="item.name">{{ item.name }} </label>
@@ -36,17 +36,27 @@
       />
       <div
         :class="`quadrant-${key}`"
-        :style="{ 'border-color': item.bgColor }"
+        :style="{ 'border-color': item.bgColor ? item.bgColor : '' }"
         v-for="(item, key) of quadrant"
         :key="key"
       >
         <div
           class="quadrant-name"
           title="象限名称"
-          :style="{ backgroundColor: item.bgColor }"
+          :style="{
+            backgroundColor: item.bgColor
+              ? item.bgColor
+              : item.key == 1 || item.key == 2
+              ? '#BADFCE'
+              : '#FCEECE'
+          }"
         >
-          <label class="quadrant-name-label" v-if="item.name">{{
+          <label class="quadrant-name-label">{{
             item.name
+              ? item.name
+              : item.key == 1 || item.key == 2
+              ? "普适象限区"
+              : "特色象限区"
           }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
@@ -197,7 +207,7 @@ export default {
     riskBtnShow: function() {
       const { first, second, third, fourth } = this.quadrant;
       return [first, second, third, fourth].some(
-        d => d.risk.bgColor || d.risk.name
+        d => d.risk && (d.risk.bgColor || d.risk.name)
       );
     }
   },
@@ -305,6 +315,7 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     border-radius: 28px;
+    background: #ec656d;
     &::before {
       position: absolute;
       left: 0px;
@@ -325,6 +336,7 @@ export default {
     text-align: center;
     transform: translateX(-50%);
     border-radius: 28px;
+    background: #4883d5;
     &::before {
       position: absolute;
       left: 0px;
@@ -346,6 +358,7 @@ export default {
     text-align: center;
     writing-mode: vertical-rl;
     border-radius: 28px;
+    background: #54995a;
     &::before {
       position: absolute;
       left: 0px;
@@ -367,6 +380,7 @@ export default {
     text-align: center;
     writing-mode: vertical-rl;
     border-radius: 28px;
+    background: #753ec2;
     &::before {
       position: absolute;
       left: 0px;
@@ -401,6 +415,7 @@ export default {
       transform: translateY(-50%);
       z-index: 3;
       mask-image: url(~images/bible/x-fill.svg);
+      background: linear-gradient(to right, #54995a, #753ec2);
     }
 
     .y-axis {
@@ -421,6 +436,7 @@ export default {
       transform: translateY(-50%);
       z-index: 1;
       mask-image: url(~images/bible/y-fill.svg);
+      background: linear-gradient(to bottom, #ec656d, #4883d5);
     }
     .quadrant-first,
     .quadrant-second,
@@ -463,6 +479,7 @@ export default {
     .quadrant-first {
       left: 0;
       bottom: 28px;
+      border-color: #badfce;
       .quadrant-name {
         bottom: -12px;
         left: -12px;
@@ -475,6 +492,7 @@ export default {
     .quadrant-second {
       left: 0;
       top: -28px;
+      border-color: #badfce;
       .quadrant-name {
         left: -12px;
         top: -12px;
@@ -487,6 +505,7 @@ export default {
     .quadrant-fourth {
       right: 0;
       top: -28px;
+      border-color: #fceece;
       .quadrant-name {
         top: -12px;
         right: -12px;
@@ -499,6 +518,7 @@ export default {
     .quadrant-third {
       right: 0;
       bottom: 28px;
+      border-color: #fceece;
       .quadrant-name {
         bottom: -12px;
         right: -12px;

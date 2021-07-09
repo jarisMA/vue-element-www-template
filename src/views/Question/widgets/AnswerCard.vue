@@ -18,20 +18,25 @@
               </div>
             </div>
           </div>
-          <div
-            class="card-top-right"
-            v-if="
-              !answer.has_accepted &&
-                userInfo &&
-                userInfo.id === answer.question_author.id &&
-                !answer.question_accept_id &&
-                answer.user.id !== userInfo.id &&
-                answer.question_type !== QUESTION_TYPE_VOTE
-            "
-          >
-            <div class="card-accept-wrapper" @click="handleAccept">
+          <div class="card-top-right">
+            <div
+              class="card-accept-wrapper"
+              @click="handleAccept"
+              v-if="
+                !answer.has_accepted &&
+                  userInfo &&
+                  userInfo.id === answer.question_author.id &&
+                  !answer.question_accept_id &&
+                  answer.user.id !== userInfo.id &&
+                  answer.question_type !== QUESTION_TYPE_VOTE
+              "
+            >
               <i class="card-accept-icon"></i>
               采纳回答
+            </div>
+            <div class="card-accepted" v-if="answer.has_accepted">
+              <i class="card-accept-icon"></i>题主采纳
+              <i class="heart-icon"></i>+30
             </div>
           </div>
         </div>
@@ -413,13 +418,29 @@ export default {
         border: 1px solid @primaryColor;
         border-radius: 14px;
         cursor: pointer;
-        .card-accept-icon {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          margin-right: 2px;
-          background: url("~images/question/modal.svg") no-repeat center;
+      }
+      .card-accepted {
+        display: flex;
+        align-items: center;
+        padding: 2px 8px;
+        line-height: 16px;
+        font-size: 12px;
+        color: @primaryColor;
+        background: #e9fff4;
+        border-radius: 16px;
+
+        .heart-icon {
+          margin-left: 5px;
+          width: 14px;
+          height: 14px;
         }
+      }
+      .card-accept-icon {
+        display: inline-block;
+        width: 16px;
+        height: 16px;
+        margin-right: 2px;
+        background: url("~images/question/modal.svg") no-repeat center;
       }
     }
   }
