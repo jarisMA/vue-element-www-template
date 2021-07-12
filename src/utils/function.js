@@ -24,6 +24,10 @@ export const sizeFormat = (size, decimal = 2) => {
   }
 };
 
+export const priceFormat = price => {
+  return Math.floor(price);
+};
+
 // 颜色格式 hex 转 rgba
 export const hex2Rgba = (bgColor, alpha = 1) => {
   let color = bgColor.slice(1); // 去掉'#'号
