@@ -11,6 +11,7 @@ export default {
   bindPhone: `${WEB_PREFIX}/sms/bind-phone`,
   statisticLog: `${WEB_PREFIX}/statistic/log`,
   gothrough: `${WEB_PREFIX}/kujiale/gothrough`,
+  kujialeRegister: `${WEB_PREFIX}/kujiale/register`,
   kujialeCommunity: `${WEB_PREFIX}/kujiale/community`,
   kujialeFloorplan: `${WEB_PREFIX}/kujiale/floorplan/standard`,
   kujialeDesignCreate: `${WEB_PREFIX}/kujiale/design/creation`,
