@@ -2,6 +2,9 @@ import request from "request/axios.js";
 import API from "request/api.js";
 
 const KujialeService = {
+  register: () => {
+    return request.post(API.kujialeRegister);
+  },
   getCommunity: params => {
     return request.get(API.kujialeCommunity, params);
   },
