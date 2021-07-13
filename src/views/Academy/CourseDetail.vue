@@ -25,8 +25,9 @@
               >
                 可试看{{
                   course.lessons[activeLessonIndex].trial_duration / 60 > 1
-                    ? course.lessons[activeLessonIndex].trial_duration / 60 +
-                      "分钟"
+                    ? Math.floor(
+                        course.lessons[activeLessonIndex].trial_duration / 60
+                      ) + "分钟"
                     : course.lessons[activeLessonIndex].trial_duration + "秒"
                 }}，请<span class="primary" @click="handleOrder"
                   >购买本课程</span
