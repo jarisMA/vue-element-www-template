@@ -22,7 +22,7 @@
                     backgroundImage:
                       key === activeTabKey
                         ? `url(${tab.active_cover_url})`
-                        : `url(${tab.cover_url})`
+                        : `url(${tab.cover_url})`,
                   }"
                 ></label>
                 {{ tab.name }}
@@ -55,7 +55,7 @@
           <div
             class="search-container"
             v-if="activeParentCat"
-            v-loading="catLoading"
+            v-loading="catLoading && !commodityLoading"
           >
             <div class="search-header">
               <template v-if="!isSearch">
@@ -98,7 +98,7 @@
                 :class="[
                   'cat-label',
                   'pointer',
-                  activeCat && activeCat.id === cat.id ? 'active' : ''
+                  activeCat && activeCat.id === cat.id ? 'active' : '',
                 ]"
                 v-for="cat of cats"
                 :key="cat.id"
@@ -130,7 +130,7 @@
                     :columns="columns"
                     @detail="handleCommodityDetail(commodity)"
                     @clearTimer="handleCommodityDetail(commodity, false)"
-                    @showSkus="skus => handleShowSkus(commodity.id, skus)"
+                    @showSkus="(skus) => handleShowSkus(commodity.id, skus)"
                     @addModel="handleAddModel"
                     @showFeedback="handleShowFeedback"
                   />
@@ -178,7 +178,7 @@
         :key="item.value.id"
         :style="{
           color: item.color,
-          backgroundColor: hex2Rgba(item.color, 0.1)
+          backgroundColor: hex2Rgba(item.color, 0.1),
         }"
         @click="handleValueRemove(key)"
       >
@@ -217,6 +217,9 @@
       @mouseout="handleCommodityDetail(activeCommodity)"
     >
       <div class="card-top">
+        <label class="bgImg feedback" @click="handleShowFeedback(activeCommodity)">
+          <i class="feedback-icon"></i>
+        </label>
         <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide
@@ -257,7 +260,7 @@
 
         <i
           v-if="
-            activeCommodity.purchase_url !== null &&
+            activeCommodity.purchase_url &&
               activeCommodity.purchase_url.length >= 1
           "
           class="card-shopping"
@@ -297,24 +300,24 @@ export default {
     CommoditySkuList,
     CommodityBriefList,
     CommodityFullList,
-    End
+    End,
   },
   props: {
     design: {
       type: Object,
-      required: true
+      required: true,
     },
     listingId: {
-      type: String
+      type: String,
     },
     listingBrief: {
       type: Object,
-      required: true
+      required: true,
     },
     refreshingBrief: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -338,7 +341,7 @@ export default {
         loopedSlides: 0,
         nextButton: ".card-img-next",
         prevButton: ".card-img-prev",
-        observe: true
+        observe: true,
       },
       activeSkus: null,
       detailTimer: null,
@@ -349,8 +352,8 @@ export default {
       pagination: {
         size: 30,
         page: 1,
-        total: 0
-      }
+        total: 0,
+      },
     };
   },
   watch: {
@@ -371,7 +374,7 @@ export default {
       if (this.activeParentCat) {
         this.getCommodity();
       }
-    }
+    },
   },
   created() {
     this.getRootCats();
@@ -383,9 +386,9 @@ export default {
       this.catLoading = true;
       commodityService
         .cats()
-        .then(cats => {
+        .then((cats) => {
           const softCats = cats.find(
-            item => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
+            (item) => item.id === parseInt(process.env.VUE_APP_SOFT_CAT_ID)
           );
           this.rootCats = (softCats && softCats.children) || [];
         })
@@ -397,7 +400,7 @@ export default {
       this.catLoading = true;
       commodityService
         .cat(id)
-        .then(res => {
+        .then((res) => {
           this.cats = res.children;
         })
         .finally(() => {
@@ -420,18 +423,24 @@ export default {
       this.activeCommodity = null;
       this.activeSkus = null;
       const brandIds = this.values
-        .filter(item => item.type === "brand")
-        .map(item => item.value.id);
-      const priceIndex = this.values.findIndex(item => item.type === "price");
-      const sizeXIndex = this.values.findIndex(item => item.type === "size_x");
-      const sizeYIndex = this.values.findIndex(item => item.type === "size_y");
-      const sizeZIndex = this.values.findIndex(item => item.type === "size_z");
+        .filter((item) => item.type === "brand")
+        .map((item) => item.value.id);
+      const priceIndex = this.values.findIndex((item) => item.type === "price");
+      const sizeXIndex = this.values.findIndex(
+        (item) => item.type === "size_x"
+      );
+      const sizeYIndex = this.values.findIndex(
+        (item) => item.type === "size_y"
+      );
+      const sizeZIndex = this.values.findIndex(
+        (item) => item.type === "size_z"
+      );
       const valueIds = this.values
-        .filter(item => item.type === "value")
-        .map(item => item.value.id);
+        .filter((item) => item.type === "value")
+        .map((item) => item.value.id);
       const names = this.values
-        .filter(item => item.type === "search")
-        .map(item => item.value.name);
+        .filter((item) => item.type === "search")
+        .map((item) => item.value.name);
       this.commodityLoadingMore = true;
       commodityService
         .commodities({
@@ -459,9 +468,9 @@ export default {
             sizeZIndex > -1 ? this.values[sizeZIndex].value.max_size_z : null,
           value_ids: valueIds,
           page: this.pagination.page,
-          page_size: this.pagination.size
+          page_size: this.pagination.size,
         })
-        .then(data => {
+        .then((data) => {
           if (flag) {
             this.commodities = this.commodities.concat(data.list);
           } else {
@@ -502,18 +511,18 @@ export default {
         color: "#9F8164",
         value: {
           id: -1,
-          name: this.name
-        }
+          name: this.name,
+        },
       });
       this.isSearch = false;
     },
     handleValueAdd(value) {
       let flag = true;
       const valueIds = this.values
-        .filter(item => item.value.id)
-        .map(item => item.value.id);
+        .filter((item) => item.value.id)
+        .map((item) => item.value.id);
       const existIndex = this.values.findIndex(
-        item =>
+        (item) =>
           item.type === value.type &&
           JSON.stringify(item.value) === JSON.stringify(value.value)
       );
@@ -522,7 +531,7 @@ export default {
         return;
       }
       if (value.type === "search") {
-        const index = this.values.findIndex(item => item.type === value.type);
+        const index = this.values.findIndex((item) => item.type === value.type);
         if (index > -1) {
           this.values.splice(index, 1);
         }
@@ -530,12 +539,12 @@ export default {
       } else if (value.value.id && valueIds.indexOf(value.value.id) < 0) {
         flag = true;
       } else if (value.type === "price") {
-        const index = this.values.findIndex(item => item.type === value.type);
+        const index = this.values.findIndex((item) => item.type === value.type);
         if (index > -1) {
           this.values.splice(index, 1);
         }
       } else if (["size_x", "size_y", "size_z"].indexOf(value.type) > -1) {
-        const index = this.values.findIndex(item => item.type === value.type);
+        const index = this.values.findIndex((item) => item.type === value.type);
         if (index > -1) {
           this.values.splice(index, 1);
         }
@@ -550,7 +559,7 @@ export default {
       if (this.values.length === 15) {
         this.$notice({
           type: "warning",
-          title: "筛选条件最多只能15条"
+          title: "筛选条件最多只能15条",
         });
         return;
       }
@@ -639,8 +648,8 @@ export default {
     },
     goShopping(url) {
       window.open(url);
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -987,6 +996,33 @@ export default {
       width: 100%;
       height: 200px;
       background: #fafafa;
+      
+     .bgImg {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 1);
+      opacity: 0.8;
+      cursor: pointer;
+
+      &.feedback {
+        top: 10px;
+        right: 10px;
+        .feedback-icon {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background-image: url("~images/commodity/feedback.svg");
+          background-size: 100%;
+          background-repeat: no-repeat;
+        }
+      }
+    }
+
       .swiper-wrapper {
         position: relative;
         width: 100%;
@@ -1036,6 +1072,7 @@ export default {
       }
     }
     .card-bottom {
+      position: relative;
       width: 100%;
       padding: 10px;
       .card-name {
@@ -1057,15 +1094,17 @@ export default {
         color: #666666;
       }
       .card-shopping {
+        position: absolute;
         display: inline-block;
         width: 16px;
         height: 16px;
-        margin-left: 65px;
+        right: 10px;
+        bottom: 10px;
         mask-image: url("~images/commodity/shopping_cart.svg");
         mask-repeat: no-repeat;
         mask-size: cover;
         background: #666666;
-        vertical-align: text-bottom;
+        
         &:hover {
           background: black;
           cursor: pointer;
