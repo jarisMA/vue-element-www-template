@@ -220,7 +220,8 @@ export default {
       setRecording: false,
       updatingTimer: null,
       hideMenu: false,
-      showTips: true
+      showTips: true,
+      showEnd: false
     };
   },
   watch: {
