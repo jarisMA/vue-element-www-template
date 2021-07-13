@@ -97,6 +97,8 @@ export default {
   ossVideoAuth: videoId => `${PREFIX}/api/file/alioss-video/${videoId}`,
   ossVideoStatus: videoId =>
     `${PREFIX}/api/file/alioss-video/${videoId}/status`,
+  ossVideoPreview: videoId =>
+    `${PREFIX}/api/file/alioss-video/preview/${videoId}`,
   clock: `${WEB_PREFIX}/mine/clock`,
   gainShineCount: `${WEB_PREFIX}/mine/gain-history/shine-count`,
   gainHistory: `${WEB_PREFIX}/mine/gain-history`,

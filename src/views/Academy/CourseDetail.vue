@@ -1,13 +1,85 @@
 <template>
   <div class="page" v-loading="loading">
     <div class="container-1180">
+      <div class="page-header">
+        <div class="page-header-title">{{ course.name }}</div>
+        <div class="page-header-desc">
+          <span>{{ course.lesson_number }} 课时</span> ·
+          <span>{{ Math.floor(course.second_duration / 60) }}分钟</span>
+          <span>{{ course.introduction }}</span>
+        </div>
+      </div>
       <div class="page-main">
         <div class="page-main-left">
-          <the-loading-image
-            :width="780"
-            :height="440"
-            :url="course.cover_url + '?x-oss-process=style/pc_course_show'"
-          />
+          <div class="page-main-video-wrapper">
+            <template
+              v-if="course && course.lessons && course.lessons.length > 0"
+            >
+              <label
+                class="page-main-video-tips"
+                v-if="
+                  !course.permission &&
+                    course.lessons[activeLessonIndex].is_trial &&
+                    showTips
+                "
+              >
+                可试看{{
+                  course.lessons[activeLessonIndex].trial_duration / 60 > 1
+                    ? course.lessons[activeLessonIndex].trial_duration / 60 +
+                      "分钟"
+                    : course.lessons[activeLessonIndex].trial_duration + "秒"
+                }}，请<span class="primary" @click="handleOrder"
+                  >购买本课程</span
+                >
+                <span class="pointer vip" v-if="course.is_vip" @click="goVip">
+                  或<i class="vip-icon"></i>
+                  <span class="vip-label">开通VIP</span>
+                </span>
+                <i class="close-icon" @click="showTips = false"></i>
+              </label>
+              <video-player
+                :autoplay="false"
+                :vid="course.lessons[activeLessonIndex].vod_id"
+                :isTrial="
+                  !course.permission &&
+                  course.lessons[activeLessonIndex].is_trial
+                    ? true
+                    : false
+                "
+                :cover="
+                  course.lessons[activeLessonIndex].cover_url ||
+                    course.cover_url
+                "
+                :startTime="
+                  course.lessons[activeLessonIndex].is_trial
+                    ? 0
+                    : course.lessons[activeLessonIndex].last_play_position
+                "
+                :duration="course.lessons[activeLessonIndex].second_duration"
+                @timeUpdate="handleVideoTimeUpdate"
+                @setRecord="handleSetVideoRecord"
+                @ended="handleVideoEnded"
+              />
+              <i
+                :class="['page-main-video-more', hideMenu ? 'hide' : '']"
+                @click="hideMenu = !hideMenu"
+              ></i>
+              <div
+                class="page-main-video-end"
+                v-if="!course.permission && showEnd"
+              >
+                <h4 class="end-title">试看已结束</h4>
+                <p class="end-desc">
+                  体验完整课程请<span class="primary" @click="handleOrder"
+                    >购买本课</span
+                  ><span v-if="course.is_vip">或</span>
+                </p>
+                <div v-if="course.is_vip" class="vip-btn" @click="goVip">
+                  <i class="vip-icon"></i>开通VIP
+                </div>
+              </div>
+            </template>
+          </div>
           <div class="page-main-info" v-show="!loading">
             <label class="page-main-price">{{
               course.price_type === COURSE_PRICE_TYPE_PAY
@@ -25,7 +97,7 @@
                   course.permission ? goCourse(course.id, 1) : handleOrder()
                 "
               >
-                {{ course.permission ? "开始学习" : "购买本课" }}
+                {{ course.permission ? "进入学习" : "购买本课" }}
               </el-button>
               <el-button
                 class="vip-free"
@@ -38,8 +110,7 @@
             </div>
           </div>
         </div>
-        <div class="page-main-right">
-          <h3 class="page-main-title">{{ course.name }}</h3>
+        <div class="page-main-right" v-show="!hideMenu">
           <div class="page-main-right-info">
             <label class="page-main-info-text">
               <i class="course-icon"></i>
@@ -59,32 +130,36 @@
                 <li
                   :class="[
                     'page-lesson-item',
-                    lessonStatus(index) === 3 ? 'active' : '',
-                    lessonStatus(index) === 4 ? 'completed' : ''
+                    activeLessonIndex === index ? 'active' : ''
                   ]"
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
                   @click="
-                    course.permission ? goCourse(course.id, index + 1) : null
+                    course.permission || lesson.is_trial
+                      ? handleToggleLesson(index)
+                      : null
                   "
                 >
                   <div class="lesson-item-left">
-                    <i
-                      :class="[
-                        'lesson-item-icon',
-                        lessonStatusIconClass(index)
-                      ]"
-                    ></i>
+                    <the-loading-image
+                      :width="160"
+                      :height="90"
+                      :url="lesson.cover_url"
+                    />
+                    <label
+                      class="lesson-item-left-label"
+                      v-if="activeLessonIndex === index"
+                      >正在播放</label
+                    >
+                  </div>
+                  <div class="lesson-item-right">
                     <h5 class="lesson-item-title ellipsis">
                       {{ lesson.name }}
                     </h5>
-                  </div>
-                  <div class="lesson-item-right">
-                    <label class="lesson-item-status">
-                      {{ lessonStatusText(index) }}
-                    </label>
                     <label class="lesson-item-duration">
-                      {{ lessonStatusText(index) ? "/" : "" }}
+                      <span v-if="activeLessonIndex === index">{{
+                        formatSeconds(lesson.last_play_position) + " / "
+                      }}</span>
                       {{ formatSeconds(lesson.second_duration) }}
                     </label>
                   </div>
@@ -117,8 +192,11 @@
 
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
+import VideoPlayer from "components/Course/VideoPlayer";
 import { COURSE_PRICE_TYPE_PAY } from "utils/const";
 import courseSerive from "service/course";
+import courseService from "service/course";
+
 import { formatSeconds } from "utils/moment";
 import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
@@ -130,13 +208,18 @@ import { goVip } from "utils/routes";
 
 export default {
   name: "AcademyCourseDetail",
-  components: { TheLoadingImage, CourseCard },
+  components: { TheLoadingImage, VideoPlayer, CourseCard },
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
       loading: true,
       course: {},
-      relations: []
+      relations: [],
+      activeLessonIndex: 0,
+      setRecording: false,
+      updatingTimer: null,
+      hideMenu: false,
+      showTips: true
     };
   },
   watch: {
@@ -218,6 +301,7 @@ export default {
         .then(course => {
           this.course = course;
           const withoutIds = [this.$route.params.id];
+          this.activeLessonIndex = 0;
           courseSerive
             .courses({
               page_size: 4,
@@ -257,6 +341,44 @@ export default {
         .then(res => {
           goOrder(res.no);
         });
+    },
+    handleVideoTimeUpdate(second) {
+      const { course, activeLessonIndex } = this;
+      if (this.updatingTimer) return false;
+      this.updatingTimer = setTimeout(() => {
+        course.lessons[activeLessonIndex]["last_play_position"] = Math.floor(
+          second
+        );
+        clearTimeout(this.updatingTimer);
+        this.updatingTimer = null;
+      }, 300);
+    },
+    handleSetVideoRecord(params) {
+      const { activeLessonIndex, course, setRecording } = this;
+      const lesson = course.lessons[activeLessonIndex];
+      if (!setRecording) {
+        this.setRecording = true;
+        courseService
+          .setLessonRecord(course.id, lesson.id, params)
+          .then(() => {
+            this.$set(this.course.lessons, activeLessonIndex, {
+              ...lesson,
+              play_second_duration:
+                lesson.play_second_duration - 0 + (params.second_duration - 0)
+            });
+          })
+          .finally(() => {
+            this.setRecording = false;
+          });
+      }
+    },
+    handleVideoEnded() {
+      this.showEnd = true;
+    },
+    handleToggleLesson(index) {
+      this.activeLessonIndex = index;
+      this.showTips = true;
+      this.showEnd = false;
     }
   }
 };
@@ -264,17 +386,141 @@ export default {
 
 <style lang="less" scoped>
 @import "~styles/variable";
-
+.vip-icon {
+  width: 18px;
+  height: 18px;
+  background-image: url(~images/academy/vip.svg);
+}
 .page {
   padding: 40px 0;
   background: #fff !important;
+  .page-header {
+    .page-header-title {
+      line-height: 24px;
+      font-weight: 600;
+      font-size: 18px;
+      color: #2c3330;
+    }
+    .page-header-desc {
+      margin-top: 4px;
+      line-height: 16px;
+      font-size: 12px;
+      color: #81948b;
+    }
+  }
   .page-main {
     display: flex;
     height: 520px;
+    margin-top: 20px;
     padding-bottom: 16px;
     border-bottom: 1px solid #efefef;
     .page-main-left {
-      width: 780px;
+      flex: 1;
+      width: 5px;
+      .page-main-video-wrapper {
+        position: relative;
+        width: 100%;
+        height: 440px;
+        background: #000;
+        &:hover {
+          .page-main-video-tips {
+            bottom: 54px;
+          }
+        }
+        .page-main-video-tips {
+          position: absolute;
+          bottom: 10px;
+          left: 10px;
+          padding: 8px 10px;
+          line-height: 18px;
+          font-size: 14px;
+          color: #ffffff;
+          background: rgba(0, 0, 0, 0.8);
+          border-radius: 17px;
+          z-index: 1001;
+          .vip {
+            display: inline-flex;
+            align-items: center;
+            margin-left: 10px;
+            .vip-label {
+              color: #ffe761;
+            }
+          }
+          .close-icon {
+            display: inline-block;
+            margin-left: 10px;
+            width: 18px;
+            height: 18px;
+            mask: url("~images/commodity/close.svg") no-repeat center;
+            background-color: #fff;
+            vertical-align: text-bottom;
+            cursor: pointer;
+          }
+        }
+        .page-main-video-more {
+          display: inline-block;
+          position: absolute;
+          left: 100%;
+          top: 50%;
+          width: 20px;
+          height: 40px;
+          background-color: rgba(0, 0, 0, 0.6);
+          border-radius: 0 40px 40px 0;
+          cursor: pointer;
+          &::after {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 16px;
+            height: 16px;
+            content: "";
+            mask: url("~images/commodity/expand.svg") no-repeat center;
+            background: #fff;
+            transform: translate(0, -50%) rotate(-90deg);
+          }
+          &.hide {
+            &::after {
+              transform: translate(0, -50%) rotate(90deg);
+            }
+          }
+        }
+        .page-main-video-end {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.8);
+          z-index: 1002;
+          color: #fff;
+          .end-title {
+            line-height: 24px;
+            font-weight: 600;
+            font-size: 18px;
+          }
+          .end-desc {
+            margin-top: 4px;
+            line-height: 24px;
+            font-size: 14px;
+          }
+          .vip-btn {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            padding: 8px 24px;
+            cursor: pointer;
+            .vip-icon {
+              width: 24px;
+              height: 24px;
+              margin-right: 8px;
+            }
+          }
+        }
+      }
       .page-main-info {
         display: flex;
         align-items: center;
@@ -308,34 +554,29 @@ export default {
       }
     }
     .page-main-right {
+      flex: none;
       display: flex;
       flex-direction: column;
       margin-left: 20px;
       width: 380px;
       height: 100%;
-      .page-main-title {
-        flex: none;
-        line-height: 32px;
-        font-weight: 600;
-        font-size: 20px;
-        color: #2c3330;
-      }
+      padding: 16px;
+      background: #fafafa;
       .page-main-right-info {
         flex: none;
-        margin-top: 8px;
         .page-main-info-text {
-          line-height: 24px;
-          font-weight: 500;
-          font-size: 16px;
+          line-height: 16px;
+          font-weight: normal;
+          font-size: 14px;
           color: #606c66;
           & + .page-main-info-text {
-            margin-left: 16px;
+            margin-left: 12px;
           }
           .course-icon,
           .duration-icon {
             display: inline-block;
-            width: 24px;
-            height: 24px;
+            width: 16px;
+            height: 16px;
             mask-repeat: no-repeat;
             mask-size: cover;
             background: #606c66;
@@ -359,7 +600,7 @@ export default {
       .page-lesson-wrapper {
         flex: 1;
         width: 100%;
-        margin-top: 24px;
+        margin-top: 16px;
         overflow: hidden;
         background: #fafafa;
         .scroll-section {
@@ -370,20 +611,15 @@ export default {
             width: 15px;
           }
           .page-lesson-list {
-            padding: 16px;
             background: #fafafa;
             .page-lesson-item {
               display: flex;
-              align-items: center;
-              justify-content: space-between;
+              align-items: flex-start;
+              justify-content: flex-start;
               width: 100%;
-              padding: 16px 8px;
               cursor: pointer;
               & + .page-lesson-item {
-                border-top: 1px solid #2c33301a;
-              }
-              &:hover {
-                background: rgba(0, 0, 0, 0.05);
+                margin-top: 8px;
               }
               &.active {
                 .lesson-item-title {
@@ -394,54 +630,43 @@ export default {
                 }
               }
               .lesson-item-left {
-                flex: 1;
-                display: flex;
-                align-items: center;
-                justify-content: flex-start;
-                .lesson-item-icon {
-                  flex: none;
-                  display: block;
-                  margin-right: 16px;
-                  width: 24px;
-                  height: 24px;
-                  mask-size: cover;
-                  mask-repeat: no-repeat;
-                  &.unplay-icon {
-                    background-color: #2c3330;
-                    mask-image: url("~images/course/unplay.svg");
-                  }
-                  &.played-icon {
-                    background-color: @primaryColor;
-                    mask-image: url("~images/course/unplay.svg");
-                  }
-                  &.completed-icon {
-                    background-color: #2c3330;
-                    mask-image: url("~images/course/completed.svg");
-                  }
-                  &.lock-icon {
-                    background-color: #2c3330;
-                    mask-image: url("~images/course/lock.svg");
-                  }
-                }
-                .lesson-item-title {
-                  flex: 1;
-                  width: 5px;
-                  line-height: 24px;
-                  font-size: 14px;
-                  font-weight: normal;
-                  color: #2c3330;
+                flex: none;
+                position: relative;
+                width: 160px;
+                .lesson-item-left-label {
+                  position: absolute;
+                  padding: 4px 8px;
+                  right: 4px;
+                  bottom: 4px;
+                  line-height: 1;
+                  font-size: 12px;
+                  color: #ffffff;
+                  background: @primaryColor;
                 }
               }
-
               .lesson-item-right {
-                flex: none;
+                flex: 1;
+                width: 10px;
                 display: inline-block;
+                margin-left: 16px;
                 line-height: 24px;
                 font-size: 14px;
-                text-align: right;
+                text-align: left;
                 color: #999;
+                .lesson-item-title {
+                  font-weight: 600;
+                  line-height: 20px;
+                  font-size: 14px;
+                  color: #2c3330;
+                }
                 .lesson-item-duration {
                   display: inline-block;
+                  line-height: 16px;
+                  font-size: 12px;
+                  color: #81948b;
+                  span {
+                    color: @primaryColor;
+                  }
                 }
               }
             }
