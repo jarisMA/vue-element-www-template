@@ -89,24 +89,43 @@
     </div>
     <el-dialog
       :visible.sync="showFeedback"
-      title="模型问题反馈"
+      title="商品模型问题反馈"
       class="feedback-dialog"
       width="580px"
     >
-      <div class="feedback-sku-wrapper" v-if="feedbackSku">
-        <div class="feedback-sku-left">
-          <the-loading-image
-            :url="feedbackSku.img_id"
-            :width="60"
-            :height="60"
-          />
-          <h3 class="feedback-sku-name">{{ feedbackSku.name }}</h3>
-        </div>
-        <div class="feedback-sku-right">
-          <span>模型编码：{{ feedbackSku.id }}</span>
-        </div>
-      </div>
-      <el-form :model="feedbackForm" ref="feedbackForm" @submit.native.prevent>
+      <el-form
+        class="feedback-form"
+        :model="feedbackForm"
+        ref="feedbackForm"
+        @submit.native.prevent
+      >
+        <el-form-item prop="id">
+          <el-select
+            :popper-append-to-body="false"
+            v-model="feedbackForm.id"
+            style="width:100%"
+          >
+            <el-option
+              v-for="item in feedbackSku.skus"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+              class="dropdown-item"
+            >
+              <div class="item-left">
+                <the-loading-image
+                  :url="item.img_id"
+                  :width="40"
+                  :height="40"
+                  class="item-image"
+                />
+                <span class="item-text">{{ item.name }}</span>
+              </div>
+              <div class="item-right">{{ "模型编码" + item.id }}</div>
+            </el-option>
+          </el-select>
+        </el-form-item>
+
         <el-form-item
           prop="content"
           :rules="[{ required: true, message: '描述不能为空' }]"
@@ -149,7 +168,7 @@ export default {
     PlaneTool,
     PlanTool,
     TextureTool,
-    TheLoadingImage
+    TheLoadingImage,
   },
   data() {
     return {
@@ -164,20 +183,21 @@ export default {
       listingBrief: {
         list: [],
         goods: [],
-        skus: []
+        skus: [],
       },
       listingTimer: null,
       toolIndex: null, // 1平面布局 2材质 3软装
-      feedbackSku: null,
+      feedbackSku: [],
       showFeedback: false,
       feedbackForm: {
-        content: ""
+        content: "",
+        id: "",
       },
-      feedbacking: false
+      feedbacking: false,
     };
   },
   computed: {
-    ...mapState(["headerUnfold"])
+    ...mapState(["headerUnfold"]),
   },
   created() {
     if (this.$route.name === "EditPlan") {
@@ -202,7 +222,7 @@ export default {
       if (routeName === "EditPlan") {
         promiseArr.push(
           kujialeService.iframe(1, {
-            designid: this.$route.params.designId
+            designid: this.$route.params.designId,
           })
         );
         promiseArr.push(
@@ -227,7 +247,7 @@ export default {
     },
     listener() {
       if (window.postMessage) {
-        const callback = ev => {
+        const callback = (ev) => {
           if (
             ev.origin === "http://www.kujiale.com" ||
             ev.origin === "http://yun.kujiale.com" ||
@@ -281,10 +301,10 @@ export default {
             mode: "drag_add",
             list: [
               {
-                obsBrandGoodId: goodId
-              }
-            ]
-          }
+                obsBrandGoodId: goodId,
+              },
+            ],
+          },
         },
         "*"
       );
@@ -316,7 +336,7 @@ export default {
       if (this.listingId) {
         kujialeService
           .listingState(this.listingId)
-          .then(res => {
+          .then((res) => {
             if (res === 3) {
               this.getListingBrief();
               clearInterval(this.listingTimer);
@@ -332,12 +352,12 @@ export default {
       if (this.listingId) {
         kujialeService
           .listingBrief(this.listingId)
-          .then(res => {
+          .then((res) => {
             this.listingBrief = res;
             tips &&
               this.$notice({
                 type: "success",
-                title: "更新成功"
+                title: "更新成功",
               });
           })
           .finally(() => {
@@ -347,23 +367,24 @@ export default {
     },
     handleShowFeedback(sku) {
       this.feedbackSku = sku;
+      this.feedbackForm.id = this.feedbackSku.skus[0].id;
       this.showFeedback = true;
     },
     handleFeedbackSubmit() {
-      this.$refs["feedbackForm"].validate(res => {
+      this.$refs["feedbackForm"].validate((res) => {
         if (res) {
           this.feedbacking = true;
-          const { content } = this.feedbackForm;
+          const { id, content } = this.feedbackForm;
           commodityService
-            .skuFeedback(this.feedbackSku.id, {
-              content
+            .skuFeedback(id, {
+              content: `商品ID：${this.feedbackSku.id}, 反馈：${content}`,
             })
             .then(() => {
               this.$refs["feedbackForm"].resetFields();
               this.showFeedback = false;
               this.$notice({
                 type: "success",
-                title: "反馈成功"
+                title: "反馈成功",
               });
             })
             .finally(() => {
@@ -371,8 +392,8 @@ export default {
             });
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -409,36 +430,7 @@ export default {
     }
     .el-dialog__body {
       padding: 0;
-      .feedback-sku-wrapper {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
-        padding: 10px 16px;
-        background: #fafafa;
-        .feedback-sku-left {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          .cover-img {
-            flex: none;
-          }
-          .feedback-sku-name {
-            flex: 1;
-            margin: 0 8px;
-            line-height: 24px;
-            font-weight: normal;
-            font-size: 14px;
-            color: #2c3330;
-          }
-        }
-        .feedback-sku-right {
-          flex: none;
-          line-height: 24px;
-          font-size: 14px;
-          color: #81948b;
-        }
-      }
+
       .el-form-item {
         margin-bottom: 20px;
         &:last-child {
@@ -446,7 +438,7 @@ export default {
         }
       }
       .el-textarea__inner {
-        height: 91px;
+        height: 90px;
         padding: 14px;
         line-height: 24px;
         font-size: 14px;
@@ -597,4 +589,89 @@ export default {
     transform: translate(-50%, -50%);
   }
 }
+
+/deep/ .el-select .el-input__inner {
+  width: 540px;
+  height: 64px;
+  padding: 12px 40px 12px 20px;
+  border: none;
+  background: #fafafa;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  &:hover {
+    background: #f4f4f4;
+  }
+}
+</style>
+
+<style lang="less">
+.feedback-form {
+  .el-select-dropdown__list {
+    padding: 0px;
+  }
+  .el-popper {
+    margin: 0px !important;
+  }
+
+  .popper__arrow {
+  display: none !important;
+}
+
+.el-select__caret{
+  color:black !important;
+}
+
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 538px;
+    height: 64px !important;
+    padding: 12px 20px;
+    border: none;
+    background: white !important;
+
+    &:hover {
+      background: #f4f4f4 !important;
+    }
+
+    /deep/ .el-select-dropdown__list {
+      padding: 0px;
+    }
+
+    .item-left {
+      overflow: hidden;
+
+      white-space: nowrap;
+      height: 40px;
+
+      .item-image {
+        display: inline-block;
+      }
+      .item-text {
+        display: inline-block;
+        vertical-align: top;
+        line-height: 40px;
+        width: 330px;
+        margin-left: 10px;
+        color: #2c3330;
+        font-size: 14px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .item-right {
+      display: flex;
+      align-items: center;
+      color: #81948b;
+      font-size: 14px;
+    }
+  }
+}
+
+
 </style>
