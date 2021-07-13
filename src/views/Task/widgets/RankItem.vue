@@ -1,12 +1,27 @@
 <template>
   <div class="item-content">
-    <span class="item-index">4</span>
-    <span class="item-name">用户名</span>
-    <span class="item-award">¥9000</span>
+    <span class="item-index">{{ rank.no }}</span>
+    <span class="item-name">{{ rank.name }}</span>
+    <span class="item-award">¥{{ priceFormat(rank.price) }}</span>
   </div>
 </template>
 
-<script></script>
+<script>
+import { priceFormat } from "utils/function";
+
+export default {
+  name: "RankItem",
+  props: {
+    rank: {
+      type: Object,
+      required: true,
+    },
+  },
+  methods: {
+    priceFormat,
+  },
+};
+</script>
 
 <style lang="less" scoped>
 .item-content {
@@ -25,16 +40,21 @@
     font-weight: 600;
     color: white;
     text-shadow: #000 1px 0 0, #000 0 1px 0, #000 -1px 0 0, #000 0 -1px 0;
+    overflow: hidden;
   }
 
   .item-name {
     display: inline-block;
     width: 70px;
     height: 30px;
+    padding: 0px 3px;
     font-weight: 600;
     text-align: center;
     font-size: 12px;
     color: black;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .item-award {
@@ -47,6 +67,8 @@
     text-align: center;
     color: #000;
     text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
+    overflow: hidden;
+    
   }
 }
 </style>

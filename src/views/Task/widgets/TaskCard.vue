@@ -115,6 +115,7 @@ export default {
       width: 239px;
       height: 38px;
       line-height: 38px;
+      padding: 0px 5px;
       text-align: center;
       font-weight: 500;
       font-size: 18px;
