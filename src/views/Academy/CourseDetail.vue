@@ -298,6 +298,7 @@ export default {
     goCourse,
     getData() {
       this.loading = true;
+      this.course = null;
       courseSerive
         .course(this.$route.params.id)
         .then(course => {
