@@ -362,6 +362,9 @@ export default {
       }, 300);
     },
     handleSetVideoRecord(params) {
+      if (!this.course.permission) {
+        return;
+      }
       const { activeLessonIndex, course, setRecording } = this;
       const lesson = course.lessons[activeLessonIndex];
       if (!setRecording) {
@@ -430,6 +433,7 @@ export default {
         width: 100%;
         height: 440px;
         background: #000;
+        z-index: 1;
         &:hover {
           .page-main-video-tips {
             bottom: 54px;
@@ -446,6 +450,7 @@ export default {
           background: rgba(0, 0, 0, 0.8);
           border-radius: 17px;
           z-index: 1001;
+          transition: bottom 0.1s;
           .vip {
             display: inline-flex;
             align-items: center;
