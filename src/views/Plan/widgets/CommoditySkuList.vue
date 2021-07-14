@@ -99,7 +99,6 @@ export default {
           width: 100%;
           height: 145px;
 
-
           .sku-price {
             position: absolute;
             right: 5px;

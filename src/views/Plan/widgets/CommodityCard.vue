@@ -142,7 +142,7 @@ export default {
     },
     handleClearTimer() {
       this.$emit("clearTimer");
-    },
+    }
   }
 };
 </script>
@@ -221,7 +221,6 @@ export default {
           background-image: url("~images/commodity/info.svg");
         }
       }
-
     }
 
     .price-label {
