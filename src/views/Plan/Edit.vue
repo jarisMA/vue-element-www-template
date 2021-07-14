@@ -93,6 +93,9 @@
       class="feedback-dialog"
       width="580px"
     >
+      <div class="feedback-name">
+        商品名称
+      </div>
       <el-form
         class="feedback-form"
         :model="feedbackForm"
@@ -168,7 +171,7 @@ export default {
     PlaneTool,
     PlanTool,
     TextureTool,
-    TheLoadingImage,
+    TheLoadingImage
   },
   data() {
     return {
@@ -183,7 +186,7 @@ export default {
       listingBrief: {
         list: [],
         goods: [],
-        skus: [],
+        skus: []
       },
       listingTimer: null,
       toolIndex: null, // 1平面布局 2材质 3软装
@@ -191,13 +194,13 @@ export default {
       showFeedback: false,
       feedbackForm: {
         content: "",
-        id: "",
+        id: ""
       },
-      feedbacking: false,
+      feedbacking: false
     };
   },
   computed: {
-    ...mapState(["headerUnfold"]),
+    ...mapState(["headerUnfold"])
   },
   created() {
     if (this.$route.name === "EditPlan") {
@@ -222,7 +225,7 @@ export default {
       if (routeName === "EditPlan") {
         promiseArr.push(
           kujialeService.iframe(1, {
-            designid: this.$route.params.designId,
+            designid: this.$route.params.designId
           })
         );
         promiseArr.push(
@@ -247,7 +250,7 @@ export default {
     },
     listener() {
       if (window.postMessage) {
-        const callback = (ev) => {
+        const callback = ev => {
           if (
             ev.origin === "http://www.kujiale.com" ||
             ev.origin === "http://yun.kujiale.com" ||
@@ -301,10 +304,10 @@ export default {
             mode: "drag_add",
             list: [
               {
-                obsBrandGoodId: goodId,
-              },
-            ],
-          },
+                obsBrandGoodId: goodId
+              }
+            ]
+          }
         },
         "*"
       );
@@ -336,7 +339,7 @@ export default {
       if (this.listingId) {
         kujialeService
           .listingState(this.listingId)
-          .then((res) => {
+          .then(res => {
             if (res === 3) {
               this.getListingBrief();
               clearInterval(this.listingTimer);
@@ -352,12 +355,12 @@ export default {
       if (this.listingId) {
         kujialeService
           .listingBrief(this.listingId)
-          .then((res) => {
+          .then(res => {
             this.listingBrief = res;
             tips &&
               this.$notice({
                 type: "success",
-                title: "更新成功",
+                title: "更新成功"
               });
           })
           .finally(() => {
@@ -371,20 +374,20 @@ export default {
       this.showFeedback = true;
     },
     handleFeedbackSubmit() {
-      this.$refs["feedbackForm"].validate((res) => {
+      this.$refs["feedbackForm"].validate(res => {
         if (res) {
           this.feedbacking = true;
           const { id, content } = this.feedbackForm;
           commodityService
             .skuFeedback(id, {
-              content: `商品ID：${this.feedbackSku.id}, 反馈：${content}`,
+              content: `商品ID：${this.feedbackSku.id}, 反馈：${content}`
             })
             .then(() => {
               this.$refs["feedbackForm"].resetFields();
               this.showFeedback = false;
               this.$notice({
                 type: "success",
-                title: "反馈成功",
+                title: "反馈成功"
               });
             })
             .finally(() => {
@@ -392,8 +395,8 @@ export default {
             });
         }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
@@ -456,6 +459,12 @@ export default {
         }
       }
     }
+  }
+
+  .feedback-name {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #2c3330;
   }
 }
 .iframe-wrapper {
@@ -616,12 +625,12 @@ export default {
   }
 
   .popper__arrow {
-  display: none !important;
-}
+    display: none !important;
 
-.el-select__caret{
-  color:black !important;
-}
+    .el-select__caret {
+      color: black !important;
+    }
+  }
 
   .dropdown-item {
     display: flex;
@@ -672,6 +681,4 @@ export default {
     }
   }
 }
-
-
 </style>
