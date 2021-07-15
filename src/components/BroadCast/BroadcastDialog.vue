@@ -146,12 +146,11 @@ export default {
 }
 
 /deep/ .el-dialog {
-  margin-top: 0px !important;
+  margin-top: 50vh !important;
+  transform: translateY(-50%) !important;
   background: transparent;
   box-shadow: unset;
   .el-dialog__body {
-    margin-top: 50% !important;
-    transform: translateY(-19%) !important;
     padding: 0px;
     background: transparent;
     background-image: url("~images/broadcast/bg.svg");
