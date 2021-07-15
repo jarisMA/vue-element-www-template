@@ -290,9 +290,8 @@ export default {
       this.$emit("showFeedback");
     },
     handleNotAvailable() {
-      this.$message({
-        message: "本章节尚未到开放时间",
-        center: true
+      this.$notice({
+        title: "本章节尚未到开放时间"
       });
     }
   }
@@ -557,28 +556,32 @@ export default {
 }
 </style>
 <style lang="less">
-.el-message {
-  min-width: 196px !important;
-  min-height: 40px !important;
-  padding: 7px 24px !important;
-  background: white !important;
-  border: none !important;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
+.notification-container {
+  padding: 0px 24px !important;
 
-  .el-message__content {
-    font-size: 12px;
-    color: #606c66;
+  .notification-icon {
+    display: none !important;
   }
 
-  .el-icon-info:before {
-    content: "" !important;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    mask-size: cover;
-    mask-repeat: no-repeat;
-    background-color: #606c66;
-    mask-image: url("~images/term/clock.svg");
+  .notification-content,
+  .success {
+    line-height: 44px !important;
+    color: #606c66 !important;
+    font-weight: 400 !important;
+    font-size: 12px !important;
+    &::before {
+      position: relative;
+      top: 7px;
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      margin-right: 4px;
+      mask-size: cover;
+      mask-repeat: no-repeat;
+      background-color: #606c66;
+      mask-image: url("~images/term/clock.svg");
+    }
   }
 }
 
