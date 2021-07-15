@@ -65,7 +65,7 @@ import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
 import Attach from "./widgets/Attach";
 
-import { TERM_STATUS } from "utils/const";
+import { TERM_STATUS, COURSE_TYPE_BIBLE } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan, goMyPlan } from "utils/routes";
 import Feedback from "./widgets/Feedback.vue";
@@ -114,7 +114,9 @@ export default {
         .then(([res, attaches]) => {
           this.detail = res.camp_term;
           this.feedback = res.feedback;
-          this.categories = res.categories.filter(item => item.type != 3);
+          this.categories = res.categories.filter(
+            item => item.type !== COURSE_TYPE_BIBLE
+          );
           this.homeworks = res.homeworks.filter(
             item =>
               item.is_online === 1 &&

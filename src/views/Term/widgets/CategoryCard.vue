@@ -9,17 +9,13 @@
                 :class="[
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
-                  category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
                   category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
                 ]"
               ></i>
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
-                <h4
-                  class="card-header-title ellipsis"
-                  @click.prevent="!isDisabled ? handleCardClick() : null"
-                >
+                <h4 class="card-header-title ellipsis">
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
@@ -31,7 +27,7 @@
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
                 <label class="card-header-count"
-                  >{{ category.resource.lessons.length }}节课</label
+                  >{{ category.resources.length }}节课</label
                 >
                 <label class="card-header-duration"
                   >（{{ Math.floor(courseDuration / 60) }}分钟）</label
@@ -59,7 +55,7 @@
                 lessonStatus(index) === 3 ? 'active' : '',
                 lessonStatus(index) === 4 ? 'completed' : ''
               ]"
-              v-for="(lesson, index) of category.resource.lessons"
+              v-for="(lesson, index) of category.resources"
               :key="lesson.id"
               @click.stop="handleLessonClick(index)"
             >
@@ -117,12 +113,8 @@
 </template>
 
 <script>
-import {
-  COURSE_TYPE_COURSE,
-  COURSE_TYPE_BIBLE,
-  COURSE_TYPE_LIVE
-} from "utils/const";
-import { goBibleDetail, goCourse } from "utils/routes";
+import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
+import {} from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
 import CourseFeedback from "./CourseFeedback";
 
@@ -144,34 +136,23 @@ export default {
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_BIBLE,
       COURSE_TYPE_LIVE
     };
   },
   computed: {
     isDisabled() {
       const category = this.category;
-      const { type, resource, resource_id, start_at } = category;
-      if (type === COURSE_TYPE_BIBLE) {
-        const { parent } = resource;
-        if (
-          (resource_id && resource.is_block === 1) ||
-          parent.is_online !== 1 ||
-          parent.status === 0
-        ) {
-          return true;
-        }
-      }
+      const { start_at } = category;
       return (
         start_at && new Date().valueOf() < new Date(category.start_at).valueOf()
       );
     },
     courseDuration() {
       const { category } = this;
-      const { type, resource } = category;
+      const { type, resources } = category;
       let duration = 0;
       if (type === COURSE_TYPE_COURSE) {
-        duration = resource.lessons.reduce((prev, next) => {
+        duration = resources.reduce((prev, next) => {
           return prev + next.second_duration;
         }, 0);
       }
@@ -180,10 +161,9 @@ export default {
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
       return index => {
-        const { type, resource } = this.category;
+        const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const { lessons } = resource;
-        const lesson = lessons[index];
+        const lesson = resources[index];
         const last_play_position = lesson.last_play_position || 0;
         const play_second_duration = lesson.play_second_duration || 0;
         return play_second_duration >= lesson.second_duration * 0.9
@@ -195,11 +175,10 @@ export default {
     },
     lessonStatusText() {
       return index => {
-        const { type, resource } = this.category;
+        const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const status = this.lessonStatus(index);
-        const { lessons } = resource;
-        const lesson = lessons[index];
+        const lesson = resources[index];
         let text = "";
         switch (status) {
           case 3:
@@ -235,10 +214,9 @@ export default {
     },
     courseStatus() {
       // 3 播放完成，2 上次播放，1 未播放
-      const { type, resource } = this.category;
+      const { type, resources } = this.category;
       if (type !== COURSE_TYPE_COURSE) return 0;
-      const { lessons } = resource;
-      return lessons.every((lesson, index) => {
+      return resources.every((lesson, index) => {
         return this.lessonStatus(index) === 4;
       })
         ? 3
@@ -263,25 +241,9 @@ export default {
   methods: {
     formatDate,
     formatSeconds,
-    handleCardClick() {
-      const { resource, resource_id, bible_id, type } = this.category;
-      if (!this.isDisabled && type === COURSE_TYPE_BIBLE) {
-        goBibleDetail(
-          resource_id ? resource.bible_id : bible_id,
-          resource_id
-            ? {
-                tab: resource_id
-              }
-            : null,
-          "_blank"
-        );
-      }
-    },
     handleLessonClick(index) {
-      const { type, resource } = this.category;
-      if (type === COURSE_TYPE_COURSE) {
-        goCourse(resource.id, index + 1);
-      }
+      const { type, resources } = this.category;
+      console.log(type, resources[index]);
     },
     handleShowFeedback() {
       this.$emit("showFeedback");
