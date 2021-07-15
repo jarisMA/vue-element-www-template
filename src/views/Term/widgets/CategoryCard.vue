@@ -290,9 +290,9 @@ export default {
       this.$emit("showFeedback");
     },
     handleNotAvailable() {
-      this.$message({
-        message: "本章节尚未到开放时间",
-        center: true
+      this.$notice({
+        type: "warning",
+        title: "本章节尚未到开放时间"
       });
     }
   }
@@ -311,9 +311,10 @@ export default {
     .card-header-desc {
       color: #4d5652 !important;
     }
-    .card-header-date {
-      color: #72807a !important;
+    .card-header-count, .card-header-duration, .card-header-date{
+       color: #72807a !important;
     }
+
     /deep/ .el-collapse-item__arrow {
       color: #72807a;
     }
@@ -357,9 +358,9 @@ export default {
 .card-header {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   padding: 20px 0;
   width: 100%;
+  font-weight: 400;
   .card-header-left {
     flex: none;
     padding-right: 10px;
@@ -415,6 +416,7 @@ export default {
     }
     .card-header-desc {
       margin-top: 5px;
+      padding-right: 20px;
       line-height: 18px;
       font-size: 12px;
       color: #606c66;
@@ -556,30 +558,6 @@ export default {
 }
 </style>
 <style lang="less">
-.el-message {
-  min-width: 196px !important;
-  min-height: 40px !important;
-  padding: 7px 24px !important;
-  background: white !important;
-  border: none !important;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
-
-  .el-message__content {
-    font-size: 12px;
-    color: #606c66;
-  }
-
-  .el-icon-info:before {
-    content: "" !important;
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    mask-size: cover;
-    mask-repeat: no-repeat;
-    background-color: #606c66;
-    mask-image: url("~images/term/clock.svg");
-  }
-}
 
 /deep/ .el-collapse-item__arrow {
   color: #8ea098;
