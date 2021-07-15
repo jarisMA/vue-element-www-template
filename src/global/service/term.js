@@ -34,6 +34,9 @@ const termService = {
   },
   deleteTermWidgetFeedback(id) {
     return request.delete(API.campTermWidgetFeedback(id));
+  },
+  campTermVideoCat(termId) {
+    return request.get(API.campTermVideoCat(termId));
   }
 };
 

@@ -2,16 +2,19 @@
   <div class="page">
     <Course
       :course="detail"
-      :courseLessons="lessons"
-      @setRecord="setLessonRecord"
+      :courseChapters="widgets"
+      :chapterIndex="activeWidgetIndex"
+      :sectionIndex="activeResourceIndex"
+      @setRecord="handleSetRecord"
+      @toggle="handleToggle"
     />
   </div>
 </template>
 
 <script>
-import courseService from "service/course";
+import termService from "service/term";
 import Course from "components/Course/Course";
-import { goHome } from "utils/routes";
+// import { goHome } from "utils/routes";
 
 export default {
   name: "CampTermVideo",
@@ -19,57 +22,104 @@ export default {
   data() {
     return {
       detail: {},
-      lessons: [],
-      setRecording: false
+      widgets: [],
+      widgetId: null,
+      resourceId: null,
+      setRecording: false,
+      activeWidgetIndex: 0,
+      activeResourceIndex: 0
     };
   },
   watch: {
     ["$route"](val, oldVal) {
-      if (
-        val.params.id !== oldVal.params.id ||
-        val.params.courseId !== oldVal.params.courseId
-      ) {
+      if (val.params.termId !== oldVal.params.termId) {
         this.getCourse();
+      } else {
+        const { widgetId, resourceId } = val.params;
+        this.widgetId = widgetId;
+        this.resourceId = resourceId;
+        this.setActiveIndex();
       }
     }
   },
   created() {
+    const { widgetId, resourceId } = this.$route.params;
+    this.widgetId = widgetId;
+    this.resourceId = resourceId;
     this.getCourse();
   },
   methods: {
     getCourse() {
-      const id = this.$route.params.id || this.$route.params.courseId;
-      courseService.course(id).then(res => {
-        if (!res.permission) {
-          this.$notice({
-            type: "warning",
-            title: "暂无权限"
-          });
-          return goHome();
-        }
-        this.detail = res;
-        this.lessons = res.lessons;
+      const id = this.$route.params.termId;
+      termService.campTermVideoCat(id).then(res => {
+        this.detail = res.term;
+        this.widgets = res.widgets.map(item => {
+          return {
+            ...item,
+            sections: item.resources
+          };
+        });
+        this.setActiveIndex();
       });
     },
-    setLessonRecord(activeLessonIndex, params) {
-      const { lessons, setRecording } = this;
-      const lesson = lessons[activeLessonIndex];
+    setActiveIndex() {
+      this.widgets.some((widget, wIndex) => {
+        if (widget.id == this.widgetId) {
+          this.activeWidgetIndex = wIndex;
+          widget.resources.some((resource, sIndex) => {
+            if (resource.widget_resource_id == this.resourceId) {
+              this.activeResourceIndex = sIndex;
+              return true;
+            }
+          });
+          return true;
+        }
+      });
+    },
+    handleSetRecord(params) {
+      const {
+        widgets,
+        activeWidgetIndex,
+        activeResourceIndex,
+        setRecording
+      } = this;
+      const widget = widgets[activeWidgetIndex];
+      const resource = widget.resources[activeResourceIndex];
       if (!setRecording) {
         this.setRecording = true;
-        const id = this.$route.params.id || this.$route.params.courseId;
-        courseService
-          .setLessonRecord(id, lesson.id, params)
+        termService
+          .setWidgetResourceRecord(
+            widget.id,
+            resource.widget_resource_id,
+            params
+          )
           .then(() => {
-            this.$set(lessons, activeLessonIndex, {
-              ...lesson,
-              play_second_duration:
-                lesson.play_second_duration - 0 + (params.second_duration - 0)
-            });
+            this.$set(
+              widgets[activeWidgetIndex].resources,
+              activeResourceIndex,
+              {
+                ...resource,
+                play_second_duration:
+                  resource.play_second_duration -
+                  0 +
+                  (params.second_duration - 0)
+              }
+            );
           })
           .finally(() => {
             this.setRecording = false;
           });
       }
+    },
+    handleToggle(widgetIndex, resourceIndex) {
+      this.$router.push({
+        params: {
+          ...this.$route.params,
+          widgetId: this.widgets[widgetIndex].id,
+          resourceId: this.widgets[widgetIndex].resources[resourceIndex]
+            .widget_resource_id
+        }
+      });
     }
   }
 };
