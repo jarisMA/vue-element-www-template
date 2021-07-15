@@ -291,6 +291,7 @@ export default {
     },
     handleNotAvailable() {
       this.$notice({
+        type: "warning",
         title: "本章节尚未到开放时间"
       });
     }
@@ -556,34 +557,6 @@ export default {
 }
 </style>
 <style lang="less">
-.notification-container {
-  padding: 0px 24px !important;
-
-  .notification-icon {
-    display: none !important;
-  }
-
-  .notification-content,
-  .success {
-    line-height: 44px !important;
-    color: #606c66 !important;
-    font-weight: 400 !important;
-    font-size: 12px !important;
-    &::before {
-      position: relative;
-      top: 7px;
-      content: "";
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      margin-right: 4px;
-      mask-size: cover;
-      mask-repeat: no-repeat;
-      background-color: #606c66;
-      mask-image: url("~images/term/clock.svg");
-    }
-  }
-}
 
 /deep/ .el-collapse-item__arrow {
   color: #8ea098;
