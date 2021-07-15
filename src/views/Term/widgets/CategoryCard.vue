@@ -558,7 +558,6 @@ export default {
 }
 </style>
 <style lang="less">
-
 /deep/ .el-collapse-item__arrow {
   color: #8ea098;
 }
