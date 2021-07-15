@@ -94,7 +94,7 @@
       width="580px"
     >
       <div class="feedback-name">
-        商品名称
+        {{ feedbackSku.name }}
       </div>
       <el-form
         class="feedback-form"
