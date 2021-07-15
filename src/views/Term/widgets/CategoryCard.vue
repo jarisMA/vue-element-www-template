@@ -321,7 +321,7 @@ export default {
 
   &.disable {
     filter: opacity(0.5);
-    cursor: auto;
+    pointer-events: auto !important;
   }
   &.pointer {
     /deep/ .el-collapse-item__header {
@@ -337,6 +337,7 @@ export default {
       }
       .el-collapse-item__header {
         cursor: auto;
+        cursor: pointer !important;
       }
     }
     .el-collapse-item__header {
@@ -561,6 +562,7 @@ export default {
   padding: 7px 24px !important;
   background: white !important;
   border: none !important;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1) !important;
 
   .el-message__content {
     font-size: 12px;
