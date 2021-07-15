@@ -78,7 +78,7 @@ import {
   Loading,
   MessageBox,
   Popconfirm,
-  // Message,
+  //Message,
   // Notification,
   Scrollbar,
   InfiniteScroll
@@ -169,4 +169,4 @@ Vue.use(InfiniteScroll);
 Vue.prototype.$confirm = MessageBox.confirm;
 // Vue.prototype.$prompt = MessageBox.prompt;
 // Vue.prototype.$notify = Notification;
-// Vue.prototype.$message = Message;
+//Vue.prototype.$message = Message;
