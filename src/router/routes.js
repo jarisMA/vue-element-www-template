@@ -11,7 +11,7 @@ import routersNotification from "./routersNotification";
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
-import Course from "@/views/Term/Course";
+import CampTermVideo from "@/views/Term/Video";
 import SeriesCourse from "@/views/Academy/SeriesCourse";
 import Order from "@/views/Order";
 
@@ -44,9 +44,9 @@ const routes = [
     component: Protocol
   },
   {
-    path: "/course/:courseId/lesson/:lessonIndex",
-    name: "Course",
-    component: Course,
+    path: "/camp/:campId/term/:termId/widget/:widgetId/resource/:resourceId",
+    name: "CampTermVideo",
+    component: CampTermVideo,
     meta: {
       auth: true
     }

@@ -14,7 +14,7 @@ import Course from "components/Course/Course";
 import { goHome } from "utils/routes";
 
 export default {
-  name: "TermCourse",
+  name: "CampTermVideo",
   components: { Course },
   data() {
     return {

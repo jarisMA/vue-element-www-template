@@ -245,8 +245,8 @@ export default {
       const { resources } = this.category;
       const resource = resources[index];
       goCampTermVideo(
-        resource.campId,
-        resource.termId,
+        resource.camp_id,
+        resource.term_id,
         resource.widget_id,
         resource.widget_resource_id
       );
