@@ -360,6 +360,7 @@ export default {
   align-items: center;
   padding: 20px 0;
   width: 100%;
+  font-weight: 400;
   .card-header-left {
     flex: none;
     padding-right: 10px;
