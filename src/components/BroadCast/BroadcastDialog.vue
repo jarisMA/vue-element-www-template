@@ -146,7 +146,7 @@ export default {
 }
 
 /deep/ .el-dialog {
-  margin-top: 50vh !important;
+  margin-top: 45vh !important;
   transform: translateY(-50%) !important;
   background: transparent;
   box-shadow: unset;
