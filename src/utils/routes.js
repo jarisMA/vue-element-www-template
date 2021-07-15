@@ -78,6 +78,27 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
+export const goCampTermVideo = (
+  campId,
+  termId,
+  widgetId,
+  resourceId,
+  type = "_blank"
+) => {
+  return goRoute(
+    {
+      name: "CampTermVideo",
+      params: {
+        campId,
+        termId,
+        widgetId,
+        resourceId
+      }
+    },
+    type
+  );
+};
+
 export const goCourse = (courseId, lessonIndex, type = "_blank") => {
   return goRoute(
     {

@@ -114,7 +114,7 @@
 
 <script>
 import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
-import {} from "utils/routes";
+import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
 import CourseFeedback from "./CourseFeedback";
 
@@ -242,8 +242,14 @@ export default {
     formatDate,
     formatSeconds,
     handleLessonClick(index) {
-      const { type, resources } = this.category;
-      console.log(type, resources[index]);
+      const { resources } = this.category;
+      const resource = resources[index];
+      goCampTermVideo(
+        resource.campId,
+        resource.termId,
+        resource.widget_id,
+        resource.widget_resource_id
+      );
     },
     handleShowFeedback() {
       this.$emit("showFeedback");
