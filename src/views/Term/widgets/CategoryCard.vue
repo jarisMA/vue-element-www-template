@@ -311,9 +311,10 @@ export default {
     .card-header-desc {
       color: #4d5652 !important;
     }
-    .card-header-date {
-      color: #72807a !important;
+    .card-header-count, .card-header-duration, .card-header-date{
+       color: #72807a !important;
     }
+
     /deep/ .el-collapse-item__arrow {
       color: #72807a;
     }
@@ -357,7 +358,6 @@ export default {
 .card-header {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   padding: 20px 0;
   width: 100%;
   font-weight: 400;
@@ -416,6 +416,7 @@ export default {
     }
     .card-header-desc {
       margin-top: 5px;
+      padding-right: 20px;
       line-height: 18px;
       font-size: 12px;
       color: #606c66;
