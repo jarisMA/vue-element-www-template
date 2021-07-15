@@ -151,7 +151,7 @@ export default {
   box-shadow: unset;
   .el-dialog__body {
     margin-top: 50% !important;
-    transform: translateY(-20%) !important;
+    transform: translateY(-19%) !important;
     padding: 0px;
     background: transparent;
     background-image: url("~images/broadcast/bg.svg");
