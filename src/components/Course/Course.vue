@@ -96,6 +96,7 @@
           "
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
+          @ended="handleEnded"
         />
       </div>
     </div>
@@ -209,6 +210,9 @@ export default {
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
       }, 300);
+    },
+    handleEnded() {
+      this.$emit("ended");
     },
     handleNextLesson() {}
   }

@@ -7,6 +7,7 @@
       :sectionIndex="activeSectionIndex"
       @toggle="handleToggle"
       @setRecord="handleSetRecord"
+      @ended="handleEnded"
     />
   </div>
 </template>
@@ -116,6 +117,10 @@ export default {
             this.setRecording = false;
           });
       }
+    },
+    handleEnded() {
+      const { courseId, lessonId } = this;
+      courseService.setLessonFinish(courseId, lessonId);
     }
   }
 };

@@ -85,6 +85,8 @@ export default {
   courses: `${WEB_PREFIX}/course`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
+  lessonFinish: (courseId, lessonId) =>
+    `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/finish`,
   courseSeriesCategory: `${WEB_PREFIX}/series-category`,
   courseSeries: `${WEB_PREFIX}/series`,
   courseSetDetail: id => `${WEB_PREFIX}/series/${id}/detail`,
@@ -92,7 +94,8 @@ export default {
     `${WEB_PREFIX}/series/${id}/chapter/${chapterId}`,
   courseSetSectionRecord: (id, chapterId, sectionId) =>
     `${WEB_PREFIX}/series/${id}/chapter/${chapterId}/section/${sectionId}/record`,
-
+  courseSetSectionFinish: (id, chapterId, sectionId) =>
+    `${WEB_PREFIX}/series/${id}/chapter/${chapterId}/section/${sectionId}/finish`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,

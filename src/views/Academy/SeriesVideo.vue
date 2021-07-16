@@ -7,6 +7,7 @@
       :sectionIndex="activeSectionIndex"
       @toggle="handleToggle"
       @setRecord="handleSetRecord"
+      @ended="handleEnded"
     />
   </div>
 </template>
@@ -126,6 +127,14 @@ export default {
           sectionId: this.chapters[chapterIndex].sections[sectionIndex].id
         }
       });
+    },
+    handleEnded() {
+      const { chapterId, sectionId } = this;
+      courseService.setSeriesSectionFinish(
+        this.$route.params.seriesId,
+        chapterId,
+        sectionId
+      );
     }
   }
 };

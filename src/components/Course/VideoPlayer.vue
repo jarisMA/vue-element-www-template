@@ -296,7 +296,7 @@ export default {
     handleEnded() {
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
-      // this.$emit("ended");
+      this.$emit("ended");
     },
     handleKeydown(e) {
       // 空格
