@@ -32,13 +32,14 @@ export default {
   watch: {
     ["$route"](val, oldVal) {
       if (
-        val.params.seriesId !== oldVal.params.seriesId ||
-        val.params.chapterId !== oldVal.params.chapterId
+        val.params.seriesId != oldVal.params.seriesId ||
+        val.params.chapterId != oldVal.params.chapterId
       ) {
+        const { chapterId } = this.$route.params;
+        this.chapterId = chapterId;
         this.getData();
       } else {
-        const { chapterId, sectionId } = this.$route.params;
-        this.chapterId = chapterId;
+        const { sectionId } = val.params;
         this.sectionId = sectionId;
         this.setActiveIndex();
       }
@@ -53,7 +54,7 @@ export default {
   methods: {
     getData() {
       courseService
-        .setChapter(this.$route.params.seriesId, this.$route.params.chapterId)
+        .setChapter(this.$route.params.seriesId, this.chapterId)
         .then(res => {
           this.detail = res;
           this.chapters = [

@@ -31,7 +31,7 @@ export default {
   },
   watch: {
     ["$route"](val, oldVal) {
-      if (val.params.courseId !== oldVal.params.courseId) {
+      if (val.params.courseId != oldVal.params.courseId) {
         this.getData();
       } else {
         const { courseId, lessonId } = val.params;

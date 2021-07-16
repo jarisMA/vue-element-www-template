@@ -32,7 +32,7 @@ export default {
   },
   watch: {
     ["$route"](val, oldVal) {
-      if (val.params.termId !== oldVal.params.termId) {
+      if (val.params.termId != oldVal.params.termId) {
         this.getCourse();
       } else {
         const { widgetId, resourceId } = val.params;
