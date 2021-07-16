@@ -1,7 +1,10 @@
 <template>
-  <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
+  <div
+    :class="['category-card', isDisabled ? 'disable' : 'pointer']"
+    @click.stop="isDisabled ? handleNotAvailable() : null"
+  >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null">
+      <el-collapse-item :disabled="category.type === null || isDisabled">
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -89,7 +92,7 @@
               录播视频将在直播结束后 24 小时内上传，敬请期待
             </p>
           </div>
-          <div class="card-feedback-wrapper">
+          <!-- <div class="card-feedback-wrapper">
             <course-feedback
               class="card-feedback"
               :params="{
@@ -105,7 +108,7 @@
               <span>看看同学们怎么说</span>
               <i class="card-more-icon"></i>
             </label>
-          </div>
+          </div> -->
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -116,11 +119,11 @@
 import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
 import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
-import CourseFeedback from "./CourseFeedback";
+//import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
-  components: { CourseFeedback },
+  //components: { CourseFeedback },
   props: {
     category: {
       type: Object,
@@ -253,6 +256,12 @@ export default {
     },
     handleShowFeedback() {
       this.$emit("showFeedback");
+    },
+    handleNotAvailable() {
+      this.$notice({
+        type: "warning",
+        title: "本章节尚未到开放时间"
+      });
     }
   }
 };
@@ -263,9 +272,24 @@ export default {
 
 .category-card {
   width: 100%;
-  &.disabled {
+  &:hover {
+    .card-header-title {
+      color: #232926 !important;
+    }
+    .card-header-desc {
+      color: #4d5652 !important;
+    }
+    .card-header-date {
+      color: #72807a !important;
+    }
+    /deep/ .el-collapse-item__arrow {
+      color: #72807a;
+    }
+  }
+
+  &.disable {
     filter: opacity(0.5);
-    cursor: auto;
+    pointer-events: auto !important;
   }
   &.pointer {
     /deep/ .el-collapse-item__header {
@@ -281,6 +305,7 @@ export default {
       }
       .el-collapse-item__header {
         cursor: auto;
+        cursor: pointer !important;
       }
     }
     .el-collapse-item__header {
@@ -303,6 +328,7 @@ export default {
   align-items: center;
   padding: 20px 0;
   width: 100%;
+  font-weight: 400;
   .card-header-left {
     flex: none;
     padding-right: 10px;
@@ -358,7 +384,7 @@ export default {
     }
     .card-header-desc {
       margin-top: 5px;
-      line-height: 16px;
+      line-height: 18px;
       font-size: 12px;
       color: #606c66;
     }
@@ -496,5 +522,10 @@ export default {
       vertical-align: bottom;
     }
   }
+}
+</style>
+<style lang="less">
+/deep/ .el-collapse-item__arrow {
+  color: #8ea098;
 }
 </style>
