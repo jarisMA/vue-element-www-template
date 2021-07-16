@@ -1,6 +1,5 @@
 <template>
-  <div class="page"
-       v-loading="loading">
+  <div class="page" v-loading="loading">
     <div class="container-1180">
       <div class="page-header">
         <div class="page-header-title">{{ course.name }}</div>
@@ -13,70 +12,76 @@
       <div class="page-main">
         <div class="page-main-left">
           <div class="page-main-video-wrapper">
-            <template v-if="course && course.lessons && course.lessons.length > 0">
-              <label class="page-main-video-tips"
-                     v-if="
+            <template
+              v-if="course && course.lessons && course.lessons.length > 0"
+            >
+              <label
+                class="page-main-video-tips"
+                v-if="
                   !course.permission &&
                     course.lessons[activeLessonIndex].is_trial &&
                     showTips
-                ">
+                "
+              >
                 可试看{{
                   course.lessons[activeLessonIndex].trial_duration / 60 > 1
                     ? Math.floor(
                         course.lessons[activeLessonIndex].trial_duration / 60
                       ) + "分钟"
                     : course.lessons[activeLessonIndex].trial_duration + "秒"
-                }}，请<span class="primary"
-                      @click="handleOrder">购买本课程</span>
-                <span class="pointer vip"
-                      v-if="course.is_vip"
-                      @click="goVip">
+                }}，请<span class="primary" @click="handleOrder"
+                  >购买本课程</span
+                >
+                <span class="pointer vip" v-if="course.is_vip" @click="goVip">
                   或<i class="vip-icon"></i>
                   <span class="vip-label">开通VIP</span>
                 </span>
-                <i class="close-icon"
-                   @click="showTips = false"></i>
+                <i class="close-icon" @click="showTips = false"></i>
               </label>
-              <video-player :autoplay="false"
-                            :vid="course.lessons[activeLessonIndex].vod_id"
-                            :isTrial="
+              <video-player
+                :autoplay="false"
+                :vid="course.lessons[activeLessonIndex].vod_id"
+                :isTrial="
                   !course.permission &&
                   course.lessons[activeLessonIndex].is_trial
                     ? true
                     : false
                 "
-                            :cover="
+                :cover="
                   course.lessons[activeLessonIndex].cover_url ||
                     course.cover_url
                 "
-                            :startTime="
+                :startTime="
                   course.lessons[activeLessonIndex].is_trial
                     ? 0
                     : course.lessons[activeLessonIndex].last_play_position
                 "
-                            :duration="course.lessons[activeLessonIndex].second_duration"
-                            @timeUpdate="handleVideoTimeUpdate"
-                            @setRecord="handleSetVideoRecord"
-                            @ended="handleVideoEnded" />
-              <i :class="['page-main-video-more', hideMenu ? 'hide' : '']"
-                 @click="hideMenu = !hideMenu"></i>
-              <div class="page-main-video-end"
-                   v-if="!course.permission && showEnd">
+                :duration="course.lessons[activeLessonIndex].second_duration"
+                @timeUpdate="handleVideoTimeUpdate"
+                @setRecord="handleSetVideoRecord"
+                @ended="handleVideoEnded"
+              />
+              <i
+                :class="['page-main-video-more', hideMenu ? 'hide' : '']"
+                @click="hideMenu = !hideMenu"
+              ></i>
+              <div
+                class="page-main-video-end"
+                v-if="!course.permission && showEnd"
+              >
                 <h4 class="end-title">试看已结束</h4>
                 <p class="end-desc">
-                  体验完整课程请<span class="primary"
-                        @click="handleOrder">购买本课</span><span v-if="course.is_vip">或</span>
+                  体验完整课程请<span class="primary" @click="handleOrder"
+                    >购买本课</span
+                  ><span v-if="course.is_vip">或</span>
                 </p>
-                <div v-if="course.is_vip"
-                     class="vip-btn"
-                     @click="goVip">
+                <div v-if="course.is_vip" class="vip-btn" @click="goVip">
                   <i class="vip-icon"></i>开通VIP
                 </div>
               </div>
             </template>
           </div>
-          <div class="page-main-info"
-               v-show="!loading">
+          <div class="page-main-info" v-show="!loading">
             <label class="page-main-price">{{
               course.price_type === COURSE_PRICE_TYPE_PAY
                 ? "¥" + course.current_price
@@ -84,30 +89,34 @@
             }}</label>
 
             <div class="page-main-info-right">
-              <label v-if="false"
-                     class="page-main-study-count">{{ course.study_count }}人正在学</label>
-              <el-button :class="[
+              <label v-if="false" class="page-main-study-count"
+                >{{ course.study_count }}人正在学</label
+              >
+              <el-button
+                :class="[
                   course.is_vip && isVip() ? 'vip-btn' : 'page-main-btn'
                 ]"
-                         type="primary"
-                         @click="
+                type="primary"
+                @click="
                   course.permission
                     ? goAcademyCourseVideo(course.id, 1)
                     : handleOrder()
-                ">
+                "
+              >
                 {{ course.permission ? "进入学习" : "购买本课" }}
               </el-button>
-              <el-button class="vip-free"
-                         v-if="course.is_vip && !isVip()"
-                         @click="goVip()">
+              <el-button
+                class="vip-free"
+                v-if="course.is_vip && !isVip()"
+                @click="goVip()"
+              >
                 <span style="font-weight:600">开通VIP</span>
                 <span style="font-weight:400">免费学</span>
               </el-button>
             </div>
           </div>
         </div>
-        <div class="page-main-right"
-             v-show="!hideMenu">
+        <div class="page-main-right" v-show="!hideMenu">
           <div class="page-main-right-info">
             <label class="page-main-info-text">
               <i class="course-icon"></i>
@@ -118,30 +127,36 @@
               {{ Math.floor(course.second_duration / 60) }}分钟
             </label>
           </div>
-          <p class="page-main-intro"
-             v-if="course.introduction">
+          <p class="page-main-intro" v-if="course.introduction">
             {{ course.introduction }}
           </p>
           <div class="page-lesson-wrapper">
             <div class="scroll-section">
               <ul class="page-lesson-list">
-                <li :class="[
+                <li
+                  :class="[
                     'page-lesson-item',
                     activeLessonIndex === index ? 'active' : ''
                   ]"
-                    v-for="(lesson, index) of course.lessons"
-                    :key="lesson.id"
-                    @click="
+                  v-for="(lesson, index) of course.lessons"
+                  :key="lesson.id"
+                  @click="
                     course.permission
                       ? goAcademyCourseVideo(course.id, index + 1)
                       : null
-                  ">
+                  "
+                >
                   <div class="lesson-item-left">
-                    <the-loading-image :width="160"
-                                       :height="90"
-                                       :url="lesson.cover_url" />
-                    <label class="lesson-item-left-label"
-                           v-if="activeLessonIndex === index">正在播放</label>
+                    <the-loading-image
+                      :width="160"
+                      :height="90"
+                      :url="lesson.cover_url"
+                    />
+                    <label
+                      class="lesson-item-left-label"
+                      v-if="activeLessonIndex === index"
+                      >正在播放</label
+                    >
                   </div>
                   <div class="lesson-item-right">
                     <h5 class="lesson-item-title ellipsis">
@@ -161,15 +176,18 @@
         </div>
       </div>
       <div class="page-content">
-        <div class="page-content-relative"
-             v-if="relations.length > 0">
+        <div class="page-content-relative" v-if="relations.length > 0">
           <h4 class="page-content-label">相关课程</h4>
           <ul class="page-content-relative-list">
-            <li class="page-content-relative-item"
-                v-for="item of relations"
-                :key="item.id">
-              <course-card :course="item"
-                           @click.native.prevent="goDetail(item.id)" />
+            <li
+              class="page-content-relative-item"
+              v-for="item of relations"
+              :key="item.id"
+            >
+              <course-card
+                :course="item"
+                @click.native.prevent="goDetail(item.id)"
+              />
             </li>
           </ul>
         </div>
@@ -198,7 +216,7 @@ import { goVip } from "utils/routes";
 export default {
   name: "AcademyCourseDetail",
   components: { TheLoadingImage, VideoPlayer, CourseCard },
-  data () {
+  data() {
     return {
       COURSE_PRICE_TYPE_PAY,
       COURSE_PRICE_TYPE_FREE,
@@ -214,13 +232,13 @@ export default {
     };
   },
   watch: {
-    ["$route"] () {
+    ["$route"]() {
       this.getData();
     }
   },
   computed: {
     ...mapState(["userInfo"]),
-    lessonStatus () {
+    lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放， 5 不能播放
       return index => {
         const { lessons, permission } = this.course;
@@ -233,11 +251,11 @@ export default {
         return play_second_duration >= lesson.second_duration * 0.9
           ? 4
           : last_play_position > 0
-            ? 3
-            : 1;
+          ? 3
+          : 1;
       };
     },
-    lessonStatusText () {
+    lessonStatusText() {
       return index => {
         const status = this.lessonStatus(index);
         const { lessons } = this.course;
@@ -255,7 +273,7 @@ export default {
         return text;
       };
     },
-    lessonStatusIconClass () {
+    lessonStatusIconClass() {
       return index => {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
@@ -277,7 +295,7 @@ export default {
       };
     }
   },
-  created () {
+  created() {
     this.getData();
   },
   methods: {
@@ -285,7 +303,7 @@ export default {
     goVip,
     formatSeconds,
     goAcademyCourseVideo,
-    getData () {
+    getData() {
       this.loading = true;
       this.course = null;
       courseSerive
@@ -313,14 +331,14 @@ export default {
           this.loading = false;
         });
     },
-    goDetail (id) {
+    goDetail(id) {
       this.$router.push({
         params: {
           id
         }
       });
     },
-    handleOrder () {
+    handleOrder() {
       if (!this.userInfo) {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
         return;
@@ -335,7 +353,7 @@ export default {
           goOrder(res.no);
         });
     },
-    handleVideoTimeUpdate (second) {
+    handleVideoTimeUpdate(second) {
       const { course, activeLessonIndex } = this;
       if (this.updatingTimer) return false;
       this.updatingTimer = setTimeout(() => {
@@ -346,7 +364,7 @@ export default {
         this.updatingTimer = null;
       }, 300);
     },
-    handleSetVideoRecord (params) {
+    handleSetVideoRecord(params) {
       if (!this.course.permission) {
         return;
       }
@@ -368,10 +386,10 @@ export default {
           });
       }
     },
-    handleVideoEnded () {
+    handleVideoEnded() {
       this.showEnd = true;
     },
-    handleToggleLesson (index) {
+    handleToggleLesson(index) {
       this.activeLessonIndex = index;
       this.showTips = true;
       this.showEnd = false;

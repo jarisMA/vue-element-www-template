@@ -1,20 +1,25 @@
 <template>
-  <div class="page"
-       v-loading="loading">
+  <div class="page" v-loading="loading">
     <div class="container-1180">
       <div class="page-main">
         <div class="page-main-left">
-          <the-loading-image :width="780"
-                             :height="440"
-                             :url="series.cover_url + '?x-oss-process=style/pc_course_show'" />
+          <the-loading-image
+            :width="780"
+            :height="440"
+            :url="series.cover_url + '?x-oss-process=style/pc_course_show'"
+          />
           <div class="page-main-info">
             <label class="page-main-price">
-              {{ "¥" + series.current_price }}</label>
+              {{ "¥" + series.current_price }}</label
+            >
             <div class="page-main-info-right">
-              <label class="page-main-study-count">{{ series.study_count }}人正在学</label>
-              <el-button class="page-main-btn"
-                         type="primary"
-                         @click="
+              <label class="page-main-study-count"
+                >{{ series.study_count }}人正在学</label
+              >
+              <el-button
+                class="page-main-btn"
+                type="primary"
+                @click="
                   series.permission
                     ? goAcademySeriesVideo(
                         series.id,
@@ -22,12 +27,15 @@
                         series.chapters[0].sections[0].id
                       )
                     : handleOrder()
-                ">
+                "
+              >
                 {{ series.permission ? "开始学习" : "购买本课" }}
               </el-button>
-              <el-button class="vip-free"
-                         v-if="series.origin_price > 0 && !isVip()"
-                         @click="goVip()">
+              <el-button
+                class="vip-free"
+                v-if="series.origin_price > 0 && !isVip()"
+                @click="goVip()"
+              >
                 <span style="font-weight:600">开通VIP</span>
                 <span style="font-weight:400">免费学</span>
               </el-button>
@@ -46,21 +54,23 @@
               {{ Math.floor(series.second_duration / 60) }}分钟
             </label>
           </div>
-          <p class="page-main-intro"
-             v-if="series.introduction">
+          <p class="page-main-intro" v-if="series.introduction">
             {{ series.introduction }}
           </p>
           <div class="page-chapter-list">
             <div class="scroll-section">
               <el-collapse v-model="activeChapterIndexArr">
-                <div class="page-chapter-item"
-                     v-for="(chapter, key) of series.chapters"
-                     :key="key">
+                <div
+                  class="page-chapter-item"
+                  v-for="(chapter, key) of series.chapters"
+                  :key="key"
+                >
                   <el-collapse-item :name="key">
                     <template slot="title">
                       <div class="chapter-header">
                         <h4 class="chapter-header-title ellipsis">
-                          <span @click.stop="
+                          <span
+                            @click.stop="
                               series.permission
                                 ? goAcademySeriesVideo(
                                     series.id,
@@ -68,26 +78,35 @@
                                     chapter.sections[0].id
                                   )
                                 : null
-                            ">{{ chapter.name }}</span>
+                            "
+                            >{{ chapter.name }}</span
+                          >
                         </h4>
                         <div class="chapter-header-right">
-                          <label class="chapter-header-count">共{{ chapter.lesson_number }}节</label>
-                          <label class="chapter-header-duration">{{
+                          <label class="chapter-header-count"
+                            >共{{ chapter.lesson_number }}节</label
+                          >
+                          <label class="chapter-header-duration"
+                            >{{
                               Math.floor(chapter.second_duration / 60)
-                            }}分钟</label>
+                            }}分钟</label
+                          >
                         </div>
                       </div>
                     </template>
-                    <ul class="page-section-list"
-                        v-if="chapter.sections && chapter.sections.length > 0">
-                      <li :class="[
+                    <ul
+                      class="page-section-list"
+                      v-if="chapter.sections && chapter.sections.length > 0"
+                    >
+                      <li
+                        :class="[
                           'page-section-item',
                           lessonStatus(key, index) === 3 ? 'active' : '',
                           lessonStatus(key, index) === 4 ? 'completed' : ''
                         ]"
-                          v-for="(section, index) of chapter.sections"
-                          :key="section.id"
-                          @click.stop="
+                        v-for="(section, index) of chapter.sections"
+                        :key="section.id"
+                        @click.stop="
                           series.permission
                             ? goAcademySeriesVideo(
                                 series.id,
@@ -95,12 +114,15 @@
                                 section.id
                               )
                             : null
-                        ">
+                        "
+                      >
                         <div class="section-item-left">
-                          <i :class="[
+                          <i
+                            :class="[
                               'section-item-icon',
                               lessonStatusIconClass(key, index)
-                            ]"></i>
+                            ]"
+                          ></i>
                           <h5 class="section-item-title ellipsis">
                             {{ section.name }}
                           </h5>
@@ -124,15 +146,18 @@
         </div>
       </div>
       <div class="page-content">
-        <div class="page-content-relative"
-             v-if="relations.length > 0">
+        <div class="page-content-relative" v-if="relations.length > 0">
           <h4 class="page-content-label">相关课程</h4>
           <ul class="page-content-relative-list">
-            <li class="page-content-relative-item"
-                v-for="item of relations"
-                :key="item.id">
-              <set-card :series="item"
-                        @click.native.prevent="goDetail(item.id)" />
+            <li
+              class="page-content-relative-item"
+              v-for="item of relations"
+              :key="item.id"
+            >
+              <set-card
+                :series="item"
+                @click.native.prevent="goDetail(item.id)"
+              />
             </li>
           </ul>
         </div>
@@ -156,7 +181,7 @@ import { isVip } from "utils/function";
 export default {
   name: "AcademySeriesDetail",
   components: { TheLoadingImage, SetCard },
-  data () {
+  data() {
     return {
       loading: true,
       series: {},
@@ -165,13 +190,13 @@ export default {
     };
   },
   watch: {
-    ["$route"] () {
+    ["$route"]() {
       this.getData();
     }
   },
   computed: {
     ...mapState(["userInfo"]),
-    lessonStatus () {
+    lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放, 5 不能播放
       return (key, index) => {
         const { sections } = this.series.chapters[key];
@@ -187,11 +212,11 @@ export default {
         return play_second_duration >= section.second_duration * 0.9
           ? 4
           : last_play_position > 0
-            ? 3
-            : 1;
+          ? 3
+          : 1;
       };
     },
-    lessonStatusText () {
+    lessonStatusText() {
       return (key, index) => {
         const status = this.lessonStatus(key, index);
         const { sections } = this.series.chapters[key];
@@ -209,7 +234,7 @@ export default {
         return text;
       };
     },
-    lessonStatusIconClass () {
+    lessonStatusIconClass() {
       return (key, index) => {
         const status = this.lessonStatus(key, index);
         let iconClass = "unplay-icon";
@@ -231,7 +256,7 @@ export default {
       };
     }
   },
-  created () {
+  created() {
     this.getData();
   },
   methods: {
@@ -239,7 +264,7 @@ export default {
     goVip,
     formatSeconds,
     goAcademySeriesVideo,
-    getData () {
+    getData() {
       this.loading = true;
       courseService
         .set(this.$route.params.id)
@@ -264,14 +289,14 @@ export default {
           this.loading = false;
         });
     },
-    goDetail (id) {
+    goDetail(id) {
       this.$router.push({
         params: {
           id
         }
       });
     },
-    handleOrder () {
+    handleOrder() {
       if (!this.userInfo) {
         this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
         return;
