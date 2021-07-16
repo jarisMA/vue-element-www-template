@@ -22,7 +22,9 @@
                 :class="[course.is_vip ? 'vip-btn' : 'page-main-btn']"
                 type="primary"
                 @click="
-                  course.permission ? goCourse(course.id, 1) : handleOrder()
+                  course.permission
+                    ? goAcademyCourseVideo(course.id, 1)
+                    : handleOrder()
                 "
               >
                 {{ course.permission ? "开始学习" : "购买本课" }}
@@ -65,7 +67,9 @@
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
                   @click="
-                    course.permission ? goCourse(course.id, index + 1) : null
+                    course.permission
+                      ? goAcademyCourseVideo(course.id, index + 1)
+                      : null
                   "
                 >
                   <div class="lesson-item-left">
@@ -123,7 +127,7 @@ import { formatSeconds } from "utils/moment";
 import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE } from "utils/const";
-import { goOrder, goCourse } from "utils/routes";
+import { goOrder, goAcademyCourseVideo } from "utils/routes";
 import { mapState } from "vuex";
 import { isVip } from "utils/function";
 import { goVip } from "utils/routes";
@@ -210,7 +214,7 @@ export default {
     isVip,
     goVip,
     formatSeconds,
-    goCourse,
+    goAcademyCourseVideo,
     getData() {
       this.loading = true;
       courseSerive

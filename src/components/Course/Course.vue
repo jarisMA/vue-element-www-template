@@ -138,9 +138,6 @@ export default {
   watch: {
     course() {
       this.getData();
-    },
-    ["$route"]() {
-      this.getData();
     }
   },
   created() {

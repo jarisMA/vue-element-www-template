@@ -99,32 +99,32 @@ export const goCampTermVideo = (
   );
 };
 
-export const goCourse = (courseId, lessonIndex, type = "_blank") => {
+export const goAcademyCourseVideo = (courseId, lessonId, type = "_blank") => {
   return goRoute(
     {
-      name: "Course",
+      name: "AcademyCourseVideo",
       params: {
         courseId,
-        lessonIndex
+        lessonId
       }
     },
     type
   );
 };
 
-export const goSeriesCourse = (
+export const goAcademySeriesVideo = (
   seriesId,
-  courseId,
-  lessonIndex,
+  chapterId,
+  sectionId,
   type = "_blank"
 ) => {
   return goRoute(
     {
-      name: "SeriesCourse",
+      name: "AcademySeriesVideo",
       params: {
         seriesId,
-        courseId,
-        lessonIndex
+        chapterId,
+        sectionId
       }
     },
     type

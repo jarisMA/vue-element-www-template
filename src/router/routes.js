@@ -11,8 +11,9 @@ import routersNotification from "./routersNotification";
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
 import Protocol from "@/views/Protocol";
+import AcademyCourseVideo from "@/views/Academy/CourseVideo";
 import CampTermVideo from "@/views/Term/Video";
-import SeriesCourse from "@/views/Academy/SeriesCourse";
+import AcademySeriesVideo from "@/views/Academy/SeriesVideo";
 import Order from "@/views/Order";
 
 const routes = [
@@ -44,7 +45,16 @@ const routes = [
     component: Protocol
   },
   {
-    path: "/camp/:campId/term/:termId/widget/:widgetId/resource/:resourceId",
+    path: "/play/course/:courseId/lesson/:lessonId",
+    name: "AcademyCourseVideo",
+    component: AcademyCourseVideo,
+    meta: {
+      auth: true
+    }
+  },
+  {
+    path:
+      "/play/camp/:campId/term/:termId/widget/:widgetId/resource/:resourceId",
     name: "CampTermVideo",
     component: CampTermVideo,
     meta: {
@@ -52,9 +62,9 @@ const routes = [
     }
   },
   {
-    path: "/series/:seriesId/course/:courseId/section/:lessonIndex",
-    name: "SeriesCourse",
-    component: SeriesCourse,
+    path: "/play/series/:seriesId/chapter/:chapterId/section/:sectionId",
+    name: "AcademySeriesVideo",
+    component: AcademySeriesVideo,
     meta: {
       auth: true
     }
