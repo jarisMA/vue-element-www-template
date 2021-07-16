@@ -1,7 +1,10 @@
 <template>
-  <div :class="['category-card', isDisabled ? 'disabled' : 'pointer']">
+  <div
+    :class="['category-card', isDisabled ? 'disable' : 'pointer']"
+    @click.stop="isDisabled ? handleNotAvailable() : null"
+  >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null">
+      <el-collapse-item :disabled="category.type === null || isDisabled">
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -9,17 +12,13 @@
                 :class="[
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
-                  category.type === COURSE_TYPE_BIBLE ? 'bible-icon' : '',
                   category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
                 ]"
               ></i>
             </div>
             <div class="card-header-content">
               <div class="card-header-content-left">
-                <h4
-                  class="card-header-title ellipsis"
-                  @click.prevent="!isDisabled ? handleCardClick() : null"
-                >
+                <h4 class="card-header-title ellipsis">
                   {{ category.title }}
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
@@ -31,7 +30,7 @@
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
                 <label class="card-header-count"
-                  >{{ category.resource.lessons.length }}节课</label
+                  >{{ category.resources.length }}节课</label
                 >
                 <label class="card-header-duration"
                   >（{{ Math.floor(courseDuration / 60) }}分钟）</label
@@ -59,7 +58,7 @@
                 lessonStatus(index) === 3 ? 'active' : '',
                 lessonStatus(index) === 4 ? 'completed' : ''
               ]"
-              v-for="(lesson, index) of category.resource.lessons"
+              v-for="(lesson, index) of category.resources"
               :key="lesson.id"
               @click.stop="handleLessonClick(index)"
             >
@@ -93,7 +92,7 @@
               录播视频将在直播结束后 24 小时内上传，敬请期待
             </p>
           </div>
-          <div class="card-feedback-wrapper">
+          <!-- <div class="card-feedback-wrapper">
             <course-feedback
               class="card-feedback"
               :params="{
@@ -109,7 +108,7 @@
               <span>看看同学们怎么说</span>
               <i class="card-more-icon"></i>
             </label>
-          </div>
+          </div> -->
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -117,18 +116,14 @@
 </template>
 
 <script>
-import {
-  COURSE_TYPE_COURSE,
-  COURSE_TYPE_BIBLE,
-  COURSE_TYPE_LIVE
-} from "utils/const";
-import { goBibleDetail, goCourse } from "utils/routes";
+import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
+import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
-import CourseFeedback from "./CourseFeedback";
+//import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
-  components: { CourseFeedback },
+  //components: { CourseFeedback },
   props: {
     category: {
       type: Object,
@@ -144,34 +139,23 @@ export default {
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_BIBLE,
       COURSE_TYPE_LIVE
     };
   },
   computed: {
     isDisabled() {
       const category = this.category;
-      const { type, resource, resource_id, start_at } = category;
-      if (type === COURSE_TYPE_BIBLE) {
-        const { parent } = resource;
-        if (
-          (resource_id && resource.is_block === 1) ||
-          parent.is_online !== 1 ||
-          parent.status === 0
-        ) {
-          return true;
-        }
-      }
+      const { start_at } = category;
       return (
         start_at && new Date().valueOf() < new Date(category.start_at).valueOf()
       );
     },
     courseDuration() {
       const { category } = this;
-      const { type, resource } = category;
+      const { type, resources } = category;
       let duration = 0;
       if (type === COURSE_TYPE_COURSE) {
-        duration = resource.lessons.reduce((prev, next) => {
+        duration = resources.reduce((prev, next) => {
           return prev + next.second_duration;
         }, 0);
       }
@@ -180,10 +164,9 @@ export default {
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
       return index => {
-        const { type, resource } = this.category;
+        const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const { lessons } = resource;
-        const lesson = lessons[index];
+        const lesson = resources[index];
         const last_play_position = lesson.last_play_position || 0;
         const play_second_duration = lesson.play_second_duration || 0;
         return play_second_duration >= lesson.second_duration * 0.9
@@ -195,11 +178,10 @@ export default {
     },
     lessonStatusText() {
       return index => {
-        const { type, resource } = this.category;
+        const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const status = this.lessonStatus(index);
-        const { lessons } = resource;
-        const lesson = lessons[index];
+        const lesson = resources[index];
         let text = "";
         switch (status) {
           case 3:
@@ -235,10 +217,9 @@ export default {
     },
     courseStatus() {
       // 3 播放完成，2 上次播放，1 未播放
-      const { type, resource } = this.category;
+      const { type, resources } = this.category;
       if (type !== COURSE_TYPE_COURSE) return 0;
-      const { lessons } = resource;
-      return lessons.every((lesson, index) => {
+      return resources.every((lesson, index) => {
         return this.lessonStatus(index) === 4;
       })
         ? 3
@@ -263,28 +244,24 @@ export default {
   methods: {
     formatDate,
     formatSeconds,
-    handleCardClick() {
-      const { resource, resource_id, bible_id, type } = this.category;
-      if (!this.isDisabled && type === COURSE_TYPE_BIBLE) {
-        goBibleDetail(
-          resource_id ? resource.bible_id : bible_id,
-          resource_id
-            ? {
-                tab: resource_id
-              }
-            : null,
-          "_blank"
-        );
-      }
-    },
     handleLessonClick(index) {
-      const { type, resource } = this.category;
-      if (type === COURSE_TYPE_COURSE) {
-        goCourse(resource.id, index + 1);
-      }
+      const { resources } = this.category;
+      const resource = resources[index];
+      goCampTermVideo(
+        resource.camp_id,
+        resource.term_id,
+        resource.widget_id,
+        resource.widget_resource_id
+      );
     },
     handleShowFeedback() {
       this.$emit("showFeedback");
+    },
+    handleNotAvailable() {
+      this.$notice({
+        type: "warning",
+        title: "本章节尚未到开放时间"
+      });
     }
   }
 };
@@ -295,9 +272,24 @@ export default {
 
 .category-card {
   width: 100%;
-  &.disabled {
+  &:hover {
+    .card-header-title {
+      color: #232926 !important;
+    }
+    .card-header-desc {
+      color: #4d5652 !important;
+    }
+    .card-header-date {
+      color: #72807a !important;
+    }
+    /deep/ .el-collapse-item__arrow {
+      color: #72807a;
+    }
+  }
+
+  &.disable {
     filter: opacity(0.5);
-    cursor: auto;
+    pointer-events: auto !important;
   }
   &.pointer {
     /deep/ .el-collapse-item__header {
@@ -313,6 +305,7 @@ export default {
       }
       .el-collapse-item__header {
         cursor: auto;
+        cursor: pointer !important;
       }
     }
     .el-collapse-item__header {
@@ -335,6 +328,7 @@ export default {
   align-items: center;
   padding: 20px 0;
   width: 100%;
+  font-weight: 400;
   .card-header-left {
     flex: none;
     padding-right: 10px;
@@ -390,7 +384,7 @@ export default {
     }
     .card-header-desc {
       margin-top: 5px;
-      line-height: 16px;
+      line-height: 18px;
       font-size: 12px;
       color: #606c66;
     }
@@ -528,5 +522,10 @@ export default {
       vertical-align: bottom;
     }
   }
+}
+</style>
+<style lang="less">
+/deep/ .el-collapse-item__arrow {
+  color: #8ea098;
 }
 </style>

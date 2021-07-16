@@ -11,6 +11,9 @@ const courseService = {
   setLessonRecord(courseId, lessonId, params = {}) {
     return request.post(API.lessonRecord(courseId, lessonId), params);
   },
+  setLessonFinish(courseId, lessonId, params = {}) {
+    return request.post(API.lessonFinish(courseId, lessonId), params);
+  },
   courseCategories() {
     return request.get(API.courseCategories);
   },
@@ -32,6 +35,12 @@ const courseService = {
   setSeriesSectionRecord(id, chapterId, sectionId, params = {}) {
     return request.post(
       API.courseSetSectionRecord(id, chapterId, sectionId),
+      params
+    );
+  },
+  setSeriesSectionFinish(id, chapterId, sectionId, params = {}) {
+    return request.post(
+      API.courseSetSectionFinish(id, chapterId, sectionId),
       params
     );
   },

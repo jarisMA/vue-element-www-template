@@ -11,7 +11,11 @@
           @click="showMenu = !showMenu"
         ></i>
         <label class="page-header-left_text ellipsis">
-          {{ activeLessonIndex > -1 ? lessons[activeLessonIndex].name : "" }}
+          {{
+            chapters.length > 0
+              ? chapters[chapterIndex].sections[sectionIndex].name
+              : ""
+          }}
         </label>
       </div>
       <div class="page-header-content">
@@ -27,43 +31,51 @@
     <div class="page-content">
       <div :class="['page-content-left', showMenu ? 'show' : 'hide']">
         <el-scrollbar class="scrollbar-section">
-          <div class="page-menu-wrapper">
+          <div
+            class="page-menu-wrapper"
+            v-for="(chapter, cIndex) of chapters"
+            :key="chapter.id"
+          >
             <div class="page-menu-header">
-              <h3 class="page-menu-title">{{ detail.name }}</h3>
+              <h3 class="page-menu-title">{{ chapter.title }}</h3>
             </div>
             <div class="page-menu-content">
               <div class="page-menu-list">
                 <div
                   :class="[
                     'page-menu-item',
-                    activeLessonIndex > -1 &&
-                    lessons[activeLessonIndex].id === lesson.id
+                    chapters[chapterIndex].sections[sectionIndex].id ===
+                    section.id
                       ? 'active'
                       : '',
-                    [4].indexOf(lessonStatus(index)) > -1 ? 'completed' : ''
+                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : ''
                   ]"
-                  v-for="(lesson, index) of lessons"
-                  :key="lesson.id"
-                  @click="handleToggleLesson(index)"
+                  v-for="(section, sIndex) of chapter.sections"
+                  :key="section.id"
+                  @click="handleToggleSection(cIndex, sIndex)"
                 >
                   <i
                     :class="[
                       'page-menu-item_icon',
-                      lessonStatusIconClass(index)
+                      sectionStatusIconClass(section)
                     ]"
                   ></i>
                   <h4 class="page-menu-item_name ellipsis">
-                    {{ lesson.name }}
+                    {{ section.name }}
                   </h4>
                   <label class="page-menu-item-duration">
-                    <template v-if="[2, 3].indexOf(lessonStatus(index)) > -1">
+                    <template
+                      v-if="[2, 3].indexOf(sectionStatus(section)) > -1"
+                    >
                       <span
                         :class="[
-                          [2].indexOf(lessonStatus(index)) > -1 ? 'primary' : ''
+                          [2].indexOf(sectionStatus(section)) > -1
+                            ? 'primary'
+                            : ''
                         ]"
-                        >{{ secondsUpdate(lesson.last_play_position) }}</span
+                        >{{ secondsUpdate(section.last_play_position) }}</span
                       >/ </template
-                    >{{ formatSeconds(lesson.second_duration) }}
+                    >{{ formatSeconds(section.second_duration) }}
                   </label>
                 </div>
               </div>
@@ -74,13 +86,17 @@
       </div>
       <div class="page-content-right">
         <video-player
-          v-if="activeLessonIndex > -1"
-          :vid="lessons[activeLessonIndex].vod_id"
-          :startTime="lessons[activeLessonIndex].last_play_position"
-          :duration="lessons[activeLessonIndex].second_duration"
+          v-if="chapters.length > 0"
+          :vid="chapters[chapterIndex].sections[sectionIndex].vod_id"
+          :startTime="
+            chapters[chapterIndex].sections[sectionIndex].last_play_position
+          "
+          :duration="
+            chapters[chapterIndex].sections[sectionIndex].second_duration
+          "
+          @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
-          @setRecord="setLessonRecord"
-          @ended="handleNextLesson"
+          @ended="handleEnded"
         />
       </div>
     </div>
@@ -92,24 +108,30 @@ import VideoPlayer from "./VideoPlayer";
 import { formatSeconds } from "utils/moment";
 
 export default {
-  name: "TermCourse",
+  name: "CoursePlay",
   components: { VideoPlayer },
   props: {
     course: {
       type: Object,
       required: true
     },
-    courseLessons: {
+    courseChapters: {
       type: Array,
+      required: true
+    },
+    chapterIndex: {
+      type: Number,
+      required: true
+    },
+    sectionIndex: {
+      type: Number,
       required: true
     }
   },
   data() {
     return {
       detail: {},
-      lessons: [],
-      lessonIndex: 1,
-      activeLessonIndex: -1,
+      chapters: [],
       showMenu: true,
       updatingTimer: null
     };
@@ -117,37 +139,30 @@ export default {
   watch: {
     course() {
       this.getData();
-    },
-    // courseLessons () {
-    //   this.getData();
-    // },
-    ["$route"]() {
-      this.getData();
     }
   },
   created() {
     this.getData();
   },
   computed: {
-    lessonStatus() {
+    sectionStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return index => {
-        const { lessons, activeLessonIndex } = this;
-        const lesson = lessons[index];
-        const last_play_position = lesson.last_play_position || 0;
-        const play_second_duration = lesson.play_second_duration || 0;
-        return index === activeLessonIndex
+      return section => {
+        const last_play_position = section.last_play_position || 0;
+        const play_second_duration = section.play_second_duration || 0;
+        return section.id ===
+          this.chapters[this.chapterIndex].sections[this.sectionIndex].id
           ? 2
-          : play_second_duration >= lesson.second_duration * 0.9
+          : play_second_duration >= section.second_duration * 0.9
           ? 4
           : last_play_position > 0
           ? 3
           : 1;
       };
     },
-    lessonStatusIconClass() {
-      return index => {
-        const status = this.lessonStatus(index);
+    sectionStatusIconClass() {
+      return section => {
+        const status = this.sectionStatus(section);
         let iconClass = "unplay-icon";
         switch (status) {
           case 2:
@@ -175,47 +190,31 @@ export default {
   methods: {
     formatSeconds,
     getData() {
-      this.lessonIndex = this.$route.params.lessonIndex;
       this.detail = JSON.parse(JSON.stringify(this.course));
-      this.lessons = JSON.parse(JSON.stringify(this.courseLessons));
-      this.activeLessonIndex =
-        this.lessons.length >= this.lessonIndex ? this.lessonIndex - 1 : -1;
+      this.chapters = JSON.parse(JSON.stringify(this.courseChapters));
     },
-    setLessonRecord(params) {
-      this.$emit("setRecord", this.activeLessonIndex, params);
+    handleSetRecord(params) {
+      this.$emit("setRecord", params);
     },
-    handleToggleLesson(index) {
-      const { lessons, activeLessonIndex } = this;
-      if (
-        lessons[activeLessonIndex] &&
-        lessons[index].id === lessons[activeLessonIndex].id
-      ) {
-        return;
-      }
-      this.$router.push({
-        params: {
-          ...this.$route.params,
-          lessonIndex: index + 1
-        }
-      });
-      this.activeLessonIndex = index;
+    handleToggleSection(chapterIndex, sectionIndex) {
+      this.$emit("toggle", chapterIndex, sectionIndex);
     },
     handleTimeUpdate(second) {
-      const { lessons, activeLessonIndex } = this;
+      const { chapters, chapterIndex, sectionIndex } = this;
       if (this.updatingTimer) return false;
       this.updatingTimer = setTimeout(() => {
-        // this.$set(lessons[activeLessonIndex], 'last_play_position', Math.floor(second));
-        lessons[activeLessonIndex]["last_play_position"] = Math.floor(second);
+        this.$set(chapters[chapterIndex].sections, sectionIndex, {
+          ...chapters[chapterIndex].sections[sectionIndex],
+          last_play_position: Math.floor(second)
+        });
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
       }, 300);
     },
-    handleNextLesson() {
-      const { lessons, activeLessonIndex } = this;
-      if (lessons.length > activeLessonIndex + 1) {
-        this.handleToggleLesson(activeLessonIndex + 1);
-      }
-    }
+    handleEnded() {
+      this.$emit("ended");
+    },
+    handleNextLesson() {}
   }
 };
 </script>

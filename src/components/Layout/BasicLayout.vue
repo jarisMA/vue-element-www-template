@@ -5,6 +5,7 @@
     <BasicLayoutFooter :theme="headerTheme" />
     <BasicLoginDialog />
     <temporaryIndex />
+    <broadcast-dialog />
   </div>
 </template>
 <script type="text/javascript">
@@ -12,6 +13,7 @@ import BasicLayoutHeader from "./BasicLayoutHeader.vue";
 import BasicLayoutFooter from "./BasicLayoutFooter.vue";
 import BasicLoginDialog from "./../BasicLoginDialog/Index.vue";
 import temporaryIndex from "./../BasicLoginDialog/temporaryIndex";
+import BroadcastDialog from "./../BroadCast/BroadcastDialog";
 import { mapState } from "vuex";
 
 export default {
@@ -20,7 +22,8 @@ export default {
     BasicLayoutHeader,
     BasicLayoutFooter,
     BasicLoginDialog,
-    temporaryIndex
+    temporaryIndex,
+    BroadcastDialog
   },
   computed: {
     ...mapState(["headerTheme"])

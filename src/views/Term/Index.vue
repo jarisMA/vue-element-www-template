@@ -45,6 +45,9 @@
           </el-tab-pane>
         </el-tabs>
       </div>
+      <div class="go-top" @click="goTop">
+        <i class="top-icon"></i>
+      </div>
       <feedback
         v-if="
           detail.feedback_at &&
@@ -65,7 +68,7 @@ import TheLoadingImage from "components/TheLoadingImage";
 import Homework from "./widgets/Homework";
 import Attach from "./widgets/Attach";
 
-import { TERM_STATUS } from "utils/const";
+import { TERM_STATUS, COURSE_TYPE_BIBLE } from "utils/const";
 import { formatDate } from "utils/moment";
 import { goDrawPlan, goMyPlan } from "utils/routes";
 import Feedback from "./widgets/Feedback.vue";
@@ -114,7 +117,9 @@ export default {
         .then(([res, attaches]) => {
           this.detail = res.camp_term;
           this.feedback = res.feedback;
-          this.categories = res.categories.filter(item => item.type != 3);
+          this.categories = res.categories.filter(
+            item => item.type !== COURSE_TYPE_BIBLE
+          );
           this.homeworks = res.homeworks.filter(
             item =>
               item.is_online === 1 &&
@@ -155,6 +160,12 @@ export default {
         .finally(() => {
           this.feedbackSending = false;
         });
+    },
+    goTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
     }
   }
 };
@@ -164,7 +175,7 @@ export default {
 @import "~styles/variable";
 .page {
   width: 100%;
-  padding: 40px 0;
+  padding: 20px 0px 40px;
 }
 .container-1200 {
   display: flex;
@@ -172,6 +183,8 @@ export default {
   align-items: flex-start;
   padding: 0 10px;
   .page-left {
+    position: sticky;
+    top: 60px;
     flex: none;
     margin-right: 20px;
     padding: 20px;
@@ -217,6 +230,14 @@ export default {
     flex: 1;
     width: 880px;
     background: #fff;
+
+    /deep/ .el-tabs__header {
+      position: sticky;
+      top: 60px;
+      z-index: 9;
+      background: white;
+    }
+
     /deep/ .el-tabs {
       width: 100%;
       .el-tabs__header {
@@ -239,6 +260,34 @@ export default {
       .el-tabs__nav-wrap::after {
         background-color: #efefef;
       }
+    }
+  }
+  .go-top {
+    position: fixed;
+    right: calc(50vw - 600px - 10px - 50px);
+    bottom: 100px;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    background-color: #686868;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    .top-icon {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-image: url("~images/question/gotop.svg");
     }
   }
 }

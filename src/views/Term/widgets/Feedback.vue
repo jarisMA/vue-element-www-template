@@ -236,20 +236,24 @@ export default {
 
 .feedback-container {
   position: fixed;
-  right: calc(50vw - 600px - 10px - 64px);
-  bottom: 120px;
+  right: calc(50vw - 600px - 10px - 50px);
+  bottom: 180px;
   z-index: 10;
   .feedback-btn {
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 64px;
-    height: 64px;
-    background: #111;
+    width: 50px;
+    height: 50px;
+    background: #ff7940;
     border-radius: 50%;
     cursor: pointer;
     z-index: 2;
+
+    &:hover {
+      background: #f56122;
+    }
     .mail-icon {
       display: inline-block;
       width: 24px;
