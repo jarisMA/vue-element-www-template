@@ -7,6 +7,7 @@
       :sectionIndex="activeResourceIndex"
       @setRecord="handleSetRecord"
       @toggle="handleToggle"
+      @ended="handleEnded"
     />
   </div>
 </template>
@@ -88,8 +89,10 @@ export default {
       if (!setRecording) {
         this.setRecording = true;
         termService
-          .setWidgetResourceRecord(
-            widget.id,
+          .campTermWidgetResourceRecord(
+            resource.camp_id,
+            resource.term_id,
+            resource.widget_id,
             resource.widget_resource_id,
             params
           )
@@ -120,6 +123,17 @@ export default {
             .widget_resource_id
         }
       });
+    },
+    handleEnded() {
+      const { widgets, activeWidgetIndex, activeResourceIndex } = this;
+      const widget = widgets[activeWidgetIndex];
+      const resource = widget.resources[activeResourceIndex];
+      termService.campTermWidgetResourceFinish(
+        resource.camp_id,
+        resource.term_id,
+        resource.widget_id,
+        resource.widget_resource_id
+      );
     }
   }
 };

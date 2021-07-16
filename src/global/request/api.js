@@ -34,6 +34,10 @@ export default {
   camp: id => `${WEB_PREFIX}/camp/${id}`,
   myCampTerms: `${WEB_PREFIX}/camp/terms`,
   campTerm: id => `${WEB_PREFIX}/camp/term/${id}`,
+  campTermWidgetResourceRecord: (campId, termId, widgetId, resourceId) =>
+    `${WEB_PREFIX}/camp/${campId}/term/${termId}/widget/${widgetId}/resource/${resourceId}/record`,
+  campTermWidgetResourceFinish: (campId, termId, widgetId, resourceId) =>
+    `${WEB_PREFIX}/camp/${campId}/term/${termId}/widget/${widgetId}/resource/${resourceId}/finish`,
   campTermFeedback: id => `${WEB_PREFIX}/camp/term/${id}/feedback`,
   campHomework: (campId, termId, homeworkId) =>
     `${WEB_PREFIX}/camp/${campId}/term/${termId}/homework/${homeworkId}`,
