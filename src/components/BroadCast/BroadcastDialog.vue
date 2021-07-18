@@ -45,7 +45,7 @@ export default {
       passage3:
         " 恳请广大学员能够遵守法律，合法合理使用自己的账号进行学习，共同营造良好的学习环境，感谢各位学员的配合与支持。",
       signature: "斗西家计划",
-      date: "2021年7月15日",
+      date: "2021年7月15日"
     };
   },
 
@@ -71,8 +71,8 @@ export default {
     handleVisible() {
       this.visible = false;
       window.localStorage.setItem("20210715_broadcast", Date.now());
-    },
-  },
+    }
+  }
 };
 </script>
 
