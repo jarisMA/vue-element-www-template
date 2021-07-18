@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <Course
+    <camp-course
       :course="detail"
       :courseChapters="widgets"
       :chapterIndex="activeWidgetIndex"
@@ -14,12 +14,12 @@
 
 <script>
 import termService from "service/term";
-import Course from "components/Course/Course";
+import CampCourse from "components/Course/CampCourse";
 // import { goHome } from "utils/routes";
 
 export default {
   name: "CampTermVideo",
-  components: { Course },
+  components: { CampCourse },
   data() {
     return {
       detail: {},
