@@ -234,9 +234,7 @@ export default {
     },
     goTop() {
       this.$nextTick(() => {
-        document
-          .getElementsByClassName("el-scrollbar__wrap")[0]
-          .scrollTo(0, this.chapterIndex*48);
+        this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex*48);
       });
     },
     handleNextLesson() {}
