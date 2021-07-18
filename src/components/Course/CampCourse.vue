@@ -118,7 +118,7 @@ import VideoPlayer from "./VideoPlayer";
 import { formatSeconds } from "utils/moment";
 
 export default {
-  name: "CampCoursePlay",
+  name: "CampCourse",
   components: { VideoPlayer },
   props: {
     course: {
@@ -144,7 +144,7 @@ export default {
       chapters: [],
       showMenu: true,
       updatingTimer: null,
-      activeNames: [],
+      activeNames: []
     };
   },
   watch: {
@@ -154,9 +154,9 @@ export default {
   },
   created() {
     this.getData();
-    if (this.$refs.scroll) {
-      this.goTop();
-    }
+  },
+  mounted() {
+    this.goTop();
   },
   computed: {
     sectionStatus() {
@@ -207,7 +207,7 @@ export default {
       this.detail = JSON.parse(JSON.stringify(this.course));
       this.chapters = JSON.parse(JSON.stringify(this.courseChapters));
       if (this.chapters[this.chapterIndex]) {
-        this.activeNames =[this.chapters[this.chapterIndex].id];
+        this.activeNames = [this.chapters[this.chapterIndex].id];
       }
     },
     handleSetRecord(params) {
@@ -232,7 +232,11 @@ export default {
       this.$emit("ended");
     },
     goTop() {
-      this.$refs.scroll.scrollTo(0, this.chapterIndex * 48);
+      this.$nextTick(() => {
+        document
+          .getElementsByClassName("el-scrollbar__wrap")[0]
+          .scrollTo(0, this.chapterIndex * 48);
+      });
     },
     handleNextLesson() {}
   }
