@@ -209,6 +209,7 @@ export default {
       if (this.chapters[this.chapterIndex]) {
         this.activeNames = [this.chapters[this.chapterIndex].id];
       }
+      this.goTop();
     },
     handleSetRecord(params) {
       this.$emit("setRecord", params);
@@ -235,7 +236,7 @@ export default {
       this.$nextTick(() => {
         document
           .getElementsByClassName("el-scrollbar__wrap")[0]
-          .scrollTo(0, this.chapterIndex * 48);
+          .scrollTo(0, this.chapterIndex*48);
       });
     },
     handleNextLesson() {}
