@@ -234,7 +234,7 @@ export default {
     },
     goTop() {
       this.$nextTick(() => {
-        this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex*48);
+        this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex * 48);
       });
     },
     handleNextLesson() {}
