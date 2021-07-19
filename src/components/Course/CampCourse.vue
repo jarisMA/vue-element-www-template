@@ -393,7 +393,7 @@ export default {
           font-size: 16px;
           color: #ddd;
           background: #494949;
-          border-color: #595959;
+          border-color: #595959 !important;
         }
 
         & .is-active {
