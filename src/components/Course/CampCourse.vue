@@ -37,7 +37,13 @@
             :key="chapter.id"
           >
             <el-collapse v-model="activeNames">
-              <el-collapse-item :name="chapter.id">
+              <el-collapse-item
+                :name="chapter.id"
+                :disabled="
+                  chapter.start_at &&
+                    new Date().valueOf() < new Date(chapter.start_at).valueOf()
+                "
+              >
                 <template slot="title">
                   <div
                     class="page-menu-title ellipsis"
@@ -45,6 +51,11 @@
                       color:
                         chapters[chapterIndex].id === chapter.id
                           ? '#14af64'
+                          : '',
+                      opacity:
+                        new Date().valueOf() <
+                        new Date(chapter.start_at).valueOf()
+                          ? '0.6'
                           : ''
                     }"
                   >
@@ -383,6 +394,24 @@ export default {
 
         & .is-active {
           border: unset;
+        }
+
+        & .is-disabled {
+          .el-collapse-item__arrow {
+            &::before {
+              position: relative;
+              top: -5px;
+              display: inline-block;
+              content: "";
+              mask-image: url("~images/course/locked.svg");
+              mask-repeat: no-repeat;
+              mask-size: cover;
+              width: 24px;
+              height: 24px;
+              background: #eeeeee;
+              opacity: 0.6;
+            }
+          }
         }
 
         .el-collapse-item__arrow {
