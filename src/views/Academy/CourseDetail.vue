@@ -95,7 +95,9 @@
                 :class="[course.is_vip ? 'vip-btn' : 'page-main-btn']"
                 type="primary"
                 @click="
-                  course.permission ? goCourse(course.id, 1) : handleOrder()
+                  course.permission
+                    ? goAcademyCourseVideo(course.id, 1)
+                    : handleOrder()
                 "
               >
                 {{ course.permission ? "进入学习" : "购买本课" }}
@@ -202,7 +204,7 @@ import { formatSeconds } from "utils/moment";
 import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE } from "utils/const";
-import { goOrder, goCourse } from "utils/routes";
+import { goOrder, goAcademyCourseVideo } from "utils/routes";
 import { mapState } from "vuex";
 import { isVip } from "utils/function";
 import { goVip } from "utils/routes";
@@ -295,7 +297,7 @@ export default {
     isVip,
     goVip,
     formatSeconds,
-    goCourse,
+    goAcademyCourseVideo,
     getData() {
       this.loading = true;
       this.course = null;

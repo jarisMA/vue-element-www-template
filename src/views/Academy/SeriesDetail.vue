@@ -21,7 +21,11 @@
                 type="primary"
                 @click="
                   series.permission
-                    ? goSeriesCourse(series.id, series.chapters[0].id, 1)
+                    ? goAcademySeriesVideo(
+                        series.id,
+                        series.chapters[0].id,
+                        series.chapters[0].sections[0].id
+                      )
                     : handleOrder()
                 "
               >
@@ -68,7 +72,11 @@
                           <span
                             @click.stop="
                               series.permission
-                                ? goSeriesCourse(series.id, chapter.id, 1)
+                                ? goAcademySeriesVideo(
+                                    series.id,
+                                    chapter.id,
+                                    chapter.sections[0].id
+                                  )
                                 : null
                             "
                             >{{ chapter.name }}</span
@@ -100,7 +108,11 @@
                         :key="section.id"
                         @click.stop="
                           series.permission
-                            ? goSeriesCourse(series.id, chapter.id, index + 1)
+                            ? goAcademySeriesVideo(
+                                series.id,
+                                chapter.id,
+                                section.id
+                              )
                             : null
                         "
                       >
@@ -161,7 +173,7 @@ import { formatSeconds } from "utils/moment";
 import SetCard from "./widgets/SetCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE_SERIES } from "utils/const";
-import { goOrder, goSeriesCourse } from "utils/routes";
+import { goOrder, goAcademySeriesVideo } from "utils/routes";
 import { mapState } from "vuex";
 import { goVip } from "utils/routes";
 import { isVip } from "utils/function";
@@ -251,7 +263,7 @@ export default {
     isVip,
     goVip,
     formatSeconds,
-    goSeriesCourse,
+    goAcademySeriesVideo,
     getData() {
       this.loading = true;
       courseService

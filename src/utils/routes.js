@@ -78,32 +78,53 @@ export const goTerm = (id, type = "_self") => {
   );
 };
 
-export const goCourse = (courseId, lessonIndex, type = "_blank") => {
+export const goCampTermVideo = (
+  campId,
+  termId,
+  widgetId,
+  resourceId,
+  type = "_blank"
+) => {
   return goRoute(
     {
-      name: "Course",
+      name: "CampTermVideo",
       params: {
-        courseId,
-        lessonIndex
+        campId,
+        termId,
+        widgetId,
+        resourceId
       }
     },
     type
   );
 };
 
-export const goSeriesCourse = (
+export const goAcademyCourseVideo = (courseId, lessonId, type = "_blank") => {
+  return goRoute(
+    {
+      name: "AcademyCourseVideo",
+      params: {
+        courseId,
+        lessonId
+      }
+    },
+    type
+  );
+};
+
+export const goAcademySeriesVideo = (
   seriesId,
-  courseId,
-  lessonIndex,
+  chapterId,
+  sectionId,
   type = "_blank"
 ) => {
   return goRoute(
     {
-      name: "SeriesCourse",
+      name: "AcademySeriesVideo",
       params: {
         seriesId,
-        courseId,
-        lessonIndex
+        chapterId,
+        sectionId
       }
     },
     type

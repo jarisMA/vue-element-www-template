@@ -55,7 +55,7 @@
           <div
             class="search-container"
             v-if="activeParentCat"
-            v-loading="catLoading"
+            v-loading="catLoading && !commodityLoading"
           >
             <div class="search-header">
               <template v-if="!isSearch">
@@ -217,6 +217,12 @@
       @mouseout="handleCommodityDetail(activeCommodity)"
     >
       <div class="card-top">
+        <label
+          class="bgImg feedback"
+          @click="handleShowFeedback(activeCommodity)"
+        >
+          <i class="feedback-icon"></i>
+        </label>
         <div class="swiper-wrapper" v-if="activeCommodity.images.length > 1">
           <swiper ref="mySwiper" :options="swiperOptions">
             <swiper-slide
@@ -257,7 +263,7 @@
 
         <i
           v-if="
-            activeCommodity.purchase_url !== null &&
+            activeCommodity.purchase_url &&
               activeCommodity.purchase_url.length >= 1
           "
           class="card-shopping"
@@ -472,7 +478,6 @@ export default {
         .finally(() => {
           this.commodityLoading = false;
           this.commodityLoadingMore = false;
-          console.log(this.commodities);
         });
     },
     handleCommodityScroll() {
@@ -987,6 +992,33 @@ export default {
       width: 100%;
       height: 200px;
       background: #fafafa;
+
+      .bgImg {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 1);
+        opacity: 0.8;
+        cursor: pointer;
+
+        &.feedback {
+          top: 10px;
+          right: 10px;
+          .feedback-icon {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background-image: url("~images/commodity/feedback.svg");
+            background-size: 100%;
+            background-repeat: no-repeat;
+          }
+        }
+      }
+
       .swiper-wrapper {
         position: relative;
         width: 100%;
@@ -1036,6 +1068,7 @@ export default {
       }
     }
     .card-bottom {
+      position: relative;
       width: 100%;
       padding: 10px;
       .card-name {
@@ -1057,15 +1090,17 @@ export default {
         color: #666666;
       }
       .card-shopping {
+        position: absolute;
         display: inline-block;
         width: 16px;
         height: 16px;
-        margin-left: 65px;
+        right: 10px;
+        bottom: 10px;
         mask-image: url("~images/commodity/shopping_cart.svg");
         mask-repeat: no-repeat;
         mask-size: cover;
         background: #666666;
-        vertical-align: text-bottom;
+
         &:hover {
           background: black;
           cursor: pointer;
