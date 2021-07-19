@@ -12,7 +12,8 @@
                 :class="[
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
-                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
+                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
+                  isDisabled ? 'lock-icon' : ''
                 ]"
               ></i>
             </div>
@@ -279,8 +280,10 @@ export default {
     .card-header-desc {
       color: #4d5652 !important;
     }
-    .card-header-count, .card-header-duration, .card-header-date{
-       color: #72807a !important;
+    .card-header-count,
+    .card-header-duration,
+    .card-header-date {
+      color: #72807a !important;
     }
 
     /deep/ .el-collapse-item__arrow {
@@ -361,6 +364,9 @@ export default {
       }
       &.complete-icon {
         mask-image: url("~images/academy/complete.svg");
+      }
+      &.lock-icon {
+        mask-image: url("~images/course/lock.svg");
       }
     }
   }
