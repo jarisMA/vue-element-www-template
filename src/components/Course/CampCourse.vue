@@ -53,8 +53,9 @@
                           ? '#14af64'
                           : '',
                       opacity:
+                        chapter.start_at &&
                         new Date().valueOf() <
-                        new Date(chapter.start_at).valueOf()
+                          new Date(chapter.start_at).valueOf()
                           ? '0.6'
                           : ''
                     }"
