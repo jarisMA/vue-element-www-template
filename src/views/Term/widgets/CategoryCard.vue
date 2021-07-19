@@ -12,7 +12,8 @@
                 :class="[
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
-                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : ''
+                  category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
+                  isDisabled ? 'lock-icon' : ''
                 ]"
               ></i>
             </div>
@@ -361,6 +362,9 @@ export default {
       }
       &.complete-icon {
         mask-image: url("~images/academy/complete.svg");
+      }
+      &.lock-icon {
+        mask-image: url("~images/course/lock.svg");
       }
     }
   }
