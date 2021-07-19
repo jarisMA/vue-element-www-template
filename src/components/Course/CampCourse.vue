@@ -11,15 +11,17 @@
           @click="showMenu = !showMenu"
         ></i>
         <label class="page-header-left_text ellipsis">
+          {{ detail.name }}
+        </label>
+      </div>
+      <div class="page-header-content">
+        <h3 class="page-header-title">
           {{
             chapters.length > 0
               ? chapters[chapterIndex].sections[sectionIndex].name
               : ""
           }}
-        </label>
-      </div>
-      <div class="page-header-content">
-        <h3 class="page-header-title">{{ detail.name }}</h3>
+        </h3>
       </div>
       <div class="page-header-right">
         <i class="page-header-right_icon"></i>
@@ -386,9 +388,10 @@ export default {
 
         .el-collapse-item__header {
           margin: 0px 20px 1px;
+          height: 64px;
           font-weight: 400;
           font-size: 16px;
-          color: #eeeeee;
+          color: #ddd;
           background: #494949;
           border-color: #595959;
         }
@@ -407,8 +410,8 @@ export default {
               mask-image: url("~images/course/locked.svg");
               mask-repeat: no-repeat;
               mask-size: cover;
-              width: 24px;
-              height: 24px;
+              width: 20px;
+              height: 20px;
               background: #eeeeee;
               opacity: 0.6;
             }
@@ -417,7 +420,8 @@ export default {
 
         .el-collapse-item__arrow {
           position: absolute;
-          top: 16px;
+          top: 26px;
+          font-size: 12px;
           font-weight: 900;
         }
 
@@ -429,6 +433,12 @@ export default {
         .el-collapse-item__content {
           padding: 0px;
           border-bottom: 1px solid #595959;
+          background: #494949;
+          .page-menu-item {
+            &:last-child {
+              margin-bottom: 20px;
+            }
+          }
         }
       }
       .page-menu-title {
@@ -436,7 +446,7 @@ export default {
         line-height: 24px;
         font-weight: bold;
         font-size: 16px;
-        color: #eeeeee;
+        color: #ddd;
       }
       .page-menu-list {
         padding: 4px 0;
@@ -472,8 +482,8 @@ export default {
       .page-menu-item_icon {
         flex: none;
         display: inline-block;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         background-repeat: no-repeat;
         background-size: cover;
         &.unplay-icon {
@@ -491,17 +501,17 @@ export default {
       }
       .page-menu-item_name {
         flex: 1;
-        margin: 0 16px;
+        margin: 0 8px;
         width: 5px;
         line-height: 24px;
         font-weight: normal;
         font-size: 14px;
-        color: #eeeeee;
+        color: #ddd;
       }
       .page-menu-item-duration {
         flex: none;
         line-height: 24px;
-        font-size: 14px;
+        font-size: 12px;
         color: #999999;
       }
     }
