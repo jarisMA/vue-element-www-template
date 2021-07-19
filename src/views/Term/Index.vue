@@ -232,7 +232,7 @@ export default {
     /deep/ .el-tabs__header {
       position: sticky;
       top: 60px;
-      z-index: 9;
+      z-index: 3;
       background: white;
     }
 
