@@ -9,9 +9,13 @@
         ]"
       ></i>
     </div>
-    <div class="feedback-dialog-mask" v-if="visible">
+    <div
+      class="feedback-dialog-mask"
+      v-if="visible"
+      @click="handleToggleVisible"
+    >
       <div class="feedback-dialog">
-        <div class="feedback-content">
+        <div class="feedback-content" @click.stop="">
           <div class="step-comment step" v-if="step === 1">
             <div class="step-comment-left">
               <div class="step-comment-left_header">
