@@ -1,4 +1,5 @@
 import Index from "@/views/Task/Index";
+import Join from "@/views/Task/Join";
 
 const routes = [
   {
@@ -6,7 +7,15 @@ const routes = [
     name: "Task",
     component: Index,
     meta: {
-      auth: true
+      auth: false
+    }
+  },
+  {
+    path: "task/join",
+    name: "",
+    component: Join,
+    meta: {
+      auth: false
     }
   }
 ];
