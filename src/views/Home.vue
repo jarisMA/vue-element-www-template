@@ -1,5 +1,6 @@
 <template>
   <div class="page-body">
+    2
     <div class="slogan-section"></div>
     <div class="people-section">
       <div class="people-title">
