@@ -36,6 +36,7 @@
               :class="[
                 'card-head-btm-down-status',
                 mission.status == 2 ? 'card-implementing' : '',
+                mission.status == 3 ? 'card-judging' : '',
                 mission.status == 4 ? 'card-tendering' : '',
                 mission.status == 1 ? 'card-finalized' : ''
               ]"
