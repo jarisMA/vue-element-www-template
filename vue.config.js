@@ -9,8 +9,8 @@ module.exports = {
   outputDir: "current_dist",
   devServer: {
     open: true,
-    host: `www-test${process.env.VUE_APP_DOMAIN}`,
-    port: 80
+    host: `www-test${process.env.VUE_APP_DOMAIN}`
+    // port: 8080
   },
   css: {
     loaderOptions: {
