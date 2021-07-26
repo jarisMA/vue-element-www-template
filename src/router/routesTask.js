@@ -12,7 +12,7 @@ const routes = [
   },
   {
     path: "task/join",
-    name: "",
+    name: "TaskJoin",
     component: Join,
     meta: {
       auth: false
