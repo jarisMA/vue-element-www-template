@@ -38,7 +38,7 @@ import PlanList from "components/PlanList";
 import EditPlanNameDialog from "components/EditPlanNameDialog";
 import kujialeService from "service/kujiale";
 import { goEditPlan, goDrawPlan } from "utils/routes";
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { isVip } from "utils/function";
 import TheSearchBar from "components/TheSearchBar.vue";
 
@@ -92,23 +92,28 @@ export default {
     }, 1000);
   },
   methods: {
+    ...mapMutations(["USERINFO"]),
     goDrawPlan,
     getPlan(start = 1) {
-      this.loading = true;
-      kujialeService
-        .designList({
-          keyword: this.keyword || null,
-          page: start,
-          page_size: this.planCount
-        })
-        .then(res => {
-          this.planTotalCount = res.totalCount;
-          this.plans = res.result;
-          this.planPage = start;
-        })
-        .finally(() => {
-          this.loading = false;
-        });
+      if (this.userInfo && this.userInfo.kujiale_type === 1) {
+        this.loading = true;
+        kujialeService
+          .designList({
+            keyword: this.keyword || null,
+            page: start,
+            page_size: this.planCount
+          })
+          .then(res => {
+            this.planTotalCount = res.totalCount;
+            this.plans = res.result;
+            this.planPage = start;
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        this.loading = false;
+      }
     },
     addPlan() {
       if (this.plans.length > 0 && !isVip()) {
@@ -117,7 +122,20 @@ export default {
           title: "oops～方案创建数量已达上限"
         });
       } else {
-        goDrawPlan();
+        if (this.userInfo && this.userInfo.kujiale_type === 1) {
+          goDrawPlan();
+        } else {
+          this.loading = true;
+          kujialeService
+            .register()
+            .then(() => {
+              goDrawPlan();
+              this.USERINFO({ ...this.userInfo, kujiale_type: 1 });
+            })
+            .finally(() => {
+              this.loading = false;
+            });
+        }
       }
     },
     editPlan(data) {

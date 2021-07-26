@@ -11,6 +11,7 @@ export default {
   bindPhone: `${WEB_PREFIX}/sms/bind-phone`,
   statisticLog: `${WEB_PREFIX}/statistic/log`,
   gothrough: `${WEB_PREFIX}/kujiale/gothrough`,
+  kujialeRegister: `${WEB_PREFIX}/kujiale/register`,
   kujialeCommunity: `${WEB_PREFIX}/kujiale/community`,
   kujialeFloorplan: `${WEB_PREFIX}/kujiale/floorplan/standard`,
   kujialeDesignCreate: `${WEB_PREFIX}/kujiale/design/creation`,
@@ -33,6 +34,10 @@ export default {
   camp: id => `${WEB_PREFIX}/camp/${id}`,
   myCampTerms: `${WEB_PREFIX}/camp/terms`,
   campTerm: id => `${WEB_PREFIX}/camp/term/${id}`,
+  campTermWidgetResourceRecord: (campId, termId, widgetId, resourceId) =>
+    `${WEB_PREFIX}/camp/${campId}/term/${termId}/widget/${widgetId}/resource/${resourceId}/record`,
+  campTermWidgetResourceFinish: (campId, termId, widgetId, resourceId) =>
+    `${WEB_PREFIX}/camp/${campId}/term/${termId}/widget/${widgetId}/resource/${resourceId}/finish`,
   campTermFeedback: id => `${WEB_PREFIX}/camp/term/${id}/feedback`,
   campHomework: (campId, termId, homeworkId) =>
     `${WEB_PREFIX}/camp/${campId}/term/${termId}/homework/${homeworkId}`,
@@ -43,6 +48,8 @@ export default {
   campTermWidgetFeedback: id => `${WEB_PREFIX}/camp_term_widget_feedback/${id}`,
   campTermLike: (campId, termId) =>
     `${WEB_PREFIX}/camp/${campId}/term/${termId}/like`,
+  campTermVideoCat: termId => `${WEB_PREFIX}/camp/term/${termId}/video/cat`,
+
   bibles: `${WEB_PREFIX}/bible`,
   bible: id => `${WEB_PREFIX}/bible/${id}`,
   bibleNode: (bibleId, id) => `${WEB_PREFIX}/bible/${bibleId}/node/${id}`,
@@ -82,6 +89,8 @@ export default {
   courses: `${WEB_PREFIX}/course`,
   lessonRecord: (courseId, lessonId) =>
     `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/record`,
+  lessonFinish: (courseId, lessonId) =>
+    `${WEB_PREFIX}/course/${courseId}/lesson/${lessonId}/finish`,
   courseSeriesCategory: `${WEB_PREFIX}/series-category`,
   courseSeries: `${WEB_PREFIX}/series`,
   courseSetDetail: id => `${WEB_PREFIX}/series/${id}/detail`,
@@ -89,13 +98,16 @@ export default {
     `${WEB_PREFIX}/series/${id}/chapter/${chapterId}`,
   courseSetSectionRecord: (id, chapterId, sectionId) =>
     `${WEB_PREFIX}/series/${id}/chapter/${chapterId}/section/${sectionId}/record`,
-
+  courseSetSectionFinish: (id, chapterId, sectionId) =>
+    `${WEB_PREFIX}/series/${id}/chapter/${chapterId}/section/${sectionId}/finish`,
   ossVideoToken: `${PREFIX}/api/file/alioss-video-token`,
   ossRefreshVideoToken: videoId =>
     `${PREFIX}/api/file/alioss-video-token/${videoId}`,
   ossVideoAuth: videoId => `${PREFIX}/api/file/alioss-video/${videoId}`,
   ossVideoStatus: videoId =>
     `${PREFIX}/api/file/alioss-video/${videoId}/status`,
+  ossVideoPreview: videoId =>
+    `${PREFIX}/api/file/alioss-video/preview/${videoId}`,
   clock: `${WEB_PREFIX}/mine/clock`,
   gainShineCount: `${WEB_PREFIX}/mine/gain-history/shine-count`,
   gainHistory: `${WEB_PREFIX}/mine/gain-history`,

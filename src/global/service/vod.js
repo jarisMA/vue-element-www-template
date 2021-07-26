@@ -8,11 +8,14 @@ const vodService = {
   ossRefreshVideoToken(params = {}) {
     return axios.get(API.ossRefreshVideoToken, params);
   },
-  ossVideoAuth($videoId, params = {}) {
-    return axios.get(API.ossVideoAuth($videoId), params);
+  ossVideoAuth(videoId, params = {}) {
+    return axios.get(API.ossVideoAuth(videoId), params);
   },
-  ossVideoStatus($videoId, params = {}) {
-    return axios.get(API.ossVideoStatus($videoId), params);
+  ossVideoStatus(videoId, params = {}) {
+    return axios.get(API.ossVideoStatus(videoId), params);
+  },
+  ossVideoPreview(videoId, params = {}) {
+    return axios.get(API.ossVideoPreview(videoId), params);
   }
 };
 

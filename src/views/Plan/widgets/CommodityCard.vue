@@ -28,9 +28,6 @@
         :height="columns > 4 ? 93 : 145"
         :url="(skus.length > 0 && skus[0].img_id) || ''"
       />
-      <label class="bgImg feedback" @click.stop="handleShowFeedback(skus[0])">
-        <i class="feedback-icon"></i>
-      </label>
       <template v-if="type === 'model'">
         <label class="price-label"
           >¥{{ skus.length > 0 && (skus[0].unit_price || "0.00") }}</label
@@ -145,9 +142,6 @@ export default {
     },
     handleClearTimer() {
       this.$emit("clearTimer");
-    },
-    handleShowFeedback(sku) {
-      this.$emit("showFeedback", sku);
     }
   }
 };
@@ -225,16 +219,6 @@ export default {
           width: 16px;
           height: 16px;
           background-image: url("~images/commodity/info.svg");
-        }
-      }
-      &.feedback {
-        bottom: 26px;
-        left: 5px;
-        .feedback-icon {
-          display: inline-block;
-          width: 16px;
-          height: 16px;
-          background-image: url("~images/commodity/feedback.svg");
         }
       }
     }

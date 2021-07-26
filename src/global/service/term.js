@@ -34,6 +34,33 @@ const termService = {
   },
   deleteTermWidgetFeedback(id) {
     return request.delete(API.campTermWidgetFeedback(id));
+  },
+  campTermVideoCat(termId) {
+    return request.get(API.campTermVideoCat(termId));
+  },
+  campTermWidgetResourceRecord(
+    campId,
+    termId,
+    widgetId,
+    resourceId,
+    params = {}
+  ) {
+    return request.post(
+      API.campTermWidgetResourceRecord(campId, termId, widgetId, resourceId),
+      params
+    );
+  },
+  campTermWidgetResourceFinish(
+    campId,
+    termId,
+    widgetId,
+    resourceId,
+    params = {}
+  ) {
+    return request.post(
+      API.campTermWidgetResourceFinish(campId, termId, widgetId, resourceId),
+      params
+    );
   }
 };
 

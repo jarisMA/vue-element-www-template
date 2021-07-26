@@ -11,15 +11,17 @@
           @click="showMenu = !showMenu"
         ></i>
         <label class="page-header-left_text ellipsis">
+          {{ detail.name }}
+        </label>
+      </div>
+      <div class="page-header-content">
+        <h3 class="page-header-title">
           {{
             chapters.length > 0
               ? chapters[chapterIndex].sections[sectionIndex].name
               : ""
           }}
-        </label>
-      </div>
-      <div class="page-header-content">
-        <h3 class="page-header-title">{{ detail.name }}</h3>
+        </h3>
       </div>
       <div class="page-header-right">
         <i class="page-header-right_icon"></i>
@@ -30,17 +32,39 @@
     </div>
     <div class="page-content">
       <div :class="['page-content-left', showMenu ? 'show' : 'hide']">
-        <el-scrollbar class="scrollbar-section">
+        <el-scrollbar class="scrollbar-section" ref="scroll">
           <div
             class="page-menu-wrapper"
             v-for="(chapter, cIndex) of chapters"
             :key="chapter.id"
           >
-            <div class="page-menu-header">
-              <h3 class="page-menu-title">{{ chapter.title }}</h3>
-            </div>
-            <div class="page-menu-content">
-              <div class="page-menu-list">
+            <el-collapse v-model="activeNames">
+              <el-collapse-item
+                :name="chapter.id"
+                :disabled="
+                  chapter.start_at &&
+                    new Date().valueOf() < new Date(chapter.start_at).valueOf()
+                "
+              >
+                <template slot="title">
+                  <div
+                    class="page-menu-title ellipsis"
+                    :style="{
+                      color:
+                        chapters[chapterIndex].id === chapter.id
+                          ? '#14af64'
+                          : '',
+                      opacity:
+                        chapter.start_at &&
+                        new Date().valueOf() <
+                          new Date(chapter.start_at).valueOf()
+                          ? '0.6'
+                          : ''
+                    }"
+                  >
+                    {{ chapter.title }}
+                  </div>
+                </template>
                 <div
                   :class="[
                     'page-menu-item',
@@ -78,8 +102,8 @@
                     >{{ formatSeconds(section.second_duration) }}
                   </label>
                 </div>
-              </div>
-            </div>
+              </el-collapse-item>
+            </el-collapse>
             <div class="page-menu-footer"></div>
           </div>
         </el-scrollbar>
@@ -108,7 +132,7 @@ import VideoPlayer from "./VideoPlayer";
 import { formatSeconds } from "utils/moment";
 
 export default {
-  name: "CoursePlay",
+  name: "CampCourse",
   components: { VideoPlayer },
   props: {
     course: {
@@ -133,7 +157,8 @@ export default {
       detail: {},
       chapters: [],
       showMenu: true,
-      updatingTimer: null
+      updatingTimer: null,
+      activeNames: []
     };
   },
   watch: {
@@ -143,6 +168,9 @@ export default {
   },
   created() {
     this.getData();
+  },
+  mounted() {
+    this.goTop();
   },
   computed: {
     sectionStatus() {
@@ -192,6 +220,10 @@ export default {
     getData() {
       this.detail = JSON.parse(JSON.stringify(this.course));
       this.chapters = JSON.parse(JSON.stringify(this.courseChapters));
+      if (this.chapters[this.chapterIndex]) {
+        this.activeNames = [this.chapters[this.chapterIndex].id];
+      }
+      this.goTop();
     },
     handleSetRecord(params) {
       this.$emit("setRecord", params);
@@ -213,6 +245,11 @@ export default {
     },
     handleEnded() {
       this.$emit("ended");
+    },
+    goTop() {
+      this.$nextTick(() => {
+        this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex * 48);
+      });
     },
     handleNextLesson() {}
   }
@@ -340,24 +377,77 @@ export default {
       width: 0%;
     }
     .page-menu-wrapper {
-      padding: 0 20px;
       width: 20vw;
       min-width: 230px;
       max-width: 370px;
       min-height: 100%;
-    }
-    .page-menu-header {
-      padding: 30px 0;
-      width: 100%;
+
+      /deep/ .el-collapse {
+        position: relative;
+        border: unset;
+
+        .el-collapse-item__header {
+          margin: 0px 20px 1px;
+          height: 64px;
+          font-weight: 400;
+          font-size: 16px;
+          color: #ddd;
+          background: #494949;
+          border-color: #595959;
+        }
+
+        & .is-active {
+          border: unset;
+        }
+
+        & .is-disabled {
+          .el-collapse-item__arrow {
+            &::before {
+              position: relative;
+              top: -5px;
+              display: inline-block;
+              content: "";
+              mask-image: url("~images/course/locked.svg");
+              mask-repeat: no-repeat;
+              mask-size: cover;
+              width: 20px;
+              height: 20px;
+              background: #eeeeee;
+              opacity: 0.6;
+            }
+          }
+        }
+
+        .el-collapse-item__arrow {
+          position: absolute;
+          top: 26px;
+          font-size: 12px;
+          font-weight: 900;
+        }
+
+        .el-collapse-item__wrap {
+          margin: 0px 20px;
+          border-color: #595959;
+        }
+
+        .el-collapse-item__content {
+          padding: 0px;
+          border-bottom: 1px solid #595959;
+          background: #494949;
+          .page-menu-item {
+            &:last-child {
+              margin-bottom: 20px;
+            }
+          }
+        }
+      }
       .page-menu-title {
+        margin-left: 27px;
         line-height: 24px;
         font-weight: bold;
-        font-size: 18px;
-        color: #eeeeee;
+        font-size: 16px;
+        color: #ddd;
       }
-    }
-    .page-menu-content {
-      border-top: 1px solid #595959;
       .page-menu-list {
         padding: 4px 0;
       }
@@ -367,15 +457,15 @@ export default {
         justify-content: flex-start;
         padding: 16px 8px;
         width: 100%;
-        border: 1px solid #494949;
+        height: 40px;
+        background: #494949;
         cursor: pointer;
         &:hover {
-          background: rgba(255, 255, 255, 0.05);
+          filter: opacity(0.95);
           border-color: rgba(255, 255, 255, 0.1);
         }
         &.active {
-          background: rgba(0, 0, 0, 0.1);
-          border-color: rgba(0, 0, 0, 0.1);
+          background: #444444;
           .page-menu-item_name {
             color: @primaryColor;
           }
@@ -392,8 +482,8 @@ export default {
       .page-menu-item_icon {
         flex: none;
         display: inline-block;
-        width: 24px;
-        height: 24px;
+        width: 20px;
+        height: 20px;
         background-repeat: no-repeat;
         background-size: cover;
         &.unplay-icon {
@@ -411,17 +501,17 @@ export default {
       }
       .page-menu-item_name {
         flex: 1;
-        margin: 0 16px;
+        margin: 0 8px;
         width: 5px;
         line-height: 24px;
         font-weight: normal;
         font-size: 14px;
-        color: #eeeeee;
+        color: #ddd;
       }
       .page-menu-item-duration {
         flex: none;
         line-height: 24px;
-        font-size: 14px;
+        font-size: 12px;
         color: #999999;
       }
     }
