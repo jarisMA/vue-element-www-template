@@ -7,12 +7,12 @@
         </div>
         <div class="task-ranking">
           <div class="ranking-left">
-            <rank-card v-for="item of rank" :key="item.id" :rank="item"/>
+            <rank-card v-for="item of rank" :key="item.id" :rank="item" />
           </div>
           <div class="ranking-right">
             <ul>
               <li>
-                <rank-item v-for="item of rank" :key="item.id" :rank="item"/>
+                <rank-item v-for="item of rank" :key="item.id" :rank="item" />
               </li>
             </ul>
           </div>
@@ -20,6 +20,11 @@
       </div>
       <div class="task-body">
         <task-card v-for="item of task" :key="item.uuid" :task="item" />
+        <mission-card
+          v-for="item of mission"
+          :key="item.uuid"
+          :mission="item"
+        />
       </div>
     </div>
   </div>
@@ -29,6 +34,7 @@
 import TaskCard from "./widgets/TaskCard.vue";
 import RankCard from "./widgets/RankCard.vue";
 import RankItem from "./widgets/RankItem.vue";
+import MissionCard from "./widgets/MissionCard";
 
 export default {
   name: "Task",
@@ -36,6 +42,7 @@ export default {
     TaskCard,
     RankCard,
     RankItem,
+    MissionCard
   },
   data() {
     return {
@@ -60,21 +67,58 @@ export default {
           city: {
             city: {
               id: 130300,
-              name: "秦皇岛市",
+              name: "秦皇岛市"
             },
             province: {
               id: 130000,
-              name: "河北省",
+              name: "河北省"
             },
             layout: {
               type1: 2,
               type2: 2,
-              type3: 2,
+              type3: 2
             },
             square: 80,
-            max_apply: 10,
-          },
-        },
+            max_apply: 10
+          }
+        }
+      ],
+      mission: [
+        {
+          uuid: "CE4F4A8C-4A46-4363-B361-B903F2465102",
+          name: "雅斯的空间",
+          level: 2,
+          cover_url:
+            "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0701/task/ikxg02aVZd5Gm4R305tL1ZZUAVzjRiP7hVH8MGHP.png",
+          type: 1,
+          type_label: "布局任务",
+          bid_type: 1,
+          bid_type_label: "公开招募",
+          status: 2,
+          status_label: "进行中",
+          created_at: "2021-06-30",
+          end_at: "2021-09-30 23:59:59",
+          price: "1000.00",
+          urgent_price: "0.00",
+          experience_point: 200,
+          city: {
+            city: {
+              id: 130300,
+              name: "秦皇岛市"
+            },
+            province: {
+              id: 130000,
+              name: "河北省"
+            },
+            layout: {
+              type1: 2,
+              type2: 2,
+              type3: 2
+            },
+            square: 80,
+            max_apply: 10
+          }
+        }
       ],
       rank: [
         {
@@ -83,11 +127,11 @@ export default {
           cover_url:
             "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0701/task/ikxg02aVZd5Gm4R305tL1ZZUAVzjRiP7hVH8MGHP.png",
           name: "雅斯的空间",
-          price: "1000.00",
-        },
-      ],
+          price: "1000.00"
+        }
+      ]
     };
-  },
+  }
 };
 </script>
 
@@ -144,6 +188,7 @@ export default {
     }
 
     .task-body {
+      display: flex;
       padding-top: 100px;
     }
   }

@@ -14,12 +14,12 @@ export default {
   props: {
     rank: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   methods: {
-    priceFormat,
-  },
+    priceFormat
+  }
 };
 </script>
 
@@ -68,7 +68,6 @@ export default {
     color: #000;
     text-shadow: #fff 1px 0 0, #fff 0 1px 0, #fff -1px 0 0, #fff 0 -1px 0;
     overflow: hidden;
-    
   }
 }
 </style>

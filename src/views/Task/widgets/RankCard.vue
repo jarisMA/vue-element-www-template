@@ -20,17 +20,17 @@ import { priceFormat } from "utils/function";
 export default {
   name: "RankCard",
   components: {
-    TheLoadingImage,
+    TheLoadingImage
   },
   props: {
     rank: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   methods: {
-    priceFormat,
-  },
+    priceFormat
+  }
 };
 </script>
 
@@ -54,7 +54,6 @@ export default {
     text-shadow: #000 1px 0 0, #000 0 1px 0, #000 -1px 0 0, #000 0 -1px 0;
     mask-image: url("~images/task/subtitle.svg");
     background: linear-gradient(to right, #54995a, #753ec2);
-
   }
 
   .rank-avatar {
