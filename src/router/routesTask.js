@@ -1,4 +1,5 @@
 import Index from "@/views/Task/Index";
+import Detail from "@/views/Task/Detail";
 import Join from "@/views/Task/Join";
 
 const routes = [
@@ -13,10 +14,12 @@ const routes = [
   {
     path: "task/join",
     name: "TaskJoin",
-    component: Join,
-    meta: {
-      auth: false
-    }
+    component: Join
+  },
+  {
+    path: "task/:id",
+    name: "TaskDetail",
+    component: Detail
   }
 ];
 
