@@ -127,7 +127,7 @@
         <div class="card-btn-container">
           <!-- 未参与且任务是进行中 -->
           <template v-if="!is_join && mission.status == 2 && level !== 0">
-            <div class="card-btn card-btn--green">
+            <div class="card-btn card-btn--green" @click="handleShowDialog">
               {{ mission.heart_count }}暖心立即参与
             </div>
           </template>
@@ -157,7 +157,7 @@
           </template>
           <!-- 新手 -->
           <template v-if="!is_join && level == 0">
-            <div class="card-btn card-btn--green">
+            <div class="card-btn card-btn--green" @click="handleShowDialog">
               无赏参与
             </div>
           </template>
@@ -180,7 +180,7 @@ export default {
   },
   data() {
     return {
-      is_join: true,
+      is_join: false,
       level: 0,
       designs: [
         {
@@ -197,7 +197,10 @@ export default {
   methods: {
     formatDate,
     formNowFormatDay,
-    priceFormat
+    priceFormat,
+    handleShowDialog() {
+      this.$emit("toggleShowDialog");
+    }
   }
 };
 </script>

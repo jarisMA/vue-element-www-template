@@ -33,23 +33,35 @@
         </div>
       </div>
       <div class="widget-info-right">
-        <mission-card :mission="taskInfo" />
+        <mission-card
+          :mission="taskInfo"
+          @toggleShowDialog="toggleShowDialog"
+        />
       </div>
     </div>
+    <confirm-dialog
+      :task="taskInfo"
+      :show-dialog.sync="showDialog"
+      :type="'signup'"
+      @signUp="handleSignUP"
+    ></confirm-dialog>
   </div>
 </template>
 <script>
 import DetailInfo from "./widgets/DetailInfo";
 import MissionCard from "./widgets/MissionCard";
+import ConfirmDialog from "./widgets/ConfirmDialog";
 import taskService from "@/global/service/task";
 export default {
   name: "TaskDetail",
   components: {
     DetailInfo,
-    MissionCard
+    MissionCard,
+    ConfirmDialog
   },
   data() {
     return {
+      showDialog: false,
       currentTab: "peopleInfo",
       taskInfo: {},
       peopleInfo: [
@@ -111,6 +123,13 @@ export default {
     },
     handleChangeTab(tab) {
       this.currentTab = tab;
+    },
+    toggleShowDialog() {
+      console.log("hello");
+      this.showDialog = !this.showDialog;
+    },
+    handleSignUP() {
+      console.log("singup");
     }
   }
 };
@@ -219,7 +238,6 @@ export default {
           4px 2px,
           4px 0,
           calc(100% - 4px) 0,
-          calc(100% - 4px) 2px,
           calc(100% - 4px) 2px,
           calc(100% - 2px) 2px,
           calc(100% - 2px) 4px,
