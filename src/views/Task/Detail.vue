@@ -32,16 +32,21 @@
           />
         </div>
       </div>
+      <div class="widget-info-right">
+        <mission-card :mission="taskInfo" />
+      </div>
     </div>
   </div>
 </template>
 <script>
 import DetailInfo from "./widgets/DetailInfo";
+import MissionCard from "./widgets/MissionCard";
 import taskService from "@/global/service/task";
 export default {
   name: "TaskDetail",
   components: {
-    DetailInfo
+    DetailInfo,
+    MissionCard
   },
   data() {
     return {
@@ -112,6 +117,8 @@ export default {
 </script>
 <style lang="less" scoped>
 .task-info {
+  display: flex;
+  justify-content: space-between;
   width: 1180px;
   margin: 0 auto;
   padding-top: 38px;
@@ -160,7 +167,7 @@ export default {
           background-color: #fff;
           color: #000000;
           font-weight: 600;
-          border-bottom: 2px solid #d3d3d3;
+          border-bottom: none;
           z-index: 3;
           .circle {
             position: absolute;

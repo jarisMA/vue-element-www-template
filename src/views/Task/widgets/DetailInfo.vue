@@ -118,6 +118,7 @@
       <template v-if="tab == 'supplementInfo'">
         <div class="supplement-container">
           <div
+            v-if="supplementInfo.content"
             v-html="supplementInfo.content"
             class="homework-card supplement-content"
           ></div>
