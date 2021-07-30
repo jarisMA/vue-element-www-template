@@ -1,14 +1,18 @@
 <template>
-  <div class="task-card">
+  <div class="widget-task-card">
     <div class="card-level">
-      <img src="~images/task/lv1.svg" v-if="task.level == 1" />
-      <img src="~images/task/lv2.svg" v-if="task.level == 2" />
-      <img src="~images/task/lv3.svg" v-if="task.level == 3" />
-      <img src="~images/task/lv4.svg" v-if="task.level == 4" />
-      <img src="~images/task/lv5.svg" v-if="task.level == 5" />
+      <i class="level-block"></i>
+      <div class="level-list">
+        <i
+          class="level-item__icon"
+          v-for="item of task.level"
+          :key="item - 1"
+        ></i>
+      </div>
+      <i class="level-block"></i>
     </div>
-    <div class="card-head">
-      <div class="card-title">{{ task.name }}的{{ task.type_label }}</div>
+    <div class="card-header">
+      <div class="card-title">{{ task.name }}</div>
       <div class="card-time">
         <div>发布时间</div>
         <div>{{ task.created_at }}</div>
@@ -28,27 +32,28 @@
         </div>
       </div>
       <div class="card-status">
-        <div class="card-flex" v-if="task.status == 2">
-          <div class="card-implementing status-size">
+        <div class="card-flex">
+          <div
+            class="card-status__status"
+            :class="'card-status-' + task.status"
+          >
             {{ task.status_label }}
           </div>
-          <div class="text-implementing">
-            初选截止：剩余 {{ formNowFormatDay(task.end_at) }}天
-            {{ formatDate(task.end_at, "(YYYY/MM/DD)") }}
+          <div class="card-status__time">
+            <template v-if="task.status == 2">
+              <div class="card-status--green">
+                初选截止：剩余 {{ formNowFormatDay(task.end_at) }}天
+                {{ formatDate(task.end_at, "(YYYY/MM/DD)") }}
+              </div>
+              <div class="card-status--red" v-if="false">
+                初选截止：剩余 {{ formNowFormatDay(task.end_at) }}天
+                {{ formatDate(task.end_at, "(YYYY/MM/DD)") }}
+              </div>
+            </template>
           </div>
+          div.
         </div>
-        <div class="card-flex" v-if="task.status == 3">
-          <div class="card-judging status-size"></div>
-          <div class="text-finalized">------初选截止：已截稿------</div>
-        </div>
-        <div class="card-flex" v-if="task.status == 4">
-          <div class="card-tendering status-size"></div>
-          <div class="text-finalized">------初选截止：已截稿------</div>
-        </div>
-        <div class="card-flex" v-if="task.status == 1">
-          <div class="card-finalized status-size"></div>
-          <div class="text-finalized">------已截稿------</div>
-        </div>
+        div.card
       </div>
     </div>
     <div class="card-foot">
@@ -66,7 +71,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import { formatDate, formNowFormatDay } from "utils/moment";
@@ -91,191 +95,55 @@ export default {
   }
 };
 </script>
-
 <style lang="less" scoped>
-.task-card {
-  width: 380px;
-  height: 562px;
-  background-image: url("~images/task/task-card.svg");
-  background-repeat: no-repeat;
-
+.widget-task-card {
   .card-level {
-    position: relative;
-    top: -56px;
-    text-align: center;
-  }
-
-  .card-head {
     display: flex;
-    position: relative;
-    top: -41px;
-    left: 22px;
-
-    .card-title {
-      width: 239px;
-      height: 38px;
-      line-height: 38px;
-      padding: 0px 5px;
-      text-align: center;
-      font-weight: 500;
-      font-size: 18px;
-      color: black;
-      background-image: url("~images/task/task-title-bg.svg");
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-    .card-time {
-      width: 82px;
-      height: 38px;
-      margin-left: 15px;
-      padding-top: 2px;
-      text-align: center;
-      color: black;
-      font-weight: 600;
-      font-size: 12px;
-      background-image: url("~images/task/task-time-bg.svg");
-    }
-  }
-
-  .card-body {
-    position: relative;
-    top: -21px;
-    padding-left: 26px;
-
-    .card-location {
-      display: flex;
-      justify-content: space-between;
-      padding: 20px 5px 28px 25px;
-      width: 336px;
-      height: 32px;
-      font-size: 12px;
-
-      .card-layout {
-        color: black;
+    align-items: center;
+    height: 30px;
+    width: fit-content;
+    padding: 0 4px;
+    border-top: 2px solid #e9e9e9;
+    border-bottom: 2px solid #e9e9e9;
+    background-color: #ffffff;
+    .level-block {
+      position: relative;
+      display: inline-block;
+      width: 10px;
+      height: 2px;
+      background-color: #e9e9e9;
+      &:before {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        content: "";
+        width: 10px;
+        height: 2px;
+        background-color: #e9e9e9;
       }
-      .card-participation {
-        color: #feb317;
+      &:after {
+        position: absolute;
+        bottom: 4px;
+        left: 0;
+        content: "";
+        width: 10px;
+        height: 2px;
+        background-color: #e9e9e9;
       }
     }
-
-    .card-status {
-      display: flex;
-      justify-content: space-between;
-      padding: 0px 31px;
-      font-size: 12px;
-      font-weight: 600;
-
-      .card-flex {
-        display: flex;
-      }
-
-      .status-size {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 54px;
-        height: 28px;
-      }
-
-      .card-implementing {
-        color: #0f6c00;
-        background-image: url("~images/task/green.svg");
-      }
-
-      .card-judging {
-        color: white;
-        background-image: url("~images/task/red.svg");
-      }
-
-      .card-tendering {
-        color: white;
-        background-image: url("~images/task/blue.svg");
-      }
-
-      .card-finalized {
-        color: #2d41f1;
-        background-image: url("~images/task/yellow.svg");
-      }
-
-      .text-implementing {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 213px;
-        color: #1bc100;
-      }
-
-      .text-finalized {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 213px;
-        color: #7c7c7c;
-      }
-    }
-  }
-
-  .card-foot {
-    width: 227px;
-    margin: -7px auto;
-    .card-reward {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 71px;
-      height: 20px;
-      margin: 0 auto;
-      font-weight: 600;
-      font-size: 12px;
-      color: white;
-      background-image: url("~images/task/reward.svg");
-      background-repeat: no-repeat;
-    }
-
-    .card-coin {
-      width: 233px;
-      height: 53px;
-      padding: 4px 0px 0px 66px;
-      color: white;
-      background-image: url("~images/task/coin.svg");
-      background-repeat: no-repeat;
-      font-weight: 600;
-      font-size: 36px;
-      cursor: pointer;
-      &:hover {
-        padding: 0px;
-        font-size: 18px;
-        background-image: url("~images/task/go-detail.svg");
-        background-repeat: no-repeat;
-
-        .card-price {
-          visibility: hidden;
-        }
-
-        .card-go-detail {
-          margin: -6px 80px;
-          visibility: visible;
+    .level-list {
+      margin: 0 10px;
+      .level-item__icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        margin-right: 9px;
+        background: url("~images/task/index-card-star.svg") no-repeat;
+        background-size: 20px 20px;
+        &:last-child {
+          margin-right: 0;
         }
       }
-    }
-
-    .card-go-detail {
-      visibility: hidden;
-    }
-
-    .card-exp {
-      display: flex;
-      justify-content: space-between;
-      width: 81px;
-      height: 21px;
-      margin: -2px auto;
-      padding: 2px 9px;
-      color: white;
-      font-weight: 600;
-      text-shadow: #000 1px 0 0, #000 0 1px 0, #000 -1px 0 0, #000 0 -1px 0;
-      background-image: url("~images/task/exp.svg");
-      background-repeat: no-repeat;
     }
   }
 }

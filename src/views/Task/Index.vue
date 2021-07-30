@@ -43,6 +43,7 @@
         </div>
         <div class="card-section">
           <task-card v-for="item of task" :key="item.uuid" :task="item" />
+          <task-card-bak v-for="item of task" :key="item.uuid" :task="item" />
         </div>
       </div>
       <div class="container-right">
@@ -91,6 +92,7 @@
 </template>
 
 <script>
+import TaskCardBak from "./widgets/TaskCardBak.vue";
 import TaskCard from "./widgets/TaskCard.vue";
 import RankCard from "./widgets/RankCard.vue";
 import RankItem from "./widgets/RankItem.vue";
@@ -125,7 +127,7 @@ const STEP_LIST = [
     name: "中标方案深化，最终交付"
   },
   {
-    id: 7,
+    id: 8,
     name: "款项结算"
   }
 ];
@@ -133,6 +135,7 @@ export default {
   name: "Task",
   components: {
     TaskCard,
+    TaskCardBak,
     RankCard,
     RankItem
   },
@@ -218,7 +221,7 @@ export default {
           font-weight: 600;
           font-size: 24px;
           text-align: center;
-          line-height: 42px;
+          line-height: 38px;
           color: #000000;
           z-index: 8;
           .banner-title-wrap {
