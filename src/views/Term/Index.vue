@@ -234,11 +234,7 @@ export default {
     /deep/ .el-tabs__header {
       position: sticky;
       top: 60px;
-<<<<<<< HEAD
-      z-index: 2;
-=======
       z-index: 3;
->>>>>>> hotfix-index
       background: white;
     }
 
