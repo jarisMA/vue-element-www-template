@@ -5,6 +5,8 @@
         class="reply-input-wrapper"
         v-model="form.content"
         placeholder="简单说说..."
+        type="textarea"
+        rows="3"
       ></el-input>
       <div class="reply-detail" @click="handleLarge" v-if="!isVote">
         <img src="~images/question/unfold.svg" />
@@ -141,6 +143,8 @@ export default {
     justify-content: space-between;
 
     .reply-detail {
+      position: absolute;
+      right: 190px;
       padding: 4px;
       width: 32px;
       height: 32px;
@@ -153,10 +157,9 @@ export default {
     }
 
     .reply-input-wrapper {
-      margin-bottom: 40px;
-      /deep/ .el-input__inner {
-        height: 24px;
-        padding: 0;
+      /deep/ .el-textarea__inner {
+        height: 100%;
+        padding-right: 40px;
         line-height: 24px;
         font-size: 14px;
         border: unset;
