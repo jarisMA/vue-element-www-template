@@ -161,6 +161,7 @@ export default {
         line-height: 24px;
         font-size: 14px;
         border: unset;
+        resize: none;
         &::placeholder {
           color: #8ea098;
         }
