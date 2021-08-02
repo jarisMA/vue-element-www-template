@@ -141,8 +141,8 @@
                   v-for="(lesson, index) of course.lessons"
                   :key="lesson.id"
                   @click="
-                    course.permission
-                      ? goAcademyCourseVideo(course.id, index + 1)
+                    course.permission || lesson.is_trial
+                      ? handleToggleLesson(index)
                       : null
                   "
                 >
@@ -199,13 +199,14 @@
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
 import VideoPlayer from "components/Course/VideoPlayer";
+import CourseCard from "./widgets/CourseCard";
+
 import { COURSE_PRICE_TYPE_PAY } from "utils/const";
 import { COURSE_PRICE_TYPE_FREE } from "utils/const";
 import courseSerive from "service/course";
 import courseService from "service/course";
 
 import { formatSeconds } from "utils/moment";
-import CourseCard from "./widgets/CourseCard";
 import orderService from "service/order";
 import { ORDER_TYPE_COURSE } from "utils/const";
 import { goOrder, goAcademyCourseVideo } from "utils/routes";
@@ -215,7 +216,11 @@ import { goVip } from "utils/routes";
 
 export default {
   name: "AcademyCourseDetail",
-  components: { TheLoadingImage, VideoPlayer, CourseCard },
+  components: {
+    TheLoadingImage,
+    VideoPlayer,
+    CourseCard
+  },
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
@@ -305,7 +310,6 @@ export default {
     goAcademyCourseVideo,
     getData() {
       this.loading = true;
-      this.course = null;
       courseSerive
         .course(this.$route.params.id)
         .then(course => {

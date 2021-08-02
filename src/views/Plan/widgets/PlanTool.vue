@@ -478,7 +478,6 @@ export default {
         .finally(() => {
           this.commodityLoading = false;
           this.commodityLoadingMore = false;
-          console.log(this.commodities);
         });
     },
     handleCommodityScroll() {
