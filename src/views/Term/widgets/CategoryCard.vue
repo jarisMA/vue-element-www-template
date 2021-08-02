@@ -324,15 +324,18 @@ export default {
   border-top: 1px solid #efefef;
 }
 .card-header {
+  position: relative;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   padding: 20px 0;
   width: 100%;
   font-weight: 400;
   .card-header-left {
     flex: none;
-    padding-right: 10px;
+    position: absolute;
+    left: -42px;
+    top: 50%;
+    transform: translateY(-50%);
     .card-header-icon {
       display: block;
       width: 32px;
@@ -387,7 +390,7 @@ export default {
       color: #2c3330;
     }
     .card-header-desc {
-      margin-top: 5px;
+      margin: 5px 20px 0 0;
       line-height: 18px;
       font-size: 12px;
       color: #606c66;
@@ -409,7 +412,6 @@ export default {
 
 .card-content {
   width: calc(100% - 42px);
-  margin-left: 42px;
   padding: 0 0 20px 0;
   .card-content-item {
     display: flex;
