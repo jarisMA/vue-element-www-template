@@ -43,7 +43,6 @@
         </div>
         <div class="card-section">
           <task-card v-for="item of task" :key="item.uuid" :task="item" />
-          <task-card-bak v-for="item of task" :key="item.uuid" :task="item" />
         </div>
       </div>
       <div class="container-right">
@@ -92,7 +91,6 @@
 </template>
 
 <script>
-import TaskCardBak from "./widgets/TaskCardBak.vue";
 import TaskCard from "./widgets/TaskCard.vue";
 import RankCard from "./widgets/RankCard.vue";
 import RankItem from "./widgets/RankItem.vue";
@@ -135,7 +133,6 @@ export default {
   name: "Task",
   components: {
     TaskCard,
-    TaskCardBak,
     RankCard,
     RankItem
   },
@@ -153,7 +150,7 @@ export default {
           type_label: "布局任务",
           bid_type: 1,
           bid_type_label: "公开招募",
-          status: 2,
+          status: 1,
           status_label: "进行中",
           created_at: "2021-06-30",
           end_at: "2021-09-30 23:59:59",
