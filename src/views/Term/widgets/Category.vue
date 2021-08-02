@@ -77,7 +77,7 @@ export default {
 }
 /deep/ .feedback-drawer {
   .el-drawer__header {
-    display: none;
+    display:  none;
   }
 }
 </style>

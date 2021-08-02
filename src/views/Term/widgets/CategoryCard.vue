@@ -399,7 +399,7 @@ export default {
     }
     .card-header-content-right {
       flex: none;
-      line-height: 2;
+      line-height:  2;
       font-size: 12px;
       color: #8ea098;
       .card-header-date {
