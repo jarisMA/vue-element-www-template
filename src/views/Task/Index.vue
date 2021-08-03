@@ -19,7 +19,7 @@
                 所有成员能力都经斗西审核认证，并持续受斗西团队监督，以独立设计师的身份接受委派任务。
               </div>
             </div>
-            <div class="banner-btn">
+            <div class="banner-btn" @click="goTaskJoin()">
               申请加入
             </div>
           </div>
@@ -51,10 +51,16 @@
             <div class="common-ladder-2__block"></div>
             <div class="user-content">
               <div class="user-content-left">
-                <img src="" alt="" class="user-content__img" />
+                <img
+                  :src="userInfo.avatar_url"
+                  alt=""
+                  class="user-content__img"
+                />
               </div>
               <div class="user-content-right">
-                <div class="user-content__name">用户名</div>
+                <div class="user-content__name">
+                  {{ userInfo.nickname || userInfo.realname }}
+                </div>
                 <div class="user-content__icon"></div>
               </div>
             </div>
@@ -91,44 +97,11 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+import { goTaskJoin } from "utils/routes";
 import TaskCard from "./widgets/TaskCard.vue";
 import RankCard from "./widgets/RankCard.vue";
 import RankItem from "./widgets/RankItem.vue";
-const STEP_LIST = [
-  {
-    id: 1,
-    name: "申请加入「斗西设计团」"
-  },
-  {
-    id: 2,
-    name: "阅读 工作指南",
-    url: ""
-  },
-  {
-    id: 3,
-    name: "领取任务 "
-  },
-  {
-    id: 4,
-    name: "提交方案"
-  },
-  {
-    id: 5,
-    name: "方案评审以及入围公示"
-  },
-  {
-    id: 6,
-    name: "业主选择心仪方案，中标公示"
-  },
-  {
-    id: 7,
-    name: "中标方案深化，最终交付"
-  },
-  {
-    id: 8,
-    name: "款项结算"
-  }
-];
 export default {
   name: "Task",
   components: {
@@ -187,8 +160,49 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapState(["userInfo"])
+  },
+  methods: {
+    goTaskJoin
   }
 };
+const STEP_LIST = [
+  {
+    id: 1,
+    name: "申请加入「斗西设计团」"
+  },
+  {
+    id: 2,
+    name: "阅读 工作指南",
+    url: ""
+  },
+  {
+    id: 3,
+    name: "领取任务 "
+  },
+  {
+    id: 4,
+    name: "提交方案"
+  },
+  {
+    id: 5,
+    name: "方案评审以及入围公示"
+  },
+  {
+    id: 6,
+    name: "业主选择心仪方案，中标公示"
+  },
+  {
+    id: 7,
+    name: "中标方案深化，最终交付"
+  },
+  {
+    id: 8,
+    name: "款项结算"
+  }
+];
 </script>
 
 <style lang="less" scoped>
@@ -259,13 +273,14 @@ export default {
           transform: translateX(-50%);
           width: 228px;
           height: 52px;
-          background: url("~images/task/index-banner-btn.svg") no-repeat;
+          background: url("~images/task/index-banner-btn.png") no-repeat;
           background-size: 228px 52px;
           line-height: 52px;
           font-weight: 600;
           font-size: 18px;
           color: #fff;
           text-align: center;
+          cursor: pointer;
         }
       }
     }
@@ -303,6 +318,13 @@ export default {
                 2px calc(100% - 2px),
                 0 calc(100% - 2px)
               );
+              .user-content__img {
+                display: inline-block;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                vertical-align: middle;
+              }
             }
             .user-content-right {
               .user-content__name {

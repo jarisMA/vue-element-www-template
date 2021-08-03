@@ -130,5 +130,8 @@ export default {
   notifications: `${WEB_PREFIX}/notifications`,
   notification: id => `${WEB_PREFIX}/notifications/${id}`,
 
-  taskId: uuid => `${WEB_PREFIX}/degree/tasks/${uuid}`
+  industryJobsRoots: `${WEB_PREFIX}/industry/jobs/roots`,
+
+  taskId: uuid => `${WEB_PREFIX}/tasks/${uuid}`,
+  taskUserJoin: `${WEB_PREFIX}/tasks/users/join`
 };
