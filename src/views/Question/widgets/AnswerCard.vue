@@ -9,12 +9,12 @@
               <span
                 :class="[
                   'user-name',
-                  userInfo && userInfo.id === answer.user.id ? 'active' : ''
+                  userInfo && userInfo.id === answer.user.id ? 'active' : '',
                 ]"
                 >{{ answer.user.nickname }}</span
               >
               <div class="create-time">
-                {{ formatDate(answer.created_at, "MM-DD hh:mm") }}
+                {{ formatDate(answer.created_at, "MM-DD HH:mm") }}
               </div>
             </div>
           </div>
@@ -143,7 +143,7 @@
               :answerId="answer.id"
               @commented="initDom"
               @added="addedComment"
-              @deleted="count => deletedCommentSucc(key, count)"
+              @deleted="(count) => deletedCommentSucc(key, count)"
               @deletedSecondary="deletedSecondaryComment"
             />
           </li>
@@ -171,17 +171,17 @@ export default {
     TheAvatar,
     CommentCard,
     Comment,
-    ThePreviewImage
+    ThePreviewImage,
   },
   props: {
     answerData: {
       type: Object,
-      required: true
+      required: true,
     },
     allowEdit: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   data() {
     return {
@@ -194,10 +194,10 @@ export default {
       commentMaxHeight: 0,
       claping: false,
       answer: this.answerData || {
-        user: {}
+        user: {},
       },
       observer: null,
-      accepting: false
+      accepting: false,
     };
   },
   watch: {
@@ -206,11 +206,11 @@ export default {
         this.answer = val;
         this.initDom();
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
   },
   mounted() {
     this.initDom();
@@ -248,7 +248,7 @@ export default {
         .deleteAnswer(this.answer.id)
         .then(() => {
           this.$notice({
-            title: "回答删除成功"
+            title: "回答删除成功",
           });
           this.$emit("deleted");
         })
@@ -262,7 +262,7 @@ export default {
       }
       this.$notice({
         type: "warning",
-        title: "等待开放..."
+        title: "等待开放...",
       });
     },
     commented(val) {
@@ -301,7 +301,7 @@ export default {
           .addLike({
             type: TYPE_ANSWER,
             resource_id: this.answer.id,
-            count: clapCount
+            count: clapCount,
           })
           .then(() => {
             this.answer.auth_like_count = clapCount;
@@ -319,7 +319,7 @@ export default {
       if (!this.accepting) {
         this.$confirm("", "是否确认采纳这条回答？", {
           confirmButtonText: "确认",
-          cancelButtonText: "取消"
+          cancelButtonText: "取消",
         }).then(() => {
           this.accepting = true;
           questionService
@@ -327,7 +327,7 @@ export default {
             .then(() => {
               this.$notice({
                 title: "采纳回答成功",
-                type: "success"
+                type: "success",
               });
               this.answer.has_accepted = 1;
               this.$emit("accepted", this.answer.id);
@@ -356,8 +356,8 @@ export default {
     },
     editAnswer() {
       this.$emit("editAnswer");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -450,6 +450,10 @@ export default {
     line-height: 1.67;
     word-break: break-all;
     /deep/ .content {
+      white-space: pre-line;
+      word-break: break-all;
+      word-wrap: break-word;
+
       img {
         margin: 0 auto !important;
         display: block !important;
