@@ -14,7 +14,7 @@
                 >{{ answer.user.nickname }}</span
               >
               <div class="create-time">
-                {{ formatDate(answer.created_at, "MM-DD hh:mm") }}
+                {{ formatDate(answer.created_at, "MM-DD HH:mm") }}
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
           </div>
         </div>
         <div class="card-content">
-          <pre class="content" v-html="answer.content"></pre>
+          <div class="content" v-html="answer.content"></div>
           <div
             class="image-list"
             v-if="answer.images && answer.images.length > 0"
@@ -429,6 +429,7 @@ export default {
     line-height: 1.67;
     word-break: break-all;
     /deep/ .content {
+      white-space: pre-line;
       word-break: break-all;
       word-wrap: break-word;
 
