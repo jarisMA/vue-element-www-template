@@ -1126,6 +1126,7 @@ export default {
               width: 100%;
               background: #fff;
               content: "";
+              overflow: scroll;
               z-index: 11;
               .content-title {
                 margin: 30px auto 20px;
