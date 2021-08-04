@@ -140,7 +140,8 @@ export default {
       VOTE_OPTION_INDEX,
       VOTE_RESOURCE_TYPE_WORD,
       VOTE_RESOURCE_TYPE_PIC,
-      selected: []
+      selected: [],
+      srcList: []
     };
   },
   watch: {
@@ -179,6 +180,10 @@ export default {
     this.getSelected();
   },
   methods: {
+    // handleVoteSrc(){
+    //   this.srcList = this.question.vote_options.map(item => item.image_url);
+    //   console.log(this.srcList);
+    // },
     getSelected() {
       const question = this.question;
       if (question && question.authVote) {

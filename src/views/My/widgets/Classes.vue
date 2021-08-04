@@ -2,8 +2,8 @@
   <div class="class-section" v-if="terms.length > 0">
     <div class="class-head">
       <div class="class-left">
-        <span class="class-title">我的班级</span>
-        <span class="class-number">加入了 {{ terms.length }} 个班级</span>
+        <span class="class-title">我的训练营</span>
+        <span class="class-number">加入了 {{ terms.length }} 个训练营</span>
       </div>
       <div>
         <search-bar :holder="holder" @search="handleSearch"></search-bar>
@@ -41,7 +41,7 @@ export default {
   data() {
     return {
       terms: [],
-      holder: "搜索我的班级",
+      holder: "搜索我的训练营",
       keyword: ""
     };
   },

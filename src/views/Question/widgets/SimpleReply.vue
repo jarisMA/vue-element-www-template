@@ -64,9 +64,11 @@ export default {
   data() {
     return {
       submiting: false,
+      theBigText: false,
       form: {
         content: "",
-        images: []
+        images: [],
+        prop: ""
       }
     };
   },

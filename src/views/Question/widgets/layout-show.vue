@@ -104,7 +104,8 @@ export default {
         }
       ],
       width: null,
-      height: null
+      height: null,
+      srcList: []
     };
   },
   watch: {
@@ -135,6 +136,10 @@ export default {
     });
   },
   methods: {
+    //  handleLayoutSrc(){
+    //   this.srcList = this.layout.map(item => item.image_url);
+    //   console.log(this.srcList);
+    // },
     getImgSize() {
       const { image_url } = this.layout;
       const image = new Image();

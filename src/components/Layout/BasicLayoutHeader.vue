@@ -383,7 +383,7 @@ export default {
         }
       }
       .Notes {
-        &:before {
+        &::before {
           width: 160px;
           height: 60px;
           background-image: url("~images/bd_normal.svg");

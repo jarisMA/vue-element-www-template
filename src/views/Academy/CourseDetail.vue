@@ -87,12 +87,15 @@
                 ? "¥" + course.current_price
                 : "免费"
             }}</label>
+
             <div class="page-main-info-right">
               <label v-if="false" class="page-main-study-count"
                 >{{ course.study_count }}人正在学</label
               >
               <el-button
-                :class="[course.is_vip ? 'vip-btn' : 'page-main-btn']"
+                :class="[
+                  course.is_vip && isVip() ? 'vip-btn' : 'page-main-btn'
+                ]"
                 type="primary"
                 @click="
                   course.permission
@@ -199,6 +202,7 @@ import VideoPlayer from "components/Course/VideoPlayer";
 import CourseCard from "./widgets/CourseCard";
 
 import { COURSE_PRICE_TYPE_PAY } from "utils/const";
+import { COURSE_PRICE_TYPE_FREE } from "utils/const";
 import courseSerive from "service/course";
 import courseService from "service/course";
 
@@ -220,6 +224,7 @@ export default {
   data() {
     return {
       COURSE_PRICE_TYPE_PAY,
+      COURSE_PRICE_TYPE_FREE,
       loading: true,
       course: {},
       relations: [],
@@ -322,6 +327,7 @@ export default {
             })
             .finally(() => {
               this.loading = false;
+              console.log(this.course);
             });
           this.loading = false;
         })
@@ -546,6 +552,33 @@ export default {
           font-size: 24px;
           color: @primaryColor;
         }
+        .page-vip-benefit {
+          display: flex;
+        }
+        .page-vip-hint {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          width: 85px;
+          height: 32px;
+          font-size: 14px;
+          font-weight: 600;
+          border-radius: 16px;
+          background-color: #efefef;
+
+          .page-vip {
+            margin-right: 7px;
+            color: #ffbd12;
+          }
+          .page-freestudy {
+            color: #000;
+          }
+        }
+        .page-vip-price {
+          margin-right: 8px;
+          text-decoration: line-through;
+        }
+
         .page-main-info-right {
           display: flex;
           align-items: center;

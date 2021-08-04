@@ -72,12 +72,12 @@ export default {
 
 <style lang="less" scoped>
 .category-list {
-  padding: 0 20px;
+  padding: 0 20px 0 50px;
   width: 100%;
 }
 /deep/ .feedback-drawer {
   .el-drawer__header {
-    display: none;
+    display:  none;
   }
 }
 </style>
