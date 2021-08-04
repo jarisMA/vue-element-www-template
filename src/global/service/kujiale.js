@@ -17,6 +17,9 @@ const KujialeService = {
   iframe: (dest, params) => {
     return request.get(API.kujialeIframe(dest), params);
   },
+  adminIframe: (dest, params) => {
+    return request.get(API.kjlAdminIframe(dest), params);
+  },
   designList: params => {
     return request.get(API.kujialeDesignList, params);
   },

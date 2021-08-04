@@ -164,6 +164,7 @@ import PlaneTool from "./widgets/PlaneTool";
 import PlanTool from "./widgets/PlanTool";
 import TextureTool from "./widgets/TextureTool";
 import TheLoadingImage from "components/TheLoadingImage";
+import { goHome } from "utils/routes";
 
 export default {
   name: "EditPlan",
@@ -203,7 +204,10 @@ export default {
     ...mapState(["headerUnfold"])
   },
   created() {
-    if (this.$route.name === "EditPlan") {
+    if (
+      this.$route.name === "EditPlan" ||
+      this.$route.name === "AdminEditPlan"
+    ) {
       this.showSoftware = true;
       if (this.$route.query.tool == "true") {
         this.showTexture = true;
@@ -231,22 +235,38 @@ export default {
         promiseArr.push(
           kujialeService.designBasic(this.$route.params.designId)
         );
+      } else if (routeName === "AdminEditPlan") {
+        promiseArr.push(
+          kujialeService.adminIframe(1, {
+            designid: this.$route.params.designId
+          })
+        );
+        promiseArr.push(
+          kujialeService.designBasic(this.$route.params.designId)
+        );
       } else {
         promiseArr.push(kujialeService.iframe(4));
       }
-      Promise.all(promiseArr).then(([res, design]) => {
-        this.url = res.url;
-        this.listingId = res.listing_id;
-        this.design = design || {};
-        if (design && design.name) {
-          document.querySelector("head title").innerHTML =
-            design.name + " - 斗西家计划 - 可以自己设计装修的学习平台";
-          document.getElementById("footer-plan-name").innerHTML = design.name;
-        }
-        this.listener();
-        this.getListingBrief(false);
-        // this.loading = false;
-      });
+      Promise.all(promiseArr)
+        .then(([res, design]) => {
+          this.url = res.url;
+          this.listingId = res.listing_id;
+          this.design = design || {};
+          if (design && design.name) {
+            document.querySelector("head title").innerHTML =
+              design.name + " - 斗西家计划 - 可以自己设计装修的学习平台";
+            document.getElementById("footer-plan-name").innerHTML = design.name;
+          }
+          this.listener();
+          this.getListingBrief(false);
+          // this.loading = false;
+        })
+        .catch(error => {
+          const { response } = error;
+          if (response && response.status === 403) {
+            goHome("replace");
+          }
+        });
     },
     listener() {
       if (window.postMessage) {

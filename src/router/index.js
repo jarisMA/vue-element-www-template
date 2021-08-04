@@ -27,7 +27,7 @@ const appRouter = new VueRouter({
 appRouter.firstInit = false;
 appRouter.beforeEach(async (to, from, next) => {
   NProgress.start();
-  if (["EditPlan", "DrawPlan"].indexOf(to.name) > -1) {
+  if (["EditPlan", "DrawPlan", "AdminEditPlan"].indexOf(to.name) > -1) {
     Store.commit("updateHeaderTheme", "primary");
   } else {
     Store.commit("updateHeaderTheme", "default");

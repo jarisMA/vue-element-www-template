@@ -19,6 +19,14 @@ const routes = [
     }
   },
   {
+    path: "/admin/plan/:designId",
+    name: "AdminEditPlan",
+    component: EditPlan,
+    meta: {
+      auth: true
+    }
+  },
+  {
     path: "/plan/draw",
     name: "DrawPlan",
     component: EditPlan,
