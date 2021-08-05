@@ -10,7 +10,7 @@ import { mapState } from "vuex";
 import {
   PhoneNumberComponent,
   FeedbackComponent,
-  NoteComponent
+  NoteComponent,
 } from "./VideoPlayerComponent";
 
 const skinLayout = [
@@ -18,29 +18,29 @@ const skinLayout = [
     name: "bigPlayButton",
     align: "blabs",
     x: 30,
-    y: 80
+    y: 80,
   },
   {
     name: "H5Loading",
-    align: "cc"
+    align: "cc",
   },
   {
     name: "errorDisplay",
     align: "tlabs",
     x: 0,
-    y: 0
+    y: 0,
   },
   {
-    name: "infoDisplay"
+    name: "infoDisplay",
   },
   {
     name: "tooltip",
     align: "blabs",
     x: 0,
-    y: 56
+    y: 56,
   },
   {
-    name: "thumbnail"
+    name: "thumbnail",
   },
   {
     name: "controlBar",
@@ -52,71 +52,71 @@ const skinLayout = [
         name: "progress",
         align: "blabs",
         x: 0,
-        y: 44
+        y: 44,
       },
       {
         name: "playButton",
         align: "tl",
         x: 15,
-        y: 12
+        y: 12,
       },
       {
         name: "timeDisplay",
         align: "tl",
         x: 10,
-        y: 7
+        y: 7,
       },
       {
         name: "fullScreenButton",
         align: "tr",
         x: 10,
-        y: 12
+        y: 12,
       },
       {
         name: "setting",
         align: "tr",
         x: 15,
-        y: 12
+        y: 12,
       },
       {
         name: "volume",
         align: "tr",
         x: 5,
-        y: 10
-      }
-    ]
-  }
+        y: 10,
+      },
+    ],
+  },
 ];
 export default {
   name: "VideoPlayer",
   props: {
     id: {
       type: String,
-      default: "videoPlayer"
+      default: "videoPlayer",
     },
     vid: {
       type: String,
-      required: true
+      required: true,
     },
     isTrial: {
       type: Boolean,
-      default: false
+      default: false,
     },
     startTime: {
       type: Number,
-      default: 0
+      default: 0,
     },
     duration: {
       type: Number,
-      default: 0
+      default: 0,
     },
     cover: {
-      type: String
+      type: String,
     },
     autoplay: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   data() {
     return {
@@ -128,8 +128,7 @@ export default {
       timestamp: new Date().valueOf(),
       timer: null,
       playing: false,
-      showFeedback: false,
-      showNote: false
+      showActive: "",
     };
   },
   watch: {
@@ -139,10 +138,10 @@ export default {
         this.checkTransformCodeStatus();
         this.handleClearTimer();
       }
-    }
+    },
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
   },
   mounted() {
     this.$nextTick(() => {
@@ -172,7 +171,7 @@ export default {
       }
       vodService
         .ossVideoStatus(this.vid)
-        .then(data => {
+        .then((data) => {
           if (
             data.status === 1 ||
             data.template_group_id === "VOD_NO_TRANSCODE"
@@ -182,7 +181,7 @@ export default {
           } else {
             this.$notice({
               type: "warning",
-              title: "视频转码中，请稍后播放～"
+              title: "视频转码中，请稍后播放～",
             });
           }
         })
@@ -193,7 +192,7 @@ export default {
     initPlayer() {
       this.stopEmit = false;
       if (!this.isTrial) {
-        vodService.ossVideoAuth(this.vid).then(data => {
+        vodService.ossVideoAuth(this.vid).then((data) => {
           const { PlayAuth, VideoMeta } = data;
           // eslint-disable-next-line
           this.player = new Aliplayer(
@@ -214,21 +213,25 @@ export default {
                 {
                   name: "FeedbackComponent",
                   type: FeedbackComponent,
-                  args: [this.handleToggleShowFeedback.bind(this)]
+                  args: [
+                    this.handleShowActive.bind(this, "feedback"),
+                  ],
                 },
                 {
                   name: "NoteComponent",
                   type: NoteComponent,
-                  args: [this.handleToggleShowNote.bind(this)]
-                }
+                  args: [
+                    this.handleShowActive.bind(this, "note"),
+                  ],
+                },
               ],
               playsinline: true,
               preload: true,
-              controlBarVisibility: "always",
+              controlBarVisibility: "hover",
               useH5Prism: true,
-              skinLayout
+              skinLayout,
             },
-            player => {
+            (player) => {
               document.addEventListener("keydown", this.handleKeydown);
               // player.on("canplaythrough", this.handleCanplaythrough);
               player.on("canplay", this.handleCanplay);
@@ -244,7 +247,7 @@ export default {
           );
         });
       } else {
-        vodService.ossVideoPreview(this.vid).then(url => {
+        vodService.ossVideoPreview(this.vid).then((url) => {
           // eslint-disable-next-line
           this.player = new Aliplayer(
             {
@@ -261,9 +264,9 @@ export default {
               preload: true,
               controlBarVisibility: "hover",
               useH5Prism: true,
-              skinLayout
+              skinLayout,
             },
-            player => {
+            (player) => {
               document.addEventListener("keydown", this.handleKeydown);
               player.on("canplay", this.handleCanplay);
               player.on("play", this.handlePlay);
@@ -278,27 +281,38 @@ export default {
       }
     },
     handleToggleShowFeedback(e) {
-      this.$emit("handleShowFeedback");
-      this.showFeedback = !this.showFeedback;
+      this.$emit("handleContent", "feedback");
       let className = e.srcElement.className.split(" ");
-      if (this.showFeedback) {
+      if (this.showActive == 1) {
         className.push("active");
       } else {
-        className = className.filter(item => item !== "active");
+        className = className.filter((item) => item !== "active");
       }
+      this.showActive = 1;
       e.srcElement.className = className.join(" ");
     },
-    handleToggleShowNote(e) {
-      this.$emit("handleShowNote");
-      this.showNote = !this.showNote;
-      let className = e.srcElement.className.split(" ");
-      if (this.showNote) {
-        className.push("active");
-      } else {
-        className = className.filter(item => item !== "active");
+
+    handleShowActive(val) {
+      this.$emit("handleContent", val);
+      let feedback = document.getElementById("feedback");
+      let note = document.getElementById("note");
+      if (this.showActive !== val && val == "feedback") {
+        feedback.classList.add("active");
+        note.classList.remove("active");
+        this.showActive = val;
+      } else if (this.showActive == val && val == "feedback") {
+        feedback.classList.remove("active");
+        this.showActive = "";
+      } else if (this.showActive !== val && val == "note") {
+        note.classList.add("active");
+        feedback.classList.remove("active");
+        this.showActive = val;
+      } else if (this.showActive == val && val == "note") {
+        note.classList.remove("active");
+        this.showActive = "";
       }
-      e.srcElement.className = className.join(" ");
     },
+
     handleSetRecord() {
       const nowTime = new Date().valueOf();
       const second_duration = (nowTime - this.timestamp) / 1000;
@@ -306,7 +320,7 @@ export default {
       if (!this.stopEmit) {
         this.$emit("setRecord", {
           last_play_position,
-          second_duration
+          second_duration,
         });
         this.timestamp = nowTime;
       }
@@ -390,8 +404,8 @@ export default {
     },
     handleError() {
       this.handleClearTimer();
-    }
-  }
+    },
+  },
 };
 </script>
 

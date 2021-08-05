@@ -31,6 +31,7 @@ export class FeedbackComponent {
     const bar = el.querySelector(".prism-controlbar");
     const div = document.createElement("div");
     div.className = "feedback-btn";
+    div.id = "feedback";
     bar.appendChild(div);
     this.$dom = div;
     this.$dom.addEventListener("click", this.clickFn);
@@ -46,6 +47,7 @@ export class NoteComponent {
     const bar = el.querySelector(".prism-controlbar");
     const div = document.createElement("div");
     div.className = "note-btn";
+    div.id = "note";
     bar.appendChild(div);
     this.$dom = div;
     this.$dom.addEventListener("click", this.clickFn);
