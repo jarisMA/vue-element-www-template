@@ -122,7 +122,8 @@
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
-          @showFeedback="handleFeedback"
+          @handleShowFeedback="handleShowFeedback"
+          @handleShowNote="handleShowNote"
         />
         <div class="remind-feedback">
           <div class="remind-text-wrapper">
@@ -166,11 +167,13 @@
           />
         </div>
       </div>
-      <div :class="['page-content-feedback', showFeedback ? 'show' : 'hide']">
+      <div
+        :class="['page-content-feedback', handleShowAside ? 'show' : 'hide']"
+      >
         <div
           class="page-fold-right"
-          @click="handleFeedback()"
-          v-if="showFeedback"
+          @click="handleShowAside = !handleShowAside"
+          v-if="handleShowAside"
         ></div>
         <course-feedback-list
           :campId="campId"
@@ -215,6 +218,8 @@ export default {
       chapters: [],
       showMenu: true,
       showFeedback: false,
+      showNote: false,
+      handleShowAside: false,
       updatingTimer: null,
       activeNames: [],
       campId: "",
@@ -300,9 +305,14 @@ export default {
       }
     },
 
-    handleFeedback() {
+    handleShowFeedback() {
+      this.handleShowAside = !this.handleShowAside;
       this.showFeedback = !this.showFeedback;
       this.getParams();
+    },
+    handleShowNote() {
+      this.handleShowAside = !this.handleShowAside;
+      this.showNote = !this.showNote;
     },
 
     handleSetRecord(params) {
@@ -681,17 +691,18 @@ export default {
 
   .page-content-feedback {
     flex: none;
-    width: 576px;
     height: 100%;
+    min-width: 432px;
+    max-width: 576px;
     background: #494949;
     transition: width 0.3s;
 
     &.show {
-      width: 576px;
+      width: 30%;
     }
-
     &.hide {
-      width: 0;
+      min-width: 0px;
+      width: 0%;
     }
 
     &:hover .page-fold-right {

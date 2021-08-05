@@ -93,23 +93,6 @@
               录播视频将在直播结束后 24 小时内上传，敬请期待
             </p>
           </div>
-          <div class="card-feedback-wrapper">
-            <course-feedback
-              class="card-feedback"
-              :params="{
-                camp_id: campId,
-                term_id: termId,
-                widget_id: category.id,
-                resource_type: category.type,
-                resource_id: category.resource_id || category.bible_id
-              }"
-              @added="handleShowFeedback"
-            />
-            <label class="card-feedback-more" @click="handleShowFeedback">
-              <span>看看同学们怎么说</span>
-              <i class="card-more-icon"></i>
-            </label>
-          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -120,11 +103,9 @@
 import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
 import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
-import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
-  components: { CourseFeedback },
   props: {
     category: {
       type: Object,
@@ -501,29 +482,6 @@ export default {
       line-height: 16px;
       font-size: 12px;
       color: #8ea098;
-    }
-  }
-}
-
-.card-feedback-wrapper {
-  .card-feedback {
-    padding: 20px 0;
-  }
-  .card-feedback-more {
-    display: inline-block;
-    margin-left: 48px;
-    line-height: 24px;
-    font-weight: 500;
-    font-size: 14px;
-    color: @primaryColor;
-    cursor: pointer;
-    .card-more-icon {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      background-color: @primaryColor;
-      mask: url("~images/my/arrow.svg") no-repeat center;
-      vertical-align: bottom;
     }
   }
 }

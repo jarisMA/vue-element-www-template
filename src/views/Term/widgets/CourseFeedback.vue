@@ -108,7 +108,7 @@ export default {
       color: #dddddd;
       border: unset;
       &::placeholder {
-        color: #81948B;
+        color: #81948b;
       }
     }
   }
@@ -118,6 +118,12 @@ export default {
     line-height: 24px;
     font-weight: 500;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  /deep/ ::placeholder {
+    font-size: 12px;
   }
 }
 </style>
