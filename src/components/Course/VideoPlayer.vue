@@ -211,7 +211,7 @@ export default {
                 {
                   name: "FeedbackComponent",
                   type: FeedbackComponent,
-                  args: [this.handleToggleShowFeedback]
+                  args: [this.handleToggleShowFeedback.bind(this)]
                 }
               ],
               playsinline: true,
@@ -269,7 +269,7 @@ export default {
       }
     },
     handleToggleShowFeedback(e) {
-      this.showFeedback = !this.showFeedback;
+      this.$emit("showFeedback");
       let className = e.srcElement.className.split(" ");
       if (this.showFeedback) {
         className.push("active");

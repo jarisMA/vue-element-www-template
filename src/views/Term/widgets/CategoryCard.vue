@@ -93,7 +93,7 @@
               录播视频将在直播结束后 24 小时内上传，敬请期待
             </p>
           </div>
-          <!-- <div class="card-feedback-wrapper">
+          <div class="card-feedback-wrapper">
             <course-feedback
               class="card-feedback"
               :params="{
@@ -109,7 +109,7 @@
               <span>看看同学们怎么说</span>
               <i class="card-more-icon"></i>
             </label>
-          </div> -->
+          </div>
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -120,11 +120,11 @@
 import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
 import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
-// import CourseFeedback from "./CourseFeedback";
+import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
-  // components: { CourseFeedback },
+  components: { CourseFeedback },
   props: {
     category: {
       type: Object,

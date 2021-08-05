@@ -87,7 +87,7 @@ export default {
     display: flex;
     flex-direction: column;
     padding-bottom: 24px;
-    border-bottom: 1px solid #efefef;
+    border-bottom: 1px solid #595959;
     .card-right-top {
       display: flex;
       justify-content: space-between;
@@ -96,7 +96,7 @@ export default {
           line-height: 24px;
           font-weight: 600;
           font-size: 14px;
-          color: #606c66;
+          color: #8EA098;
         }
         .time {
           margin-left: 8px;
@@ -120,7 +120,7 @@ export default {
           align-items: center;
           line-height: 24px;
           font-size: 14px;
-          color: #606c66;
+          color: #8EA098;
           cursor: pointer;
           &.active {
             color: @primaryColor;
@@ -147,7 +147,7 @@ export default {
       line-height: 24px;
       font-size: 16px;
       letter-spacing: 1px;
-      color: #2c3330;
+      color: #DDDDDD;
     }
   }
 }
