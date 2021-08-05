@@ -121,7 +121,7 @@ export default {
   }
 }
 
-@media screen and (max-width: 1440px) {
+@media screen and (max-width: 1540px) {
   /deep/ ::placeholder {
     font-size: 12px;
   }
