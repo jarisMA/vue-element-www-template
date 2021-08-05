@@ -7,27 +7,11 @@
 <script>
 import vodService from "service/vod";
 import { mapState } from "vuex";
-import Store from "@/store/index";
-function randomTop(el) {
-  el.style.top = Math.floor(Math.random() * (70 - 30 + 1)) + 30 + "%";
-  const timer = setTimeout(() => {
-    randomTop(el);
-    clearTimeout(timer);
-  }, 30 * 1000);
-}
-class PhoneNumberComponent {
-  constructor() {}
+import {
+  PhoneNumberComponent,
+  FeedbackComponent
+} from "./VideoPlayerComponent";
 
-  createEl(el) {
-    const userInfo = Store.state.userInfo;
-    const div = document.createElement("div");
-    div.innerHTML = userInfo.phone + userInfo.nickname;
-    div.className = "phone-container";
-    div.id = "phone-container";
-    el.appendChild(div);
-    randomTop(div);
-  }
-}
 const skinLayout = [
   {
     name: "bigPlayButton",
@@ -142,7 +126,8 @@ export default {
       status: 0,
       timestamp: new Date().valueOf(),
       timer: null,
-      playing: false
+      playing: false,
+      showFeedback: false
     };
   },
   watch: {
@@ -221,7 +206,14 @@ export default {
               encryptType: 1, //当播放私有加密流时需要设置。
               definition: "FD,LD,SD,HD",
               defaultDefinition: "HD",
-              components: [PhoneNumberComponent],
+              components: [
+                PhoneNumberComponent,
+                {
+                  name: "FeedbackComponent",
+                  type: FeedbackComponent,
+                  args: [this.handleToggleShowFeedback.bind(this)]
+                }
+              ],
               playsinline: true,
               preload: true,
               controlBarVisibility: "hover",
@@ -275,6 +267,16 @@ export default {
           );
         });
       }
+    },
+    handleToggleShowFeedback(e) {
+      this.$emit("showFeedback");
+      let className = e.srcElement.className.split(" ");
+      if (this.showFeedback) {
+        className.push("active");
+      } else {
+        className = className.filter(item => item !== "active");
+      }
+      e.srcElement.className = className.join(" ");
     },
     handleSetRecord() {
       const nowTime = new Date().valueOf();
@@ -401,6 +403,20 @@ export default {
     background-color: #000;
     width: 100%;
     height: 100% !important;
+    .feedback-btn {
+      margin-top: 10px;
+      margin-right: 10px;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      mask: url(~images/academy/video-feedback.svg) no-repeat;
+      float: right;
+      cursor: pointer;
+      &:hover,
+      &.active {
+        background-color: @primaryColor;
+      }
+    }
     .phone-container {
       position: absolute;
       top: calc(~"@{randomTop}");
@@ -524,6 +540,7 @@ export default {
       // display: none;
       margin-top: 10px !important;
       margin-right: 10px !important;
+      margin-left: 16px;
       background-image: url("~images/course/settings.svg");
     }
     .prism-setting-item {

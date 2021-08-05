@@ -11,7 +11,7 @@
       />
     </div>
     <the-empty v-else-if="!loading" noText="暂无课程可学习" />
-    <!-- <el-drawer
+    <el-drawer
       class="feedback-drawer"
       size="576px"
       :visible.sync="listVisible"
@@ -23,21 +23,21 @@
         :termId="termId"
         :category="activeFeedbackCategory"
       />
-    </el-drawer> -->
+    </el-drawer>
   </div>
 </template>
 
 <script>
 import TheEmpty from "components/TheEmpty";
 import CategoryCard from "./CategoryCard";
-// import CourseFeedbackList from "./CourseFeedbackList";
+import CourseFeedbackList from "./CourseFeedbackList";
 
 export default {
   name: "TermCategory",
   components: {
     CategoryCard,
-    TheEmpty
-    // CourseFeedbackList
+    TheEmpty,
+    CourseFeedbackList
   },
   props: {
     campId: {
