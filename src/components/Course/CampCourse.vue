@@ -6,7 +6,7 @@
           :class="[
             'page-header-left_icon',
             'menu-icon',
-            showMenu ? 'close' : 'show',
+            showMenu ? 'close' : 'show'
           ]"
           @click="showMenu = !showMenu"
         ></i>
@@ -60,7 +60,7 @@
                         new Date().valueOf() <
                           new Date(chapter.start_at).valueOf()
                           ? '0.6'
-                          : '',
+                          : ''
                     }"
                   >
                     {{ chapter.title }}
@@ -73,7 +73,7 @@
                     section.id
                       ? 'active'
                       : '',
-                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : '',
+                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : ''
                   ]"
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
@@ -82,7 +82,7 @@
                   <i
                     :class="[
                       'page-menu-item_icon',
-                      sectionStatusIconClass(section),
+                      sectionStatusIconClass(section)
                     ]"
                   ></i>
                   <h4 class="page-menu-item_name ellipsis">
@@ -96,7 +96,7 @@
                         :class="[
                           [2].indexOf(sectionStatus(section)) > -1
                             ? 'primary'
-                            : '',
+                            : ''
                         ]"
                         >{{ secondsUpdate(section.last_play_position) }}</span
                       >/ </template
@@ -122,8 +122,7 @@
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
-          @handleShowFeedback="handleShowFeedback"
-          @handleShowNote="handleShowNote"
+          @handleContent="handleContent"
         />
         <div class="remind-feedback">
           <div class="remind-text-wrapper">
@@ -139,7 +138,7 @@
                     .second_duration /
                     2
                   ? 'show'
-                  : '',
+                  : ''
               ]"
             >
               <p>这节课是不是收获颇丰呢？</p>
@@ -167,20 +166,32 @@
           />
         </div>
       </div>
-      <div
-        :class="['page-content-feedback', handleShowAside ? 'show' : 'hide']"
-      >
+      <div :class="['page-content-aside', showAside ? 'show' : 'hide']">
         <div
           class="page-fold-right"
-          @click="handleShowAside = !handleShowAside"
-          v-if="handleShowAside"
+          @click="showAside = !showAside"
+          v-if="showAside"
         ></div>
         <course-feedback-list
           :campId="campId"
           :termId="termId"
           :category="activeFeedbackCategory"
-          v-if="showFeedback"
+          v-if="showContent == 'feedback'"
         />
+        <div class="course-note">
+          <div
+            class="course-video-note"
+            v-if="
+              chapters[chapterIndex].sections[sectionIndex].note &&
+                showContent == 'note'
+            "
+            v-html="chapters[chapterIndex].sections[sectionIndex].note.content"
+          ></div>
+          <div class="course-note-empty" v-else>
+            <img src="~/images/course/note-empty.svg" class="empty-img" />
+            <p>这节课没有笔记可查阅噢</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -197,34 +208,33 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true,
+      required: true
     },
     courseChapters: {
       type: Array,
-      required: true,
+      required: true
     },
     chapterIndex: {
       type: Number,
-      required: true,
+      required: true
     },
     sectionIndex: {
       type: Number,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       detail: {},
       chapters: [],
       showMenu: true,
-      showFeedback: false,
-      showNote: false,
-      handleShowAside: false,
+      showAside: false,
+      showContent: "",
       updatingTimer: null,
       activeNames: [],
       campId: "",
       termId: "",
-      activeFeedbackCategory: null,
+      activeFeedbackCategory: null
     };
   },
   watch: {
@@ -233,7 +243,7 @@ export default {
     },
     ["$route"]() {
       this.getParams();
-    },
+    }
   },
   created() {
     this.getData();
@@ -244,7 +254,7 @@ export default {
   computed: {
     sectionStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return (section) => {
+      return section => {
         const last_play_position = section.last_play_position || 0;
         const play_second_duration = section.play_second_duration || 0;
         return section.id ===
@@ -258,7 +268,7 @@ export default {
       };
     },
     sectionStatusIconClass() {
-      return (section) => {
+      return section => {
         const status = this.sectionStatus(section);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -279,10 +289,10 @@ export default {
       };
     },
     secondsUpdate() {
-      return (last_play_position) => {
+      return last_play_position => {
         return formatSeconds(last_play_position || 0);
       };
-    },
+    }
   },
   methods: {
     formatSeconds,
@@ -300,19 +310,17 @@ export default {
       this.termId = parseInt(termId);
       if (this.chapters && widgetId) {
         this.activeFeedbackCategory = this.chapters.find(
-          (item) => item.id == widgetId
+          item => item.id == widgetId
         );
       }
     },
 
-    handleShowFeedback() {
-      this.handleShowAside = !this.handleShowAside;
-      this.showFeedback = !this.showFeedback;
+    handleContent(val) {
       this.getParams();
-    },
-    handleShowNote() {
-      this.handleShowAside = !this.handleShowAside;
-      this.showNote = !this.showNote;
+      if (!this.showAside || (this.showAside && this.showContent == val)) {
+        this.showAside = !this.showAside;
+      }
+      this.showContent = val;
     },
 
     handleSetRecord(params) {
@@ -327,7 +335,7 @@ export default {
       this.updatingTimer = setTimeout(() => {
         this.$set(chapters[chapterIndex].sections, sectionIndex, {
           ...chapters[chapterIndex].sections[sectionIndex],
-          last_play_position: Math.floor(second),
+          last_play_position: Math.floor(second)
         });
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
@@ -343,8 +351,8 @@ export default {
         }
       });
     },
-    handleNextLesson() {},
-  },
+    handleNextLesson() {}
+  }
 };
 </script>
 
@@ -689,13 +697,30 @@ export default {
     }
   }
 
-  .page-content-feedback {
+  .page-content-aside {
     flex: none;
     height: 100%;
     min-width: 432px;
     max-width: 576px;
     background: #494949;
     transition: width 0.3s;
+
+    .course-note {
+      height: 100%;
+      padding: 40px;
+
+      .course-note-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        color: #dddddd;
+      }
+    }
 
     &.show {
       width: 30%;
@@ -759,6 +784,14 @@ export default {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="less">
+.course-note {
+  img {
+    max-width: 100%;
   }
 }
 </style>
