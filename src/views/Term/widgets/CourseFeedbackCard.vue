@@ -96,7 +96,7 @@ export default {
           line-height: 24px;
           font-weight: 600;
           font-size: 14px;
-          color: #8EA098;
+          color: #8ea098;
         }
         .time {
           margin-left: 8px;
@@ -120,7 +120,7 @@ export default {
           align-items: center;
           line-height: 24px;
           font-size: 14px;
-          color: #8EA098;
+          color: #8ea098;
           cursor: pointer;
           &.active {
             color: @primaryColor;
@@ -147,7 +147,7 @@ export default {
       line-height: 24px;
       font-size: 16px;
       letter-spacing: 1px;
-      color: #DDDDDD;
+      color: #dddddd;
     }
   }
 }

@@ -1,5 +1,9 @@
 <template>
-  <div class="feedback-wrapper" v-loading="loading" element-loading-background="#494949">
+  <div
+    class="feedback-wrapper"
+    v-loading="loading"
+    element-loading-background="#494949"
+  >
     <div class="feedback-content">
       <div class="scroll-section" v-infinite-scroll="getData(true)">
         <div class="feedback-content-wrapper">
@@ -21,7 +25,7 @@
             </li>
           </ul>
           <div class="empty" v-else>
-            <img src="~/images/course/empty.svg" class="empty-img">
+            <img src="~/images/course/empty.svg" class="empty-img" />
             <p>来做第一个分享的人吧</p>
           </div>
         </div>
@@ -52,7 +56,7 @@ export default {
   name: "CourseFeedbackList",
   components: {
     CourseFeedback,
-    CourseFeedbackCard,
+    CourseFeedbackCard
   },
   props: {
     campId: {
@@ -84,7 +88,7 @@ export default {
   created() {
     this.getData();
   },
- watch: {
+  watch: {
     ["$route"]() {
       this.getData();
     }
@@ -201,16 +205,16 @@ export default {
       line-height: 34px;
       font-weight: 600;
       font-size: 24px;
-      color: #DDDDDD;
+      color: #dddddd;
     }
     .feedback-content-desc {
       margin-top: 6px;
       line-height: 24px;
       font-size: 14px;
-      color: #81948B;
+      color: #81948b;
     }
   }
-  .empty{
+  .empty {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -219,7 +223,7 @@ export default {
     height: 100%;
     font-size: 16px;
     font-weight: 600;
-    color: #DDDDDD;
+    color: #dddddd;
   }
 
   .feedback-footer {

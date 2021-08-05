@@ -9,7 +9,8 @@ import vodService from "service/vod";
 import { mapState } from "vuex";
 import {
   PhoneNumberComponent,
-  FeedbackComponent
+  FeedbackComponent,
+  NoteComponent
 } from "./VideoPlayerComponent";
 
 const skinLayout = [
@@ -127,7 +128,8 @@ export default {
       timestamp: new Date().valueOf(),
       timer: null,
       playing: false,
-      showFeedback: false
+      showFeedback: false,
+      showNote: false
     };
   },
   watch: {
@@ -194,7 +196,8 @@ export default {
         vodService.ossVideoAuth(this.vid).then(data => {
           const { PlayAuth, VideoMeta } = data;
           // eslint-disable-next-line
-          this.player = new Aliplayer({
+          this.player = new Aliplayer(
+            {
               id: this.id,
               width: "100%",
               height: "100%",
@@ -212,11 +215,16 @@ export default {
                   name: "FeedbackComponent",
                   type: FeedbackComponent,
                   args: [this.handleToggleShowFeedback.bind(this)]
+                },
+                {
+                  name: "NoteComponent",
+                  type: NoteComponent,
+                  args: [this.handleToggleShowNote.bind(this)]
                 }
               ],
               playsinline: true,
               preload: true,
-              controlBarVisibility: "hover",
+              controlBarVisibility: "always",
               useH5Prism: true,
               skinLayout
             },
@@ -238,7 +246,8 @@ export default {
       } else {
         vodService.ossVideoPreview(this.vid).then(url => {
           // eslint-disable-next-line
-          this.player = new Aliplayer({
+          this.player = new Aliplayer(
+            {
               id: this.id,
               width: "100%",
               height: "100%",
@@ -269,9 +278,21 @@ export default {
       }
     },
     handleToggleShowFeedback(e) {
-      this.$emit("showFeedback");
+      this.$emit("handleShowFeedback");
+      this.showFeedback = !this.showFeedback;
       let className = e.srcElement.className.split(" ");
       if (this.showFeedback) {
+        className.push("active");
+      } else {
+        className = className.filter(item => item !== "active");
+      }
+      e.srcElement.className = className.join(" ");
+    },
+    handleToggleShowNote(e) {
+      this.$emit("handleShowNote");
+      this.showNote = !this.showNote;
+      let className = e.srcElement.className.split(" ");
+      if (this.showNote) {
         className.push("active");
       } else {
         className = className.filter(item => item !== "active");
@@ -404,12 +425,24 @@ export default {
     width: 100%;
     height: 100% !important;
     .feedback-btn {
-      margin-top: 10px;
-      margin-right: 10px;
+      margin: 10px 10px 0 16px;
       width: 24px;
       height: 24px;
       background-color: #fff;
       mask: url(~images/academy/video-feedback.svg) no-repeat;
+      float: right;
+      cursor: pointer;
+      &:hover,
+      &.active {
+        background-color: @primaryColor;
+      }
+    }
+    .note-btn {
+      margin: 10px 10px 0 16px;
+      width: 24px;
+      height: 24px;
+      background-color: #fff;
+      mask: url(~images/academy/video-note.svg) no-repeat;
       float: right;
       cursor: pointer;
       &:hover,
