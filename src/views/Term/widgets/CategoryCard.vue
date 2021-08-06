@@ -21,6 +21,13 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
+                  <div @click.stop="">
+                    <div
+                      class="card-note"
+                      @click="handleShowNote"
+                      v-if="noteContent.length > 0"
+                    ></div>
+                  </div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -121,8 +128,12 @@ export default {
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_LIVE
+      COURSE_TYPE_LIVE,
+      noteContent: ""
     };
+  },
+  created() {
+    this.hasNote();
   },
   computed: {
     isDisabled() {
@@ -236,14 +247,17 @@ export default {
         resource.widget_resource_id
       );
     },
-    handleShowFeedback() {
-      this.$emit("showFeedback");
+    handleShowNote() {
+      this.$emit("showNote", this.noteContent);
     },
     handleNotAvailable() {
       this.$notice({
         type: "warning",
         title: "本章节尚未到开放时间"
       });
+    },
+    hasNote() {
+      this.noteContent = this.category.resources.filter(item => item.note);
     }
   }
 };
@@ -365,11 +379,22 @@ export default {
       width: 5px;
     }
     .card-header-title {
+      display: flex;
+      align-items: center;
       width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
       color: #2c3330;
+
+      .card-note {
+        margin-left: 10px;
+        width: 24px;
+        height: 24px;
+        background-color: black;
+        mask: url(~images/academy/video-note.svg) no-repeat;
+        cursor: pointer;
+      }
     }
     .card-header-desc {
       padding-right: 20px;

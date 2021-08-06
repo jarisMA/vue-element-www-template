@@ -1,13 +1,16 @@
 <template>
-  <div class="page">
+  <div class="page" v-loading="loading">
     <camp-course
+      v-if="!loading"
       :course="detail"
       :courseChapters="widgets"
       :chapterIndex="activeWidgetIndex"
       :sectionIndex="activeResourceIndex"
+      :next="nextLesson"
       @setRecord="handleSetRecord"
       @toggle="handleToggle"
       @ended="handleEnded"
+      @next="handleNext"
     />
   </div>
 </template>
@@ -22,13 +25,15 @@ export default {
   components: { CampCourse },
   data() {
     return {
+      loading: true,
       detail: {},
       widgets: [],
       widgetId: null,
       resourceId: null,
       setRecording: false,
       activeWidgetIndex: 0,
-      activeResourceIndex: 0
+      activeResourceIndex: 0,
+      nextLesson: null
     };
   },
   watch: {
@@ -52,16 +57,22 @@ export default {
   methods: {
     getCourse() {
       const id = this.$route.params.termId;
-      termService.campTermVideoCat(id).then(res => {
-        this.detail = res.term;
-        this.widgets = res.widgets.map(item => {
-          return {
-            ...item,
-            sections: item.resources
-          };
+      this.loading = true;
+      termService
+        .campTermVideoCat(id)
+        .then(res => {
+          this.detail = res.term;
+          this.widgets = res.widgets.map(item => {
+            return {
+              ...item,
+              sections: item.resources
+            };
+          });
+          this.setActiveIndex();
+        })
+        .finally(() => {
+          this.loading = false;
         });
-        this.setActiveIndex();
-      });
     },
     setActiveIndex() {
       this.widgets.some((widget, wIndex) => {
@@ -73,6 +84,27 @@ export default {
               return true;
             }
           });
+          return true;
+        }
+      });
+      this.setNextLesson();
+    },
+    setNextLesson() {
+      this.nextLesson = null;
+      this.widgets.some((widget, wIndex) => {
+        if (wIndex == this.activeWidgetIndex) {
+          widget.resources.some((resource, sIndex) => {
+            if (this.activeResourceIndex + 1 == sIndex) {
+              this.nextLesson = resource;
+              return true;
+            }
+          });
+          if (this.nextLesson) {
+            return true;
+          }
+        }
+        if (!this.nextLesson && wIndex == this.activeWidgetIndex + 1) {
+          this.nextLesson = widget.resources[0];
           return true;
         }
       });
@@ -134,6 +166,16 @@ export default {
         resource.widget_id,
         resource.widget_resource_id
       );
+    },
+    handleNext() {
+      const { widget_id, widget_resource_id } = this.nextLesson;
+      this.$router.push({
+        params: {
+          ...this.$route.params,
+          widgetId: widget_id,
+          resourceId: widget_resource_id
+        }
+      });
     }
   }
 };

@@ -11,6 +11,7 @@ import {
   PhoneNumberComponent,
   FeedbackComponent,
   NoteComponent,
+  NextVideoComponent
 } from "./VideoPlayerComponent";
 
 const skinLayout = [
@@ -18,29 +19,29 @@ const skinLayout = [
     name: "bigPlayButton",
     align: "blabs",
     x: 30,
-    y: 80,
+    y: 80
   },
   {
     name: "H5Loading",
-    align: "cc",
+    align: "cc"
   },
   {
     name: "errorDisplay",
     align: "tlabs",
     x: 0,
-    y: 0,
+    y: 0
   },
   {
-    name: "infoDisplay",
+    name: "infoDisplay"
   },
   {
     name: "tooltip",
     align: "blabs",
     x: 0,
-    y: 56,
+    y: 56
   },
   {
-    name: "thumbnail",
+    name: "thumbnail"
   },
   {
     name: "controlBar",
@@ -52,71 +53,75 @@ const skinLayout = [
         name: "progress",
         align: "blabs",
         x: 0,
-        y: 44,
+        y: 44
       },
       {
         name: "playButton",
         align: "tl",
         x: 15,
-        y: 12,
+        y: 12
       },
       {
         name: "timeDisplay",
         align: "tl",
         x: 10,
-        y: 7,
+        y: 7
       },
       {
         name: "fullScreenButton",
         align: "tr",
         x: 10,
-        y: 12,
+        y: 12
       },
       {
         name: "setting",
         align: "tr",
         x: 15,
-        y: 12,
+        y: 12
       },
       {
         name: "volume",
         align: "tr",
         x: 5,
-        y: 10,
-      },
-    ],
-  },
+        y: 10
+      }
+    ]
+  }
 ];
 export default {
   name: "VideoPlayer",
   props: {
     id: {
       type: String,
-      default: "videoPlayer",
+      default: "videoPlayer"
     },
     vid: {
       type: String,
-      required: true,
+      required: true
     },
     isTrial: {
       type: Boolean,
-      default: false,
+      default: false
     },
     startTime: {
       type: Number,
-      default: 0,
+      default: 0
     },
     duration: {
       type: Number,
-      default: 0,
+      default: 0
     },
     cover: {
-      type: String,
+      type: String
     },
     autoplay: {
       type: Boolean,
-      default: true,
+      default: true
     },
+    next: {
+      type: Object,
+      default: () => null
+    }
   },
   data() {
     return {
@@ -128,7 +133,7 @@ export default {
       timestamp: new Date().valueOf(),
       timer: null,
       playing: false,
-      showActive: "",
+      showActive: ""
     };
   },
   watch: {
@@ -138,10 +143,10 @@ export default {
         this.checkTransformCodeStatus();
         this.handleClearTimer();
       }
-    },
+    }
   },
   computed: {
-    ...mapState(["userInfo"]),
+    ...mapState(["userInfo"])
   },
   mounted() {
     this.$nextTick(() => {
@@ -171,7 +176,7 @@ export default {
       }
       vodService
         .ossVideoStatus(this.vid)
-        .then((data) => {
+        .then(data => {
           if (
             data.status === 1 ||
             data.template_group_id === "VOD_NO_TRANSCODE"
@@ -181,7 +186,7 @@ export default {
           } else {
             this.$notice({
               type: "warning",
-              title: "视频转码中，请稍后播放～",
+              title: "视频转码中，请稍后播放～"
             });
           }
         })
@@ -192,8 +197,28 @@ export default {
     initPlayer() {
       this.stopEmit = false;
       if (!this.isTrial) {
-        vodService.ossVideoAuth(this.vid).then((data) => {
+        vodService.ossVideoAuth(this.vid).then(data => {
           const { PlayAuth, VideoMeta } = data;
+          const components = [
+            PhoneNumberComponent,
+            {
+              name: "FeedbackComponent",
+              type: FeedbackComponent,
+              args: [this.handleShowActive.bind(this, "feedback")]
+            },
+            {
+              name: "NoteComponent",
+              type: NoteComponent,
+              args: [this.handleShowActive.bind(this, "note")]
+            }
+          ];
+          if (this.next) {
+            components.push({
+              name: "NextVideoComponent",
+              type: NextVideoComponent,
+              args: [5, this.next, this.handleNext.bind(this)]
+            });
+          }
           // eslint-disable-next-line
           this.player = new Aliplayer(
             {
@@ -208,30 +233,14 @@ export default {
               encryptType: 1, //当播放私有加密流时需要设置。
               definition: "FD,LD,SD,HD",
               defaultDefinition: "HD",
-              components: [
-                PhoneNumberComponent,
-                {
-                  name: "FeedbackComponent",
-                  type: FeedbackComponent,
-                  args: [
-                    this.handleShowActive.bind(this, "feedback"),
-                  ],
-                },
-                {
-                  name: "NoteComponent",
-                  type: NoteComponent,
-                  args: [
-                    this.handleShowActive.bind(this, "note"),
-                  ],
-                },
-              ],
+              components,
               playsinline: true,
               preload: true,
               controlBarVisibility: "hover",
               useH5Prism: true,
-              skinLayout,
+              skinLayout
             },
-            (player) => {
+            player => {
               document.addEventListener("keydown", this.handleKeydown);
               // player.on("canplaythrough", this.handleCanplaythrough);
               player.on("canplay", this.handleCanplay);
@@ -247,7 +256,7 @@ export default {
           );
         });
       } else {
-        vodService.ossVideoPreview(this.vid).then((url) => {
+        vodService.ossVideoPreview(this.vid).then(url => {
           // eslint-disable-next-line
           this.player = new Aliplayer(
             {
@@ -264,9 +273,9 @@ export default {
               preload: true,
               controlBarVisibility: "hover",
               useH5Prism: true,
-              skinLayout,
+              skinLayout
             },
-            (player) => {
+            player => {
               document.addEventListener("keydown", this.handleKeydown);
               player.on("canplay", this.handleCanplay);
               player.on("play", this.handlePlay);
@@ -280,18 +289,6 @@ export default {
         });
       }
     },
-    handleToggleShowFeedback(e) {
-      this.$emit("handleContent", "feedback");
-      let className = e.srcElement.className.split(" ");
-      if (this.showActive == 1) {
-        className.push("active");
-      } else {
-        className = className.filter((item) => item !== "active");
-      }
-      this.showActive = 1;
-      e.srcElement.className = className.join(" ");
-    },
-
     handleShowActive(val) {
       this.$emit("handleContent", val);
       let feedback = document.getElementById("feedback");
@@ -320,7 +317,7 @@ export default {
       if (!this.stopEmit) {
         this.$emit("setRecord", {
           last_play_position,
-          second_duration,
+          second_duration
         });
         this.timestamp = nowTime;
       }
@@ -381,6 +378,10 @@ export default {
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
       this.$emit("ended");
+      let nextVideoComponent = this.player.getComponent("NextVideoComponent");
+      if (nextVideoComponent) {
+        nextVideoComponent.show();
+      }
     },
     handleKeydown(e) {
       // 空格
@@ -405,7 +406,10 @@ export default {
     handleError() {
       this.handleClearTimer();
     },
-  },
+    handleNext() {
+      this.$emit("next");
+    }
+  }
 };
 </script>
 
@@ -477,6 +481,66 @@ export default {
       z-index: 1;
       animation: phoneMove 30s linear infinite;
       transform: translate3d(0, 0, 0);
+    }
+    .next-video-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      background: #000;
+      .next-video-dialog {
+        width: 420px;
+        .next-video-dialog_header {
+          margin-bottom: 8px;
+          line-height: 24px;
+          font-size: 14px;
+          color: #fff;
+        }
+        .next-video-dialog_content {
+          display: flex;
+          align-items: center;
+          padding: 16px;
+          background: #eeeeee;
+          .video-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            margin-right: 16px;
+            background: #000;
+            mask: url("~images/course/played.svg") no-repeat;
+            mask-size: 100% 100%;
+          }
+          .next-video-name {
+            line-height: 28px;
+            font-weight: 600;
+            font-size: 18px;
+            color: #2c3330;
+          }
+        }
+        .next-video-dialog_footer {
+          margin-top: 30px;
+          display: flex;
+          justify-content: space-between;
+          .next-video-btn {
+            width: 205px;
+            height: 48px;
+            line-height: 48px;
+            font-size: 16px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            &.next-video-btn_cancel {
+              background: #222222;
+            }
+            &.next-video-btn_submit {
+              background: #585858;
+            }
+          }
+        }
+      }
     }
     video {
       background: #000;
