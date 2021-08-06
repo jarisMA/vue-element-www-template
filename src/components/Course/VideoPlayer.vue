@@ -288,6 +288,11 @@ export default {
           );
         });
       }
+      setTimeout(() => {
+        if (this.showActive) {
+          document.getElementById(this.showActive).classList.add("active");
+        }
+      }, 1000);
     },
     handleShowActive(val) {
       this.$emit("handleContent", val);
@@ -308,6 +313,12 @@ export default {
         note.classList.remove("active");
         this.showActive = "";
       }
+    },
+
+    clean() {
+      document.getElementById("feedback").classList.remove("active");
+      document.getElementById("note").classList.remove("active");
+      this.showActive = "";
     },
 
     handleSetRecord() {
