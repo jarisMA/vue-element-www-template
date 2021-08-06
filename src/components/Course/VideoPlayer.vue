@@ -280,18 +280,6 @@ export default {
         });
       }
     },
-    handleToggleShowFeedback(e) {
-      this.$emit("handleContent", "feedback");
-      let className = e.srcElement.className.split(" ");
-      if (this.showActive == 1) {
-        className.push("active");
-      } else {
-        className = className.filter((item) => item !== "active");
-      }
-      this.showActive = 1;
-      e.srcElement.className = className.join(" ");
-    },
-
     handleShowActive(val) {
       this.$emit("handleContent", val);
       let feedback = document.getElementById("feedback");
