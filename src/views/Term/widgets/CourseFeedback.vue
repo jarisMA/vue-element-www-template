@@ -104,8 +104,11 @@ export default {
       height: 100%;
       line-height: 24px;
       font-size: 14px;
+      background: #494949;
+      color: #dddddd;
+      border: unset;
       &::placeholder {
-        color: #8ea098;
+        color: #81948b;
       }
     }
   }
@@ -115,6 +118,12 @@ export default {
     line-height: 24px;
     font-weight: 500;
     font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 1540px) {
+  /deep/ ::placeholder {
+    font-size: 12px;
   }
 }
 </style>

@@ -32,6 +32,7 @@
     </div>
     <div class="page-content">
       <div :class="['page-content-left', showMenu ? 'show' : 'hide']">
+        <div class="page-fold-left" @click="showMenu = !showMenu"></div>
         <el-scrollbar class="scrollbar-section" ref="scroll">
           <div
             class="page-menu-wrapper"
@@ -121,7 +122,76 @@
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
+          @handleContent="handleContent"
         />
+        <div class="remind-feedback">
+          <div class="remind-text-wrapper">
+            <div
+              :class="[
+                'remind-text',
+                chapters[chapterIndex].sections[
+                  chapters[chapterIndex].sections.length - 1
+                ].id == chapters[chapterIndex].sections[sectionIndex].id &&
+                chapters[chapterIndex].sections[sectionIndex]
+                  .last_play_position >
+                  chapters[chapterIndex].sections[sectionIndex]
+                    .second_duration /
+                    2
+                  ? 'show'
+                  : ''
+              ]"
+            >
+              <p>这节课是不是收获颇丰呢？</p>
+              <p>
+                点击下方<img
+                  src="~images/academy/video-feedback.svg"
+                  class="feedback-icon"
+                />与同学们分享一下吧～
+              </p>
+            </div>
+          </div>
+          <img
+            src="~images/course/avatar.png"
+            class="remind-icon"
+            v-if="
+              chapters[chapterIndex].sections[
+                chapters[chapterIndex].sections.length - 1
+              ].id == chapters[chapterIndex].sections[sectionIndex].id &&
+                chapters[chapterIndex].sections[sectionIndex]
+                  .last_play_position >
+                  chapters[chapterIndex].sections[sectionIndex]
+                    .second_duration /
+                    2
+            "
+          />
+        </div>
+      </div>
+      <div :class="['page-content-aside', showAside ? 'show' : 'hide']">
+        <div
+          class="page-fold-right"
+          @click="showAside = !showAside"
+          v-if="showAside"
+        ></div>
+        <course-feedback-list
+          :campId="campId"
+          :termId="termId"
+          :category="activeFeedbackCategory"
+          v-if="showContent == 'feedback'"
+        />
+        <div class="course-note">
+          <div
+            class="course-video-note"
+            v-if="
+              chapters[chapterIndex].sections[sectionIndex].note &&
+                showContent == 'note'
+            "
+            v-html="chapters[chapterIndex].sections[sectionIndex].note.content"
+          ></div>
+          <div class="course-note-empty" v-else>
+            <img src="~/images/course/note-empty.svg" class="empty-img" />
+            <p>这节课没有笔记可查阅噢</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -130,10 +200,11 @@
 <script>
 import VideoPlayer from "./VideoPlayer";
 import { formatSeconds } from "utils/moment";
+import CourseFeedbackList from "@/views/Term/widgets/CourseFeedbackList";
 
 export default {
   name: "CampCourse",
-  components: { VideoPlayer },
+  components: { VideoPlayer, CourseFeedbackList },
   props: {
     course: {
       type: Object,
@@ -157,13 +228,21 @@ export default {
       detail: {},
       chapters: [],
       showMenu: true,
+      showAside: false,
+      showContent: "",
       updatingTimer: null,
-      activeNames: []
+      activeNames: [],
+      campId: "",
+      termId: "",
+      activeFeedbackCategory: null
     };
   },
   watch: {
     course() {
       this.getData();
+    },
+    ["$route"]() {
+      this.getParams();
     }
   },
   created() {
@@ -225,6 +304,25 @@ export default {
       }
       this.goTop();
     },
+    getParams() {
+      let { campId, termId, widgetId } = this.$route.params;
+      this.campId = parseInt(campId);
+      this.termId = parseInt(termId);
+      if (this.chapters && widgetId) {
+        this.activeFeedbackCategory = this.chapters.find(
+          item => item.id == widgetId
+        );
+      }
+    },
+
+    handleContent(val) {
+      this.getParams();
+      if (!this.showAside || (this.showAside && this.showContent == val)) {
+        this.showAside = !this.showAside;
+      }
+      this.showContent = val;
+    },
+
     handleSetRecord(params) {
       this.$emit("setRecord", params);
     },
@@ -248,7 +346,9 @@ export default {
     },
     goTop() {
       this.$nextTick(() => {
-        this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex * 48);
+        if (this.$refs.scroll) {
+          this.$refs.scroll.wrap.scrollTo(0, this.chapterIndex * 48);
+        }
       });
     },
     handleNextLesson() {}
@@ -355,6 +455,7 @@ export default {
   width: 100%;
   height: calc(100% - 80px);
   .page-content-left {
+    position: relative;
     flex: none;
     width: 20%;
     min-width: 230px;
@@ -362,6 +463,39 @@ export default {
     height: 100%;
     background: #494949;
     transition: width 0.3s;
+
+    &:hover .page-fold-left {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      display: inline-block;
+      content: "";
+      border-radius: 0 40px 40px 0;
+      background: #333333;
+      width: 20px;
+      height: 40px;
+      z-index: 2;
+      cursor: pointer;
+
+      &:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-block;
+        content: "";
+        mask-image: url("~images/course/fold.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background: #dddddd;
+        width: 16px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: #111111;
+      }
+    }
     .scrollbar-section {
       height: 100%;
       /deep/ .el-scrollbar__wrap {
@@ -517,9 +651,116 @@ export default {
     }
   }
   .page-content-right {
+    position: relative;
     flex: 1;
     width: 50px;
     height: 100%;
+
+    .remind-feedback {
+      position: absolute;
+      bottom: 80px;
+      right: 30px;
+      display: flex;
+      align-items: center;
+
+      .remind-text-wrapper {
+        width: 232px;
+        height: 52px;
+        overflow: hidden;
+
+        .remind-text {
+          position: relative;
+          left: 100%;
+          padding: 6px 10px;
+          color: white;
+          background-image: url("~images/course/dialog.svg");
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          transition: all 0.5s;
+
+          &.show {
+            left: 0;
+          }
+        }
+
+        .feedback-icon {
+          width: 16px;
+          height: 16px;
+          vertical-align: text-bottom;
+        }
+      }
+
+      .remind-icon {
+        width: 64px;
+        height: 64px;
+      }
+    }
+  }
+
+  .page-content-aside {
+    flex: none;
+    height: 100%;
+    min-width: 432px;
+    max-width: 576px;
+    background: #494949;
+    transition: width 0.3s;
+
+    .course-note {
+      height: 100%;
+      padding: 40px;
+
+      .course-note-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        font-size: 16px;
+        font-weight: 600;
+        color: #dddddd;
+      }
+    }
+
+    &.show {
+      width: 30%;
+    }
+    &.hide {
+      min-width: 0px;
+      width: 0%;
+    }
+
+    &:hover .page-fold-right {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-100%) translateY(-50%) rotate(180deg);
+      display: inline-block;
+      content: "";
+      border-radius: 0 40px 40px 0;
+      background: #333333;
+      width: 20px;
+      height: 40px;
+      z-index: 2;
+      cursor: pointer;
+
+      &:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-block;
+        content: "";
+        mask-image: url("~images/course/fold.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background: #dddddd;
+        width: 16px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: #111111;
+      }
+    }
   }
 }
 @media screen and (max-width: 1440px) {
@@ -543,6 +784,14 @@ export default {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="less">
+.course-note {
+  img {
+    max-width: 100%;
   }
 }
 </style>
