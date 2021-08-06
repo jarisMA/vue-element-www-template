@@ -42,36 +42,36 @@ export default {
   name: "TermCategory",
   components: {
     CategoryCard,
-    TheEmpty,
+    TheEmpty
   },
   props: {
     campId: {
-      type: Number,
+      type: Number
     },
     termId: {
-      type: Number,
+      type: Number
     },
     categories: {
       type: Array,
-      required: true,
+      required: true
     },
     loading: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       listVisible: false,
-      activeNote: null,
+      activeNote: null
     };
   },
   methods: {
     handleShowNote(category) {
       this.activeNote = category.resources;
       this.listVisible = true;
-    },
-  },
+    }
+  }
 };
 </script>
 

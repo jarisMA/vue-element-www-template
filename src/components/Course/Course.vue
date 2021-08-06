@@ -94,9 +94,11 @@
           :duration="
             chapters[chapterIndex].sections[sectionIndex].second_duration
           "
+          :next="next"
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
+          @next="handleNextLesson"
         />
       </div>
     </div>
@@ -126,6 +128,10 @@ export default {
     sectionIndex: {
       type: Number,
       required: true
+    },
+    next: {
+      type: Object,
+      default: () => null
     }
   },
   data() {
@@ -214,7 +220,9 @@ export default {
     handleEnded() {
       this.$emit("ended");
     },
-    handleNextLesson() {}
+    handleNextLesson() {
+      this.$emit("next");
+    }
   }
 };
 </script>
