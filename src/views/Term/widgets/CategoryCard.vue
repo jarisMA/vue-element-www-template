@@ -13,7 +13,7 @@
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
                   category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
-                  isDisabled ? 'lock-icon' : ''
+                  isDisabled ? 'lock-icon' : '',
                 ]"
               ></i>
             </div>
@@ -21,6 +21,8 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
+
+                  <div class="card-note" @click="handleShowNote"></div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -57,7 +59,7 @@
               :class="[
                 'card-content-item',
                 lessonStatus(index) === 3 ? 'active' : '',
-                lessonStatus(index) === 4 ? 'completed' : ''
+                lessonStatus(index) === 4 ? 'completed' : '',
               ]"
               v-for="(lesson, index) of category.resources"
               :key="lesson.id"
@@ -67,7 +69,7 @@
                 <i
                   :class="[
                     'card-content-item-icon',
-                    lessonStatusIconClass(index)
+                    lessonStatusIconClass(index),
                   ]"
                 ></i>
                 <h5 class="card-content-item-title ellipsis">
@@ -109,19 +111,19 @@ export default {
   props: {
     category: {
       type: Object,
-      required: true
+      required: true,
     },
     campId: {
-      type: Number
+      type: Number,
     },
     termId: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_LIVE
+      COURSE_TYPE_LIVE,
     };
   },
   computed: {
@@ -145,7 +147,7 @@ export default {
     },
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return index => {
+      return (index) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const lesson = resources[index];
@@ -159,7 +161,7 @@ export default {
       };
     },
     lessonStatusText() {
-      return index => {
+      return (index) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const status = this.lessonStatus(index);
@@ -180,7 +182,7 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return index => {
+      return (index) => {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -221,7 +223,7 @@ export default {
           break;
       }
       return iconClass;
-    }
+    },
   },
   methods: {
     formatDate,
@@ -236,16 +238,16 @@ export default {
         resource.widget_resource_id
       );
     },
-    handleShowFeedback() {
-      this.$emit("showFeedback");
+    handleShowNote() {
+      this.$emit("showNote");
     },
     handleNotAvailable() {
       this.$notice({
         type: "warning",
-        title: "本章节尚未到开放时间"
+        title: "本章节尚未到开放时间",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -361,11 +363,22 @@ export default {
       width: 5px;
     }
     .card-header-title {
+      display: flex;
+      align-items: center;
       width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
       color: #2c3330;
+
+      .card-note {
+        margin-left: 10px;
+        width: 24px;
+        height: 24px;
+        background-color: black;
+        mask: url(~images/academy/video-note.svg) no-repeat;
+        cursor: pointer;
+      }
     }
     .card-header-desc {
       margin-top: 5px;
