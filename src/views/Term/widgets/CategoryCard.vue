@@ -21,6 +21,8 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
+
+                  <div class="card-note" @click="handleShowNote"></div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -236,8 +238,8 @@ export default {
         resource.widget_resource_id
       );
     },
-    handleShowFeedback() {
-      this.$emit("showFeedback");
+    handleShowNote() {
+      this.$emit("showNote");
     },
     handleNotAvailable() {
       this.$notice({
@@ -365,11 +367,22 @@ export default {
       width: 5px;
     }
     .card-header-title {
+      display: flex;
+      align-items: center;
       width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
       color: #2c3330;
+
+      .card-note {
+        margin-left: 10px;
+        width: 24px;
+        height: 24px;
+        background-color: black;
+        mask: url(~images/academy/video-note.svg) no-repeat;
+        cursor: pointer;
+      }
     }
     .card-header-desc {
       padding-right: 20px;

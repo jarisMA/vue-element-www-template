@@ -7,10 +7,30 @@
         :category="category"
         :campId="campId"
         :termId="termId"
-        @showFeedback="handleShowFeedback(category)"
+        @showNote="handleShowNote(category)"
       />
     </div>
     <the-empty v-else-if="!loading" noText="暂无课程可学习" />
+    <el-drawer
+      class="note-drawer"
+      size="576px"
+      :visible.sync="listVisible"
+      :show-close="false"
+    >
+      <el-select
+        :popper-append-to-body="false"
+        v-model="note.id"
+        style="width:100%"
+      >
+        <el-option
+          v-for="note in activeNote"
+          :key="note.id"
+          :label="note.name"
+          :value="note.id"
+        >
+        </el-option>
+      </el-select>
+    </el-drawer>
   </div>
 </template>
 
@@ -43,12 +63,12 @@ export default {
   data() {
     return {
       listVisible: false,
-      activeFeedbackCategory: null
+      activeNote: null
     };
   },
   methods: {
-    handleShowFeedback(category) {
-      this.activeFeedbackCategory = category;
+    handleShowNote(category) {
+      this.activeNote = category.resources;
       this.listVisible = true;
     }
   }
