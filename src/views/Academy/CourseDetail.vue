@@ -24,7 +24,9 @@
                 "
               >
                 可试看{{
-                  course.lessons[activeLessonIndex].trial_duration / 60 > 1
+                  Math.floor(
+                    course.lessons[activeLessonIndex].trial_duration / 60
+                  ) > 0
                     ? Math.floor(
                         course.lessons[activeLessonIndex].trial_duration / 60
                       ) + "分钟"
