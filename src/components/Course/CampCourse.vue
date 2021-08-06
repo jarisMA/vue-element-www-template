@@ -119,10 +119,12 @@
           :duration="
             chapters[chapterIndex].sections[sectionIndex].second_duration
           "
+          :next="next"
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
           @handleContent="handleContent"
+          @next="handleNextLesson"
         />
         <div class="remind-feedback">
           <div class="remind-text-wrapper">
@@ -221,6 +223,10 @@ export default {
     sectionIndex: {
       type: Number,
       required: true
+    },
+    next: {
+      type: Object,
+      default: () => null
     }
   },
   data() {
@@ -351,7 +357,9 @@ export default {
         }
       });
     },
-    handleNextLesson() {}
+    handleNextLesson() {
+      this.$emit("next");
+    }
   }
 };
 </script>

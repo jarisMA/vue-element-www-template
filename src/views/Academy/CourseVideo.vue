@@ -5,9 +5,11 @@
       :courseChapters="chapters"
       :chapterIndex="activeChapterIndex"
       :sectionIndex="activeSectionIndex"
+      :next="nextLesson"
       @toggle="handleToggle"
       @setRecord="handleSetRecord"
       @ended="handleEnded"
+      @next="handleNext"
     />
   </div>
 </template>
@@ -27,7 +29,8 @@ export default {
       courseId: null,
       lessonId: null,
       activeChapterIndex: 0,
-      activeSectionIndex: 0
+      activeSectionIndex: 0,
+      nextLesson: null
     };
   },
   watch: {
@@ -76,6 +79,16 @@ export default {
           return true;
         }
       });
+      this.setNextLesson();
+    },
+    setNextLesson() {
+      this.nextLesson = null;
+      this.chapters[0].sections.some((section, index) => {
+        if (index == this.activeSectionIndex + 1) {
+          this.nextLesson = section;
+          return true;
+        }
+      });
     },
     handleToggle(courseIndex, lessonIndex) {
       this.$router.push({
@@ -121,6 +134,16 @@ export default {
     handleEnded() {
       const { courseId, lessonId } = this;
       courseService.setLessonFinish(courseId, lessonId);
+    },
+    handleNext() {
+      const { course_id, id } = this.nextLesson;
+      this.$router.push({
+        params: {
+          ...this.$route.params,
+          courseId: course_id,
+          lessonId: id
+        }
+      });
     }
   }
 };

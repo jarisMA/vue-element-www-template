@@ -10,7 +10,8 @@ import { mapState } from "vuex";
 import {
   PhoneNumberComponent,
   FeedbackComponent,
-  NoteComponent
+  NoteComponent,
+  NextVideoComponent
 } from "./VideoPlayerComponent";
 
 const skinLayout = [
@@ -116,6 +117,10 @@ export default {
     autoplay: {
       type: Boolean,
       default: true
+    },
+    next: {
+      type: Object,
+      default: () => null
     }
   },
   data() {
@@ -194,6 +199,26 @@ export default {
       if (!this.isTrial) {
         vodService.ossVideoAuth(this.vid).then(data => {
           const { PlayAuth, VideoMeta } = data;
+          const components = [
+            PhoneNumberComponent,
+            {
+              name: "FeedbackComponent",
+              type: FeedbackComponent,
+              args: [this.handleShowActive.bind(this, "feedback")]
+            },
+            {
+              name: "NoteComponent",
+              type: NoteComponent,
+              args: [this.handleShowActive.bind(this, "note")]
+            }
+          ];
+          if (this.next) {
+            components.push({
+              name: "NextVideoComponent",
+              type: NextVideoComponent,
+              args: [5, this.next, this.handleNext.bind(this)]
+            });
+          }
           // eslint-disable-next-line
           this.player = new Aliplayer(
             {
@@ -208,19 +233,7 @@ export default {
               encryptType: 1, //当播放私有加密流时需要设置。
               definition: "FD,LD,SD,HD",
               defaultDefinition: "HD",
-              components: [
-                PhoneNumberComponent,
-                {
-                  name: "FeedbackComponent",
-                  type: FeedbackComponent,
-                  args: [this.handleShowActive.bind(this, "feedback")]
-                },
-                {
-                  name: "NoteComponent",
-                  type: NoteComponent,
-                  args: [this.handleShowActive.bind(this, "note")]
-                }
-              ],
+              components,
               playsinline: true,
               preload: true,
               controlBarVisibility: "hover",
@@ -365,6 +378,10 @@ export default {
       this.handleSetRecord();
       this.handleClearTimer(this.timer);
       this.$emit("ended");
+      let nextVideoComponent = this.player.getComponent("NextVideoComponent");
+      if (nextVideoComponent) {
+        nextVideoComponent.show();
+      }
     },
     handleKeydown(e) {
       // 空格
@@ -388,6 +405,9 @@ export default {
     },
     handleError() {
       this.handleClearTimer();
+    },
+    handleNext() {
+      this.$emit("next");
     }
   }
 };
@@ -461,6 +481,66 @@ export default {
       z-index: 1;
       animation: phoneMove 30s linear infinite;
       transform: translate3d(0, 0, 0);
+    }
+    .next-video-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1001;
+      background: #000;
+      .next-video-dialog {
+        width: 420px;
+        .next-video-dialog_header {
+          margin-bottom: 8px;
+          line-height: 24px;
+          font-size: 14px;
+          color: #fff;
+        }
+        .next-video-dialog_content {
+          display: flex;
+          align-items: center;
+          padding: 16px;
+          background: #eeeeee;
+          .video-icon {
+            display: inline-block;
+            width: 32px;
+            height: 32px;
+            margin-right: 16px;
+            background: #000;
+            mask: url("~images/course/played.svg") no-repeat;
+            mask-size: 100% 100%;
+          }
+          .next-video-name {
+            line-height: 28px;
+            font-weight: 600;
+            font-size: 18px;
+            color: #2c3330;
+          }
+        }
+        .next-video-dialog_footer {
+          margin-top: 30px;
+          display: flex;
+          justify-content: space-between;
+          .next-video-btn {
+            width: 205px;
+            height: 48px;
+            line-height: 48px;
+            font-size: 16px;
+            text-align: center;
+            color: #fff;
+            cursor: pointer;
+            &.next-video-btn_cancel {
+              background: #222222;
+            }
+            &.next-video-btn_submit {
+              background: #585858;
+            }
+          }
+        }
+      }
     }
     video {
       background: #000;
