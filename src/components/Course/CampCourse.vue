@@ -120,6 +120,7 @@
             chapters[chapterIndex].sections[sectionIndex].second_duration
           "
           :next="next"
+          ref="video"
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
@@ -171,7 +172,7 @@
       <div :class="['page-content-aside', showAside ? 'show' : 'hide']">
         <div
           class="page-fold-right"
-          @click="showAside = !showAside"
+          @click="handleShowAside()"
           v-if="showAside"
         ></div>
         <course-feedback-list
@@ -187,8 +188,18 @@
               chapters[chapterIndex].sections[sectionIndex].note &&
                 showContent == 'note'
             "
-            v-html="chapters[chapterIndex].sections[sectionIndex].note.content"
-          ></div>
+          >
+            <div
+              class="course-note-title"
+              v-html="chapters[chapterIndex].sections[sectionIndex].note.name"
+            ></div>
+            <div
+              class="course-note-content"
+              v-html="
+                chapters[chapterIndex].sections[sectionIndex].note.content
+              "
+            ></div>
+          </div>
           <div class="course-note-empty" v-else>
             <img src="~/images/course/note-empty.svg" class="empty-img" />
             <p>这节课没有笔记可查阅噢</p>
@@ -320,7 +331,12 @@ export default {
         );
       }
     },
-
+    handleShowAside() {
+      this.showAside = !this.showAside;
+      if (!this.showAside) {
+        this.$refs.video.clean();
+      }
+    },
     handleContent(val) {
       this.getParams();
       if (!this.showAside || (this.showAside && this.showContent == val)) {
@@ -716,6 +732,15 @@ export default {
     .course-note {
       height: 100%;
       padding: 40px;
+      color: #dddddd;
+
+      .course-note-title {
+        font-weight: 600;
+        font-size: 24px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #595959;
+      }
 
       .course-note-empty {
         display: flex;

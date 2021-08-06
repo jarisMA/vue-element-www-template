@@ -33,7 +33,10 @@
         >
         </el-option>
       </el-select>
-      <div class="note-content" v-html="notes.content"></div>
+      <div class="note-wrapper">
+        <div class="note-title" v-html="notes.title"></div>
+        <div class="note-content" v-html="notes.content"></div>
+      </div>
     </el-drawer>
   </div>
 </template>
@@ -70,7 +73,8 @@ export default {
       activeNote: [],
       notes: {
         id: "",
-        content: ""
+        content: "",
+        title: ""
       }
     };
   },
@@ -80,11 +84,13 @@ export default {
       this.listVisible = true;
       this.notes.id = note[0].id;
       this.notes.content = note[0].note.content;
+      this.notes.title = note[0].note.name;
     },
     handleNoteChange(id) {
       this.notes.content = this.activeNote.find(
         item => item.id == id
       ).note.content;
+      this.notes.title = this.activeNote.find(item => item.id == id).note.name;
     }
   }
 };
@@ -92,7 +98,7 @@ export default {
 
 <style lang="less" scoped>
 .category-list {
-  padding: 0 20px;
+  padding: 0 20px 0 50px;
   width: 100%;
 }
 /deep/ .note-drawer {
@@ -112,8 +118,16 @@ export default {
     color: #2c3330;
   }
 
-  .note-content {
+  .note-wrapper {
     padding: 20px 40px;
+  }
+  .note-title {
+    color: #2c3330;
+    font-weight: 600;
+    font-size: 24px;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #efefef;
   }
 }
 </style>
@@ -122,6 +136,10 @@ export default {
 .note-content {
   img {
     max-width: 100%;
+  }
+
+  p {
+    color: #2c3330;
   }
 }
 .category-wrapper {
