@@ -13,7 +13,7 @@
                   'card-header-icon',
                   category.type === COURSE_TYPE_COURSE ? courseStatusIcon : '',
                   category.type === COURSE_TYPE_LIVE ? 'live-icon' : '',
-                  isDisabled ? 'lock-icon' : '',
+                  isDisabled ? 'lock-icon' : ''
                 ]"
               ></i>
             </div>
@@ -21,8 +21,13 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
-
-                  <div class="card-note" @click="handleShowNote"></div>
+                  <div @click.stop="">
+                    <div
+                      class="card-note"
+                      @click="handleShowNote"
+                      v-if="noteContent.length > 0"
+                    ></div>
+                  </div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -59,7 +64,7 @@
               :class="[
                 'card-content-item',
                 lessonStatus(index) === 3 ? 'active' : '',
-                lessonStatus(index) === 4 ? 'completed' : '',
+                lessonStatus(index) === 4 ? 'completed' : ''
               ]"
               v-for="(lesson, index) of category.resources"
               :key="lesson.id"
@@ -69,7 +74,7 @@
                 <i
                   :class="[
                     'card-content-item-icon',
-                    lessonStatusIconClass(index),
+                    lessonStatusIconClass(index)
                   ]"
                 ></i>
                 <h5 class="card-content-item-title ellipsis">
@@ -111,20 +116,24 @@ export default {
   props: {
     category: {
       type: Object,
-      required: true,
+      required: true
     },
     campId: {
-      type: Number,
+      type: Number
     },
     termId: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   data() {
     return {
       COURSE_TYPE_COURSE,
       COURSE_TYPE_LIVE,
+      noteContent: ""
     };
+  },
+  created() {
+    this.hasNote();
   },
   computed: {
     isDisabled() {
@@ -147,7 +156,7 @@ export default {
     },
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return (index) => {
+      return index => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const lesson = resources[index];
@@ -161,7 +170,7 @@ export default {
       };
     },
     lessonStatusText() {
-      return (index) => {
+      return index => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const status = this.lessonStatus(index);
@@ -182,7 +191,7 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return (index) => {
+      return index => {
         const status = this.lessonStatus(index);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -223,7 +232,7 @@ export default {
           break;
       }
       return iconClass;
-    },
+    }
   },
   methods: {
     formatDate,
@@ -239,15 +248,18 @@ export default {
       );
     },
     handleShowNote() {
-      this.$emit("showNote");
+      this.$emit("showNote", this.noteContent);
     },
     handleNotAvailable() {
       this.$notice({
         type: "warning",
-        title: "本章节尚未到开放时间",
+        title: "本章节尚未到开放时间"
       });
     },
-  },
+    hasNote() {
+      this.noteContent = this.category.resources.filter(item => item.note);
+    }
+  }
 };
 </script>
 

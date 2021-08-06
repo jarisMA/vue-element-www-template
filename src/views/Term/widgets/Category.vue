@@ -7,7 +7,7 @@
         :category="category"
         :campId="campId"
         :termId="termId"
-        @showNote="handleShowNote(category)"
+        @showNote="handleShowNote"
       />
     </div>
     <the-empty v-else-if="!loading" noText="暂无课程可学习" />
@@ -19,17 +19,21 @@
     >
       <el-select
         :popper-append-to-body="false"
-        v-model="note.id"
+        v-model="notes.id"
         style="width:100%"
+        v-if="listVisible"
+        @change="handleNoteChange(notes.id)"
       >
         <el-option
           v-for="note in activeNote"
           :key="note.id"
           :label="note.name"
           :value="note.id"
+          class="dropdown-item"
         >
         </el-option>
       </el-select>
+      <div class="note-content" v-html="notes.content"></div>
     </el-drawer>
   </div>
 </template>
@@ -42,36 +46,47 @@ export default {
   name: "TermCategory",
   components: {
     CategoryCard,
-    TheEmpty,
+    TheEmpty
   },
   props: {
     campId: {
-      type: Number,
+      type: Number
     },
     termId: {
-      type: Number,
+      type: Number
     },
     categories: {
       type: Array,
-      required: true,
+      required: true
     },
     loading: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       listVisible: false,
-      activeNote: null,
+      activeNote: [],
+      notes: {
+        id: "",
+        content: ""
+      }
     };
   },
   methods: {
-    handleShowNote(category) {
-      this.activeNote = category.resources;
+    handleShowNote(note) {
+      this.activeNote = note;
       this.listVisible = true;
+      this.notes.id = note[0].id;
+      this.notes.content = note[0].note.content;
     },
-  },
+    handleNoteChange(id) {
+      this.notes.content = this.activeNote.find(
+        item => item.id == id
+      ).note.content;
+    }
+  }
 };
 </script>
 
@@ -79,5 +94,70 @@ export default {
 .category-list {
   padding: 0 20px;
   width: 100%;
+}
+/deep/ .note-drawer {
+  .el-drawer__header {
+    display: none;
+  }
+  .el-select .el-input__inner {
+    padding: 12px 25px;
+    color: #2c3330;
+    border: none;
+    background: #f4f4f4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .el-icon-arrow-up::before {
+    color: #2c3330;
+  }
+
+  .note-content {
+    padding: 20px 40px;
+  }
+}
+</style>
+
+<style lang="less">
+.note-content {
+  img {
+    max-width: 100%;
+  }
+}
+.category-wrapper {
+  .el-select-dropdown__list {
+    padding: 0px;
+  }
+  .el-popper {
+    margin: 0px !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+
+  .popper__arrow {
+    display: none !important;
+
+    .el-select__caret {
+      color: black !important;
+    }
+  }
+
+  .dropdown-item {
+    line-height: 14px;
+    height: 40px;
+    padding: 12px 25px;
+    color: #2c3330;
+    border: none;
+    background: #f4f4f4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    box-sizing: border-box;
+    background: white !important;
+
+    &:hover {
+      background: #f4f4f4 !important;
+    }
+  }
 }
 </style>
