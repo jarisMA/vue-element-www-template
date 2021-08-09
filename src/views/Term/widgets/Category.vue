@@ -20,7 +20,7 @@
       <el-select
         :popper-append-to-body="false"
         v-model="notes.id"
-        style="width:100%; position:fixed; top:0;"
+        style="position:fixed; top:0;"
         v-if="listVisible"
         @change="handleNoteChange(notes.id)"
       >
