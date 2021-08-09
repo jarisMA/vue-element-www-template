@@ -4,7 +4,7 @@
     @click.stop="isDisabled ? handleNotAvailable() : null"
   >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null || isDisabled">
+      <el-collapse-item :disabled="category.type === null || isDisabled || category.resources.length < 1">
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
