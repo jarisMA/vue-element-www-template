@@ -27,10 +27,10 @@
               <el-date-picker
                 class="w-576"
                 v-model="applyInfo.birthday"
-                type="month"
+                type="date"
+                format="yyyy 年 MM 月 dd 日"
+                value-format="yyyy-MM-dd"
                 placeholder="请选择出生年月"
-                format="yyyy 年 MM 月"
-                value-format="yyyy-MM"
               >
               </el-date-picker>
             </el-form-item>
@@ -158,9 +158,9 @@
                   class="w-576"
                   v-model="applyInfo.job_started_at"
                   placeholder="请选择初次工作时间"
-                  type="date"
-                  format="yyyy 年 MM 月 dd 日"
-                  value-format="yyyy-MM-dd"
+                  type="year"
+                  format="yyyy 年 "
+                  value-format="yyyy"
                 >
                 </el-date-picker>
               </el-form-item>
