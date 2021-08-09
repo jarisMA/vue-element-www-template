@@ -198,6 +198,8 @@ export default {
       }
     }
     .feedback-content-wrapper {
+      display: flex;
+      flex-direction: column;
       height: 100%;
       padding: 40px;
     }
@@ -220,7 +222,7 @@ export default {
     justify-content: center;
     flex-direction: column;
     width: 100%;
-    height: 100%;
+    flex: 1;
     font-size: 16px;
     font-weight: 600;
     color: #dddddd;

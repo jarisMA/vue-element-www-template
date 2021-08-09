@@ -4,7 +4,11 @@
     @click.stop="isDisabled ? handleNotAvailable() : null"
   >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null || isDisabled || category.resources.length < 1">
+      <el-collapse-item
+        :disabled="
+          category.type === null || isDisabled || category.resources.length < 1
+        "
+      >
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -408,7 +412,7 @@ export default {
       font-size: 12px;
       color: #8ea098;
       .card-header-date {
-        margin-right: 24px;
+        margin-right: 8px;
         line-height: 16px;
         font-size: 12px;
         color: #8ea098;
@@ -418,7 +422,6 @@ export default {
 }
 
 .card-content {
-  width: calc(100% - 42px);
   padding: 0 0 20px 0;
   .card-content-item {
     display: flex;
@@ -489,6 +492,7 @@ export default {
       .card-content-item-duration {
         display: inline-block;
         width: 50px;
+        margin-left: 25px;
       }
     }
   }

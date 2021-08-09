@@ -231,6 +231,10 @@ export default {
     width: 880px;
     background: #fff;
 
+    /deep/ .el-tabs__nav-scroll {
+      padding: 0 !important;
+    }
+
     /deep/ .el-tabs__header {
       position: sticky;
       top: 60px;

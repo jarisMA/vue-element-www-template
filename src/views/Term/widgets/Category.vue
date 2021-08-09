@@ -98,9 +98,10 @@ export default {
 
 <style lang="less" scoped>
 .category-list {
-  padding: 0 20px 0 50px;
+  padding: 0 20px 0 60px;
   width: 100%;
 }
+
 /deep/ .note-drawer {
   .el-drawer__header {
     display: none;
@@ -136,6 +137,7 @@ export default {
 .note-content {
   img {
     max-width: 100%;
+    height: auto !important;
   }
 
   p {
