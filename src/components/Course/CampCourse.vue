@@ -744,7 +744,7 @@ export default {
       padding: 40px;
       color: #dddddd;
 
-      .course-video-note{
+      .course-video-note {
         width: 100%;
       }
 
