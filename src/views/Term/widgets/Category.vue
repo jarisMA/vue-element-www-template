@@ -20,7 +20,7 @@
       <el-select
         :popper-append-to-body="false"
         v-model="notes.id"
-        style="width:100%; position:fixed; top:0;"
+        style="position:fixed; top:0;"
         v-if="listVisible"
         @change="handleNoteChange(notes.id)"
       >
@@ -147,7 +147,7 @@ export default {
     padding: 0px;
   }
   .el-popper {
-    width: 576px;
+    width: 576px !important;
     margin: 0px !important;
     right: 0 !important;
     left: auto !important;
