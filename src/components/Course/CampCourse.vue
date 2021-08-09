@@ -611,6 +611,8 @@ export default {
         padding: 4px 0;
       }
       .page-menu-empty{
+        padding-bottom: 20px;
+        text-align: center;
         color: #999;
         font-size: 14px;
       }
