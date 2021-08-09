@@ -473,6 +473,7 @@ export default {
       line-height: 20px;
       text-align: center;
       color: #a5a5a5;
+      cursor: pointer;
       transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
         border 0.2s ease-out;
       &.active {
