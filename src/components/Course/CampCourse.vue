@@ -744,6 +744,10 @@ export default {
       padding: 40px;
       color: #dddddd;
 
+      .course-video-note {
+        width: 100%;
+      }
+
       .course-note-title {
         font-weight: 600;
         font-size: 24px;
