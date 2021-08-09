@@ -6,7 +6,7 @@
           :class="[
             'page-header-left_icon',
             'menu-icon',
-            showMenu ? 'close' : 'show'
+            showMenu ? 'close' : 'show',
           ]"
           @click="showMenu = !showMenu"
         ></i>
@@ -49,7 +49,7 @@
                     section.id
                       ? 'active'
                       : '',
-                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : ''
+                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : '',
                   ]"
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
@@ -58,7 +58,7 @@
                   <i
                     :class="[
                       'page-menu-item_icon',
-                      sectionStatusIconClass(section)
+                      sectionStatusIconClass(section),
                     ]"
                   ></i>
                   <h4 class="page-menu-item_name ellipsis">
@@ -72,7 +72,7 @@
                         :class="[
                           [2].indexOf(sectionStatus(section)) > -1
                             ? 'primary'
-                            : ''
+                            : '',
                         ]"
                         >{{ secondsUpdate(section.last_play_position) }}</span
                       >/ </template
@@ -146,24 +146,24 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true
+      required: true,
     },
     courseChapters: {
       type: Array,
-      required: true
+      required: true,
     },
     chapterIndex: {
       type: Number,
-      required: true
+      required: true,
     },
     sectionIndex: {
       type: Number,
-      required: true
+      required: true,
     },
     next: {
       type: Object,
-      default: () => null
-    }
+      default: () => null,
+    },
   },
   data() {
     return {
@@ -172,13 +172,13 @@ export default {
       showMenu: true,
       showAside: false,
       showContent: "",
-      updatingTimer: null
+      updatingTimer: null,
     };
   },
   watch: {
     course() {
       this.getData();
-    }
+    },
   },
   created() {
     this.getData();
@@ -186,7 +186,7 @@ export default {
   computed: {
     sectionStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return section => {
+      return (section) => {
         const last_play_position = section.last_play_position || 0;
         const play_second_duration = section.play_second_duration || 0;
         return section.id ===
@@ -200,7 +200,7 @@ export default {
       };
     },
     sectionStatusIconClass() {
-      return section => {
+      return (section) => {
         const status = this.sectionStatus(section);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -221,10 +221,10 @@ export default {
       };
     },
     secondsUpdate() {
-      return last_play_position => {
+      return (last_play_position) => {
         return formatSeconds(last_play_position || 0);
       };
-    }
+    },
   },
   methods: {
     formatSeconds,
@@ -244,7 +244,7 @@ export default {
       this.updatingTimer = setTimeout(() => {
         this.$set(chapters[chapterIndex].sections, sectionIndex, {
           ...chapters[chapterIndex].sections[sectionIndex],
-          last_play_position: Math.floor(second)
+          last_play_position: Math.floor(second),
         });
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
@@ -267,8 +267,8 @@ export default {
     },
     handleNextLesson() {
       this.$emit("next");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -532,6 +532,10 @@ export default {
       min-height: 100%;
       padding: 40px;
       color: #dddddd;
+
+      .course-video-note {
+        width: 100%;
+      }
 
       .course-note-title {
         font-weight: 600;
