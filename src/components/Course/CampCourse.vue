@@ -181,13 +181,10 @@
           :category="activeFeedbackCategory"
           v-if="showContent == 'feedback'"
         />
-        <div class="course-note">
+        <div class="course-note" v-if="showContent == 'note'">
           <div
             class="course-video-note"
-            v-if="
-              chapters[chapterIndex].sections[sectionIndex].note &&
-                showContent == 'note'
-            "
+            v-if="chapters[chapterIndex].sections[sectionIndex].note"
           >
             <div
               class="course-note-title"
@@ -727,6 +724,7 @@ export default {
     min-width: 432px;
     max-width: 576px;
     background: #494949;
+    overflow: auto;
     transition: width 0.3s;
 
     .course-note {
@@ -822,9 +820,10 @@ export default {
 </style>
 
 <style lang="less">
-.course-note {
+.course-note-content {
   img {
     max-width: 100%;
+    height: auto !important;
   }
 }
 </style>
