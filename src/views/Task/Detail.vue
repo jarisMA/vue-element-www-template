@@ -176,18 +176,18 @@ export default {
           this.houseInfo = houseInfo;
           this.houseInfo_images = houseInfo_images;
           //video url兼容
-          this.houseInfo_videos = houseInfo_videos.forEach(item => {
+          houseInfo_videos.forEach(item => {
             item.url = item.url.split("?")[0];
           });
+          this.houseInfo_videos = houseInfo_videos;
 
-          this.spaceInfo = spaceInfo.forEach(space => {
+          spaceInfo.forEach(space => {
             space.space_videos.forEach(video => {
               video.url = video.url.split("?")[0];
             });
           });
-          this.attachmentInfo = attachmentInfo.length
-            ? JSON.parse(attachmentInfo)
-            : [];
+          this.spaceInfo = spaceInfo;
+          this.attachmentInfo = attachmentInfo;
           this.supplementInfo = supplementInfo
             ? {
                 content: supplementInfo.content,
@@ -254,6 +254,7 @@ export default {
         font-size: 12px;
         border-bottom: none;
         color: #c4c4c4;
+        cursor: pointer;
         transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
           border 0.3s ease-in-out;
         .border {

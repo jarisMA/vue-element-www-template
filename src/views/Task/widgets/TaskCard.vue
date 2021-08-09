@@ -45,7 +45,7 @@
               class="card-status--green"
               v-if="diff_day_type == 'isOneDayOver'"
             >
-              初选截止：剩余 {{ formNowFormatDay(task.submit_end_at) }}天 ({{
+              初选截止:剩余{{ formNowFormatDay(task.submit_end_at) }}天 ({{
                 display_submit_end_at
               }})
             </div>
