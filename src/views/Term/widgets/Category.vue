@@ -20,7 +20,7 @@
       <el-select
         :popper-append-to-body="false"
         v-model="notes.id"
-        style="width:100%"
+        style="width:100%; position:fixed; top:0;"
         v-if="listVisible"
         @change="handleNoteChange(notes.id)"
       >
@@ -119,7 +119,7 @@ export default {
   }
 
   .note-wrapper {
-    padding: 20px 40px;
+    padding: 60px 40px;
   }
   .note-title {
     color: #2c3330;
@@ -147,6 +147,7 @@ export default {
     padding: 0px;
   }
   .el-popper {
+    width: 576px;
     margin: 0px !important;
     right: 0 !important;
     left: auto !important;
