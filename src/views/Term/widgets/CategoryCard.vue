@@ -330,8 +330,7 @@ export default {
     flex: none;
     position: absolute;
     left: -42px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 14px;
     .card-header-icon {
       display: block;
       width: 32px;
