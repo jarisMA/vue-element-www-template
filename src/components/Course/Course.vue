@@ -30,6 +30,7 @@
     </div>
     <div class="page-content">
       <div :class="['page-content-left', showMenu ? 'show' : 'hide']">
+        <div class="page-fold-left" @click="showMenu = !showMenu"></div>
         <el-scrollbar class="scrollbar-section">
           <div
             class="page-menu-wrapper"
@@ -84,7 +85,7 @@
           </div>
         </el-scrollbar>
       </div>
-      <div class="page-content-right">
+      <div class="page-course-content-right">
         <video-player
           v-if="chapters.length > 0"
           :vid="chapters[chapterIndex].sections[sectionIndex].vod_id"
@@ -95,11 +96,41 @@
             chapters[chapterIndex].sections[sectionIndex].second_duration
           "
           :next="next"
+          ref="video"
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
+          @handleContent="handleContent"
           @next="handleNextLesson"
         />
+      </div>
+      <div :class="['page-content-aside', showAside ? 'show' : 'hide']">
+        <div
+          class="page-fold-right"
+          @click="handleShowAside()"
+          v-if="showAside"
+        ></div>
+        <div class="course-note" v-if="showContent == 'note'">
+          <div
+            class="course-video-note"
+            v-if="chapters[chapterIndex].sections[sectionIndex].note"
+          >
+            <div
+              class="course-note-title"
+              v-html="chapters[chapterIndex].sections[sectionIndex].note.name"
+            ></div>
+            <div
+              class="course-note-content"
+              v-html="
+                chapters[chapterIndex].sections[sectionIndex].note.content
+              "
+            ></div>
+          </div>
+          <div class="course-note-empty" v-else>
+            <img src="~/images/course/note-empty.svg" class="empty-img" />
+            <p>这节课没有笔记可查阅噢</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -139,6 +170,8 @@ export default {
       detail: {},
       chapters: [],
       showMenu: true,
+      showAside: false,
+      showContent: "",
       updatingTimer: null
     };
   },
@@ -219,6 +252,18 @@ export default {
     },
     handleEnded() {
       this.$emit("ended");
+    },
+    handleShowAside() {
+      this.showAside = !this.showAside;
+      if (!this.showAside) {
+        this.$refs.video.clean();
+      }
+    },
+    handleContent(val) {
+      if (!this.showAside || (this.showAside && this.showContent == val)) {
+        this.showAside = !this.showAside;
+      }
+      this.showContent = val;
     },
     handleNextLesson() {
       this.$emit("next");
@@ -326,6 +371,7 @@ export default {
   width: 100%;
   height: calc(100% - 80px);
   .page-content-left {
+    position: relative;
     flex: none;
     width: 20%;
     min-width: 230px;
@@ -333,6 +379,39 @@ export default {
     height: 100%;
     background: #494949;
     transition: width 0.3s;
+
+    &:hover .page-fold-left {
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      display: inline-block;
+      content: "";
+      border-radius: 0 40px 40px 0;
+      background: #333333;
+      width: 20px;
+      height: 40px;
+      z-index: 2;
+      cursor: pointer;
+
+      &:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-block;
+        content: "";
+        mask-image: url("~images/course/fold.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background: #dddddd;
+        width: 16px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: #111111;
+      }
+    }
     .scrollbar-section {
       height: 100%;
       /deep/ .el-scrollbar__wrap {
@@ -434,10 +513,86 @@ export default {
       }
     }
   }
-  .page-content-right {
+  .page-course-content-right {
     flex: 1;
     width: 50px;
     height: 100%;
+  }
+  .page-content-aside {
+    flex: none;
+    height: 100%;
+    min-width: 432px;
+    max-width: 576px;
+    background: #494949;
+    overflow: auto;
+    transition: width 0.3s;
+
+    .course-note {
+      display: flex;
+      min-height: 100%;
+      padding: 40px;
+      color: #dddddd;
+
+      .course-note-title {
+        font-weight: 600;
+        font-size: 24px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #595959;
+      }
+
+      .course-note-empty {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: 100%;
+        flex: 1;
+        font-size: 16px;
+        font-weight: 600;
+        color: #dddddd;
+      }
+    }
+
+    &.show {
+      width: 30%;
+    }
+    &.hide {
+      min-width: 0px;
+      width: 0%;
+    }
+
+    &:hover .page-fold-right {
+      position: absolute;
+      top: 50%;
+      transform: translateX(-100%) translateY(-50%) rotate(180deg);
+      display: inline-block;
+      content: "";
+      border-radius: 0 40px 40px 0;
+      background: #333333;
+      width: 20px;
+      height: 40px;
+      z-index: 2;
+      cursor: pointer;
+
+      &:before {
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
+        display: inline-block;
+        content: "";
+        mask-image: url("~images/course/fold.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background: #dddddd;
+        width: 16px;
+        height: 20px;
+      }
+
+      &:hover {
+        background: #111111;
+      }
+    }
   }
 }
 @media screen and (max-width: 1440px) {
@@ -461,6 +616,14 @@ export default {
         }
       }
     }
+  }
+}
+</style>
+
+<style lang="less">
+.page-course-content-right {
+  .feedback-btn {
+    display: none !important;
   }
 }
 </style>

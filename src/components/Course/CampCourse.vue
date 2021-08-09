@@ -67,7 +67,7 @@
                   </div>
                 </template>
                 <div class="page-menu-empty" v-if="chapter.sections.length < 1">
-                    暂无视频
+                  暂无视频
                 </div>
                 <div
                   :class="[
@@ -610,7 +610,7 @@ export default {
       .page-menu-list {
         padding: 4px 0;
       }
-      .page-menu-empty{
+      .page-menu-empty {
         padding-bottom: 20px;
         text-align: center;
         color: #999;
