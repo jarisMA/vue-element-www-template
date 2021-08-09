@@ -44,7 +44,7 @@
                 :name="chapter.id"
                 :disabled="
                   chapter.start_at &&
-                    new Date().valueOf() < new Date(chapter.start_at).valueOf() || chapter.sections.length < 1
+                    new Date().valueOf() < new Date(chapter.start_at).valueOf()
                 "
               >
                 <template slot="title">
