@@ -461,7 +461,7 @@ export default {
   }
 }
 .space-container {
-  padding: 17px 0 0;
+  padding: 17px 0;
   .space-tab__nav {
     display: flex;
     overflow: scroll;
