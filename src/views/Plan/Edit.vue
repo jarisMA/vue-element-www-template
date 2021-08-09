@@ -640,9 +640,6 @@ export default {
   .el-select-dropdown__list {
     padding: 0px;
   }
-  .el-popper {
-    margin: 0px !important;
-  }
 
   .popper__arrow {
     display: none !important;

@@ -1,5 +1,9 @@
 <template>
-  <div class="feedback-wrapper" v-loading="loading">
+  <div
+    class="feedback-wrapper"
+    v-loading="loading"
+    element-loading-background="#494949"
+  >
     <div class="feedback-content">
       <div class="scroll-section" v-infinite-scroll="getData(true)">
         <div class="feedback-content-wrapper">
@@ -20,7 +24,10 @@
               />
             </li>
           </ul>
-          <the-empty v-else noText="空空如也" />
+          <div class="empty" v-else>
+            <img src="~/images/course/empty.svg" class="empty-img" />
+            <p>来做第一个分享的人吧</p>
+          </div>
         </div>
       </div>
     </div>
@@ -43,15 +50,13 @@
 import CourseFeedback from "./CourseFeedback";
 import CourseFeedbackCard from "./CourseFeedbackCard";
 import termService from "service/term";
-import TheEmpty from "components/TheEmpty";
 import { mapState } from "vuex";
 
 export default {
   name: "CourseFeedbackList",
   components: {
     CourseFeedback,
-    CourseFeedbackCard,
-    TheEmpty
+    CourseFeedbackCard
   },
   props: {
     campId: {
@@ -82,6 +87,11 @@ export default {
   },
   created() {
     this.getData();
+  },
+  watch: {
+    ["$route"]() {
+      this.getData();
+    }
   },
   methods: {
     getData(flag = false) {
@@ -172,8 +182,8 @@ export default {
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  background: #fff;
+  height: 100%;
+  background: #494949;
   .feedback-content {
     flex: 1;
     width: 100%;
@@ -188,13 +198,16 @@ export default {
       }
     }
     .feedback-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
       padding: 40px;
     }
     .feedback-content-title {
       line-height: 34px;
       font-weight: 600;
       font-size: 24px;
-      color: #2c3330;
+      color: #dddddd;
     }
     .feedback-content-desc {
       margin-top: 6px;
@@ -203,11 +216,22 @@ export default {
       color: #81948b;
     }
   }
+  .empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    flex: 1;
+    font-size: 16px;
+    font-weight: 600;
+    color: #dddddd;
+  }
+
   .feedback-footer {
     flex: none;
     padding: 16px;
-    background: #fff;
-    border-top: 1px solid #dedede;
+    background: #393939;
   }
 }
 </style>

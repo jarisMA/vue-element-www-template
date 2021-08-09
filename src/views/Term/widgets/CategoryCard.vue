@@ -4,7 +4,11 @@
     @click.stop="isDisabled ? handleNotAvailable() : null"
   >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null || isDisabled">
+      <el-collapse-item
+        :disabled="
+          category.type === null || isDisabled || category.resources.length < 1
+        "
+      >
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -21,6 +25,13 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
+                  <div @click.stop="">
+                    <div
+                      class="card-note"
+                      @click="handleShowNote"
+                      v-if="noteContent.length > 0"
+                    ></div>
+                  </div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -93,23 +104,6 @@
               录播视频将在直播结束后 24 小时内上传，敬请期待
             </p>
           </div>
-          <!-- <div class="card-feedback-wrapper">
-            <course-feedback
-              class="card-feedback"
-              :params="{
-                camp_id: campId,
-                term_id: termId,
-                widget_id: category.id,
-                resource_type: category.type,
-                resource_id: category.resource_id || category.bible_id
-              }"
-              @added="handleShowFeedback"
-            />
-            <label class="card-feedback-more" @click="handleShowFeedback">
-              <span>看看同学们怎么说</span>
-              <i class="card-more-icon"></i>
-            </label>
-          </div> -->
         </div>
       </el-collapse-item>
     </el-collapse>
@@ -120,11 +114,9 @@
 import { COURSE_TYPE_COURSE, COURSE_TYPE_LIVE } from "utils/const";
 import { goCampTermVideo } from "utils/routes";
 import { formatSeconds, formatDate } from "utils/moment";
-// import CourseFeedback from "./CourseFeedback";
 
 export default {
   name: "CategoryCard",
-  // components: { CourseFeedback },
   props: {
     category: {
       type: Object,
@@ -140,8 +132,12 @@ export default {
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_LIVE
+      COURSE_TYPE_LIVE,
+      noteContent: ""
     };
+  },
+  created() {
+    this.hasNote();
   },
   computed: {
     isDisabled() {
@@ -255,14 +251,17 @@ export default {
         resource.widget_resource_id
       );
     },
-    handleShowFeedback() {
-      this.$emit("showFeedback");
+    handleShowNote() {
+      this.$emit("showNote", this.noteContent);
     },
     handleNotAvailable() {
       this.$notice({
         type: "warning",
         title: "本章节尚未到开放时间"
       });
+    },
+    hasNote() {
+      this.noteContent = this.category.resources.filter(item => item.note);
     }
   }
 };
@@ -324,15 +323,17 @@ export default {
   border-top: 1px solid #efefef;
 }
 .card-header {
+  position: relative;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
   padding: 20px 0;
   width: 100%;
   font-weight: 400;
   .card-header-left {
     flex: none;
-    padding-right: 10px;
+    position: absolute;
+    left: -42px;
+    top: 14px;
     .card-header-icon {
       display: block;
       width: 32px;
@@ -380,14 +381,25 @@ export default {
       width: 5px;
     }
     .card-header-title {
+      display: flex;
+      align-items: center;
       width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
       color: #2c3330;
+
+      .card-note {
+        margin-left: 10px;
+        width: 24px;
+        height: 24px;
+        background-color: black;
+        mask: url(~images/academy/video-note.svg) no-repeat;
+        cursor: pointer;
+      }
     }
     .card-header-desc {
-      margin-top: 5px;
+      margin: 5px 20px 0 0;
       line-height: 18px;
       font-size: 12px;
       color: #606c66;
@@ -398,7 +410,7 @@ export default {
       font-size: 12px;
       color: #8ea098;
       .card-header-date {
-        margin-right: 24px;
+        margin-right: 8px;
         line-height: 16px;
         font-size: 12px;
         color: #8ea098;
@@ -408,8 +420,6 @@ export default {
 }
 
 .card-content {
-  width: calc(100% - 42px);
-  margin-left: 42px;
   padding: 0 0 20px 0;
   .card-content-item {
     display: flex;
@@ -480,6 +490,7 @@ export default {
       .card-content-item-duration {
         display: inline-block;
         width: 50px;
+        margin-left: 25px;
       }
     }
   }
@@ -501,29 +512,6 @@ export default {
       line-height: 16px;
       font-size: 12px;
       color: #8ea098;
-    }
-  }
-}
-
-.card-feedback-wrapper {
-  .card-feedback {
-    padding: 20px 0;
-  }
-  .card-feedback-more {
-    display: inline-block;
-    margin-left: 48px;
-    line-height: 24px;
-    font-weight: 500;
-    font-size: 14px;
-    color: @primaryColor;
-    cursor: pointer;
-    .card-more-icon {
-      display: inline-block;
-      width: 24px;
-      height: 24px;
-      background-color: @primaryColor;
-      mask: url("~images/my/arrow.svg") no-repeat center;
-      vertical-align: bottom;
     }
   }
 }
