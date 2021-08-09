@@ -147,7 +147,7 @@ export default {
     padding: 0px;
   }
   .el-popper {
-    width: 576px;
+    width: 576px !important;
     margin: 0px !important;
     right: 0 !important;
     left: auto !important;
