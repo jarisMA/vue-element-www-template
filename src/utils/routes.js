@@ -335,6 +335,24 @@ export const goNotification = (type = "_self") => {
   );
 };
 
+export const goTaskJoin = (type = "_self") => {
+  return goRoute(
+    {
+      name: "TaskJoin"
+    },
+    type
+  );
+};
+
+export const goTask = (type = "_self") => {
+  return goRoute(
+    {
+      name: "Task"
+    },
+    type
+  );
+};
+
 export const goRoute = (route, type = "_self") => {
   return (
     router.history.current.name !== route.name &&
