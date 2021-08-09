@@ -66,6 +66,9 @@
                     {{ chapter.title }}
                   </div>
                 </template>
+                <div class="page-menu-empty" v-if="chapter.sections.length < 1">
+                    暂无视频
+                </div>
                 <div
                   :class="[
                     'page-menu-item',
@@ -78,6 +81,7 @@
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
                   @click="handleToggleSection(cIndex, sIndex)"
+                  v-else
                 >
                   <i
                     :class="[
@@ -606,6 +610,11 @@ export default {
       .page-menu-list {
         padding: 4px 0;
       }
+      .page-menu-empty{
+        color: #999;
+        font-size: 14px;
+      }
+
       .page-menu-item {
         display: flex;
         align-items: center;
@@ -728,6 +737,7 @@ export default {
     transition: width 0.3s;
 
     .course-note {
+      display: flex;
       min-height: 100%;
       padding: 40px;
       color: #dddddd;
@@ -746,7 +756,7 @@ export default {
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        flex: 1;
         font-size: 16px;
         font-weight: 600;
         color: #dddddd;
