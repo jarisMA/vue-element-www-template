@@ -6,7 +6,7 @@
           :class="[
             'page-header-left_icon',
             'menu-icon',
-            showMenu ? 'close' : 'show'
+            showMenu ? 'close' : 'show',
           ]"
           @click="showMenu = !showMenu"
         ></i>
@@ -60,14 +60,14 @@
                         new Date().valueOf() <
                           new Date(chapter.start_at).valueOf()
                           ? '0.6'
-                          : ''
+                          : '',
                     }"
                   >
                     {{ chapter.title }}
                   </div>
                 </template>
                 <div class="page-menu-empty" v-if="chapter.sections.length < 1">
-                    暂无视频
+                  暂无视频
                 </div>
                 <div
                   :class="[
@@ -76,7 +76,7 @@
                     section.id
                       ? 'active'
                       : '',
-                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : ''
+                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : '',
                   ]"
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
@@ -86,7 +86,7 @@
                   <i
                     :class="[
                       'page-menu-item_icon',
-                      sectionStatusIconClass(section)
+                      sectionStatusIconClass(section),
                     ]"
                   ></i>
                   <h4 class="page-menu-item_name ellipsis">
@@ -100,7 +100,7 @@
                         :class="[
                           [2].indexOf(sectionStatus(section)) > -1
                             ? 'primary'
-                            : ''
+                            : '',
                         ]"
                         >{{ secondsUpdate(section.last_play_position) }}</span
                       >/ </template
@@ -145,7 +145,7 @@
                     .second_duration /
                     2
                   ? 'show'
-                  : ''
+                  : '',
               ]"
             >
               <p>这节课是不是收获颇丰呢？</p>
@@ -222,24 +222,24 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true
+      required: true,
     },
     courseChapters: {
       type: Array,
-      required: true
+      required: true,
     },
     chapterIndex: {
       type: Number,
-      required: true
+      required: true,
     },
     sectionIndex: {
       type: Number,
-      required: true
+      required: true,
     },
     next: {
       type: Object,
-      default: () => null
-    }
+      default: () => null,
+    },
   },
   data() {
     return {
@@ -252,7 +252,7 @@ export default {
       activeNames: [],
       campId: "",
       termId: "",
-      activeFeedbackCategory: null
+      activeFeedbackCategory: null,
     };
   },
   watch: {
@@ -261,7 +261,7 @@ export default {
     },
     ["$route"]() {
       this.getParams();
-    }
+    },
   },
   created() {
     this.getData();
@@ -272,7 +272,7 @@ export default {
   computed: {
     sectionStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return section => {
+      return (section) => {
         const last_play_position = section.last_play_position || 0;
         const play_second_duration = section.play_second_duration || 0;
         return section.id ===
@@ -286,7 +286,7 @@ export default {
       };
     },
     sectionStatusIconClass() {
-      return section => {
+      return (section) => {
         const status = this.sectionStatus(section);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -307,10 +307,10 @@ export default {
       };
     },
     secondsUpdate() {
-      return last_play_position => {
+      return (last_play_position) => {
         return formatSeconds(last_play_position || 0);
       };
-    }
+    },
   },
   methods: {
     formatSeconds,
@@ -328,7 +328,7 @@ export default {
       this.termId = parseInt(termId);
       if (this.chapters && widgetId) {
         this.activeFeedbackCategory = this.chapters.find(
-          item => item.id == widgetId
+          (item) => item.id == widgetId
         );
       }
     },
@@ -358,7 +358,7 @@ export default {
       this.updatingTimer = setTimeout(() => {
         this.$set(chapters[chapterIndex].sections, sectionIndex, {
           ...chapters[chapterIndex].sections[sectionIndex],
-          last_play_position: Math.floor(second)
+          last_play_position: Math.floor(second),
         });
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
@@ -376,8 +376,8 @@ export default {
     },
     handleNextLesson() {
       this.$emit("next");
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -610,7 +610,9 @@ export default {
       .page-menu-list {
         padding: 4px 0;
       }
-      .page-menu-empty{
+      .page-menu-empty {
+        padding-bottom: 20px;
+        text-align: center;
         color: #999;
         font-size: 14px;
       }
