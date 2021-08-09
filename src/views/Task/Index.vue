@@ -19,30 +19,13 @@
                 所有成员能力都经斗西审核认证，并持续受斗西团队监督，以独立设计师的身份接受委派任务。
               </div>
             </div>
-            <div class="banner-btn" @click="goTaskJoin()">
+            <div class="banner-btn" @click="goTaskJoin">
               申请加入
             </div>
           </div>
         </div>
-        <div class="task-head" v-if="false">
-          <div class="task-title">
-            本周中标榜
-          </div>
-          <div class="task-ranking">
-            <div class="ranking-left">
-              <rank-card v-for="item of rank" :key="item.id" :rank="item" />
-            </div>
-            <div class="ranking-right">
-              <ul>
-                <li>
-                  <rank-item v-for="item of rank" :key="item.id" :rank="item" />
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="card-section">
-          <task-card v-for="item of task" :key="item.uuid" :task="item" />
+        <div class="card-section" v-loading="loading">
+          <task-card v-for="item of taskList" :key="item.uuid" :task="item" />
         </div>
       </div>
       <div class="container-right">
@@ -52,16 +35,45 @@
             <div class="user-content">
               <div class="user-content-left">
                 <img
+                  v-if="userInfo && userInfo.id"
                   :src="userInfo.avatar_url"
                   alt=""
                   class="user-content__img"
                 />
+                <img
+                  v-else
+                  class="user-content__img--logout"
+                  src="~images/task/index-user-logout.png"
+                  alt=""
+                />
               </div>
               <div class="user-content-right">
-                <div class="user-content__name">
-                  {{ userInfo.nickname || userInfo.realname }}
-                </div>
-                <div class="user-content__icon"></div>
+                <template v-if="userInfo && userInfo.id">
+                  <div class="user-content__name">
+                    {{ userInfo.nickname || userInfo.realname }}
+                  </div>
+                  <div class="user-content__level" v-if="!userInfo.is_designer">
+                    <i
+                      class="user-content__level-icon user-content__no-level--icon"
+                    ></i>
+                    <span class="user-content__level-text" @click="goTaskJoin"
+                      >加入设计团</span
+                    >
+                  </div>
+                  <div class="user-content__level" v-if="userInfo.is_designer">
+                    <i class="user-content__level-icon"></i>
+                  </div>
+                </template>
+                <template v-else>
+                  <div class="user-content__name">
+                    未登录
+                  </div>
+                  <div class="user-content__level">
+                    <span class="user-content__level-text" @click="wxLogin"
+                      >点击注册/登录</span
+                    >
+                  </div>
+                </template>
               </div>
             </div>
           </div>
@@ -100,33 +112,29 @@
 import { mapState } from "vuex";
 import { goTaskJoin } from "utils/routes";
 import TaskCard from "./widgets/TaskCard.vue";
-import RankCard from "./widgets/RankCard.vue";
-import RankItem from "./widgets/RankItem.vue";
+import taskService from "@/global/service/task";
 export default {
   name: "Task",
   components: {
-    TaskCard,
-    RankCard,
-    RankItem
+    TaskCard
   },
   data() {
     return {
+      loading: false,
       STEP_LIST,
-      task: [
+      taskList: [
         {
           uuid: "CE4F4A8C-4A46-4363-B361-B903F2465101",
           name: "雅斯的空间",
           level: 2,
           cover_url:
             "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0701/task/ikxg02aVZd5Gm4R305tL1ZZUAVzjRiP7hVH8MGHP.png",
-          type: 1,
-          type_label: "布局任务",
           bid_type: 1,
           bid_type_label: "公开招募",
           status: 1,
           status_label: "进行中",
           created_at: "2021-06-30",
-          end_at: "2021-09-30 23:59:59",
+          end_at: "2021-08-06 23:59:59",
           price: "1000.00",
           urgent_price: "0.00",
           experience_point: 200,
@@ -148,30 +156,43 @@ export default {
             max_apply: 10
           }
         }
-      ],
-      rank: [
-        {
-          id: 1,
-          no: 1,
-          cover_url:
-            "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0701/task/ikxg02aVZd5Gm4R305tL1ZZUAVzjRiP7hVH8MGHP.png",
-          name: "雅斯的空间",
-          price: "1000.00"
-        }
       ]
     };
   },
   computed: {
     ...mapState(["userInfo"])
   },
+  created() {
+    this.getData();
+  },
   methods: {
-    goTaskJoin
+    getData() {
+      this.loading = true;
+      taskService
+        .taskList({ page_size: 30 })
+        .then(res => {
+          this.taskList = res.list;
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    goTaskJoin() {
+      if (!this.userInfo) {
+        return this.wxLogin();
+      }
+      goTaskJoin();
+    },
+    wxLogin() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+    }
   }
 };
 const STEP_LIST = [
   {
     id: 1,
-    name: "申请加入「斗西设计团」"
+    name: "申请加入「斗西设计团」",
+    url: ""
   },
   {
     id: 2,
@@ -209,7 +230,7 @@ const STEP_LIST = [
 .task-content {
   width: 100%;
   height: 100%;
-  padding-top: 100px;
+  padding: 100px 0;
   background: #fafafa;
   .container-1180 {
     width: 1180px;
@@ -300,9 +321,13 @@ const STEP_LIST = [
             padding-left: 22px;
             padding-right: 22px;
             .user-content-left {
+              display: flex;
+              align-items: center;
+              justify-content: center;
               width: 84px;
               height: 84px;
               border: 2px solid #2b252f;
+              background-color: #e3e3e3;
               margin-right: 17px;
               clip-path: polygon(
                 0 2px,
@@ -325,6 +350,10 @@ const STEP_LIST = [
                 object-fit: cover;
                 vertical-align: middle;
               }
+              .user-content__img--logout {
+                width: 38px;
+                height: 50px;
+              }
             }
             .user-content-right {
               .user-content__name {
@@ -332,6 +361,25 @@ const STEP_LIST = [
                 font-size: 24px;
                 line-height: 34px;
                 color: #000000;
+              }
+              .user-content__level {
+                display: flex;
+                height: 40px;
+                font-size: 12px;
+                line-height: 40px;
+                text-decoration-line: underline;
+                color: #14af64;
+                .user-content__level-text {
+                  cursor: pointer;
+                }
+                .user-content__level-icon {
+                  display: inline-block;
+                  width: 40px;
+                  height: 40px;
+                  background: url("~images/task/index-user-no-level.svg")
+                    no-repeat;
+                  background-size: 40px 40px;
+                }
               }
               .user-content__icon {
                 width: 40px;
@@ -428,7 +476,12 @@ const STEP_LIST = [
 }
 .card-section {
   display: flex;
-  padding-top: 100px;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  .widget-task-card {
+    margin-top: 56px;
+  }
 }
 .task-head {
   width: 100%;
@@ -521,6 +574,7 @@ const STEP_LIST = [
   height: 100%;
   top: 0;
   right: 0;
+  z-index: -3;
   &:before {
     position: absolute;
     bottom: 0;

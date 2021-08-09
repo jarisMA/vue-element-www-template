@@ -5,6 +5,9 @@ const taskService = {
   industryJobsRoots() {
     return request.get(API.industryJobsRoots);
   },
+  taskList(params) {
+    return request.get(API.tasks, params);
+  },
   taskId(uuid) {
     return request.get(API.taskId(uuid));
   },

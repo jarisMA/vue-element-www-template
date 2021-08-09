@@ -1,22 +1,27 @@
 <template>
   <div class="page-detail">
-    <div class="task-info">
+    <div class="task-info" v-loading="loading">
       <div class="widget-info-left">
         <div class="tab-header">
           <div class="tab-header__nav-wrap">
             <div class="tab-list">
-              <div
-                class="tab-item"
-                :class="{
-                  active: currentTab == tab.tab
-                }"
-                v-for="(tab, tabIndex) in tabList"
-                :key="tabIndex"
-                @click="handleChangeTab(tab.tab)"
-              >
-                {{ tab.name }}<span class="border"> </span>
-                <span class="circle" v-if="tab.tab == 'supplementInfo'"></span>
-              </div>
+              <template v-for="(tab, tabIndex) in tabList">
+                <div
+                  v-if="tab.show"
+                  class="tab-item"
+                  :class="{
+                    active: currentTab == tab.tab
+                  }"
+                  :key="tabIndex"
+                  @click="handleChangeTab(tab.tab)"
+                >
+                  {{ tab.name }}<span class="border"> </span>
+                  <span
+                    class="circle"
+                    v-if="tab.tab == 'supplementInfo'"
+                  ></span>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -26,63 +31,81 @@
             :people-info="peopleInfo"
             :favor-info="favorInfo"
             :house-info="houseInfo"
+            :house-info_images="houseInfo_images"
+            :house-info_videos="houseInfo_videos"
             :space-info="spaceInfo"
             :attachment-info="attachmentInfo"
             :supplement-info="supplementInfo"
+            @show="previewImage"
           />
         </div>
       </div>
       <div class="widget-info-right">
-        <mission-card
-          :mission="taskInfo"
-          @toggleShowDialog="toggleShowDialog"
+        <detail-task-card
+          :task="taskInfo"
+          @toggleShowDialog="toggleShowApplyDialog"
         />
       </div>
     </div>
-    <confirm-dialog
+    <apply-dialog
+      v-if="showApplyDialog"
       :task="taskInfo"
-      :show-dialog.sync="showDialog"
+      :show-dialog.sync="showApplyDialog"
       :type="'signup'"
       @signUp="handleSignUP"
-    ></confirm-dialog>
+    ></apply-dialog>
+    <preview-file-dialog
+      :show-preview-file-dialog.sync="showPreviewFileDialog"
+      :file-list="fileList"
+      :file-type="fileType"
+      :active-file-index.sync="activeFileIndex"
+      @update="updateActiveIndex"
+    ></preview-file-dialog>
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import DetailInfo from "./widgets/DetailInfo";
-import MissionCard from "./widgets/MissionCard";
-import ConfirmDialog from "./widgets/ConfirmDialog";
+import DetailTaskCard from "./widgets/DetailTaskCard";
+import ApplyDialog from "./widgets/ApplyDialog";
 import taskService from "@/global/service/task";
+import PreviewFileDialog from "./widgets/PreviewFileDialog";
+
 export default {
   name: "TaskDetail",
   components: {
     DetailInfo,
-    MissionCard,
-    ConfirmDialog
+    DetailTaskCard,
+    ApplyDialog,
+    PreviewFileDialog
   },
   data() {
     return {
-      showDialog: false,
+      loading: false,
+      showApplyDialog: false,
+      showPreviewFileDialog: false,
+      activeFileIndex: null,
+      fileList: [],
+      fileType: "",
       currentTab: "peopleInfo",
-      taskInfo: {},
+      taskInfo: {
+        total_price: "00"
+      },
       peopleInfo: [
         {
-          description: "主人",
-          frequence_id: "1",
-          id: 1,
-          name: "小龙"
-        },
-        {
-          description: "主人",
-          frequence_id: "1",
-          id: 2,
-          name: "小龙"
+          description: "",
+          frequence_id: "",
+          id: null,
+          name: ""
         }
       ],
       favorInfo: {
         cabinet_favor_id: 1,
-        expectation: "极简风"
+        expectation: ""
       },
       houseInfo: [],
+      houseInfo_images: [],
+      houseInfo_videos: [],
       spaceInfo: [],
       attachmentInfo: [],
       supplementInfo: {},
@@ -92,41 +115,105 @@ export default {
   created() {
     this.getData();
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
   methods: {
     getData() {
-      taskService.taskId(this.$route.params.id).then(res => {
-        this.taskInfo = res;
-        this.peopleInfo = res.extra.peopleInfo;
-        this.favorInfo = res.extra.favorInfo;
-        this.houseInfo = res.extra.houseInfo;
-        this.spaceInfo = res.extra.spaceInfo;
-        this.attachmentInfo = JSON.parse(res.extra?.fileInfo?.attachment_files);
-        this.supplementInfo = res.extra.supplementInfo
-          ? {
-              content: res.extra.supplementInfo.content,
-              attachment_files: JSON.parse(
-                res.extra?.supplementInfo?.attachment_files
-              )
-            }
-          : {};
-        const tabList = [];
-        this.peopleInfo &&
-          tabList.push({ tab: "peopleInfo", name: "委托人基本信息" });
-        this.houseInfo && tabList.push({ tab: "houseInfo", name: "房屋概况" });
-        this.spaceInfo && tabList.push({ tab: "spaceInfo", name: "需求详情" });
-        this.attachmentInfo &&
-          tabList.push({ tab: "attachmentInfo", name: "附件下载" });
-        this.supplementInfo &&
-          tabList.push({ tab: "supplementInfo", name: "信息更新" });
-        this.tabList = tabList;
-      });
+      this.loading = true;
+      taskService
+        .taskId(this.$route.params.id)
+        .then(res => {
+          const {
+            extra: {
+              favorInfo = {},
+              houseInfo = [],
+              houseInfo_images = [],
+              houseInfo_videos = [],
+              peopleInfo = [],
+              spaceInfo = [],
+              supplementInfo = {},
+              attachmentInfo = []
+            } = {}
+          } = res;
+
+          const tabList = [];
+          const is_designer = this.userInfo && this.userInfo.is_designer;
+          (peopleInfo || favorInfo) &&
+            tabList.push({
+              tab: "peopleInfo",
+              name: "委托人基本信息",
+              show: true
+            });
+          houseInfo.length &&
+            tabList.push({
+              tab: "houseInfo",
+              name: "房屋概况",
+              show: is_designer
+            });
+          spaceInfo.length &&
+            tabList.push({
+              tab: "spaceInfo",
+              name: "需求详情",
+              show: is_designer
+            });
+          attachmentInfo.length &&
+            tabList.push({
+              tab: "attachmentInfo",
+              name: "附件下载",
+              show: is_designer
+            });
+          (supplementInfo.content || supplementInfo.attachment_files) &&
+            tabList.push({
+              tab: "supplementInfo",
+              name: "信息更新",
+              show: is_designer
+            });
+          this.tabList = tabList;
+          this.taskInfo = res;
+          this.peopleInfo = peopleInfo;
+          this.favorInfo = favorInfo;
+          this.houseInfo = houseInfo;
+          this.houseInfo_images = houseInfo_images;
+          //video url兼容
+          this.houseInfo_videos = houseInfo_videos.forEach(item => {
+            item.url = item.url.split("?")[0];
+          });
+
+          this.spaceInfo = spaceInfo.forEach(space => {
+            space.space_videos.forEach(video => {
+              video.url = video.url.split("?")[0];
+            });
+          });
+          this.attachmentInfo = attachmentInfo.length
+            ? JSON.parse(attachmentInfo)
+            : [];
+          this.supplementInfo = supplementInfo
+            ? {
+                content: supplementInfo.content,
+                attachment_files: JSON.parse(supplementInfo.attachment_files)
+              }
+            : {};
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
     handleChangeTab(tab) {
       this.currentTab = tab;
     },
-    toggleShowDialog() {
-      console.log("hello");
-      this.showDialog = !this.showDialog;
+    toggleShowApplyDialog() {
+      this.showApplyDialog = !this.showApplyDialog;
+    },
+    previewImage(e) {
+      const { activeFileIndex, fileList, fileType } = e;
+      this.activeFileIndex = activeFileIndex;
+      this.fileList = fileList;
+      this.fileType = fileType;
+      this.showPreviewFileDialog = true;
+    },
+    updateActiveIndex(e) {
+      this.activeFileIndex = e;
     },
     handleSignUP() {
       console.log("singup");
@@ -140,7 +227,7 @@ export default {
   justify-content: space-between;
   width: 1180px;
   margin: 0 auto;
-  padding-top: 38px;
+  padding: 38px 0;
   .widget-info-left {
     width: 780px;
     .tab-header {

@@ -132,6 +132,7 @@ export default {
 
   industryJobsRoots: `${WEB_PREFIX}/industry/jobs/roots`,
 
+  tasks: `${WEB_PREFIX}/tasks`,
   taskId: uuid => `${WEB_PREFIX}/tasks/${uuid}`,
   taskUserJoin: `${WEB_PREFIX}/tasks/users/join`
 };

@@ -1,5 +1,9 @@
 <template>
-  <div class="widget-task-card">
+  <router-link
+    target="_blank"
+    :to="{ name: 'TaskDetail', params: { id: task.uuid } }"
+    class="widget-task-card"
+  >
     <div class="card-level">
       <i class="level-block"></i>
       <div class="level-list">
@@ -14,7 +18,7 @@
     <div class="card-header">
       <div class="card-title">{{ task.name }}</div>
       <div class="card-time">
-        <span>发布时间：{{ task.created_at }}</span>
+        <span>发布时间:{{ formatDate(task.published_at) }}</span>
       </div>
     </div>
     <div class="card-body">
@@ -23,13 +27,13 @@
       </div>
 
       <div class="card-location">
-        <div class="card-layout">
-          {{ task.city.city.name }} ｜ {{ task.city.square }}平方 ｜
-          {{ task.city.layout.type1 }}室{{ task.city.layout.type2 }}厅{{
-            task.city.layout.type3
+        <div class="card-layout" v-if="task.layout">
+          {{ task.city.city.name }} ｜ {{ Math.ceil(task.square) }}平方 ｜
+          {{ task.layout.type1 }}室{{ task.layout.type2 }}厅{{
+            task.layout.type3
           }}卫
         </div>
-        <div class="card-users">{{ task.user_count }}人已参与</div>
+        <div class="card-users" v-if="false">{{ task.user_count }}人已参与</div>
       </div>
       <div class="card-status">
         <div class="card-status__status" :class="'card-status-' + task.status">
@@ -37,17 +41,28 @@
         </div>
         <div class="card-status__time">
           <template v-if="task.status == 1">
-            <div class="card-status--green">
-              初选截止：剩余 {{ formNowFormatDay(task.end_at) }}天
-              {{ formatDate(task.end_at, "(YYYY/MM/DD)") }}
+            <div
+              class="card-status--green"
+              v-if="diff_day_type == 'isOneDayOver'"
+            >
+              初选截止：剩余 {{ formNowFormatDay(task.submit_end_at) }}天 ({{
+                display_submit_end_at
+              }})
             </div>
-            <div class="card-status--red" v-if="false">
-              初选截止：剩余 {{ formNowFormatDay(task.end_at) }}天
-              {{ formatDate(task.end_at, "(YYYY/MM/DD)") }}
+            <div
+              class="card-status--red"
+              v-if="diff_day_type == 'isOneDayleft'"
+            >
+              初选截止:<Countdown
+                :created-time="task.submit_end_at"
+                format="hh:mm:ss"
+                class="card-status__countdown"
+              ></Countdown>
+              ({{ display_submit_end_at }})
             </div>
           </template>
-          <template v-if="task.status == 1">
-            <div class="card-status--grey" v-if="false">
+          <template v-if="diff_day_type == 'isTimeout'">
+            <div class="card-status--grey">
               ------初选截止：已截稿------
             </div>
           </template>
@@ -56,13 +71,14 @@
     </div>
     <div class="card-footer">
       <div class="card-footer-title">
-        悬赏金额
+        <div class="card-footer__title">
+          悬赏金额
+        </div>
+        <i class="card-footer__icon"></i>
       </div>
       <div class="card-footer-price">
-        <div class="card-price">¥{{ priceFormat(task.price) }}</div>
-        <div class="card-price--hover">
-          前往了解
-        </div>
+        <div class="card-price">¥{{ priceFormat(task.total_price) }}</div>
+        <div class="card-price--hover">前往了解</div>
       </div>
 
       <div class="card-exp">
@@ -70,40 +86,56 @@
         <span>{{ task.experience_point }}</span>
       </div>
     </div>
-  </div>
+  </router-link>
 </template>
 <script>
 import TheLoadingImage from "components/TheLoadingImage";
-import { formatDate, formNowFormatDay } from "utils/moment";
+import Countdown from "./Countdown";
+import { formatDate, formNowFormatDay, diffDayType } from "utils/moment";
 import { priceFormat } from "utils/function";
 
 export default {
   name: "TaskCard",
   components: {
-    TheLoadingImage
+    TheLoadingImage,
+    Countdown
   },
 
   props: {
     task: {
       type: Object,
-      required: true
+      required: true,
+      default: () => {}
     }
+  },
+  data() {
+    return {
+      display_submit_end_at: null,
+      diff_day_type: null
+    };
   },
   methods: {
     formatDate,
     formNowFormatDay,
-    priceFormat
+    priceFormat,
+    diffDayType
+  },
+  created() {
+    this.display_submit_end_at = formatDate(this.task.submit_end_at);
+    this.diff_day_type = this.diffDayType(this.task.submit_end_at, new Date());
   }
 };
 </script>
 <style lang="less" scoped>
 .widget-task-card {
   position: relative;
+  display: block;
   width: 380px;
   height: 560px;
   padding: 24px 20px 0;
   background: url("~images/task/index-card-bg.png") no-repeat;
   background-size: 380px 560px;
+  color: #000000;
   transition: all 0.3s;
   .card-level {
     position: absolute;
@@ -224,7 +256,9 @@ export default {
           color: #ffffff;
         }
         &.card-status-3,
-        &.card-status-4 {
+        &.card-status-4,
+        &.card-status-5,
+        &.card-status-6 {
           background: url("~images/task/index-card-status-3.png") no-repeat;
           background-size: 52px 28px;
           color: #ffffff;
@@ -239,6 +273,7 @@ export default {
         width: 206px;
         height: 24px;
         margin-left: 94px;
+        padding: 0 8px;
         line-height: 24px;
         font-size: 12px;
         font-weight: 600;
@@ -247,7 +282,14 @@ export default {
           color: #1bc100;
         }
         .card-status--red {
+          display: flex;
+          align-items: center;
           color: #ff0000;
+          .card-status__countdown {
+            flex: 1;
+            width: 55px;
+            text-align: left;
+          }
         }
         .card-status--grey {
           color: #7c7c7c;
@@ -257,21 +299,43 @@ export default {
   }
   .card-footer {
     position: relative;
-    padding-top: 30px;
+    padding-top: 12px;
     .card-footer-title {
-      position: absolute;
-      top: 9px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 90px;
-      height: 26px;
-      padding-left: 30px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       margin: 0 auto;
-      background: url("~images/task/index-card-price.png") no-repeat;
-      background-size: 90px 26px;
+    }
+    .card-footer__title {
+      padding-left: 12px;
+      width: 72px;
+      height: 18px;
+      border-top: 2px solid #ffc821;
+      border-right: 2px solid #ffc821;
+      background-color: #ffde45;
       font-weight: 600;
       font-size: 12px;
-      line-height: 26px;
+      line-height: 18px;
+      clip-path: polygon(
+        0 0,
+        calc(100% - 2px) 0,
+        calc(100% - 2px) 2px,
+        100% 2px,
+        100% 100%,
+        0 100%
+      );
+    }
+    .card-footer__icon {
+      position: absolute;
+      top: -3px;
+      left: 122px;
+      display: inline-block;
+      width: 21px;
+      height: 26px;
+      background: url("~images/task/index-card-price.svg") no-repeat;
+      background-size: contain;
+      z-index: 88;
     }
     .card-footer-price {
       width: 228px;
@@ -282,10 +346,10 @@ export default {
       font-size: 36px;
       color: #ffffff;
       text-align: center;
+      transition: all 0.5s;
       .card-price {
         background: url("~images/task/index-card-btn.png") no-repeat;
         background-size: 228px 52px;
-        transition: all 0.1s;
       }
       .card-price--hover {
         position: absolute;
@@ -293,9 +357,9 @@ export default {
         opacity: 0;
         width: 228px;
         height: 52px;
-        transition: all 0.1s;
         overflow: hidden;
         font-size: 18px;
+        z-index: 77;
       }
     }
     .card-exp {

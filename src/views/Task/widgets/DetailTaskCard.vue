@@ -1,47 +1,60 @@
 <template>
-  <div class="mission-card">
+  <div class="detail-task-card">
     <div class="card-head">
       <img class="card-head-up" src="~images/task/top.svg" />
-      <div class="card-head-top">
+      <div
+        class="card-head-top"
+        :class="[
+          diff_day_type == 'isOneDayleft'
+            ? 'card-head-top--red'
+            : diff_day_type == 'isTimeout'
+            ? 'card-head-top--grey'
+            : '',
+          task.status == 7 ? 'card-head-top--finished' : ''
+        ]"
+      >
         <div class="card-head-up-text">
           <span>初选截止倒计时</span>
-          <span>截止日：{{ mission.end_at }}</span>
+          <span v-if="diff_day_type !== 'isTimeout'"
+            >截止日：{{ formatDate(task.published_at) }}</span
+          >
+          <span v-if="diff_day_type == 'isTimeout'">初选截止：已截稿</span>
         </div>
         <div class="card-head-btm-text">
-          <div>
-            {{ formNowFormatDay(mission.end_at)
-            }}<span class="card-head-small-text"> 天</span>
+          <div v-if="task.status == 7" class="card-head-btm-finished">
+            ------任务已完成------
           </div>
-          <div>:</div>
-          <div>15<span class="card-head-small-text"> 时</span></div>
-          <div>:</div>
-          <div>15<span class="card-head-small-text"> 分</span></div>
+          <Countdown
+            v-if="task.status && task.status != 7"
+            class="card-head-btm-countdown"
+            :created-time="task.submit_end_at"
+            format="dd:hh:mm"
+            :showUnitText="true"
+            @update="getDiffDayType"
+          ></Countdown>
         </div>
       </div>
       <div class="card-head-btm">
         <div class="card-head-btm-up">
-          「{{ mission.name }}」的{{ mission.type_label }}
+          {{ task.name }}
         </div>
         <div class="card-head-btm-down">
           <div class="card-head-btm-down-left">
-            <div v-for="n in mission.level" :key="n">
+            <div v-for="n in task.level" :key="n">
               <img src="~/images/task/star.svg" class="card-star" />
             </div>
           </div>
           <div class="card-head-btm-down-right">
             <span class="card-head-btm-down-text"
-              >发布时间 {{ mission.published_at }}</span
+              >发布时间 {{ formatDate(task.published_at) }}</span
             >
             <div
               :class="[
                 'card-head-btm-down-status',
-                mission.status == 2 ? 'card-implementing' : '',
-                mission.status == 3 ? 'card-judging' : '',
-                mission.status == 4 ? 'card-tendering' : '',
-                mission.status == 1 ? 'card-finalized' : ''
+                'task-card-status-' + task.status
               ]"
             >
-              {{ mission.status_label }}
+              {{ task.status_label }}
             </div>
           </div>
         </div>
@@ -55,7 +68,7 @@
           <span class="card-body-left-text">悬赏金额</span>
         </div>
         <i class="card-body-left-icon"></i>
-        ¥{{ priceFormat(mission.price) }}
+        ¥{{ priceFormat(task.total_price) }}
         <img class="card-body-left-btm" src="~images/task/left-btm.svg" />
       </div>
       <div class="card-body-right">
@@ -63,30 +76,25 @@
         <div class="card-body-right-head">
           <span class="card-body-right-text">经验值</span>
         </div>
-        {{ mission.experience_point
-        }}<span class="card-body-right-exp"> exp</span>
+        {{ task.experience_point }}<span class="card-body-right-exp"> exp</span>
         <img class="card-body-right-btm" src="~images/task/right-btm.svg" />
       </div>
     </div>
     <div class="card-foot">
       <div class="card-foot-up">
         <img class="card-foot-head" src="~images/task/top.svg" />
-        <span v-if="mission.city">{{ mission.city.city.name }}</span> ｜
-        {{ mission.square }}平方 ｜
-        <span v-if="mission.layout"
-          >{{ mission.layout.type1 }}室{{ mission.layout.type2 }}厅{{
-            mission.layout.type3
+        <span v-if="task.city">{{ task.city.city.name }}</span> ｜
+        {{ Math.ceil(task.square) }}平方 ｜
+        <span v-if="task.layout"
+          >{{ task.layout.type1 }}室{{ task.layout.type2 }}厅{{
+            task.layout.type3
           }}卫</span
         >
         <img class="card-foot-foot" src="~images/task/btm.svg" />
       </div>
       <div class="card-foot-down">
         <img class="card-layout-top" src="~images/task/top.svg" />
-        <the-loading-image
-          :width="357"
-          :height="357"
-          :url="mission.cover_url"
-        />
+        <the-loading-image :width="357" :height="357" :url="task.cover_url" />
         <img class="card-layout-btm" src="~images/task/btm.svg" />
       </div>
     </div>
@@ -106,51 +114,49 @@
     </div>
     <div class="card-btn">
       <template>
-        <div class="card-btn-tips">
-          <template v-if="!is_join && mission.status == 2 && level == 0">
-            {{ mission.users_count }}人参与，还剩{{
-              mission.max_apply - mission.users_count
+        <div class="card-btn-tips" v-if="false">
+          <template v-if="!is_join && task.status == 1 && level == 0">
+            {{ task.users_count }}人参与，还剩{{
+              task.max_apply - task.users_count
             }}个名额
           </template>
-          <template v-if="is_join && mission.status == 2">
+          <template v-if="is_join && task.status == 1">
             <span class="card-btn-tips--yellow">已参与</span
             >点击上传方案，可上传多个方案
           </template>
-          <template
-            v-if="is_join && (mission.status == 4 || mission.status == 6)"
-          >
+          <template v-if="is_join && (task.status == 4 || task.status == 6)">
             <span class="card-btn-tips--yellow">已参与</span>方案提交已截止，{{
-              mission.users_count
+              task.users_count
             }}参与
           </template>
         </div>
         <div class="card-btn-container">
           <!-- 未参与且任务是进行中 -->
-          <template v-if="!is_join && mission.status == 2 && level !== 0">
+          <template v-if="!is_join && task.status == 1 && level !== 0">
             <div class="card-btn card-btn--green" @click="handleShowDialog">
-              {{ mission.heart_count }}暖心立即参与
+              {{ task.heart_count }}暖心立即参与
             </div>
           </template>
           <!-- 已参与且任务是进行中 -->
-          <template v-if="is_join && mission.status == 2 && !designs.length">
+          <template v-if="is_join && task.status == 1 && !designs.length">
             <div class="card-btn card-btn--green">
               上传方案
             </div>
           </template>
           <!-- 已参与且任务是进行中 -->
-          <template v-if="is_join && mission.status == 2 && designs.length">
+          <template v-if="is_join && task.status == 1 && designs.length">
             <div class="card-btn card-btn--green">
               重新上传
             </div>
           </template>
           <!-- 已参与且任务评审中 -->
-          <template v-if="is_join && mission.status == 4">
+          <template v-if="is_join && task.status == 4">
             <div class="card-btn card-btn--grey">
               任务评审中
             </div>
           </template>
           <!-- 已参与且任务已完成 -->
-          <template v-if="is_join && mission.status == 6">
+          <template v-if="is_join && task.status == 6">
             <div class="card-btn card-btn--grey">
               任务已完成
             </div>
@@ -167,45 +173,69 @@
   </div>
 </template>
 <script>
+import { mapState } from "vuex";
 import TheLoadingImage from "components/TheLoadingImage";
-import { formatDate, formNowFormatDay } from "utils/moment";
+import { formatDate, formNowFormatDay, diffDayType } from "utils/moment";
+import Countdown from "./Countdown";
 import { priceFormat } from "utils/function";
 export default {
-  name: "MissionCard",
+  name: "DetailTaskCard",
   props: {
-    mission: {
+    task: {
       type: Object,
       required: true
+    },
+    designs: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
     return {
       is_join: false,
       level: 0,
-      designs: [
-        {
-          name: "简历.pdf",
-          url:
-            "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0728/degree/4OS8uXyI8GyToghu3NPjtp1GK3N9pmqkuyy42r8g.pdf"
-        }
-      ]
+      diff_day_type: null
     };
   },
+  computed: {
+    ...mapState(["userInfo"])
+  },
   components: {
-    TheLoadingImage
+    TheLoadingImage,
+    Countdown
+  },
+  watch: {
+    task(val) {
+      if (val) {
+        this.getDiffDayType();
+      }
+    }
   },
   methods: {
     formatDate,
     formNowFormatDay,
+    diffDayType,
     priceFormat,
+    getDiffDayType() {
+      this.diff_day_type = this.diffDayType(
+        this.task.submit_end_at,
+        new Date()
+      );
+    },
     handleShowDialog() {
+      if (!this.userInfo) {
+        return this.wxLogin();
+      }
       this.$emit("toggleShowDialog");
+    },
+    wxLogin() {
+      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
     }
   }
 };
 </script>
 <style type="text/css" lang="less" scoped>
-.mission-card {
+.detail-task-card {
   width: 380px;
   .card-head {
     position: relative;
@@ -216,26 +246,80 @@ export default {
       width: 100%;
       height: 86px;
       padding: 7px 32px;
-      background: #ffe24c;
+      background-color: #ffe24c;
+      color: #000000;
+      &.card-head-top--red {
+        background-color: #ff3938;
+        color: #ffffff;
+        .card-head-up-text {
+          border-bottom-color: #ffffff;
+        }
+      }
+      &.card-head-top--grey {
+        background-color: #bcbcbc;
+        .card-head-up-text {
+          border-bottom-color: #7c7c7c;
+          color: #7c7c7c;
+        }
+        /deep/.card-head-btm-text {
+          color: #e5e5e5;
+        }
+      }
+      &.card-head-top--finished {
+        background-color: #2e41f1;
+        .card-head-up-text {
+          border-bottom-color: #7c7c7c;
+          color: #fafafa;
+        }
+        .card-head-btm-text {
+          width: 100%;
+          .card-head-btm-finished {
+            width: 100%;
+            color: #fff067;
+            font-size: 18px;
+            text-align: center;
+          }
+        }
+      }
+
       .card-head-up-text {
         display: flex;
         justify-content: space-between;
-        color: black;
         font-weight: 600;
         font-size: 12px;
         padding-bottom: 3px;
         margin-bottom: 3px;
-        border-bottom: 1px solid black;
+        border-bottom: 1px solid #000000;
       }
-      .card-head-btm-text {
+      /deep/.card-head-btm-text {
         display: flex;
         justify-content: space-between;
         line-height: 46px;
         font-weight: 600;
         font-size: 48px;
-        color: black;
-        .card-head-small-text {
-          font-size: 12px;
+        .card-head-btm-countdown {
+          width: 100%;
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          .card-head-text {
+            flex: none;
+            width: 60px;
+            text-align: center;
+          }
+          .card-head-small-unit {
+            display: inline-block;
+            height: 16px;
+            line-height: 16px;
+            font-size: 12px;
+            &.card-head-small-unit--top {
+              display: flex;
+              justify-content: space-between;
+              flex: none;
+              width: 32px;
+              align-self: flex-start;
+            }
+          }
         }
       }
     }
@@ -257,7 +341,8 @@ export default {
         align-items: center;
         height: 28px;
         padding-left: 6px;
-        background: #eaeaea;
+        background: url("~images/task/detail-card-level-bg.svg") 369px 28px;
+        background-size: 369px 28px;
         .card-head-btm-down-left {
           display: flex;
           align-items: center;
@@ -285,25 +370,29 @@ export default {
             line-height: 28px;
             font-weight: 600;
             font-size: 12px;
-          }
-          .card-implementing {
-            color: #0f6c00;
-            background-image: url("~images/task/green.svg");
-          }
-
-          .card-judging {
-            color: white;
-            background-image: url("~images/task/red.svg");
-          }
-
-          .card-tendering {
-            color: white;
-            background-image: url("~images/task/blue.svg");
-          }
-
-          .card-finalized {
-            color: #2d41f1;
-            background-image: url("~images/task/yellow.svg");
+            &.task-card-status-1 {
+              color: #0f6c00;
+              background-image: url("~images/task/green.svg");
+              background-size: 52px 28px;
+            }
+            &.task-card-status-2 {
+              color: #ffffff;
+              background-image: url("~images/task/red.svg");
+              background-size: 52px 28px;
+            }
+            &.task-card-status-3,
+            &.task-card-status-4,
+            &.task-card-status-5,
+            &.task-card-status-6 {
+              color: #ffffff;
+              background-image: url("~images/task/blue.svg");
+              background-size: 52px 28px;
+            }
+            &.task-card-status-7 {
+              color: #2d41f1;
+              background-image: url("~images/task/yellow.svg");
+              background-size: 52px 28px;
+            }
           }
         }
       }
@@ -536,8 +625,7 @@ export default {
     }
   }
   .card-btn {
-    position: fixed;
-    bottom: 90px;
+    margin-top: 80px;
     .card-btn-tips {
       height: 24px;
       width: fit-content;

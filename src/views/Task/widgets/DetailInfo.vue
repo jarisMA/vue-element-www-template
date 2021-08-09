@@ -59,6 +59,34 @@
             </div>
           </div>
         </div>
+        <template v-if="houseInfo_images.length">
+          <div class="widget-title">
+            图片
+          </div>
+          <div class="info-img-container">
+            <img
+              class="info-img__item"
+              v-for="(img, imgIndex) in houseInfo_images"
+              :key="imgIndex"
+              :src="img.url + '?x-oss-process=style/pc_bible_300wh'"
+              @click="previewImage(imgIndex, houseInfo_images, 'img')"
+            />
+          </div>
+        </template>
+        <template v-if="houseInfo_videos.length">
+          <div class="widget-title">
+            视频
+          </div>
+          <div class="info-img-container">
+            <video
+              class="info-img__item"
+              v-for="(video, videoIndex) in houseInfo_videos"
+              :key="videoIndex"
+              :src="video.url"
+              @click="previewImage(videoIndex, houseInfo_videos, 'video')"
+            ></video>
+          </div>
+        </template>
       </template>
       <template v-if="tab == 'spaceInfo'">
         <div class="space-container">
@@ -75,21 +103,55 @@
           </div>
           <div class="space-tab-body">
             <template v-for="(space, spaceIndex) in newSpaceInfo">
-              <div
-                class="tab-body__content"
-                :key="spaceIndex"
-                v-show="spaceIndex == activeIndex"
-              >
-                <template v-for="(spaceItem, spaceItemIndex) in space.children">
-                  <div
-                    :key="spaceItemIndex"
-                    class="grid-item"
-                    :class="{ 'flex-basis': spaceItem.type == 'input' }"
+              <div :key="spaceIndex" v-show="spaceIndex == activeIndex">
+                <div class="tab-body__content">
+                  <template
+                    v-for="(spaceItem, spaceItemIndex) in space.children"
                   >
-                    <div class="item__title">{{ spaceItem.name }}</div>
-                    <div class="item__value">
-                      {{ spaceItem.select_value }}
+                    <div
+                      :key="spaceItemIndex"
+                      class="grid-item"
+                      :class="{ 'flex-basis': spaceItem.type == 'input' }"
+                    >
+                      <div class="item__title">{{ spaceItem.name }}</div>
+                      <div class="item__value">
+                        {{ spaceItem.select_value }}
+                      </div>
                     </div>
+                  </template>
+                </div>
+                <template
+                  v-if="space.space_images && space.space_images.length"
+                >
+                  <div class="widget-title">
+                    图片
+                  </div>
+                  <div class="info-img-container">
+                    <img
+                      class="info-img__item"
+                      v-for="(img, imgIndex) in space.space_images"
+                      :key="imgIndex"
+                      :src="img.url + '?x-oss-process=style/pc_bible_300wh'"
+                      @click="previewImage(imgIndex, space.space_images, 'img')"
+                    />
+                  </div>
+                </template>
+                <template
+                  v-if="space.space_videos && space.space_videos.length"
+                >
+                  <div class="widget-title">
+                    视频
+                  </div>
+                  <div class="info-img-container">
+                    <video
+                      class="info-img__item"
+                      v-for="(video, videoIndex) in space.space_videos"
+                      :key="videoIndex"
+                      :src="video.url"
+                      @click="
+                        previewImage(videoIndex, space.space_videos, 'video')
+                      "
+                    ></video>
                   </div>
                 </template>
               </div>
@@ -174,6 +236,14 @@ export default {
       type: Array,
       default: () => []
     },
+    houseInfo_images: {
+      type: Array,
+      default: () => []
+    },
+    houseInfo_videos: {
+      type: Array,
+      default: () => []
+    },
     spaceInfo: {
       type: Array,
       default: () => []
@@ -203,6 +273,8 @@ export default {
           display_name: space.display_name,
           id: space.id,
           name: space.name,
+          space_images: space.space_images,
+          space_videos: space.space_videos,
           children: space.children.map(spaceItem => {
             let select_value = "";
             if (spaceItem.type == "select") {
@@ -235,13 +307,21 @@ export default {
       });
       return result;
     }
+  },
+  methods: {
+    previewImage(idx, fileList, fileType) {
+      this.$emit("show", {
+        activeFileIndex: idx,
+        fileList,
+        fileType
+      });
+    }
   }
 };
 </script>
 <style lang="less" scoped>
 .widget-info {
-  padding-left: 6px;
-  padding-right: 6px;
+  padding: 0 6px;
 }
 
 .widget-title {
@@ -338,7 +418,6 @@ export default {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding-bottom: 25px;
   font-size: 12px;
   line-height: 17px;
   .house-item {
@@ -369,8 +448,20 @@ export default {
     }
   }
 }
+.info-img-container {
+  display: flex;
+  flex-wrap: wrap;
+  .info-img__item {
+    display: inline-block;
+    margin: 0 8px 8px 0;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    cursor: pointer;
+  }
+}
 .space-container {
-  padding: 17px 0 25px;
+  padding: 17px 0 0;
   .space-tab__nav {
     display: flex;
     overflow: scroll;
