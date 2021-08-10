@@ -140,8 +140,8 @@ export default {
     vid(val, oldVal) {
       if (val !== oldVal) {
         this.stopEmit = true;
-        this.checkTransformCodeStatus();
         this.handleClearTimer();
+        this.checkTransformCodeStatus();
       }
     }
   },
@@ -250,6 +250,7 @@ export default {
               player.on("pause", this.handlePause);
               player.on("timeupdate", this.handleTimeUpdate);
               player.on("ended", this.handleEnded);
+              player.on("startSeek", this.handleStartSeek);
               player.on("completeSeek", this.handleCompleteSeek);
               player.on("error", this.handleError);
             }
@@ -282,6 +283,7 @@ export default {
               player.on("pause", this.handlePause);
               player.on("timeupdate", this.handleTimeUpdate);
               player.on("ended", this.handleEnded);
+              player.on("startSeek", this.handleStartSeek);
               player.on("completeSeek", this.handleCompleteSeek);
               player.on("error", this.handleError);
             }
@@ -323,7 +325,7 @@ export default {
 
     handleSetRecord() {
       const nowTime = new Date().valueOf();
-      const second_duration = (nowTime - this.timestamp) / 1000;
+      const second_duration = Math.floor((nowTime - this.timestamp) / 1000);
       const last_play_position = this.player.getCurrentTime();
       if (!this.stopEmit) {
         this.$emit("setRecord", {
@@ -364,15 +366,15 @@ export default {
       this.timestamp = new Date().valueOf();
       this.timer = setInterval(() => {
         this.handleSetRecord();
-      }, 2000);
+      }, 3000);
     },
     // handlePlaying() {
     //   console.log("playing");
     // },
     handlePause() {
       // console.log("pause");
-      this.handleSetRecord();
       this.handleClearTimer(this.timer);
+      this.handleSetRecord();
     },
     handleTimeUpdate() {
       // console.log("timeUpdate");
@@ -381,12 +383,15 @@ export default {
         this.$emit("timeUpdate", currentTime);
       }
     },
+    handleStartSeek() {
+      this.handleClearTimer(this.timer);
+    },
     handleCompleteSeek() {
       // console.log("completeSeek");
       this.handleSetRecord();
+      this.handlePlay();
     },
     handleEnded() {
-      this.handleSetRecord();
       this.handleClearTimer(this.timer);
       this.$emit("ended");
       let nextVideoComponent = this.player.getComponent("NextVideoComponent");
