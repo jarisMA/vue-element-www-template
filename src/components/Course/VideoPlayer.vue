@@ -398,6 +398,7 @@ export default {
     },
     handleEnded() {
       this.handleClearTimer(this.timer);
+      this.handleSetRecord();
       this.$emit("ended");
       let nextVideoComponent = this.player.getComponent("NextVideoComponent");
       if (nextVideoComponent) {
