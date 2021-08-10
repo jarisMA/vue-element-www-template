@@ -130,5 +130,11 @@ export default {
   notifications: `${WEB_PREFIX}/notifications`,
   notification: id => `${WEB_PREFIX}/notifications/${id}`,
 
-  kjlAdminIframe: dest => `${PREFIX}/api/admin/kujiale/${dest}/iframe`
+  kjlAdminIframe: dest => `${PREFIX}/api/admin/kujiale/${dest}/iframe`,
+
+  industryJobsRoots: `${WEB_PREFIX}/industry/jobs/roots`,
+
+  tasks: `${WEB_PREFIX}/tasks`,
+  taskId: uuid => `${WEB_PREFIX}/tasks/${uuid}`,
+  taskUserJoin: `${WEB_PREFIX}/tasks/users/join`
 };

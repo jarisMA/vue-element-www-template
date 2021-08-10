@@ -7,6 +7,7 @@ import routesAcademy from "./routesAcademy";
 import routesMy from "./routesMy";
 import routesVip from "./routesVip";
 import routersNotification from "./routersNotification";
+import routersTask from "./routesTask";
 
 import BasicLayout from "components/Layout/BasicLayout";
 import Home from "@/views/Home";
@@ -36,6 +37,7 @@ const routes = [
       ...routesMy,
       ...routesVip,
       ...routersNotification,
+      ...routersTask,
       ...routesError
     ]
   },

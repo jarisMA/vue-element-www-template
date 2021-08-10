@@ -80,3 +80,14 @@ export const formatDateTime = dateTime => {
     ("0" + minute).substr(-2, 2);
   return result;
 };
+
+export const diffDayType = (dateTime1, dateTime2) => {
+  const dateTimeStamp1 = new Date(dateTime1).valueOf();
+  const dateTimeStamp2 = new Date(dateTime2).valueOf();
+  if (dateTimeStamp1 < dateTimeStamp2) {
+    return "isTimeout";
+  }
+  const aDay = 24 * 60 * 60 * 1000;
+  const diffDay = (dateTimeStamp1 - dateTimeStamp2) / aDay;
+  return diffDay > 1 ? "isOneDayOver" : "isOneDayleft";
+};

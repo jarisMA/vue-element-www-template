@@ -1,0 +1,24 @@
+<svg width="21" height="26" viewBox="0 0 21 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect x="7.80005" y="24.2668" width="4.33333" height="22.5333" transform="rotate(180 7.80005 24.2668)" fill="#F3B700"/>
+<rect x="4.33337" y="20.8003" width="4.33333" height="15.6" transform="rotate(180 4.33337 20.8003)" fill="#F3B700"/>
+<rect x="15.6" y="5.20007" width="10.4" height="3.46667" transform="rotate(180 15.6 5.20007)" fill="#F3B700"/>
+<rect x="13.0001" y="1.73315" width="4.33333" height="22.5333" fill="black"/>
+<rect x="16.4668" y="4.33313" width="4.33333" height="17.3333" fill="black"/>
+<rect x="5.20007" y="20.7999" width="10.4" height="3.46667" fill="black"/>
+<rect x="15.6001" y="26" width="10.4" height="1.73333" transform="rotate(180 15.6001 26)" fill="black"/>
+<rect x="15.6001" y="1.73328" width="10.4" height="1.73333" transform="rotate(180 15.6001 1.73328)" fill="black"/>
+<rect y="20.8" width="15.6" height="1.73333" transform="rotate(-90 0 20.8)" fill="black"/>
+<rect x="17.3334" y="24.2667" width="1.73333" height="1.73333" transform="rotate(180 17.3334 24.2667)" fill="black"/>
+<rect x="5.20007" y="24.2667" width="1.73333" height="1.73333" transform="rotate(180 5.20007 24.2667)" fill="black"/>
+<rect x="17.3334" y="3.46667" width="1.73333" height="1.73333" transform="rotate(180 17.3334 3.46667)" fill="black"/>
+<rect x="5.20007" y="3.46667" width="1.73333" height="1.73333" transform="rotate(180 5.20007 3.46667)" fill="black"/>
+<rect x="19.0668" y="22.5333" width="1.73333" height="1.73333" transform="rotate(180 19.0668 22.5333)" fill="black"/>
+<rect x="3.46667" y="22.5333" width="1.73333" height="1.73333" transform="rotate(180 3.46667 22.5333)" fill="black"/>
+<rect x="19.0668" y="5.19995" width="1.73333" height="1.73333" transform="rotate(180 19.0668 5.19995)" fill="black"/>
+<rect x="3.46667" y="5.19995" width="1.73333" height="1.73333" transform="rotate(180 3.46667 5.19995)" fill="black"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M5.20004 22.5333L15.6 22.5333L15.6 20.8L17.3334 20.8L17.3334 5.19999L15.6 5.19999L15.6 3.46666L5.20004 3.46666L5.20004 5.19999L3.46671 5.19999L3.46671 20.8L5.20004 20.8L5.20004 22.5333Z" fill="#FFDE45"/>
+<rect x="7.80005" y="6.06665" width="5.2" height="1.73333" fill="black"/>
+<rect x="7.80005" y="18.2" width="5.2" height="1.73333" fill="#F3B700"/>
+<rect x="6.06677" y="18.2" width="10.4" height="1.73333" transform="rotate(-90 6.06677 18.2)" fill="black"/>
+<rect x="13" y="18.2" width="10.4" height="1.73333" transform="rotate(-90 13 18.2)" fill="#F3B700"/>
+</svg>
