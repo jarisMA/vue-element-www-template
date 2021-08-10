@@ -31,6 +31,7 @@
               :loading="loading"
               :campId="detail.camp_id"
               :termId="detail.id"
+              :feedback="feedback"
             />
           </el-tab-pane>
           <el-tab-pane label="作业" name="homework">
