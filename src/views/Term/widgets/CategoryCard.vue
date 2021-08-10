@@ -72,7 +72,7 @@
             <div
               :class="[
                 'card-content-item',
-                lessonStatus(index, category) === 5 ? 'active' : '',
+                lessonStatus(index, category, lesson) === 5 ? 'active' : '',
                 lessonStatus(index) === 4 ? 'completed' : ''
               ]"
               v-for="(lesson, index) of category.resources"
@@ -83,7 +83,7 @@
                 <i
                   :class="[
                     'card-content-item-icon',
-                    lessonStatusIconClass(index, category)
+                    lessonStatusIconClass(index, category, lesson)
                   ]"
                 ></i>
                 <h5 class="card-content-item-title ellipsis">
@@ -92,7 +92,7 @@
               </div>
               <div class="card-content-item-right">
                 <label class="card-content-item-status">
-                  {{ lessonStatusText(index, category) }}
+                  {{ lessonStatusText(index, category, lesson) }}
                 </label>
                 <label class="card-content-item-duration">
                   {{ formatSeconds(lesson.second_duration) }}
@@ -169,16 +169,16 @@ export default {
     },
     lessonStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放 5 上次学习
-      return (index, category) => {
+      return (index, category, lesson) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const lesson = resources[index];
-        const last_play_position = lesson.last_play_position || 0;
-        const play_second_duration = lesson.play_second_duration || 0;
-        if (category) {
-          return this.previousStudy(category)
+        const lessons = resources[index];
+        const last_play_position = lessons.last_play_position || 0;
+        const play_second_duration = lessons.play_second_duration || 0;
+        if (lesson) {
+          return this.previousLesson(category, lesson)
             ? 5
-            : play_second_duration >= lesson.second_duration * 0.9
+            : play_second_duration >= lessons.second_duration * 0.9
             ? 4
             : last_play_position > 0
             ? 3
@@ -199,19 +199,29 @@ export default {
         }
       };
     },
+    previousLesson() {
+      return (category, lesson) => {
+        if (
+          this.feedback.last_play_widget_id == category.id &&
+          lesson.widget_resource_id == this.feedback.last_play_resource_id
+        ) {
+          return true;
+        }
+      };
+    },
     lessonStatusText() {
-      return (index, category) => {
+      return (index, category, lesson) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const status = this.lessonStatus(index, category);
-        const lesson = resources[index];
+        const status = this.lessonStatus(index, category, lesson);
+        const lessons = resources[index];
         let text = "";
         switch (status) {
           case 5:
-            text = "上次学习 " + this.formatSeconds(lesson.last_play_position);
+            text = "上次学习 " + this.formatSeconds(lessons.last_play_position);
             break;
           case 3:
-            text = "学习至 " + this.formatSeconds(lesson.last_play_position);
+            text = "学习至 " + this.formatSeconds(lessons.last_play_position);
             break;
           case 4:
             text = "已学完";
@@ -224,8 +234,8 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return (index, category) => {
-        const status = this.lessonStatus(index, category);
+      return (index, category, lesson) => {
+        const status = this.lessonStatus(index, category, lesson);
         let iconClass = "unplay-icon";
         switch (status) {
           case 5:
