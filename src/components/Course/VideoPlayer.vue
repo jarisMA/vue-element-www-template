@@ -242,7 +242,7 @@ export default {
               components,
               playsinline: true,
               preload: true,
-              controlBarVisibility: "always",
+              controlBarVisibility: "hover",
               useH5Prism: true,
               skinLayout
             },
