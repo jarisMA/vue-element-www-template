@@ -289,9 +289,8 @@ const STEP_LIST = [
         }
         .banner-btn {
           position: relative;
-          bottom: 37px;
-          left: 50%;
-          transform: translateX(-50%);
+          bottom: 15px;
+          margin: 0 auto;
           width: 228px;
           height: 52px;
           background: url("~images/task/index-banner-btn.png") no-repeat;

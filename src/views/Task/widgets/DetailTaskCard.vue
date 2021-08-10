@@ -16,7 +16,7 @@
         <div class="card-head-up-text">
           <span>初选截止倒计时</span>
           <span v-if="diff_day_type !== 'isTimeout'"
-            >截止日：{{ formatDate(task.published_at) }}</span
+            >截止日：{{ formatDate(task.submit_end_at) }}</span
           >
           <span v-if="diff_day_type == 'isTimeout'">初选截止：已截稿</span>
         </div>
