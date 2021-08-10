@@ -4,7 +4,11 @@
     @click.stop="isDisabled ? handleNotAvailable() : null"
   >
     <el-collapse>
-      <el-collapse-item :disabled="category.type === null || isDisabled">
+      <el-collapse-item
+        :disabled="
+          category.type === null || isDisabled || category.resources.length < 1
+        "
+      >
         <template slot="title">
           <div class="card-header" @click.prevent>
             <div class="card-header-left">
@@ -21,8 +25,13 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
-
-                  <div class="card-note" @click="handleShowNote"></div>
+                  <div @click.stop="">
+                    <div
+                      class="card-note"
+                      @click="handleShowNote"
+                      v-if="noteContent.length > 0"
+                    ></div>
+                  </div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -32,6 +41,11 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
+                <label
+                  class="card-header-previous"
+                  v-if="previousStudy(category)"
+                  >上次学习</label
+                >
                 <label class="card-header-count"
                   >{{ category.resources.length }}节课</label
                 >
@@ -58,7 +72,7 @@
             <div
               :class="[
                 'card-content-item',
-                lessonStatus(index) === 3 ? 'active' : '',
+                lessonStatus(index, category, lesson) === 5 ? 'active' : '',
                 lessonStatus(index) === 4 ? 'completed' : ''
               ]"
               v-for="(lesson, index) of category.resources"
@@ -69,7 +83,7 @@
                 <i
                   :class="[
                     'card-content-item-icon',
-                    lessonStatusIconClass(index)
+                    lessonStatusIconClass(index, category, lesson)
                   ]"
                 ></i>
                 <h5 class="card-content-item-title ellipsis">
@@ -78,7 +92,7 @@
               </div>
               <div class="card-content-item-right">
                 <label class="card-content-item-status">
-                  {{ lessonStatusText(index) }}
+                  {{ lessonStatusText(index, category, lesson) }}
                 </label>
                 <label class="card-content-item-duration">
                   {{ formatSeconds(lesson.second_duration) }}
@@ -118,13 +132,21 @@ export default {
     },
     termId: {
       type: Number
+    },
+    feedback: {
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       COURSE_TYPE_COURSE,
-      COURSE_TYPE_LIVE
+      COURSE_TYPE_LIVE,
+      noteContent: ""
     };
+  },
+  created() {
+    this.hasNote();
   },
   computed: {
     isDisabled() {
@@ -146,30 +168,60 @@ export default {
       return duration;
     },
     lessonStatus() {
-      // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return index => {
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放 5 上次学习
+      return (index, category, lesson) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const lesson = resources[index];
-        const last_play_position = lesson.last_play_position || 0;
-        const play_second_duration = lesson.play_second_duration || 0;
-        return play_second_duration >= lesson.second_duration * 0.9
-          ? 4
-          : last_play_position > 0
-          ? 3
-          : 1;
+        const lessons = resources[index];
+        const last_play_position = lessons.last_play_position || 0;
+        const play_second_duration = lessons.play_second_duration || 0;
+        if (lesson) {
+          return this.previousLesson(category, lesson)
+            ? 5
+            : play_second_duration >= lessons.second_duration * 0.9
+            ? 4
+            : last_play_position > 0
+            ? 3
+            : 1;
+        }
+      };
+    },
+    previousStudy() {
+      return category => {
+        if (
+          this.feedback.last_play_widget_id == category.id &&
+          category.resources.filter(
+            item =>
+              item.widget_resource_id == this.feedback.last_play_resource_id
+          ).length > 0
+        ) {
+          return true;
+        }
+      };
+    },
+    previousLesson() {
+      return (category, lesson) => {
+        if (
+          this.feedback.last_play_widget_id == category.id &&
+          lesson.widget_resource_id == this.feedback.last_play_resource_id
+        ) {
+          return true;
+        }
       };
     },
     lessonStatusText() {
-      return index => {
+      return (index, category, lesson) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const status = this.lessonStatus(index);
-        const lesson = resources[index];
+        const status = this.lessonStatus(index, category, lesson);
+        const lessons = resources[index];
         let text = "";
         switch (status) {
+          case 5:
+            text = "上次学习 " + this.formatSeconds(lessons.last_play_position);
+            break;
           case 3:
-            text = "学习至" + this.formatSeconds(lesson.last_play_position);
+            text = "学习至 " + this.formatSeconds(lessons.last_play_position);
             break;
           case 4:
             text = "已学完";
@@ -182,11 +234,11 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return index => {
-        const status = this.lessonStatus(index);
+      return (index, category, lesson) => {
+        const status = this.lessonStatus(index, category, lesson);
         let iconClass = "unplay-icon";
         switch (status) {
-          case 3:
+          case 5:
             iconClass = "played-icon";
             break;
           case 4:
@@ -239,13 +291,16 @@ export default {
       );
     },
     handleShowNote() {
-      this.$emit("showNote");
+      this.$emit("showNote", this.noteContent);
     },
     handleNotAvailable() {
       this.$notice({
         type: "warning",
         title: "本章节尚未到开放时间"
       });
+    },
+    hasNote() {
+      this.noteContent = this.category.resources.filter(item => item.note);
     }
   }
 };
@@ -318,8 +373,7 @@ export default {
     flex: none;
     position: absolute;
     left: -42px;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 14px;
     .card-header-icon {
       display: block;
       width: 32px;
@@ -396,8 +450,15 @@ export default {
       line-height:  2;
       font-size: 12px;
       color: #8ea098;
+      .card-header-previous {
+        padding: 6px 8px;
+        margin-right: 10px;
+        color: @primaryColor;
+        background: #edfcf4;
+      }
+
       .card-header-date {
-        margin-right: 24px;
+        margin-right: 8px;
         line-height: 16px;
         font-size: 12px;
         color: #8ea098;
@@ -407,7 +468,6 @@ export default {
 }
 
 .card-content {
-  width: calc(100% - 42px);
   padding: 0 0 20px 0;
   .card-content-item {
     display: flex;
@@ -427,6 +487,9 @@ export default {
         color: @primaryColor !important;
       }
       .card-content-item-status {
+        color: @primaryColor !important;
+      }
+      .card-content-item-duration {
         color: @primaryColor !important;
       }
     }
@@ -478,6 +541,7 @@ export default {
       .card-content-item-duration {
         display: inline-block;
         width: 50px;
+        margin-left: 25px;
       }
     }
   }

@@ -31,6 +31,7 @@
               :loading="loading"
               :campId="detail.camp_id"
               :termId="detail.id"
+              :feedback="feedback"
             />
           </el-tab-pane>
           <el-tab-pane label="作业" name="homework">
@@ -230,6 +231,10 @@ export default {
     flex: 1;
     width: 880px;
     background: #fff;
+
+    /deep/ .el-tabs__nav-scroll {
+      padding: 0 !important;
+    }
 
     /deep/ .el-tabs__header {
       position: sticky;

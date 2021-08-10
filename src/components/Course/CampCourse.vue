@@ -66,6 +66,9 @@
                     {{ chapter.title }}
                   </div>
                 </template>
+                <div class="page-menu-empty" v-if="chapter.sections.length < 1">
+                  暂无视频
+                </div>
                 <div
                   :class="[
                     'page-menu-item',
@@ -78,6 +81,7 @@
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
                   @click="handleToggleSection(cIndex, sIndex)"
+                  v-else
                 >
                   <i
                     :class="[
@@ -120,6 +124,7 @@
             chapters[chapterIndex].sections[sectionIndex].second_duration
           "
           :next="next"
+          ref="video"
           @setRecord="handleSetRecord"
           @timeUpdate="handleTimeUpdate"
           @ended="handleEnded"
@@ -171,7 +176,7 @@
       <div :class="['page-content-aside', showAside ? 'show' : 'hide']">
         <div
           class="page-fold-right"
-          @click="showAside = !showAside"
+          @click="handleShowAside()"
           v-if="showAside"
         ></div>
         <course-feedback-list
@@ -180,15 +185,22 @@
           :category="activeFeedbackCategory"
           v-if="showContent == 'feedback'"
         />
-        <div class="course-note">
+        <div class="course-note" v-if="showContent == 'note'">
           <div
             class="course-video-note"
-            v-if="
-              chapters[chapterIndex].sections[sectionIndex].note &&
-                showContent == 'note'
-            "
-            v-html="chapters[chapterIndex].sections[sectionIndex].note.content"
-          ></div>
+            v-if="chapters[chapterIndex].sections[sectionIndex].note"
+          >
+            <div
+              class="course-note-title"
+              v-html="chapters[chapterIndex].sections[sectionIndex].note.name"
+            ></div>
+            <div
+              class="course-note-content"
+              v-html="
+                chapters[chapterIndex].sections[sectionIndex].note.content
+              "
+            ></div>
+          </div>
           <div class="course-note-empty" v-else>
             <img src="~/images/course/note-empty.svg" class="empty-img" />
             <p>这节课没有笔记可查阅噢</p>
@@ -320,7 +332,12 @@ export default {
         );
       }
     },
-
+    handleShowAside() {
+      this.showAside = !this.showAside;
+      if (!this.showAside) {
+        this.$refs.video.clean();
+      }
+    },
     handleContent(val) {
       this.getParams();
       if (!this.showAside || (this.showAside && this.showContent == val)) {
@@ -593,6 +610,13 @@ export default {
       .page-menu-list {
         padding: 4px 0;
       }
+      .page-menu-empty {
+        padding-bottom: 20px;
+        text-align: center;
+        color: #999;
+        font-size: 14px;
+      }
+
       .page-menu-item {
         display: flex;
         align-items: center;
@@ -711,11 +735,26 @@ export default {
     min-width: 432px;
     max-width: 576px;
     background: #494949;
+    overflow: auto;
     transition: width 0.3s;
 
     .course-note {
-      height: 100%;
+      display: flex;
+      min-height: 100%;
       padding: 40px;
+      color: #dddddd;
+
+      .course-video-note {
+        width: 100%;
+      }
+
+      .course-note-title {
+        font-weight: 600;
+        font-size: 24px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #595959;
+      }
 
       .course-note-empty {
         display: flex;
@@ -723,7 +762,7 @@ export default {
         justify-content: center;
         flex-direction: column;
         width: 100%;
-        height: 100%;
+        flex: 1;
         font-size: 16px;
         font-weight: 600;
         color: #dddddd;
@@ -797,9 +836,10 @@ export default {
 </style>
 
 <style lang="less">
-.course-note {
+.course-note-content {
   img {
     max-width: 100%;
+    height: auto !important;
   }
 }
 </style>
