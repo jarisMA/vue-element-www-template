@@ -98,7 +98,7 @@
                 type="primary"
                 @click="
                   course.permission
-                    ? goAcademyCourseVideo(course.id, 1)
+                    ? goAcademyCourseVideo(course.id, course.lessons[activeLessonIndex].id)
                     : handleOrder()
                 "
               >
