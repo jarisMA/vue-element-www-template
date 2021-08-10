@@ -7,6 +7,7 @@
         :category="category"
         :campId="campId"
         :termId="termId"
+        :feedback="feedback"
         @showNote="handleShowNote"
       />
     </div>
@@ -64,6 +65,10 @@ export default {
     },
     loading: {
       type: Boolean,
+      required: true
+    },
+    feedback: {
+      type: Object,
       required: true
     }
   },
