@@ -14,7 +14,10 @@ axiosInstance.interceptors.request.use(
       ...config,
       params: {
         ...config.params,
-        app_id: 1,
+        app_id: 1
+      },
+      data: {
+        ...config.data,
         request_time: new Date().toLocaleString()
       }
     };
