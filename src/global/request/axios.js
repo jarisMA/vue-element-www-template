@@ -14,7 +14,8 @@ axiosInstance.interceptors.request.use(
       ...config,
       params: {
         ...config.params,
-        app_id: 1
+        app_id: 1,
+        request_time: new Date().toLocaleString()
       }
     };
     const TOKEN = cookies.get("web_token");
