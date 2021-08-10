@@ -41,6 +41,11 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
+                <label
+                  class="card-header-previous"
+                  v-if="previousStudy(category)"
+                  >上次学习</label
+                >
                 <label class="card-header-count"
                   >{{ category.resources.length }}节课</label
                 >
@@ -67,7 +72,7 @@
             <div
               :class="[
                 'card-content-item',
-                lessonStatus(index) === 3 ? 'active' : '',
+                lessonStatus(index, category) === 5 ? 'active' : '',
                 lessonStatus(index) === 4 ? 'completed' : ''
               ]"
               v-for="(lesson, index) of category.resources"
@@ -78,7 +83,7 @@
                 <i
                   :class="[
                     'card-content-item-icon',
-                    lessonStatusIconClass(index)
+                    lessonStatusIconClass(index, category)
                   ]"
                 ></i>
                 <h5 class="card-content-item-title ellipsis">
@@ -87,7 +92,7 @@
               </div>
               <div class="card-content-item-right">
                 <label class="card-content-item-status">
-                  {{ lessonStatusText(index) }}
+                  {{ lessonStatusText(index, category) }}
                 </label>
                 <label class="card-content-item-duration">
                   {{ formatSeconds(lesson.second_duration) }}
@@ -127,6 +132,10 @@ export default {
     },
     termId: {
       type: Number
+    },
+    feedback: {
+      type: Object,
+      required: true
     }
   },
   data() {
@@ -159,30 +168,50 @@ export default {
       return duration;
     },
     lessonStatus() {
-      // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return index => {
+      // 4 播放完成，3 播放过，2 正在播放，1 未播放 5 上次学习
+      return (index, category) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
         const lesson = resources[index];
         const last_play_position = lesson.last_play_position || 0;
         const play_second_duration = lesson.play_second_duration || 0;
-        return play_second_duration >= lesson.second_duration * 0.9
-          ? 4
-          : last_play_position > 0
-          ? 3
-          : 1;
+        if (category) {
+          return this.previousStudy(category)
+            ? 5
+            : play_second_duration >= lesson.second_duration * 0.9
+            ? 4
+            : last_play_position > 0
+            ? 3
+            : 1;
+        }
+      };
+    },
+    previousStudy() {
+      return category => {
+        if (
+          this.feedback.last_play_widget_id == category.id &&
+          category.resources.filter(
+            item =>
+              item.widget_resource_id == this.feedback.last_play_resource_id
+          ).length > 0
+        ) {
+          return true;
+        }
       };
     },
     lessonStatusText() {
-      return index => {
+      return (index, category) => {
         const { type, resources } = this.category;
         if (type !== COURSE_TYPE_COURSE) return 0;
-        const status = this.lessonStatus(index);
+        const status = this.lessonStatus(index, category);
         const lesson = resources[index];
         let text = "";
         switch (status) {
+          case 5:
+            text = "上次学习 " + this.formatSeconds(lesson.last_play_position);
+            break;
           case 3:
-            text = "学习至" + this.formatSeconds(lesson.last_play_position);
+            text = "学习至 " + this.formatSeconds(lesson.last_play_position);
             break;
           case 4:
             text = "已学完";
@@ -195,11 +224,11 @@ export default {
       };
     },
     lessonStatusIconClass() {
-      return index => {
-        const status = this.lessonStatus(index);
+      return (index, category) => {
+        const status = this.lessonStatus(index, category);
         let iconClass = "unplay-icon";
         switch (status) {
-          case 3:
+          case 5:
             iconClass = "played-icon";
             break;
           case 4:
@@ -411,6 +440,13 @@ export default {
       line-height:  2;
       font-size: 12px;
       color: #8ea098;
+      .card-header-previous {
+        padding: 6px 8px;
+        margin-right: 10px;
+        color: @primaryColor;
+        background: #edfcf4;
+      }
+
       .card-header-date {
         margin-right: 8px;
         line-height: 16px;
@@ -441,6 +477,9 @@ export default {
         color: @primaryColor !important;
       }
       .card-content-item-status {
+        color: @primaryColor !important;
+      }
+      .card-content-item-duration {
         color: @primaryColor !important;
       }
     }
