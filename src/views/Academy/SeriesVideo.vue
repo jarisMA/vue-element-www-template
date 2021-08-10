@@ -129,12 +129,12 @@ export default {
       });
     },
     handleEnded() {
-      const { chapterId, sectionId } = this;
-      courseService.setSeriesSectionFinish(
-        this.$route.params.seriesId,
-        chapterId,
-        sectionId
-      );
+      // const { chapterId, sectionId } = this;
+      // courseService.setSeriesSectionFinish(
+      //   this.$route.params.seriesId,
+      //   chapterId,
+      //   sectionId
+      // );
     }
   }
 };

@@ -132,8 +132,8 @@ export default {
       }
     },
     handleEnded() {
-      const { courseId, lessonId } = this;
-      courseService.setLessonFinish(courseId, lessonId);
+      // const { courseId, lessonId } = this;
+      // courseService.setLessonFinish(courseId, lessonId);
     },
     handleNext() {
       const { course_id, id } = this.nextLesson;

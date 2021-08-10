@@ -157,15 +157,15 @@ export default {
       });
     },
     handleEnded() {
-      const { widgets, activeWidgetIndex, activeResourceIndex } = this;
-      const widget = widgets[activeWidgetIndex];
-      const resource = widget.resources[activeResourceIndex];
-      termService.campTermWidgetResourceFinish(
-        resource.camp_id,
-        resource.term_id,
-        resource.widget_id,
-        resource.widget_resource_id
-      );
+      // const { widgets, activeWidgetIndex, activeResourceIndex } = this;
+      // const widget = widgets[activeWidgetIndex];
+      // const resource = widget.resources[activeResourceIndex];
+      // termService.campTermWidgetResourceFinish(
+      //   resource.camp_id,
+      //   resource.term_id,
+      //   resource.widget_id,
+      //   resource.widget_resource_id
+      // );
     },
     handleNext() {
       const { widget_id, widget_resource_id } = this.nextLesson;

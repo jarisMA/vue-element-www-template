@@ -155,11 +155,17 @@ export default {
   },
   beforeDestroy() {
     this.handleClearTimer();
-    document.querySelector("#videoPlayer video") &&
-      document
-        .querySelector("#videoPlayer video")
-        .removeEventListener("click", this.handleTogglePlay);
-    document.removeEventListener("keydown", this.handleKeydown);
+    if (this.player) {
+      document.querySelector("#videoPlayer video") &&
+        document
+          .querySelector("#videoPlayer video")
+          .removeEventListener("click", this.handleTogglePlay);
+      this.player.dispose();
+      this.player = null;
+      this.playing = false;
+      this.seeked = false;
+      document.removeEventListener("keydown", this.handleKeydown);
+    }
   },
   methods: {
     checkTransformCodeStatus() {
@@ -236,7 +242,7 @@ export default {
               components,
               playsinline: true,
               preload: true,
-              controlBarVisibility: "always",
+              controlBarVisibility: "hover",
               useH5Prism: true,
               skinLayout
             },
@@ -325,7 +331,7 @@ export default {
 
     handleSetRecord() {
       const nowTime = new Date().valueOf();
-      const second_duration = Math.floor((nowTime - this.timestamp) / 1000);
+      const second_duration = parseInt((nowTime - this.timestamp) / 1000);
       const last_play_position = this.player.getCurrentTime();
       if (!this.stopEmit) {
         this.$emit("setRecord", {
@@ -388,11 +394,11 @@ export default {
     },
     handleCompleteSeek() {
       // console.log("completeSeek");
-      this.handleSetRecord();
       this.handlePlay();
     },
     handleEnded() {
       this.handleClearTimer(this.timer);
+      this.handleSetRecord();
       this.$emit("ended");
       let nextVideoComponent = this.player.getComponent("NextVideoComponent");
       if (nextVideoComponent) {
