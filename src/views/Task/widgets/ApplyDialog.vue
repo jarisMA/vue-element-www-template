@@ -4,8 +4,12 @@
     :visible.sync="showDialog"
     :show-close="false"
   >
-    <div class="apply-dialog-container" @click="handleCancle">
-      <template v-if="userInfo && !userInfo.is_designer">
+    <div
+      class="apply-dialog-container"
+      @click="handleCancle"
+      v-loading="loading"
+    >
+      <template v-if="type == 'JOIN_DESIGNER'">
         <div class="container-content">
           <div class="content-header">
             加入斗西设计团
@@ -19,34 +23,8 @@
               />
             </div>
             <div class="body__description">
-              OOPS～你还不是斗西设计团的成员哦，
-              请先填写申请表单再查看任务：）<span
-                class="body__description--green"
-              ></span>
-            </div>
-            <div class="body__btn-container">
-              <div class="body__btn body__btn--left" @click.stop="handleCancle">
-                再看看
-              </div>
-              <div class="body__btn body__btn--right" @click.stop="goApply">
-                去申请
-              </div>
-            </div>
-          </div>
-        </div>
-      </template>
-      <template v-if="userInfo && userInfo.is_designer">
-        <div class="container-content">
-          <div class="content-header">
-            报名参与任务
-          </div>
-          <div class="content-body">
-            <div class="body__img-container">
-              <img src="" alt="" class="body__img" />
-            </div>
-            <div class="body__description">
-              确认花费{{ task.heart_count }}暖心报名参加
-              <span class="body__description--green">{{ task.name }} </span>吗？
+              OOPS～你还不是斗西设计团的成员哦，<br />
+              请先填写申请表单再查看任务：）
             </div>
             <div class="body__btn-container">
               <div class="body__btn body__btn--left" @click.stop="handleCancle">
@@ -54,8 +32,61 @@
               </div>
               <div
                 class="body__btn body__btn--right"
-                @click.stop="handleSignUp"
+                @click.stop="goJoinDesigner"
               >
+                去申请
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template v-if="type == 'APPLY_TASK'">
+        <div class="container-content">
+          <div class="content-header">
+            报名参与任务
+          </div>
+          <div class="content-body">
+            <div class="body__heart" v-if="is_enough_heart">
+              -{{ task.heart_count }}
+            </div>
+            <div class="body__img-container">
+              <img
+                v-if="is_enough_heart"
+                src="~/images/task/apply-dialog-heart.svg"
+                alt=""
+                class="body__img"
+              />
+              <img
+                v-else
+                src="~/images/task/apply-dialog-heart-disabeld.svg"
+                alt=""
+                class="body__img"
+              />
+            </div>
+            <div class="body__description">
+              <template v-if="is_enough_heart"
+                >确认花费{{ task.heart_count }}暖心报名参加
+                <span class="body__description--green">{{ task.name }} </span
+                >吗？
+              </template>
+              <template v-else>
+                暖心不足了 T T。<el-link class="body__description--green"
+                  >去看看如何获取暖心</el-link
+                >
+              </template>
+            </div>
+            <div class="body__btn-container">
+              <div class="body__btn body__btn--left" @click.stop="handleCancle">
+                再看看
+              </div>
+              <div
+                v-if="is_enough_heart"
+                class="body__btn body__btn--right"
+                @click.stop="getTaskIsFull"
+              >
+                <div class="body__btn-tips" v-if="showIsFullTips">
+                  任务已经满员，是否无赏参与
+                </div>
                 确认报名
               </div>
             </div>
@@ -68,6 +99,8 @@
 <script>
 import { goTaskJoin } from "utils/routes";
 import { mapState } from "vuex";
+import taskService from "@/global/service/task";
+
 export default {
   name: "ApplyDialog",
   props: {
@@ -77,7 +110,7 @@ export default {
     },
     type: {
       type: String,
-      default: ""
+      default: "JOIN_DESIGNER" || "APPLY_TASK"
     },
     task: {
       type: Object,
@@ -85,20 +118,47 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      loading: false
+    };
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
+    is_enough_heart() {
+      return this.userInfo.mark_total > this.task.heart_count;
+    }
   },
   methods: {
     goTaskJoin,
+    getTaskIsFull() {
+      taskService.taskIsFull(this.$route.params.id).then(res => {
+        if (!res.is_full) {
+          this.loading = true;
+          return this.handleSignUp();
+        }
+        this.$msgBox
+          .showMsgBox({
+            theme: "img_s_420_274",
+            content:
+              "<p style='color:#14AF64FF;font-weight:400;font-size:24px;line-height:33px;'>任务已经满员，是否无赏参与</p>",
+            showCloseBtn: false
+          })
+          .then(async () => {
+            this.handleSignUp();
+            this.loading = true;
+          })
+          .catch(() => {
+            this.loading = false;
+          });
+      });
+    },
     handleSignUp() {
       this.$emit("signUp");
     },
     handleCancle() {
       this.$emit("update:showDialog", false);
     },
-    goApply() {
+    goJoinDesigner() {
       this.goTaskJoin();
       this.handleCancle();
     }
@@ -152,16 +212,29 @@ export default {
         text-align: center;
       }
       .content-body {
+        position: relative;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        padding-top: 15px;
+        padding-top: 50px;
         background-color: #ffffff;
+        .body__heart {
+          position: absolute;
+          top: 50px;
+          left: 404px;
+          width: fit-content;
+          height: 67px;
+          font-weight: 600;
+          font-size: 48px;
+          line-height: 67px;
+          text-align: center;
+          color: #e95352;
+        }
         .body__img-container {
-          width: 210px;
-          height: 210px;
-          margin-bottom: 15px;
+          width: 150px;
+          height: 150px;
+          margin-bottom: 40px;
           .body__img {
             width: 100%;
             height: 100%;
@@ -185,6 +258,7 @@ export default {
           width: 100%;
           padding: 0 92px;
           .body__btn {
+            position: relative;
             width: 206px;
             height: 50px;
             line-height: 50px;
@@ -201,6 +275,44 @@ export default {
               background: url("~images/task/dialog-btn-green.svg") no-repeat;
               background-size: 206px 50px;
               color: #ffffff;
+              .body__btn-tips {
+                position: absolute;
+                top: -24px;
+                left: 50%;
+                transform: translateX(-50%);
+                height: 24px;
+                width: -webkit-fit-content;
+                width: -moz-fit-content;
+                width: fit-content;
+                padding: 0 6px;
+                margin: 0 auto;
+                border: 2px solid #f0f0f0;
+                border-bottom: none;
+                color: #ff3738;
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 24px;
+                -webkit-clip-path: polygon(
+                  0 2px,
+                  2px 2px,
+                  2px 0,
+                  calc(100% - 2px) 0,
+                  calc(100% - 2px) 2px,
+                  100% 2px,
+                  100% 100%,
+                  0 100%
+                );
+                clip-path: polygon(
+                  0 2px,
+                  2px 2px,
+                  2px 0,
+                  calc(100% - 2px) 0,
+                  calc(100% - 2px) 2px,
+                  100% 2px,
+                  100% 100%,
+                  0 100%
+                );
+              }
             }
           }
         }
