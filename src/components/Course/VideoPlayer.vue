@@ -236,8 +236,10 @@ export default {
               components,
               playsinline: true,
               preload: true,
-              controlBarVisibility: "always",
+              controlBarVisibility: "hover",
               useH5Prism: true,
+              keyShortCuts: true,
+              keyFastForwardStep: 10,
               skinLayout
             },
             player => {
@@ -273,6 +275,8 @@ export default {
               preload: true,
               controlBarVisibility: "hover",
               useH5Prism: true,
+              keyShortCuts: true,
+              keyFastForwardStep: 10,
               skinLayout
             },
             player => {
