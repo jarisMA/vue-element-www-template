@@ -93,7 +93,7 @@
         </div>
         <div v-if="activeBible.status === 2 || !this.authBibleIds">
           <p>对不起少年，</p>
-          <p>此宝典只对门下学徒开放....</p>
+          <p>你所在门派未涵盖此宝典....</p>
         </div>
       </div>
       <div class="bible-dialog-footer">
