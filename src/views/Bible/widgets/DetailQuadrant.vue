@@ -73,6 +73,12 @@ export default {
       } else {
         this.activeSubMenu = null;
       }
+    },
+    init() {
+      this.$nextTick(() => {
+        document.getElementsByClassName("swiper-wrapper")[1].style.transform =
+          "translate3d(0px, 0px, 0px)";
+      });
     }
   }
 };
@@ -133,8 +139,9 @@ export default {
     object-fit: cover;
     cursor: pointer;
     z-index: 5;
+
     &.swiper-button-disabled {
-      filter: opacity(0.5);
+      display: none;
       cursor: auto;
     }
   }
