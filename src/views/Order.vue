@@ -73,7 +73,6 @@
               class="pay-item"
               v-model="payment"
               :label="PAY_METHOD_WECHAT"
-              v-if="false"
             >
               <div class="pay-item-left">
                 <i class="wechat-icon"></i>
@@ -271,10 +270,10 @@ export default {
           this.showStatus = true;
         } else {
           if (show) {
-            this.status = PAY_STATUS_PENDING;
             this.showStatus = true;
           }
-          if (this.showStatus && !once) {
+          this.status = PAY_STATUS_PENDING;
+          if ((this.showWechatQrcode || this.showStatus) && !once) {
             const timer = setTimeout(() => {
               this.handlePayCheck();
               clearTimeout(timer);
