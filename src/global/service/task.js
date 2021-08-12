@@ -11,6 +11,12 @@ const taskService = {
   taskId(uuid) {
     return request.get(API.taskId(uuid));
   },
+  taskApply(uuid) {
+    return request.post(API.taskApply(uuid));
+  },
+  taskIsFull(uuid) {
+    return request.get(API.taskIsFull(uuid));
+  },
   taskUserJoin(params) {
     return request.post(API.taskUserJoin, params);
   }

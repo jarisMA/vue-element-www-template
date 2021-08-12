@@ -1,14 +1,14 @@
-@import './variable.less';
+@import "./variable.less";
 
-.page-container{
+.page-container {
   min-height: 100%;
   display: flex;
   flex-direction: column;
 }
-.mb-20{
+.mb-20 {
   margin-bottom: 20px;
 }
-.mb-30{
+.mb-30 {
   margin-bottom: 30px;
 }
 
@@ -19,7 +19,7 @@
   width: 580px;
   margin: 0 auto;
 }
-.container-980{
+.container-980 {
   width: 980px;
   margin: 0 auto;
 }
@@ -32,19 +32,19 @@
   width: 1200px;
   margin: 0 auto;
 }
-.el-avatar--circle{
-  img{
+.el-avatar--circle {
+  img {
     border-radius: 50%;
   }
 }
 
-.ellipsis{
+.ellipsis {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 }
 
-.primary{
+.primary {
   color: @primaryColor;
   cursor: pointer;
 }
@@ -61,65 +61,65 @@
   }
 }
 
-.pointer{
+.pointer {
   cursor: pointer;
 }
 
-.bgImg{
+.bgImg {
   display: inline-block;
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.unvip-icon{
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-image: url('~images/user.png');
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.vip-icon{
+.unvip-icon {
   display: inline-block;
   width: 20px;
   height: 20px;
-  background-image: url('~images/vip.png');
+  background-image: url("~images/user.png");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.heart-icon{
+.vip-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-image: url("~images/vip.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.heart-icon {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('~images/question/heart.svg');
+  background-image: url("~images/question/heart.svg");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.calender-icon{
+.calender-icon {
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url('~images/question/calender.svg');
+  background-image: url("~images/question/calender.svg");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
-.tool-label-tip{
+.tool-label-tip {
   line-height: 1;
   font-size: 14px;
   padding: 4px !important;
   transform: translateY(-10px);
 }
 
-.chrome_other_tips{
-  img{
+.chrome_other_tips {
+  img {
     width: 230px;
     height: auto !important;
   }
-  p{
+  p {
     font-weight: 500;
   }
 }
@@ -127,4 +127,8 @@
 .page {
   width: 100%;
   height: 100%;
+}
+
+.disabled {
+  pointer-events: none !important;
 }

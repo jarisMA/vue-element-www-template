@@ -51,7 +51,7 @@
       v-if="showApplyDialog"
       :task="taskInfo"
       :show-dialog.sync="showApplyDialog"
-      :type="'signup'"
+      :type="applyDialogType"
       @signUp="handleSignUP"
     ></apply-dialog>
     <preview-file-dialog
@@ -83,6 +83,7 @@ export default {
     return {
       loading: false,
       showApplyDialog: false,
+      applyDialogType: "",
       showPreviewFileDialog: false,
       activeFileIndex: null,
       fileList: [],
@@ -202,7 +203,8 @@ export default {
     handleChangeTab(tab) {
       this.currentTab = tab;
     },
-    toggleShowApplyDialog() {
+    toggleShowApplyDialog(e) {
+      this.applyDialogType = e;
       this.showApplyDialog = !this.showApplyDialog;
     },
     previewImage(e) {
@@ -216,7 +218,19 @@ export default {
       this.activeFileIndex = e;
     },
     handleSignUP() {
-      console.log("singup");
+      const id = this.$route.params.id;
+      taskService
+        .taskApply(id)
+        .then(() => {
+          this.$notice({
+            type: "success",
+            title: `您已成功报名`
+          });
+          this.getData();
+        })
+        .finally(() => {
+          this.showApplyDialog = false;
+        });
     }
   }
 };
