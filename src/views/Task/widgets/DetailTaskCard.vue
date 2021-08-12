@@ -115,7 +115,7 @@
     <div class="card-btn-container">
       <template>
         <div class="card-btn-tips">
-          <template v-if="!task.has_joined && canApplyOrUpload">
+          <template v-if="!task.has_joined">
             {{ task.users_count }}人参与，还剩{{ applyLeft }}个名额
           </template>
           <template v-if="task.has_joined && canApplyOrUpload">
@@ -187,7 +187,7 @@ export default {
       return false;
     },
     applyBtnColor() {
-      const { is_backdoor, max_apply, users_count, status, level } = this.task;
+      const { is_backdoor, max_apply, users_count, level } = this.task;
       // 非后门任务,满员或用户等级小于难度
       if (
         !is_backdoor &&
@@ -195,7 +195,10 @@ export default {
       ) {
         return "card-btn--grey disabled";
       }
-      return status >= 4 ? "card-btn--grey" : "card-btn--green";
+
+      return this.canApplyOrUpload
+        ? "card-btn--green"
+        : "card-btn--grey disabled";
     },
     applyBtnText() {
       const {
@@ -210,10 +213,15 @@ export default {
         status_label
       } = this.task;
       const { userJobInfo } = this;
+      const heartText = heart_count ? heart_count + "暖心" + "立即参与" : "";
 
       // Todo
       // 1. Task API Add designs
       // 2. 已中标提交源文件文字判断
+
+      if (!this.canApplyOrUpload) {
+        return "已截稿";
+      }
 
       if (status >= 2) {
         return "任务" + status_label;
@@ -242,8 +250,7 @@ export default {
         return "不可报名";
       }
 
-      const heartText = heart_count ? heart_count + "暖心" : "";
-      return heartText + "立即参与";
+      return heartText;
     }
   },
   components: {
@@ -269,7 +276,7 @@ export default {
       );
     },
     handleApplyBtn() {
-      if (this.applyBtnDisabled) return;
+      if (this.applyBtnDisabled || !this.canApplyOrUpload) return;
       const { has_joined } = this.task;
 
       if (!this.userInfo) {
