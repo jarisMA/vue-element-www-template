@@ -136,5 +136,7 @@ export default {
 
   tasks: `${WEB_PREFIX}/tasks`,
   taskId: uuid => `${WEB_PREFIX}/tasks/${uuid}`,
+  taskApply: uuid => `${WEB_PREFIX}/tasks/${uuid}/apply`,
+  taskIsFull: uuid => `${WEB_PREFIX}/tasks/${uuid}/is-full`,
   taskUserJoin: `${WEB_PREFIX}/tasks/users/join`
 };

@@ -112,61 +112,26 @@
         </div>
       </div>
     </div>
-    <div class="card-btn">
+    <div class="card-btn-container">
       <template>
-        <div class="card-btn-tips" v-if="false">
-          <template v-if="!is_join && task.status == 1 && level == 0">
-            {{ task.users_count }}人参与，还剩{{
-              task.max_apply - task.users_count
-            }}个名额
+        <div class="card-btn-tips">
+          <template v-if="!task.has_joined && canApplyOrUpload">
+            {{ task.users_count }}人参与，还剩{{ applyLeft }}个名额
           </template>
-          <template v-if="is_join && task.status == 1">
+          <template v-if="task.has_joined && canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span
             >点击上传方案，可上传多个方案
           </template>
-          <template v-if="is_join && (task.status == 4 || task.status == 6)">
+          <template v-if="task.has_joined && !canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span>方案提交已截止，{{
               task.users_count
             }}参与
           </template>
         </div>
-        <div class="card-btn-container">
-          <!-- 未参与且任务是进行中 -->
-          <template v-if="!is_join && task.status == 1 && level !== 0">
-            <div class="card-btn card-btn--green" @click="handleShowDialog">
-              {{ task.heart_count }}暖心立即参与
-            </div>
-          </template>
-          <!-- 已参与且任务是进行中 -->
-          <template v-if="is_join && task.status == 1 && !designs.length">
-            <div class="card-btn card-btn--green">
-              上传方案
-            </div>
-          </template>
-          <!-- 已参与且任务是进行中 -->
-          <template v-if="is_join && task.status == 1 && designs.length">
-            <div class="card-btn card-btn--green">
-              重新上传
-            </div>
-          </template>
-          <!-- 已参与且任务评审中 -->
-          <template v-if="is_join && task.status == 4">
-            <div class="card-btn card-btn--grey">
-              任务评审中
-            </div>
-          </template>
-          <!-- 已参与且任务已完成 -->
-          <template v-if="is_join && task.status == 6">
-            <div class="card-btn card-btn--grey">
-              任务已完成
-            </div>
-          </template>
-          <!-- 新手 -->
-          <template v-if="!is_join && level == 0">
-            <div class="card-btn card-btn--green" @click="handleShowDialog">
-              无赏参与
-            </div>
-          </template>
+        <div class="card-btn">
+          <div :class="['card-btn', applyBtnColor]" @click="handleApplyBtn">
+            {{ applyBtnText }}
+          </div>
         </div>
       </template>
     </div>
@@ -192,13 +157,94 @@ export default {
   },
   data() {
     return {
-      is_join: false,
       level: 0,
       diff_day_type: null
     };
   },
   computed: {
-    ...mapState(["userInfo"])
+    ...mapState(["userInfo"]),
+    applyLeft() {
+      const { max_apply, users_count } = this.task;
+      return max_apply - users_count >= 0 ? max_apply - users_count : 0;
+    },
+    userJobInfo() {
+      const { jobs = [] } = this.userInfo;
+      const { job = {} } = this.task;
+      return jobs.find(d => d.parent_job_id === job.job_id) || {};
+    },
+    canApplyOrUpload() {
+      return this.task.status == 1 && this.diff_day_type != "isTimeout";
+    },
+    applyBtnDisabled() {
+      const { is_backdoor, max_apply, users_count, level } = this.task;
+      // 非后门任务,满员或用户等级小于难度
+      if (
+        !is_backdoor &&
+        (max_apply <= users_count || this.userJobInfo.level < level)
+      ) {
+        return true;
+      }
+      return false;
+    },
+    applyBtnColor() {
+      const { is_backdoor, max_apply, users_count, status, level } = this.task;
+      // 非后门任务,满员或用户等级小于难度
+      if (
+        !is_backdoor &&
+        (max_apply <= users_count || this.userJobInfo.level < level)
+      ) {
+        return "card-btn--grey disabled";
+      }
+      return status >= 4 ? "card-btn--grey" : "card-btn--green";
+    },
+    applyBtnText() {
+      const {
+        is_backdoor,
+        max_apply,
+        users_count,
+        has_joined,
+        // designs,
+        level,
+        heart_count,
+        status,
+        status_label
+      } = this.task;
+      const { userJobInfo } = this;
+
+      // Todo
+      // 1. Task API Add designs
+      // 2. 已中标提交源文件文字判断
+
+      if (status >= 2) {
+        return "任务" + status_label;
+      }
+
+      //temp const
+      const designs = [];
+      if (has_joined) {
+        return designs.length > 0 ? "重新上传" : "上传方案";
+      }
+
+      const isFull = max_apply <= users_count;
+      if (!is_backdoor && isFull) {
+        return "任务已满员";
+      }
+
+      if (!userJobInfo.id) {
+        return "无赏参与"; // 无职业情况
+      }
+
+      if (is_backdoor && (isFull || userJobInfo.level < level)) {
+        return "无赏参与";
+      }
+
+      if (!is_backdoor && (isFull || userJobInfo.level < level)) {
+        return "不可报名";
+      }
+
+      const heartText = heart_count ? heart_count + "暖心" : "";
+      return heartText + "立即参与";
+    }
   },
   components: {
     TheLoadingImage,
@@ -222,14 +268,23 @@ export default {
         new Date()
       );
     },
-    handleShowDialog() {
+    handleApplyBtn() {
+      if (this.applyBtnDisabled) return;
+      const { has_joined } = this.task;
+
       if (!this.userInfo) {
-        return this.wxLogin();
+        return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
-      this.$emit("toggleShowDialog");
+
+      if (has_joined) {
+        return this.handleUploadFile();
+      }
+
+      const TYPE = !this.userJobInfo.id ? "JOIN_DESIGNER" : "APPLY_TASK";
+      this.$emit("toggleShowDialog", TYPE);
     },
-    wxLogin() {
-      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
+    handleUploadFile() {
+      return false;
     }
   }
 };
@@ -624,7 +679,7 @@ export default {
       }
     }
   }
-  .card-btn {
+  .card-btn-container {
     margin-top: 80px;
     .card-btn-tips {
       height: 24px;
@@ -657,30 +712,26 @@ export default {
         color: #000000;
       }
     }
-    .card-btn-container {
+    .card-btn {
       width: 381px;
       height: 52px;
-      .card-btn {
-        width: 381px;
-        height: 52px;
-        background-size: 381px 52px;
-        background-repeat: no-repeat;
-        font-weight: 500;
-        font-size: 24px;
-        text-align: center;
-        line-height: 52px;
-        color: #ffffff;
-        cursor: pointer;
-        &.card-btn--green {
-          background-image: url("~images/task/card-btn-green.png");
-        }
-        &.card-btn--grey {
-          background-image: url("~images/task/card-btn-grey.png");
-          color: #b4b4b4;
-        }
-        &.card-btn--light-green {
-          background-image: url("~images/task/card-btn-light-green.png");
-        }
+      background-size: 381px 52px;
+      background-repeat: no-repeat;
+      font-weight: 500;
+      font-size: 24px;
+      text-align: center;
+      line-height: 52px;
+      color: #ffffff;
+      cursor: pointer;
+      &.card-btn--green {
+        background-image: url("~images/task/card-btn-green.png");
+      }
+      &.card-btn--grey {
+        background-image: url("~images/task/card-btn-grey.png");
+        color: #b4b4b4;
+      }
+      &.card-btn--light-green {
+        background-image: url("~images/task/card-btn-light-green.png");
       }
     }
   }
