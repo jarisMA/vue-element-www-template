@@ -47,9 +47,7 @@
             backgroundColor: item.bgColor
           }"
         >
-          <label class="quadrant-name-label">{{
-            item.name
-          }}</label>
+          <label class="quadrant-name-label">{{ item.name }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
           <div
