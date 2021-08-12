@@ -45,18 +45,10 @@
           title="象限名称"
           :style="{
             backgroundColor: item.bgColor
-              ? item.bgColor
-              : item.key == 1 || item.key == 2
-              ? '#BADFCE'
-              : '#FCEECE'
           }"
         >
           <label class="quadrant-name-label">{{
             item.name
-              ? item.name
-              : item.key == 1 || item.key == 2
-              ? "普适象限区"
-              : "特色象限区"
           }}</label>
         </div>
         <div class="quadrant-grid-wrapper">
@@ -415,6 +407,7 @@ export default {
       transform: translateY(-50%);
       z-index: 3;
       mask-image: url(~images/bible/x-fill.svg);
+      background: linear-gradient(to right, #54995a, #753ec2);
     }
 
     .y-axis {
@@ -435,6 +428,7 @@ export default {
       transform: translateY(-50%);
       z-index: 1;
       mask-image: url(~images/bible/y-fill.svg);
+      background: linear-gradient(to bottom, #ec656d, #4883d5);
     }
     .quadrant-first,
     .quadrant-second,
@@ -477,7 +471,7 @@ export default {
     .quadrant-first {
       left: 0;
       bottom: 28px;
-      border-color: #badfce;
+      border-color: white;
       .quadrant-name {
         bottom: -12px;
         left: -12px;
@@ -490,7 +484,7 @@ export default {
     .quadrant-second {
       left: 0;
       top: -28px;
-      border-color: #badfce;
+      border-color: white;
       .quadrant-name {
         left: -12px;
         top: -12px;
@@ -503,7 +497,7 @@ export default {
     .quadrant-fourth {
       right: 0;
       top: -28px;
-      border-color: #fceece;
+      border-color: white;
       .quadrant-name {
         top: -12px;
         right: -12px;
@@ -516,7 +510,7 @@ export default {
     .quadrant-third {
       right: 0;
       bottom: 28px;
-      border-color: #fceece;
+      border-color: white;
       .quadrant-name {
         bottom: -12px;
         right: -12px;
