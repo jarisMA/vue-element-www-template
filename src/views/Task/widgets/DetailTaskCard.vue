@@ -116,9 +116,7 @@
       <template>
         <div class="card-btn-tips">
           <template v-if="!task.has_joined && canApplyOrUpload">
-            {{ task.users_count }}人参与，还剩{{
-              task.max_apply - task.users_count
-            }}个名额
+            {{ task.users_count }}人参与，还剩{{ applyLeft }}个名额
           </template>
           <template v-if="task.has_joined && canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span
@@ -165,6 +163,10 @@ export default {
   },
   computed: {
     ...mapState(["userInfo"]),
+    applyLeft() {
+      const { max_apply, users_count } = this.task;
+      return max_apply - users_count >= 0 ? max_apply - users_count : 0;
+    },
     userJobInfo() {
       const { jobs = [] } = this.userInfo;
       const { job = {} } = this.task;
@@ -173,10 +175,24 @@ export default {
     canApplyOrUpload() {
       return this.task.status == 1 && this.diff_day_type != "isTimeout";
     },
+    applyBtnDisabled() {
+      const { is_backdoor, max_apply, users_count, level } = this.task;
+      // 非后门任务,满员或用户等级小于难度
+      if (
+        !is_backdoor &&
+        (max_apply <= users_count || this.userJobInfo.level < level)
+      ) {
+        return true;
+      }
+      return false;
+    },
     applyBtnColor() {
-      const { is_backdoor, max_apply, users_count, status } = this.task;
-      // 非后门任务满员
-      if (!is_backdoor && max_apply <= users_count) {
+      const { is_backdoor, max_apply, users_count, status, level } = this.task;
+      // 非后门任务,满员或用户等级小于难度
+      if (
+        !is_backdoor &&
+        (max_apply <= users_count || this.userJobInfo.level < level)
+      ) {
         return "card-btn--grey disabled";
       }
       return status >= 4 ? "card-btn--grey" : "card-btn--green";
@@ -222,6 +238,10 @@ export default {
         return "无赏参与";
       }
 
+      if (!is_backdoor && (isFull || userJobInfo.level < level)) {
+        return "不可报名";
+      }
+
       const heartText = heart_count ? heart_count + "暖心" : "";
       return heartText + "立即参与";
     }
@@ -249,7 +269,9 @@ export default {
       );
     },
     handleApplyBtn() {
+      if (this.applyBtnDisabled) return;
       const { has_joined } = this.task;
+
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }

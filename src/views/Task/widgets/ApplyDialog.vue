@@ -4,11 +4,7 @@
     :visible.sync="showDialog"
     :show-close="false"
   >
-    <div
-      class="apply-dialog-container"
-      @click="handleCancle"
-      v-loading="loading"
-    >
+    <div class="apply-dialog-container">
       <template v-if="type == 'JOIN_DESIGNER'">
         <div class="container-content">
           <div class="content-header">
@@ -17,7 +13,7 @@
           <div class="content-body">
             <div class="body__img-container">
               <img
-                src="~/images/task/apply-dialog-join.png"
+                src="~/images/task/apply-dialog-join.svg"
                 alt=""
                 class="body__img"
               />
@@ -41,7 +37,7 @@
         </div>
       </template>
       <template v-if="type == 'APPLY_TASK'">
-        <div class="container-content">
+        <div class="container-content" v-loading="loading">
           <div class="content-header">
             报名参与任务
           </div>
@@ -84,9 +80,6 @@
                 class="body__btn body__btn--right"
                 @click.stop="getTaskIsFull"
               >
-                <div class="body__btn-tips" v-if="showIsFullTips">
-                  任务已经满员，是否无赏参与
-                </div>
                 确认报名
               </div>
             </div>
@@ -100,6 +93,7 @@
 import { goTaskJoin } from "utils/routes";
 import { mapState } from "vuex";
 import taskService from "@/global/service/task";
+import submit_hw_img from "images/task/apply-dialog-join.svg";
 
 export default {
   name: "ApplyDialog",
@@ -136,20 +130,22 @@ export default {
           this.loading = true;
           return this.handleSignUp();
         }
-        this.$msgBox
-          .showMsgBox({
-            theme: "img_s_420_274",
-            content:
-              "<p style='color:#14AF64FF;font-weight:400;font-size:24px;line-height:33px;'>任务已经满员，是否无赏参与</p>",
-            showCloseBtn: false
-          })
-          .then(async () => {
-            this.handleSignUp();
-            this.loading = true;
-          })
-          .catch(() => {
-            this.loading = false;
-          });
+        this.task.is_backdoor &&
+          this.$msgBox
+            .showMsgBox({
+              img: submit_hw_img,
+              theme: "img_w_220",
+              content:
+                "<p style='color:#14AF64FF;font-weight:400;font-size:24px;line-height:33px;'>任务已经满员，是否无赏参与</p>",
+              showCloseBtn: false
+            })
+            .then(async () => {
+              this.handleSignUp();
+              this.loading = true;
+            })
+            .catch(() => {
+              this.loading = false;
+            });
       });
     },
     handleSignUp() {
