@@ -44,7 +44,11 @@
               />
             </div>
           </template>
-          <detail-quadrant v-if="activeNav.type == 1" :menus="menus" />
+          <detail-quadrant
+            ref="quadrant"
+            v-if="activeNav.type == 1"
+            :menus="menus"
+          />
         </div>
       </div>
     </div>
@@ -256,6 +260,7 @@ export default {
     toggleNav(nav) {
       window.scrollTo(0, 0);
       this.activeNav = nav;
+      this.$refs.quadrant.init();
       if (!nav.children) {
         this.loading = true;
         bibleService
