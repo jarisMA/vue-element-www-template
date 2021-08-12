@@ -3,6 +3,7 @@
     class="w-576 upload-demo"
     ref="upload"
     action=""
+    :show-file-list="showFileList"
     :multiple="multiple"
     :drag="drag"
     :limit="limit"
@@ -11,6 +12,7 @@
     :on-preview="handleOnPreview"
     :http-request="handleRequest"
     :on-remove="handleBeforeRemove"
+    :disabled="disabled"
   >
     <!-- accept="application/pdf" -->
     <el-button
@@ -19,7 +21,7 @@
       :loading="btnLoading"
       plain
     >
-      <i class="el-icon-plus"></i>
+      <i v-if="showIcon" class="el-icon-plus"></i>
       {{ text }}</el-button
     >
   </el-upload>
@@ -79,7 +81,15 @@ export default {
       type: Boolean,
       default: false
     },
+    showFileList: {
+      type: Boolean,
+      default: true
+    },
     showTips: {
+      type: Boolean,
+      default: true
+    },
+    showIcon: {
       type: Boolean,
       default: true
     }

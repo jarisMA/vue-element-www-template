@@ -98,17 +98,17 @@
         <img class="card-layout-btm" src="~images/task/btm.svg" />
       </div>
     </div>
-    <div class="card-design" v-if="designs.length">
+    <div class="card-design" v-if="task.my_designs && task.my_designs.length">
       <div class="design-title">方案提交</div>
       <div class="design-list">
         <div
           class="design-item"
-          v-for="(design, designIdx) in designs"
+          v-for="(design, designIdx) in task.my_designs"
           :key="designIdx"
         >
           <i class="design-item__icon"></i>
-          <span class="design-item__name">{{ design.name }}</span>
-          <i class="design-item__delete"> </i>
+          <span class="design-item__name">{{ design.file_name }}</span>
+          <i class="design-item__delete" @click="handleDelete(design.id)"> </i>
         </div>
       </div>
     </div>
@@ -120,7 +120,7 @@
           </template>
           <template v-if="task.has_joined && canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span
-            >点击上传方案，可上传多个方案
+            >点击上传方案，最多上传3个方案
           </template>
           <template v-if="task.has_joined && !canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span>方案提交已截止，{{
@@ -129,9 +129,26 @@
           </template>
         </div>
         <div class="card-btn">
-          <div :class="['card-btn', applyBtnColor]" @click="handleApplyBtn">
+          <div
+            v-if="!task.has_joined"
+            :class="['card-btn', applyBtnColor]"
+            @click="handleApplyBtn"
+          >
             {{ applyBtnText }}
           </div>
+          <upload-file
+            v-if="task.has_joined && canApplyOrUpload"
+            :class="['upload-file', 'card-btn', applyBtnColor]"
+            :url.sync="fileList"
+            :upload-limit="5120"
+            :limit="1"
+            :showFileList="false"
+            :text="task.my_designs.length ? '重新上传' : '上传方案'"
+            :show-icon="false"
+            space="www"
+            folder="task"
+            :disabled="uploadBtnDisabled"
+          ></upload-file>
         </div>
       </template>
     </div>
@@ -140,26 +157,37 @@
 <script>
 import { mapState } from "vuex";
 import TheLoadingImage from "components/TheLoadingImage";
+import UploadFile from "components/UploadFile";
 import { formatDate, formNowFormatDay, diffDayType } from "utils/moment";
 import Countdown from "./Countdown";
 import { priceFormat } from "utils/function";
+
 export default {
   name: "DetailTaskCard",
   props: {
     task: {
       type: Object,
       required: true
-    },
-    designs: {
-      type: Array,
-      default: () => []
     }
   },
   data() {
     return {
       level: 0,
-      diff_day_type: null
+      diff_day_type: null,
+      fileList: ""
     };
+  },
+  watch: {
+    task(val) {
+      if (val) {
+        this.getDiffDayType();
+      }
+    },
+    fileList(val) {
+      if (val) {
+        this.handleUploadFile();
+      }
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
@@ -174,6 +202,9 @@ export default {
     },
     canApplyOrUpload() {
       return this.task.status == 1 && this.diff_day_type != "isTimeout";
+    },
+    uploadBtnDisabled() {
+      return this.task.my_designs && this.task.my_designs.length >= 3;
     },
     applyBtnDisabled() {
       const { is_backdoor, max_apply, users_count, level } = this.task;
@@ -206,7 +237,7 @@ export default {
         max_apply,
         users_count,
         has_joined,
-        // designs,
+        my_designs,
         level,
         heart_count,
         status,
@@ -228,9 +259,8 @@ export default {
       }
 
       //temp const
-      const designs = [];
       if (has_joined) {
-        return designs.length > 0 ? "重新上传" : "上传方案";
+        return my_designs.length > 0 ? "重新上传" : "上传方案";
       }
 
       const isFull = max_apply <= users_count;
@@ -251,17 +281,6 @@ export default {
       }
 
       return heartText;
-    }
-  },
-  components: {
-    TheLoadingImage,
-    Countdown
-  },
-  watch: {
-    task(val) {
-      if (val) {
-        this.getDiffDayType();
-      }
     }
   },
   methods: {
@@ -291,14 +310,23 @@ export default {
       this.$emit("toggleShowDialog", TYPE);
     },
     handleUploadFile() {
-      return false;
+      return this.$emit("upload", this.fileList);
+    },
+    handleDelete(id) {
+      return this.$emit("delete", id);
     }
+  },
+  components: {
+    TheLoadingImage,
+    Countdown,
+    UploadFile
   }
 };
 </script>
 <style type="text/css" lang="less" scoped>
 .detail-task-card {
   width: 380px;
+  padding-bottom: 80px;
   .card-head {
     position: relative;
     width: 100%;
@@ -739,6 +767,26 @@ export default {
       }
       &.card-btn--light-green {
         background-image: url("~images/task/card-btn-light-green.png");
+      }
+    }
+    /deep/.upload-file {
+      width: 100%;
+      .el-upload {
+        width: 100%;
+        height: 52px;
+      }
+      .el-button {
+        width: 100%;
+        height: 52px;
+        background: transparent;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+        font-size: 24px;
+        text-align: center;
+        line-height: 52px;
+        color: #ffffff;
+        cursor: pointer;
       }
     }
   }

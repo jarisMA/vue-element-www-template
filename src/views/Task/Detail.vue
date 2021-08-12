@@ -44,6 +44,8 @@
         <detail-task-card
           :task="taskInfo"
           @toggleShowDialog="toggleShowApplyDialog"
+          @upload="handleUploadFile"
+          @delete="handleDeleteFile"
         />
       </div>
     </div>
@@ -230,6 +232,41 @@ export default {
         })
         .finally(() => {
           this.showApplyDialog = false;
+        });
+    },
+    handleUploadFile(e) {
+      const fileList = JSON.parse(e);
+      const params = {
+        file_name: fileList[0].name,
+        file_url: fileList[0].url
+      };
+      this.loading = true;
+      taskService
+        .taskDesigns(this.$route.params.id, params)
+        .then(() => {
+          this.$notice({
+            type: "success",
+            title: `您已成功上传`
+          });
+          this.getData();
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleDeleteFile(id) {
+      this.loading = true;
+      taskService
+        .taskDesignDelete(this.$route.params.id, id)
+        .then(() => {
+          this.$notice({
+            type: "success",
+            title: `您已成功删除方案`
+          });
+          this.getData();
+        })
+        .finally(() => {
+          this.loading = false;
         });
     }
   }
