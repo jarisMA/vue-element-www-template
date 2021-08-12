@@ -444,6 +444,7 @@ export default {
   padding-bottom: 50px;
   .container-1200 {
     display: flex;
+    justify-content: center;
     position: relative;
   }
   .bible-content {

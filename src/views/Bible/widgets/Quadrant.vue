@@ -415,7 +415,6 @@ export default {
       transform: translateY(-50%);
       z-index: 3;
       mask-image: url(~images/bible/x-fill.svg);
-      background: linear-gradient(to right, #54995a, #753ec2);
     }
 
     .y-axis {
@@ -436,7 +435,6 @@ export default {
       transform: translateY(-50%);
       z-index: 1;
       mask-image: url(~images/bible/y-fill.svg);
-      background: linear-gradient(to bottom, #ec656d, #4883d5);
     }
     .quadrant-first,
     .quadrant-second,
