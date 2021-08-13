@@ -110,7 +110,11 @@
           @click="handleShowAside()"
           v-if="showAside"
         ></div>
-        <div class="course-note" v-if="showContent == 'note'">
+        <div
+          class="course-note"
+          v-if="showContent == 'note'"
+          @contextmenu.prevent
+        >
           <div
             class="course-video-note"
             v-if="chapters[chapterIndex].sections[sectionIndex].note"
