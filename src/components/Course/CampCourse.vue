@@ -185,7 +185,11 @@
           :category="activeFeedbackCategory"
           v-if="showContent == 'feedback'"
         />
-        <div class="course-note" v-if="showContent == 'note'">
+        <div
+          class="course-note"
+          v-if="showContent == 'note'"
+          @contextmenu.prevent
+        >
           <div
             class="course-video-note"
             v-if="chapters[chapterIndex].sections[sectionIndex].note"
@@ -836,10 +840,26 @@ export default {
 </style>
 
 <style lang="less">
-.course-note-content {
-  img {
-    max-width: 100%;
-    height: auto !important;
+.course-video-note {
+  .course-note-title {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  .course-note-content {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    img {
+      max-width: 100%;
+      height: auto !important;
+    }
   }
 }
 </style>
