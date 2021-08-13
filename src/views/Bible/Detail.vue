@@ -133,7 +133,7 @@ export default {
     DetailMenu,
     DetailNav,
     DetailContent,
-    DetailQuadrant
+    DetailQuadrant,
   },
   data() {
     return {
@@ -151,7 +151,7 @@ export default {
       scrollTimer: null,
       images: [],
       activeImageIndex: 0,
-      showPreviewImage: false
+      showPreviewImage: false,
     };
   },
   created() {
@@ -184,7 +184,7 @@ export default {
             ) {
               this.$notice({
                 type: "warning",
-                title: "暂未开放~"
+                title: "暂未开放~",
               });
               goBible("replace");
               this.loading = false;
@@ -192,12 +192,13 @@ export default {
             }
             const tabId = this.$route.query.tab;
             const tabIndex =
-              (tabId && res.children.findIndex(item => item.id == tabId)) || -1;
+              (tabId && res.children.findIndex((item) => item.id == tabId)) ||
+              -1;
             this.activeNav = res.children[tabIndex] || res.children[0] || {};
 
             bibleService
               .bibleNode(id, this.activeNav.id)
-              .then(children => {
+              .then((children) => {
                 this.root = res;
                 this.detail = res.bible;
                 this.color = res.bible.color || "";
@@ -237,7 +238,7 @@ export default {
             this.loading = false;
           }
         })
-        .catch(error => {
+        .catch((error) => {
           const { response } = error;
           if (response && response.status === 403) {
             goBible("replace");
@@ -254,18 +255,20 @@ export default {
       const offsetTop = document.getElementById("menu-" + item.id).offsetTop;
       window.scrollTo({
         top: offsetTop,
-        behavior: "smooth"
+        behavior: "smooth",
       });
     },
     toggleNav(nav) {
       window.scrollTo(0, 0);
       this.activeNav = nav;
-      this.$refs.quadrant.init();
+      if (this.activeNav.type == 1) {
+        this.$refs.quadrant.init();
+      }
       if (!nav.children) {
         this.loading = true;
         bibleService
           .bibleNode(this.$route.params.id, nav.id)
-          .then(children => {
+          .then((children) => {
             this.menus = children || [];
             this.activeImageIndex = 0;
             this.images = this.getImages(this.menus);
@@ -314,7 +317,7 @@ export default {
       }
     },
     getImages(data, images = [], menus = []) {
-      data.forEach(menu => {
+      data.forEach((menu) => {
         if (
           menu.children &&
           menu.children instanceof Array &&
@@ -329,11 +332,11 @@ export default {
           if (menu.cover_url) {
             let newImages = menu.cover_url.split(",");
             newImages = newImages
-              .filter(item => !!item)
-              .map(item => {
+              .filter((item) => !!item)
+              .map((item) => {
                 return {
                   url: item,
-                  menu: menus.concat([menu.name]).join("/")
+                  menu: menus.concat([menu.name]).join("/"),
                 };
               });
             images = images.concat(newImages);
@@ -347,9 +350,9 @@ export default {
       this.showPreviewImage = true;
     },
     handleTogglePreviewImage(url) {
-      this.activeImageIndex = this.images.findIndex(item => item.url === url);
-    }
-  }
+      this.activeImageIndex = this.images.findIndex((item) => item.url === url);
+    },
+  },
 };
 </script>
 
