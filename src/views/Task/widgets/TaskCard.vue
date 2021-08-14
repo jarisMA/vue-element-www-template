@@ -37,7 +37,7 @@
       </div>
       <div class="card-status">
         <div class="card-status__status" :class="'card-status-' + task.status">
-          {{ task.status_label }}
+          {{ task.status_label.substring(0, 3) }}
         </div>
         <div class="card-status__time">
           <template v-if="task.status == 1">

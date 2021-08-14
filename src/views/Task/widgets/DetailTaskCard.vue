@@ -102,22 +102,25 @@
     <div class="card-design" v-if="task.my_designs && task.my_designs.length">
       <div class="design-title">方案提交</div>
       <div class="design-list">
-        <a
+        <div
           class="design-item"
           v-for="(design, designIdx) in task.my_designs"
           :key="designIdx"
-          :href="design.file_url"
-          target="_blank"
         >
           <i class="design-item__icon"></i>
-          <span class="design-item__name">{{ design.file_name }}</span>
+          <a
+            :href="design.file_url"
+            target="_blank"
+            class="design-item__name"
+            >{{ design.file_name }}</a
+          >
           <i
             class="design-item__delete"
             v-if="canApplyOrUpload"
             @click.stop="handleDelete(design.id)"
           >
           </i>
-        </a>
+        </div>
       </div>
       <template v-if="sourceFile">
         <div class="design-title">方案源文件</div>
@@ -256,8 +259,7 @@ export default {
       return (
         (this.task.status == 4 || this.task.status == 5) &&
         this.task.has_selected &&
-        !this.sourceFile &&
-        !this.finalFile
+        (!this.sourceFile || !this.finalFile)
       );
     },
     uploadBtnDisabled() {
