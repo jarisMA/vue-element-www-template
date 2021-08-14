@@ -28,6 +28,7 @@
         <div class="info-body">
           <detail-info
             :tab="currentTab"
+            :design-info="designInfo"
             :people-info="peopleInfo"
             :favor-info="favorInfo"
             :house-info="houseInfo"
@@ -45,6 +46,7 @@
           :task="taskInfo"
           @toggleShowDialog="toggleShowApplyDialog"
           @upload="handleUploadFile"
+          @update="handleUpdateFile"
           @delete="handleDeleteFile"
         />
       </div>
@@ -94,6 +96,11 @@ export default {
       taskInfo: {
         total_price: "00"
       },
+      designInfo: {
+        partly_nominated: [],
+        wholly_nominated: [],
+        selected: []
+      },
       peopleInfo: [
         {
           description: "",
@@ -128,6 +135,7 @@ export default {
         .taskId(this.$route.params.id)
         .then(res => {
           const {
+            designs = {},
             extra: {
               favorInfo = {},
               houseInfo = [],
@@ -142,6 +150,12 @@ export default {
 
           const tabList = [];
           const is_designer = this.userInfo && this.userInfo.is_designer;
+          designs &&
+            tabList.push({
+              tab: "designInfo",
+              name: "入围和中标公示",
+              show: is_designer
+            });
           (peopleInfo || favorInfo) &&
             tabList.push({
               tab: "peopleInfo",
@@ -172,7 +186,14 @@ export default {
               name: "信息更新",
               show: is_designer
             });
+          for (let i in designs) {
+            designs[i].forEach((d, index) => {
+              d.active = index === 0 ? true : false;
+            });
+          }
+          this.currentTab = designs ? "designInfo" : "peopleInfo";
           this.tabList = tabList;
+          this.designInfo = designs;
           this.taskInfo = res;
           this.peopleInfo = peopleInfo;
           this.favorInfo = favorInfo;
@@ -235,10 +256,10 @@ export default {
         });
     },
     handleUploadFile(e) {
-      const fileList = JSON.parse(e);
+      const { name, url } = e;
       const params = {
-        file_name: fileList[0].name,
-        file_url: fileList[0].url
+        file_name: name,
+        file_url: url
       };
       this.loading = true;
       taskService
@@ -249,6 +270,44 @@ export default {
             title: `您已成功上传`
           });
           this.getData();
+        })
+        .catch(() => {
+          this.$notice({
+            type: "danger",
+            title: `文件上传失败`
+          });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
+    },
+    handleUpdateFile(e) {
+      const { name, url } = e;
+      const { status } = this.taskInfo;
+      const key = status == 4 ? "source" : "final";
+      const params = {
+        [`${key}_file_name`]: name,
+        [`${key}_file_url`]: url
+      };
+      this.loading = true;
+      taskService
+        .taskDesignUpdate(
+          this.$route.params.id,
+          this.taskInfo.my_designs_selected_id,
+          params
+        )
+        .then(() => {
+          this.$notice({
+            type: "success",
+            title: `您已成功上传`
+          });
+          this.getData();
+        })
+        .catch(() => {
+          this.$notice({
+            type: "danger",
+            title: `文件上传失败`
+          });
         })
         .finally(() => {
           this.loading = false;

@@ -3,15 +3,13 @@
     class="w-576 upload-demo"
     ref="upload"
     action=""
-    :show-file-list="showFileList"
     :multiple="multiple"
     :drag="drag"
+    :show-file-list="showFileList"
     :limit="limit"
-    :file-list="fileList"
+    :accept="accept"
     :before-upload="handleBeforeUpload"
-    :on-preview="handleOnPreview"
     :http-request="handleRequest"
-    :on-remove="handleBeforeRemove"
     :disabled="disabled"
   >
     <!-- accept="application/pdf" -->
@@ -34,8 +32,14 @@ export default {
   name: "UploadFile",
   mixins: [commonMixins],
   props: {
-    url: {
-      type: String
+    fileInfo: {
+      type: Object,
+      default: () => {
+        return {
+          name: "",
+          url: ""
+        };
+      }
     },
     text: {
       type: String,
@@ -69,6 +73,10 @@ export default {
       type: Boolean,
       default: false
     },
+    accept: {
+      type: String,
+      default: ""
+    },
     format: {
       type: Array,
       default: () => ["pdf"]
@@ -83,7 +91,7 @@ export default {
     },
     showFileList: {
       type: Boolean,
-      default: true
+      default: false
     },
     showTips: {
       type: Boolean,
@@ -96,25 +104,10 @@ export default {
   },
   data() {
     return {
-      btnLoading: false,
-      fileList: []
+      btnLoading: false
     };
   },
-  watch: {
-    url(val) {
-      this.fileList = this.getFileList(val);
-    },
-    fileList(val) {
-      this.$emit("update:url", JSON.stringify(val));
-    }
-  },
-  created() {
-    this.getFileList(this.url);
-  },
   methods: {
-    getFileList(val) {
-      return (val && JSON.parse(val)) || [];
-    },
     // 上传之前验证
     handleBeforeUpload(file) {
       if (!file) {
@@ -177,11 +170,11 @@ export default {
           folder
         },
         res => {
-          this.fileList.push({
+          const fileInfo = {
             name: file.name,
             url: res.url
-          });
-          this.$emit("update:url", JSON.stringify(this.fileList));
+          };
+          this.$emit("update:fileInfo", fileInfo);
         },
         () => {
           this.$notice({
@@ -194,12 +187,6 @@ export default {
           this.btnLoading = false;
         }
       );
-    },
-    handleBeforeRemove(file, fileList) {
-      this.fileList.splice(fileList.indexOf(file), 1);
-    },
-    handleOnPreview(file) {
-      window.open(file.url);
     }
   }
 };
