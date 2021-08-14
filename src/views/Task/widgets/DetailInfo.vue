@@ -418,7 +418,7 @@ export default {
 </script>
 <style lang="less" scoped>
 .widget-info {
-  padding: 0 6px;
+  padding: 0 6px 6px;
 }
 
 .widget-title {
@@ -813,14 +813,15 @@ export default {
     display: flex;
     overflow: scroll;
     .space-tab__nav-item {
-      width: 72px;
+      width: fit-content;
       height: 27px;
-      padding: 0 5px 5px 5px;
+      padding: 0 10px 5px;
       font-size: 14px;
       line-height: 20px;
       text-align: center;
       color: #a5a5a5;
       cursor: pointer;
+      white-space: nowrap;
       transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
         border 0.2s ease-out;
       &.active {

@@ -199,7 +199,7 @@ export default {
           this.favorInfo = favorInfo;
           this.houseInfo = houseInfo;
           this.houseInfo_images = houseInfo_images;
-          //video url兼容
+          //url兼容
           houseInfo_videos.forEach(item => {
             item.url = item.url.split("?")[0];
           });
@@ -209,6 +209,9 @@ export default {
             space.space_videos.forEach(video => {
               video.url = video.url.split("?")[0];
             });
+          });
+          attachmentInfo.forEach(item => {
+            item.url = item.url.split("?")[0];
           });
           this.spaceInfo = spaceInfo;
           this.attachmentInfo = attachmentInfo;
