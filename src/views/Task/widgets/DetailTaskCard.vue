@@ -49,12 +49,13 @@
               >发布时间 {{ formatDate(task.published_at) }}</span
             >
             <div
+              v-if="task.status_label"
               :class="[
                 'card-head-btm-down-status',
                 'task-card-status-' + task.status
               ]"
             >
-              {{ task.status_label }}
+              {{ task.status_label.substring(0, 3) }}
             </div>
           </div>
         </div>
@@ -98,38 +99,97 @@
         <img class="card-layout-btm" src="~images/task/btm.svg" />
       </div>
     </div>
-    <div class="card-design" v-if="designs.length">
+    <div class="card-design" v-if="task.my_designs && task.my_designs.length">
       <div class="design-title">方案提交</div>
       <div class="design-list">
         <div
           class="design-item"
-          v-for="(design, designIdx) in designs"
+          v-for="(design, designIdx) in task.my_designs"
           :key="designIdx"
         >
           <i class="design-item__icon"></i>
-          <span class="design-item__name">{{ design.name }}</span>
-          <i class="design-item__delete"> </i>
+          <a
+            :href="design.file_url"
+            target="_blank"
+            class="design-item__name"
+            >{{ design.file_name }}</a
+          >
+          <i
+            class="design-item__delete"
+            v-if="canApplyOrUpload"
+            @click.stop="handleDelete(design.id)"
+          >
+          </i>
         </div>
       </div>
+      <template v-if="sourceFile">
+        <div class="design-title">方案源文件</div>
+        <div class="design-list">
+          <a
+            class="design-item"
+            :href="sourceFile.source_file_url"
+            target="_blank"
+          >
+            <i class="design-item__icon"></i>
+            <span class="design-item__name">{{
+              sourceFile.source_file_name
+            }}</span>
+          </a>
+        </div>
+      </template>
+      <template v-if="finalFile">
+        <div class="design-title">成果物提交</div>
+        <div class="design-list">
+          <a
+            class="design-item"
+            :href="finalFile.final_file_url"
+            target="_blank"
+          >
+            <i class="design-item__icon"></i>
+            <span class="design-item__name">{{
+              finalFile.final_file_name
+            }}</span>
+          </a>
+        </div>
+      </template>
     </div>
     <div class="card-btn-container">
       <template>
         <div class="card-btn-tips">
-          <template v-if="!task.has_joined && canApplyOrUpload">
+          <template v-if="!task.has_joined">
             {{ task.users_count }}人参与，还剩{{ applyLeft }}个名额
           </template>
           <template v-if="task.has_joined && canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span
-            >点击上传方案，可上传多个方案
+            >点击上传方案，最多上传3个方案
           </template>
           <template v-if="task.has_joined && !canApplyOrUpload">
             <span class="card-btn-tips--yellow">已参与</span>方案提交已截止，{{
               task.users_count
-            }}参与
+            }}人参与
           </template>
         </div>
         <div class="card-btn">
-          <div :class="['card-btn', applyBtnColor]" @click="handleApplyBtn">
+          <upload-file
+            v-if="
+              task.has_joined && (canApplyOrUpload || canUploadWhenSelected)
+            "
+            :class="['upload-file', 'card-btn', applyBtnColor]"
+            :file-info.sync="fileInfo"
+            :upload-limit="5120"
+            :limit="1"
+            :text="task.my_designs.length ? '上传' : '上传方案'"
+            :show-icon="false"
+            space="www"
+            folder="task"
+            accept="application/pdf"
+            :disabled="uploadBtnDisabled"
+          ></upload-file>
+          <div
+            v-else
+            :class="['card-btn', applyBtnColor]"
+            @click="handleApplyBtn"
+          >
             {{ applyBtnText }}
           </div>
         </div>
@@ -140,29 +200,49 @@
 <script>
 import { mapState } from "vuex";
 import TheLoadingImage from "components/TheLoadingImage";
+import UploadFile from "components/UploadFile";
 import { formatDate, formNowFormatDay, diffDayType } from "utils/moment";
 import Countdown from "./Countdown";
 import { priceFormat } from "utils/function";
+
 export default {
   name: "DetailTaskCard",
   props: {
     task: {
       type: Object,
-      required: true
-    },
-    designs: {
-      type: Array,
-      default: () => []
+      default: () => {}
     }
   },
   data() {
     return {
       level: 0,
-      diff_day_type: null
+      diff_day_type: null,
+      fileInfo: {}
     };
+  },
+  watch: {
+    task(val) {
+      if (val) {
+        this.getDiffDayType();
+      }
+    },
+    fileInfo(val) {
+      const { has_selected } = this.task;
+      if (val) {
+        has_selected ? this.handleUpdateFile() : this.handleUploadFile();
+      }
+    }
   },
   computed: {
     ...mapState(["userInfo"]),
+    sourceFile() {
+      const { my_designs } = this.task;
+      return my_designs.find(d => d.status == 4 && d.source_file_url);
+    },
+    finalFile() {
+      const { my_designs } = this.task;
+      return my_designs.find(d => d.status == 4 && d.final_file_url);
+    },
     applyLeft() {
       const { max_apply, users_count } = this.task;
       return max_apply - users_count >= 0 ? max_apply - users_count : 0;
@@ -174,6 +254,28 @@ export default {
     },
     canApplyOrUpload() {
       return this.task.status == 1 && this.diff_day_type != "isTimeout";
+    },
+    canUploadWhenSelected() {
+      return (
+        (this.task.status == 4 || this.task.status == 5) &&
+        this.task.has_selected &&
+        (!this.sourceFile || !this.finalFile)
+      );
+    },
+    uploadBtnDisabled() {
+      if (
+        this.task.status == 1 &&
+        this.task.my_designs &&
+        this.task.my_designs.length >= 3
+      ) {
+        return true;
+      }
+      if (
+        (this.task.status == 4 || this.task.status == 5) &&
+        this.task.has_selected
+      )
+        return false;
+      return false;
     },
     applyBtnDisabled() {
       const { is_backdoor, max_apply, users_count, level } = this.task;
@@ -187,7 +289,7 @@ export default {
       return false;
     },
     applyBtnColor() {
-      const { is_backdoor, max_apply, users_count, status, level } = this.task;
+      const { is_backdoor, max_apply, users_count, level } = this.task;
       // 非后门任务,满员或用户等级小于难度
       if (
         !is_backdoor &&
@@ -195,7 +297,10 @@ export default {
       ) {
         return "card-btn--grey disabled";
       }
-      return status >= 4 ? "card-btn--grey" : "card-btn--green";
+
+      return this.canApplyOrUpload || this.canUploadWhenSelected
+        ? "card-btn--green"
+        : "card-btn--grey disabled";
     },
     applyBtnText() {
       const {
@@ -203,13 +308,14 @@ export default {
         max_apply,
         users_count,
         has_joined,
-        // designs,
+        my_designs,
         level,
         heart_count,
         status,
         status_label
       } = this.task;
       const { userJobInfo } = this;
+      const heartText = heart_count ? heart_count + "暖心" + "立即参与" : "";
 
       // Todo
       // 1. Task API Add designs
@@ -219,10 +325,13 @@ export default {
         return "任务" + status_label;
       }
 
+      if (!this.canApplyOrUpload) {
+        return "已截稿";
+      }
+
       //temp const
-      const designs = [];
       if (has_joined) {
-        return designs.length > 0 ? "重新上传" : "上传方案";
+        return my_designs.length > 0 ? "重新上传" : "上传方案";
       }
 
       const isFull = max_apply <= users_count;
@@ -242,19 +351,7 @@ export default {
         return "不可报名";
       }
 
-      const heartText = heart_count ? heart_count + "暖心" : "";
-      return heartText + "立即参与";
-    }
-  },
-  components: {
-    TheLoadingImage,
-    Countdown
-  },
-  watch: {
-    task(val) {
-      if (val) {
-        this.getDiffDayType();
-      }
+      return heartText;
     }
   },
   methods: {
@@ -269,29 +366,38 @@ export default {
       );
     },
     handleApplyBtn() {
-      if (this.applyBtnDisabled) return;
+      if (this.applyBtnDisabled || !this.canApplyOrUpload) return;
       const { has_joined } = this.task;
-
       if (!this.userInfo) {
         return this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 1);
       }
-
       if (has_joined) {
         return this.handleUploadFile();
       }
-
       const TYPE = !this.userJobInfo.id ? "JOIN_DESIGNER" : "APPLY_TASK";
       this.$emit("toggleShowDialog", TYPE);
     },
+    handleUpdateFile() {
+      return this.$emit("update", this.fileInfo);
+    },
     handleUploadFile() {
-      return false;
+      return this.$emit("upload", this.fileInfo);
+    },
+    handleDelete(id) {
+      return this.$emit("delete", id);
     }
+  },
+  components: {
+    TheLoadingImage,
+    Countdown,
+    UploadFile
   }
 };
 </script>
 <style type="text/css" lang="less" scoped>
 .detail-task-card {
   width: 380px;
+  padding-bottom: 80px;
   .card-head {
     position: relative;
     width: 100%;
@@ -417,14 +523,16 @@ export default {
             margin-right: 9px;
           }
           .card-head-btm-down-status {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            // display: flex;
+            // justify-content: center;
+            // align-items: center;
             width: 52px;
             height: 28px;
             line-height: 28px;
             font-weight: 600;
             font-size: 12px;
+            white-space: nowrap;
+            text-align: center;
             &.task-card-status-1 {
               color: #0f6c00;
               background-image: url("~images/task/green.svg");
@@ -650,9 +758,6 @@ export default {
         padding: 0 13px;
         margin-bottom: 4px;
         background: #f4f4f4;
-        &:last-child {
-          margin-bottom: 0;
-        }
         .design-item__icon {
           width: 14px;
           height: 20px;
@@ -675,6 +780,14 @@ export default {
           background: url("~images/task/card-delete.svg") no-repeat;
           background-size: 12px 12px;
           cursor: pointer;
+        }
+        &:hover {
+          .design-item__name {
+            color: #20b36c;
+          }
+        }
+        &:last-child {
+          margin-bottom: 0;
         }
       }
     }
@@ -732,6 +845,26 @@ export default {
       }
       &.card-btn--light-green {
         background-image: url("~images/task/card-btn-light-green.png");
+      }
+    }
+    /deep/.upload-file {
+      width: 100%;
+      .el-upload {
+        width: 100%;
+        height: 52px;
+      }
+      .el-button {
+        width: 100%;
+        height: 52px;
+        background: transparent;
+        padding: 0;
+        border: none;
+        font-weight: 500;
+        font-size: 24px;
+        text-align: center;
+        line-height: 52px;
+        color: #ffffff;
+        cursor: pointer;
       }
     }
   }

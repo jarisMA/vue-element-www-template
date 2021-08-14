@@ -17,6 +17,15 @@ const taskService = {
   taskIsFull(uuid) {
     return request.get(API.taskIsFull(uuid));
   },
+  taskDesigns(uuid, params) {
+    return request.post(API.taskDesigns(uuid), params);
+  },
+  taskDesignUpdate(uuid, id, params) {
+    return request.put(API.taskDesignId(uuid, id), params);
+  },
+  taskDesignDelete(uuid, id) {
+    return request.delete(API.taskDesignId(uuid, id));
+  },
   taskUserJoin(params) {
     return request.post(API.taskUserJoin, params);
   }

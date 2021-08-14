@@ -1,6 +1,82 @@
 <template>
   <div class="widget-info">
     <div class="widget-content">
+      <template v-if="tab == 'designInfo'">
+        <template v-for="(design, designKey) of newDesignInfo">
+          <div class="design-container" :key="designKey">
+            <div class="design-title">
+              {{
+                designKey == "partly_nominated"
+                  ? "部分入围"
+                  : designKey == "wholly_nominated"
+                  ? "入围方案"
+                  : designKey == "selected"
+                  ? "胜选方案"
+                  : "交付结果"
+              }}
+            </div>
+            <template v-if="design.length">
+              <div class="design-user-list">
+                <template v-for="(designUser, designUserIdx) in design">
+                  <div class="design-user-item" :key="designUserIdx">
+                    <img
+                      class="user-item-avatar__img"
+                      :src="designUser.user.avatar_url"
+                      alt=""
+                    />
+                    <div
+                      class="user-item-avatar__cover"
+                      :class="{ active: designUser.active }"
+                      @click="handleSelectUser(design, designUserIdx)"
+                    ></div>
+                    <div class="user-item-name">
+                      {{ designUser.user.realname || designUser.user.nickname }}
+                    </div>
+                  </div>
+                </template>
+              </div>
+              <div class="design-design-content">
+                <div class="design-tab-header">
+                  <div class="design-tab-header_nav-wrap">
+                    <div class="tab-list">
+                      <div class="tab-item active">
+                        方案<span class="border"> </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="design-info-body">
+                  <template v-for="(designItem, designItemIdx) in design">
+                    <a
+                      class="design-info-item"
+                      :href="designItem.file_url"
+                      target="_blank"
+                      :key="designItemIdx"
+                      v-show="designItem.active"
+                    >
+                      <i class="design-info-item__icon"></i>
+                      <span class="design-info-item__name">{{
+                        designItem.file_name
+                      }}</span>
+                    </a>
+                  </template>
+                </div>
+              </div>
+            </template>
+            <div class="design-container-empty" v-if="!design.length">
+              <i
+                class="design-container-empty__icon"
+                :class="['design-container-empty__icon--' + designKey]"
+              ></i>
+              <div class="design-container-empty__text">
+                {{
+                  designKey == "selected" ? "业主正在选择中" : "深化暂未完成"
+                }}
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
       <template v-if="tab == 'peopleInfo'">
         <div class="widget-title">
           基础情况
@@ -222,7 +298,11 @@ export default {
   props: {
     tab: {
       type: String,
-      default: "peopleInfo"
+      default: "designInfo" || "peopleInfo"
+    },
+    designInfo: {
+      type: Object,
+      default: () => {}
     },
     peopleInfo: {
       type: Array,
@@ -263,8 +343,14 @@ export default {
       TASK_TYPE,
       TASK_BID_TYPE,
       TASK_STATUS,
-      activeIndex: 0
+      activeIndex: 0,
+      newDesignInfo: {}
     };
+  },
+  watch: {
+    designInfo(val) {
+      this.dealDesignInfo(val);
+    }
   },
   computed: {
     newSpaceInfo() {
@@ -308,12 +394,23 @@ export default {
       return result;
     }
   },
+  created() {
+    this.dealDesignInfo(this.designInfo);
+  },
   methods: {
+    dealDesignInfo(data) {
+      this.newDesignInfo = Object.assign({}, data);
+    },
     previewImage(idx, fileList, fileType) {
       this.$emit("show", {
         activeFileIndex: idx,
         fileList,
         fileType
+      });
+    },
+    handleSelectUser(design, designUserIdx) {
+      design.forEach((d, index) => {
+        d.active = index === designUserIdx ? true : false;
       });
     }
   }
@@ -359,6 +456,256 @@ export default {
   }
   .item__value {
     color: #878787;
+  }
+}
+.design-container {
+  padding-top: 30px;
+  .design-title {
+    margin: 0 auto 30px;
+    height: 40px;
+    width: 108px;
+    background-image: url("~images/task/detailInfo-design-title.svg");
+    background-repeat: no-repeat;
+    background-size: 108px 40px;
+    line-height: 40px;
+    font-weight: 600;
+    font-size: 18px;
+    color: #ffffff;
+    text-align: center;
+  }
+  .design-user-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    .design-user-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 92px;
+      padding: 0 4px;
+      .user-item-avatar__cover {
+        margin-bottom: 2px;
+        width: 52px;
+        height: 58px;
+        mask-image: url("~images/task/detailInfo-avatar-border.svg");
+        mask-repeat: no-repeat;
+        mask-size: cover;
+        background-color: #e9e9e9;
+        cursor: pointer;
+        &.active {
+          background-color: #000000;
+        }
+      }
+      .user-item-avatar__img {
+        position: absolute;
+        top: 0px;
+        display: inline-block;
+        width: 52px;
+        height: 58px;
+        object-fit: cover;
+        clip-path: polygon(
+          0 14px,
+          26px 1px,
+          100% 14px,
+          100% calc(100% - 14px),
+          26px calc(100% - 1px),
+          0 calc(100% - 14px) ;
+        );
+      }
+      .user-item-name {
+        width: 100%;
+        height: 24px;
+        font-weight: 600;
+        font-size: 16px;
+        line-height: 24px;
+        color: #2c3330;
+        text-align: center;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  .design-design-content {
+    padding: 0 20px;
+    .design-tab-header {
+      padding: 0;
+      position: relative;
+      .design-tab-header_nav-wrap {
+        position: relative;
+        margin-bottom: -2px;
+        clear: both;
+        .tab-list {
+          height: 40px;
+          .tab-item {
+            display: inline-block;
+            position: relative;
+            height: 40px;
+            width: 112px;
+            margin-left: -2px;
+            border: 2px solid #e9e9e9;
+            background-color: #f5f5f5;
+            text-align: center;
+            line-height: 38px;
+            font-size: 12px;
+            border-bottom: none;
+            color: #c4c4c4;
+            cursor: pointer;
+            transition: color 0.3s cubic-bezier(0.645, 0.045, 0.355, 1),
+              border 0.3s ease-in-out;
+            .border {
+              position: absolute;
+              bottom: 0px;
+              left: 0;
+              content: "";
+              width: 100%;
+              height: 2px;
+              background-color: #d3d3d3;
+            }
+            &:first-child {
+              margin-left: 0px;
+            }
+            &.active {
+              border-color: #d3d3d3;
+              background-color: #fff;
+              color: #000000;
+              font-weight: 600;
+              border-bottom: none;
+              z-index: 3;
+              .border {
+                position: absolute;
+                bottom: -2px;
+                left: 0;
+                content: "";
+                width: 100%;
+                height: 2px;
+                background-color: #ffffff;
+              }
+              &:before,
+              &:after {
+                background-color: #d3d3d3;
+              }
+            }
+            &:before {
+              position: absolute;
+              top: 0px;
+              left: 0px;
+              content: "";
+              width: 2px;
+              height: 2px;
+              background-color: #e9e9e9;
+            }
+            &:after {
+              position: absolute;
+              top: 0px;
+              right: 0px;
+              content: "";
+              width: 2px;
+              height: 2px;
+              background-color: #e9e9e9;
+            }
+            clip-path: polygon(
+              0 100%,
+              0 4px,
+              2px 4px,
+              2px 2px,
+              4px 2px,
+              4px 0,
+              calc(100% - 4px) 0,
+              calc(100% - 4px) 2px,
+              calc(100% - 2px) 2px,
+              calc(100% - 2px) 4px,
+              100% 4px,
+              100% 100%
+            );
+          }
+        }
+      }
+    }
+    .design-info-body {
+      clear: both;
+      padding: 20px;
+      border-top: 2px solid #d3d3d3;
+      border-left: 2px solid #d3d3d3;
+      border-right: 2px solid #d3d3d3;
+      border-bottom: 2px solid #d3d3d3;
+      background-color: #ffffff;
+      clip-path: polygon(
+        0 0,
+        0 calc(100% - 2px),
+        2px calc(100% - 2px),
+        2px 100%,
+        calc(100% - 2px) 100%,
+        calc(100% - 2px) calc(100% - 2px),
+        100% calc(100% - 2px),
+        100% 2px,
+        calc(100% - 2px) 2px,
+        calc(100% - 2px) 0
+      );
+      .design-info-item {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        padding: 0 13px;
+        background: #f4f4f4;
+        .design-info-item__icon {
+          width: 14px;
+          height: 20px;
+          margin-right: 10px;
+          background: url("~images/task/card-design.svg") no-repeat;
+          background-size: 14px 20px;
+        }
+        .design-info-item__name {
+          flex: 1;
+          line-height: 30px;
+          color: #000000;
+          font-size: 14px;
+          text-align: left;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+        }
+        &:last-child {
+          margin-bottom: 0;
+        }
+        &:hover {
+          .design-info-item__name {
+            color: #20b36c;
+          }
+        }
+      }
+    }
+  }
+  .design-container-empty {
+    padding-bottom: 60px;
+    .design-container-empty__icon {
+      display: block;
+      margin: 0 auto;
+      width: 160px;
+      height: 100px;
+      &.design-container-empty__icon--selected {
+        background-image: url("~images/task/detailInfo-design-selected.svg");
+        background-repeat: no-repeat;
+        background-size: 160px 100px;
+      }
+      &.design-container-empty__icon--final {
+        background-image: url("~images/task/detailInfo-design-final.svg");
+        background-repeat: no-repeat;
+        background-size: 160px 100px;
+      }
+    }
+    .design-container-empty__text {
+      font-size: 14px;
+      line-height: 20px;
+      color: #c8d0cc;
+      text-align: center;
+    }
+  }
+  &:last-child {
+    padding-bottom: 80px;
   }
 }
 .people-container {

@@ -191,12 +191,20 @@
                 <i class="color-red">*</i>请提交PDF格式作品集，如无可不上传
               </span>
               <upload-file
-                :url.sync="applyInfo.resume_url"
+                :file-info.sync="applyInfo.resume_url"
                 :upload-limit="5120"
-                :limit="3"
+                :limit="1"
+                accept="application/pdf"
                 space="www"
                 folder="task"
               ></upload-file>
+              <el-link
+                v-if="applyInfo.resume_url"
+                :href="applyInfo.resume_url.url"
+                :underline="false"
+                target="_blank"
+                >{{ applyInfo.resume_url.name }}</el-link
+              >
             </el-form-item>
             <div class="section-button-wrap">
               <div class="section-button" @click="handleSubmit">
@@ -373,7 +381,7 @@ export default {
         job: null,
         job_started_at: null,
         design_job_years: null,
-        resume_url: ""
+        resume_url: {}
       };
     },
     handleCityChange() {
@@ -401,10 +409,11 @@ export default {
         if (val) {
           this.loading = true;
           this.btnLoading = true;
-          const { cityArr } = this.applyInfo;
+          const { cityArr, resume_url } = this.applyInfo;
           const params = this.applyInfo;
           params.province = cityArr[0];
           params.city = cityArr[1];
+          params.resume_url = JSON.stringify(resume_url);
           taskService
             .taskUserJoin(params)
             .then(() => {
