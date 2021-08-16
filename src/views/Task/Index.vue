@@ -124,36 +124,35 @@ export default {
       STEP_LIST,
       taskList: [
         {
-          uuid: "CE4F4A8C-4A46-4363-B361-B903F2465101",
-          name: "雅斯的空间",
-          level: 2,
-          cover_url:
-            "http://docee.oss-cn-shanghai.aliyuncs.com/admin/2021/0701/task/ikxg02aVZd5Gm4R305tL1ZZUAVzjRiP7hVH8MGHP.png",
-          bid_type: 1,
-          bid_type_label: "公开招募",
-          status: 1,
-          status_label: "进行中",
-          created_at: "2021-06-30",
-          end_at: "2021-08-06 23:59:59",
-          price: "1000.00",
-          urgent_price: "0.00",
-          experience_point: 200,
+          uuid: "",
+          name: "",
+          level: null,
+          cover_url: "",
+          bid_type: null,
+          bid_type_label: "",
+          status: null,
+          status_label: "",
+          created_at: "",
+          end_at: "",
+          price: "",
+          urgent_price: "",
+          experience_point: null,
           city: {
             city: {
-              id: 130300,
-              name: "秦皇岛市"
+              id: null,
+              name: ""
             },
             province: {
-              id: 130000,
-              name: "河北省"
+              id: null,
+              name: ""
             },
             layout: {
-              type1: 2,
-              type2: 2,
-              type3: 2
+              type1: null,
+              type2: null,
+              type3: null
             },
-            square: 80,
-            max_apply: 10
+            square: null,
+            max_apply: null
           }
         }
       ]
