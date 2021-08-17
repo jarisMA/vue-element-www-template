@@ -3,35 +3,33 @@
     <div class="container-1180">
       <div class="page-header">
         <span class="page-header-title">工作台</span>
-        <the-search-bar @search="handleSearch" v-if="false" />
+        <the-search-bar @search="handleSearch" />
       </div>
-      <div class="page-tips">Plan Go 工作台维护升级中 ...</div>
-      <div v-if="false">
-        <plan-list
-          canDelete
-          :showNoTips="false"
-          :plans="plans"
-          :size="planCount"
-          :page="planPage"
-          :total="planTotalCount"
-          theme="my"
-          @itemClick="editPlan"
-          @copyClick="copyPlan"
-          @editClick="isEditPlanInfo"
-          @delete="delelePlan"
-          @pageChange="getPlan"
-          @add="addPlan"
-        />
-      </div>
-      <edit-plan-name-dialog
-        :visible.sync="addVisible"
-        :plan="plan"
-        :btnLoading="btnLoading"
-        :title="dialogTitle"
-        @confirm="editPlanInfo"
-        @beforeClose="beforeCloseDialog"
+
+      <plan-list
+        canDelete
+        :showNoTips="false"
+        :plans="plans"
+        :size="planCount"
+        :page="planPage"
+        :total="planTotalCount"
+        theme="my"
+        @itemClick="editPlan"
+        @copyClick="copyPlan"
+        @editClick="isEditPlanInfo"
+        @delete="delelePlan"
+        @pageChange="getPlan"
+        @add="addPlan"
       />
     </div>
+    <edit-plan-name-dialog
+      :visible.sync="addVisible"
+      :plan="plan"
+      :btnLoading="btnLoading"
+      :title="dialogTitle"
+      @confirm="editPlanInfo"
+      @beforeClose="beforeCloseDialog"
+    />
   </div>
 </template>
 
@@ -85,9 +83,6 @@ export default {
     ...mapState(["userInfo"])
   },
   created() {
-    this.loading = false;
-  },
-  createdBak() {
     this.getPlan();
     const timer = setTimeout(() => {
       if (this.pardon) {
@@ -270,12 +265,6 @@ export default {
       color: #2c3330;
     }
   }
-}
-.page-tips {
-  margin-top: 200px;
-  color: #333;
-  font-size: 24px;
-  text-align: center;
 }
 .plan-list {
   display: flex;
