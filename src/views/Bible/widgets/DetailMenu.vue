@@ -1,5 +1,5 @@
 <template>
-  <div class="bible-menu-wrapper" v-if="depth >= 2">
+  <div class="bible-menu-wrapper" v-if="depth >= 2 || type == 2">
     <div class="scroll-inner">
       <ul class="bible-menu" v-for="(menu, key) of menus" :key="menu.id">
         <div class="bible-menu-header" @click="foldChange(key)">
@@ -37,7 +37,7 @@
           />
         </div>
         <div
-          v-else-if="getDepth(menu.children, 1) > 2"
+          v-else-if="getDepth(menu.children, 1) > 2 || type == 2"
           :class="['bible-submenu-wrapper', menu.isFold ? 'fold' : 'unfold']"
           :style="{
             maxHeight: menu.isFold ? '0px' : maxHeight(menu.children)
@@ -115,6 +115,10 @@ export default {
     depth: {
       type: Number,
       required: true
+    },
+    type: {
+      type: Number,
+      required: false
     }
   },
   data() {
