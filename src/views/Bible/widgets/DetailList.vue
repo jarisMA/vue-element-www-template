@@ -1,8 +1,20 @@
 <template>
   <div>
-    <div v-if="type == 2">
+    <div v-if="type == 2 && list.length > 0">
       <ul :class="['bible-item', theme]" v-for="item of list" :key="item.id">
         <li v-for="(image, key) of getImages(item.cover_url)" :key="key">
+          <the-loading-image
+            :width="imageSize"
+            :height="imageSize"
+            :url="image"
+            @click.stop.native="showPreviewImage(image)"
+          />
+        </li>
+      </ul>
+    </div>
+    <div v-else-if="type == 2 && list.length == 0 && submenu">
+      <ul :class="['bible-item', theme]">
+        <li v-for="(image, key) of getImages(submenu.cover_url)" :key="key">
           <the-loading-image
             :width="imageSize"
             :height="imageSize"
@@ -50,6 +62,9 @@ export default {
     },
     type: {
       type: Number
+    },
+    submenu: {
+      type: Object
     }
   },
   computed: {
