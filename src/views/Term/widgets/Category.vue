@@ -79,6 +79,7 @@ export default {
     return {
       listVisible: false,
       activeNote: [],
+      notePic: [],
       notes: {
         id: "",
         content: "",
