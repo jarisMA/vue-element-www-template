@@ -36,7 +36,10 @@
       </el-select>
       <div class="note-wrapper" @contextmenu.prevent>
         <div class="note-title" v-html="notes.title"></div>
-        <div class="note-content" v-html="notes.content"></div>
+        <div
+          class="note-content"
+          v-html="waterMark(notes.content, 'pc_note_1200w')"
+        ></div>
       </div>
     </el-drawer>
   </div>
@@ -82,6 +85,16 @@ export default {
         title: ""
       }
     };
+  },
+  computed: {
+    waterMark() {
+      return (html, rule) =>
+        html.replace(/src="(.*?)"/g, (t, v) => {
+          const prefix = t.indexOf("?") === -1 ? "?" : "&";
+          const param = "x-oss-process=style/" + rule;
+          return `src="${v}${prefix}${param}"`;
+        });
+    }
   },
   methods: {
     handleShowNote(note) {
@@ -158,6 +171,7 @@ export default {
     img {
       max-width: 100%;
       height: auto !important;
+      cursor: pointer;
     }
 
     p {
