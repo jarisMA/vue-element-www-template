@@ -126,7 +126,10 @@
             <div
               class="course-note-content"
               v-html="
-                chapters[chapterIndex].sections[sectionIndex].note.content
+                waterMark(
+                  chapters[chapterIndex].sections[sectionIndex].note.content,
+                  'pc_note_1200w'
+                )
               "
             ></div>
           </div>
@@ -229,6 +232,14 @@ export default {
         return formatSeconds(last_play_position || 0);
       };
     },
+    waterMark() {
+      return (html, rule) =>
+        html.replace(/src="(.*?)"/g, (t, v) => {
+          const prefix = t.indexOf("?") === -1 ? "?" : "&";
+          const param = "x-oss-process=style/" + rule;
+          return `src="${v}${prefix}${param}"`;
+        });
+    }
   },
   methods: {
     formatSeconds,
