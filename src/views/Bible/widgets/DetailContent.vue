@@ -35,7 +35,11 @@
         @previewImage="showPreviewImage"
       />
       <detail-list
-        v-if="getDepth(menu.children, 1) <= 2"
+        v-if="
+          type == 2
+            ? getDepth(menu.children, 1) <= 1
+            : getDepth(menu.children, 1) <= 2
+        "
         :list="menu.children"
         :theme="theme"
         :type="type"
@@ -64,6 +68,7 @@
             :list="submenu.children"
             :theme="theme"
             :type="type"
+            :submenu="submenu"
             @showDetail="showDetail"
             @previewImage="showPreviewImage"
           />
