@@ -34,7 +34,7 @@
         >
         </el-option>
       </el-select>
-      <div class="note-wrapper">
+      <div class="note-wrapper" @contextmenu.prevent>
         <div class="note-title" v-html="notes.title"></div>
         <div class="note-content" v-html="notes.content"></div>
       </div>
@@ -139,16 +139,33 @@ export default {
 </style>
 
 <style lang="less">
-.note-content {
-  img {
-    max-width: 100%;
-    height: auto !important;
+.note-wrapper {
+  .note-title {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
+  .note-content {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    img {
+      max-width: 100%;
+      height: auto !important;
+    }
 
-  p {
-    color: #2c3330;
+    p {
+      color: #2c3330;
+    }
   }
 }
+
 .category-wrapper {
   .el-select-dropdown__list {
     padding: 0px;
