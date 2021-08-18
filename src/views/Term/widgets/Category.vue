@@ -43,6 +43,7 @@
         ></div>
       </div>
       <el-image
+        v-show="false"
         :preview-src-list="noteImgs"
         :src="imgPreview"
         ref="noteImg"
@@ -87,7 +88,6 @@ export default {
     return {
       listVisible: false,
       activeNote: [],
-      notePic: [],
       notes: {
         id: "",
         content: "",
@@ -127,22 +127,18 @@ export default {
         this.imgPreview = e.target.src;
         setTimeout(() => {
           this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
-          // document.oncontextmenu = function() {
-          //   return false;
-          // };
         }, 0);
       }
     },
     handleNoteImgs(note) {
       const rule = /(?<=src=").*?(?=")/gi;
-      let imgs = note.match(rule);
+      let imgs = (note.match(rule) || []).map( item => {
+        const prefix = item.indexOf("?") === -1 ? "?" : "&";
+        const param = "x-oss-process=style/pc_note_1200w";
+        return `${item}${prefix}${param}`;
+      });
       return imgs;
     }
-    // handleRightClick() {
-    //   document.oncontextmenu = function() {
-    //     return true;
-    //   };
-    // },
   }
 };
 </script>
