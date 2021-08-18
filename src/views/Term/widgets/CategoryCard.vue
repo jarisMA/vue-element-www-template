@@ -30,13 +30,6 @@
                     v-if="previousStudy(category)"
                     >上次学习</label
                   >
-                  <div @click.stop="" class="note-container">
-                    <div
-                      class="card-note"
-                      @click="handleShowNote"
-                      v-if="noteContent.length > 0"
-                    ></div>
-                  </div>
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -46,6 +39,13 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
+                <div @click.stop="">
+                  <div
+                    class="card-note"
+                    @click="handleShowNote"
+                    v-if="noteContent.length > 0"
+                  ></div>
+                </div>
                 <label class="card-header-count"
                   >{{ category.resources.length }}节课</label
                 >
@@ -57,6 +57,13 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_LIVE"
               >
+                <div @click.stop="">
+                  <div
+                    class="card-note"
+                    @click="handleShowNote"
+                    v-if="noteContent.length > 0"
+                  ></div>
+                </div>
                 <label class="card-header-date">{{
                   category.start_at
                     ? formatDate(category.start_at, "MM月DD日 HH:mm")
@@ -416,6 +423,7 @@ export default {
     flex: 1;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     width: 5px;
     .card-header-content-left {
       flex: 1;
@@ -435,10 +443,19 @@ export default {
         color: @primaryColor;
         background: #edfcf4;
       }
-
-      .note-container {
-        float: right;
-      }
+    }
+    .card-header-desc {
+      margin: 5px 20px 0 0;
+      line-height: 18px;
+      font-size: 12px;
+      color: #606c66;
+    }
+    .card-header-content-right {
+      display: flex;
+      flex: none;
+      line-height: 2;
+      font-size: 12px;
+      color: #8ea098;
 
       .card-note {
         margin-right: 10px;
@@ -452,19 +469,6 @@ export default {
           background-color: @primaryColor;
         }
       }
-    }
-    .card-header-desc {
-      padding-right: 20px;
-      margin: 5px 20px 0 0;
-      line-height: 18px;
-      font-size: 12px;
-      color: #606c66;
-    }
-    .card-header-content-right {
-      flex: none;
-      line-height:  2;
-      font-size: 12px;
-      color: #8ea098;
 
       .card-header-date {
         margin-right: 8px;
