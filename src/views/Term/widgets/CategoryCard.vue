@@ -58,7 +58,9 @@
                 v-if="category.type === COURSE_TYPE_LIVE"
               >
                 <label class="card-header-date">{{
-                  formatDate(category.start_at, "MM月DD日 HH:mm")
+                  category.start_at
+                    ? formatDate(category.start_at, "MM月DD日 HH:mm")
+                    : ""
                 }}</label>
               </div>
             </div>

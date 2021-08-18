@@ -1,9 +1,10 @@
 <template>
   <div class="detail-content">
     <detail-list
-      v-if="depth < 2"
+      v-if="depth < 2 && type !== 2"
       :list="menus"
       :theme="theme"
+      :type="type"
       @showDetail="showDetail"
       @previewImage="showPreviewImage"
     />
@@ -29,13 +30,19 @@
         v-if="!menu.children || menu.children.length < 1"
         :list="[menu]"
         :theme="theme"
+        :type="type"
         @showDetail="showDetail"
         @previewImage="showPreviewImage"
       />
       <detail-list
-        v-if="getDepth(menu.children, 1) <= 2"
+        v-if="
+          type == 2
+            ? getDepth(menu.children, 1) <= 1
+            : getDepth(menu.children, 1) <= 2
+        "
         :list="menu.children"
         :theme="theme"
+        :type="type"
         @showDetail="showDetail"
         @previewImage="showPreviewImage"
       />
@@ -60,6 +67,8 @@
           <detail-list
             :list="submenu.children"
             :theme="theme"
+            :type="type"
+            :submenu="submenu"
             @showDetail="showDetail"
             @previewImage="showPreviewImage"
           />
@@ -107,6 +116,10 @@ export default {
     color: {
       type: String,
       default: ""
+    },
+    type: {
+      type: Number,
+      required: false
     }
   },
   data() {

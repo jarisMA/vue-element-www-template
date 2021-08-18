@@ -24,21 +24,28 @@
     <div class="bible-body">
       <div ref="bibleBody" class="scroll-inner">
         <div class="container-1200">
-          <template v-if="activeNav.type == 0">
+          <template v-if="activeNav.type == 0 || activeNav.type == 2">
             <detail-menu
               :menus="menus"
               :activeSubMenu="activeSubMenu"
               :color="color"
               :depth="depth"
+              :type="activeNav.type"
               @foldChange="foldChange"
               @toggleMenu="toggleMenu"
             />
-            <div :class="['bible-content', depth < 2 ? 'more' : '']">
+            <div
+              :class="[
+                'bible-content',
+                activeNav.type !== 2 && depth < 2 ? 'more' : ''
+              ]"
+            >
               <detail-content
                 :menus="menus"
                 :activeSubMenu="activeSubMenu"
                 :color="color"
                 :depth="depth"
+                :type="activeNav.type"
                 @showDetail="showDetail"
                 @previewImage="handleShowPreviewImage"
               />
@@ -133,7 +140,7 @@ export default {
     DetailMenu,
     DetailNav,
     DetailContent,
-    DetailQuadrant,
+    DetailQuadrant
   },
   data() {
     return {
@@ -151,7 +158,7 @@ export default {
       scrollTimer: null,
       images: [],
       activeImageIndex: 0,
-      showPreviewImage: false,
+      showPreviewImage: false
     };
   },
   created() {
@@ -184,7 +191,7 @@ export default {
             ) {
               this.$notice({
                 type: "warning",
-                title: "暂未开放~",
+                title: "暂未开放~"
               });
               goBible("replace");
               this.loading = false;
@@ -192,13 +199,12 @@ export default {
             }
             const tabId = this.$route.query.tab;
             const tabIndex =
-              (tabId && res.children.findIndex((item) => item.id == tabId)) ||
-              -1;
+              (tabId && res.children.findIndex(item => item.id == tabId)) || -1;
             this.activeNav = res.children[tabIndex] || res.children[0] || {};
 
             bibleService
               .bibleNode(id, this.activeNav.id)
-              .then((children) => {
+              .then(children => {
                 this.root = res;
                 this.detail = res.bible;
                 this.color = res.bible.color || "";
@@ -238,7 +244,7 @@ export default {
             this.loading = false;
           }
         })
-        .catch((error) => {
+        .catch(error => {
           const { response } = error;
           if (response && response.status === 403) {
             goBible("replace");
@@ -255,7 +261,7 @@ export default {
       const offsetTop = document.getElementById("menu-" + item.id).offsetTop;
       window.scrollTo({
         top: offsetTop,
-        behavior: "smooth",
+        behavior: "smooth"
       });
     },
     toggleNav(nav) {
@@ -268,13 +274,13 @@ export default {
         this.loading = true;
         bibleService
           .bibleNode(this.$route.params.id, nav.id)
-          .then((children) => {
+          .then(children => {
             this.menus = children || [];
             this.activeImageIndex = 0;
             this.images = this.getImages(this.menus);
             this.depth = this.getDepth(this.menus, 0);
             this.activeSubMenu =
-              ((this.menus[0] || {}).children || [])[0] || {};
+              ((this.menus[0] || {}).children || [])[0] || this.menus[0] || {};
           })
           .finally(() => {
             this.loading = false;
@@ -317,7 +323,7 @@ export default {
       }
     },
     getImages(data, images = [], menus = []) {
-      data.forEach((menu) => {
+      data.forEach(menu => {
         if (
           menu.children &&
           menu.children instanceof Array &&
@@ -332,11 +338,11 @@ export default {
           if (menu.cover_url) {
             let newImages = menu.cover_url.split(",");
             newImages = newImages
-              .filter((item) => !!item)
-              .map((item) => {
+              .filter(item => !!item)
+              .map(item => {
                 return {
                   url: item,
-                  menu: menus.concat([menu.name]).join("/"),
+                  menu: menus.concat([menu.name]).join("/")
                 };
               });
             images = images.concat(newImages);
@@ -350,9 +356,9 @@ export default {
       this.showPreviewImage = true;
     },
     handleTogglePreviewImage(url) {
-      this.activeImageIndex = this.images.findIndex((item) => item.url === url);
-    },
-  },
+      this.activeImageIndex = this.images.findIndex(item => item.url === url);
+    }
+  }
 };
 </script>
 
