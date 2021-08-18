@@ -413,7 +413,6 @@ export default {
     flex: 1;
     display: flex;
     justify-content: space-between;
-    align-items: center;
     width: 5px;
     .card-header-content-left {
       flex: 1;
