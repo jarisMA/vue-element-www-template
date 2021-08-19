@@ -244,7 +244,9 @@ export default {
     noteImgs() {
       return this.handleNoteImgs(
         this.chapters[this.chapterIndex].sections[this.sectionIndex].note
-          .content
+          ? this.chapters[this.chapterIndex].sections[this.sectionIndex].note
+              .content
+          : ""
       );
     }
   },
