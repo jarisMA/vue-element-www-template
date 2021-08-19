@@ -25,13 +25,11 @@
               <div class="card-header-content-left">
                 <h4 class="card-header-title ellipsis">
                   {{ category.title }}
-                  <div @click.stop="">
-                    <div
-                      class="card-note"
-                      @click="handleShowNote"
-                      v-if="noteContent.length > 0"
-                    ></div>
-                  </div>
+                  <label
+                    class="card-header-previous"
+                    v-if="previousStudy(category)"
+                    >上次学习</label
+                  >
                 </h4>
                 <p class="card-header-desc" v-if="category.description">
                   {{ category.description }}
@@ -41,11 +39,13 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_COURSE"
               >
-                <label
-                  class="card-header-previous"
-                  v-if="previousStudy(category)"
-                  >上次学习</label
-                >
+                <div @click.stop="">
+                  <div
+                    class="card-note"
+                    @click="handleShowNote"
+                    v-if="noteContent.length > 0"
+                  ></div>
+                </div>
                 <label class="card-header-count"
                   >{{ category.resources.length }}节课</label
                 >
@@ -57,6 +57,13 @@
                 class="card-header-content-right"
                 v-if="category.type === COURSE_TYPE_LIVE"
               >
+                <div @click.stop="">
+                  <div
+                    class="card-note"
+                    @click="handleShowNote"
+                    v-if="noteContent.length > 0"
+                  ></div>
+                </div>
                 <label class="card-header-date">{{
                   category.start_at
                     ? formatDate(category.start_at, "MM月DD日 HH:mm")
@@ -422,21 +429,18 @@ export default {
       width: 5px;
     }
     .card-header-title {
-      display: flex;
-      align-items: center;
       width: 100%;
       line-height: 24px;
       font-weight: 500;
       font-size: 18px;
       color: #2c3330;
 
-      .card-note {
-        margin-left: 10px;
-        width: 24px;
-        height: 24px;
-        background-color: black;
-        mask: url(~images/academy/video-note.svg) no-repeat;
-        cursor: pointer;
+      .card-header-previous {
+        padding: 6px 8px;
+        margin-right: 10px;
+        font-size: 12px;
+        color: @primaryColor;
+        background: #edfcf4;
       }
     }
     .card-header-desc {
@@ -446,15 +450,23 @@ export default {
       color: #606c66;
     }
     .card-header-content-right {
+      display: flex;
       flex: none;
       line-height: 2;
       font-size: 12px;
       color: #8ea098;
-      .card-header-previous {
-        padding: 6px 8px;
+
+      .card-note {
         margin-right: 10px;
-        color: @primaryColor;
-        background: #edfcf4;
+        width: 24px;
+        height: 24px;
+        background-color: black;
+        mask: url(~images/academy/video-note.svg) no-repeat;
+        cursor: pointer;
+
+        &:hover {
+          background-color: @primaryColor;
+        }
       }
 
       .card-header-date {

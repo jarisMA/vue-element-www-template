@@ -36,8 +36,19 @@
       </el-select>
       <div class="note-wrapper" @contextmenu.prevent>
         <div class="note-title" v-html="notes.title"></div>
-        <div class="note-content" v-html="notes.content"></div>
+        <div
+          class="note-content"
+          v-html="waterMark(notes.content, 'pc_note_1200w')"
+          @click="showImg($event)"
+        ></div>
       </div>
+      <el-image
+        v-show="false"
+        :preview-src-list="noteImgs"
+        :src="imgPreview"
+        ref="noteImg"
+      >
+      </el-image>
     </el-drawer>
   </div>
 </template>
@@ -80,10 +91,23 @@ export default {
         id: "",
         content: "",
         title: ""
-      }
+      },
+      imgPreview: ""
     };
   },
+  computed: {
+    noteImgs() {
+      return this.handleNoteImgs(this.notes.content);
+    }
+  },
   methods: {
+    waterMark(html, rule) {
+      return html.replace(/src="(.*?)"/g, (t, v) => {
+        const prefix = t.indexOf("?") === -1 ? "?" : "&";
+        const param = "x-oss-process=style/" + rule;
+        return `src="${v}${prefix}${param}"`;
+      });
+    },
     handleShowNote(note) {
       this.activeNote = note;
       this.listVisible = true;
@@ -96,6 +120,26 @@ export default {
         item => item.id == id
       ).note.content;
       this.notes.title = this.activeNote.find(item => item.id == id).note.name;
+    },
+    showImg(e) {
+      if (e.target.tagName == "IMG") {
+        this.imgPreview = e.target.src;
+        setTimeout(() => {
+          this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
+          document.oncontextmenu = function() {
+            return false;
+          };
+        }, 0);
+      }
+    },
+    handleNoteImgs(note) {
+      const rule = /(?<=src=").*?(?=")/gi;
+      let imgs = (note.match(rule) || []).map(item => {
+        const prefix = item.indexOf("?") === -1 ? "?" : "&";
+        const param = "x-oss-process=style/pc_note_1200w";
+        return `${item}${prefix}${param}`;
+      });
+      return imgs;
     }
   }
 };
@@ -136,6 +180,10 @@ export default {
     border-bottom: 1px solid #efefef;
   }
 }
+
+/deep/ .el-image-viewer__close {
+  font-size: 24px;
+}
 </style>
 
 <style lang="less">
@@ -158,6 +206,7 @@ export default {
     img {
       max-width: 100%;
       height: auto !important;
+      cursor: pointer;
     }
 
     p {
