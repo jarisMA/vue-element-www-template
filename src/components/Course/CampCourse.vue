@@ -200,6 +200,7 @@
             ></div>
             <div
               class="course-note-content"
+              @click="showImg($event)"
               v-html="
                 waterMark(
                   chapters[chapterIndex].sections[sectionIndex].note.content,
@@ -212,6 +213,13 @@
             <img src="~/images/course/note-empty.svg" class="empty-img" />
             <p>这节课没有笔记可查阅噢</p>
           </div>
+          <el-image
+            v-show="false"
+            :preview-src-list="noteImgs"
+            :src="imgPreview"
+            ref="noteImg"
+          >
+          </el-image>
         </div>
       </div>
     </div>
@@ -259,7 +267,8 @@ export default {
       activeNames: [],
       campId: "",
       termId: "",
-      activeFeedbackCategory: null
+      activeFeedbackCategory: null,
+      imgPreview: ""
     };
   },
   watch: {
@@ -318,13 +327,11 @@ export default {
         return formatSeconds(last_play_position || 0);
       };
     },
-    waterMark() {
-      return (html, rule) =>
-        html.replace(/src="(.*?)"/g, (t, v) => {
-          const prefix = t.indexOf("?") === -1 ? "?" : "&";
-          const param = "x-oss-process=style/" + rule;
-          return `src="${v}${prefix}${param}"`;
-        });
+    noteImgs() {
+      return this.handleNoteImgs(
+        this.chapters[this.chapterIndex].sections[this.sectionIndex].note
+          .content
+      );
     }
   },
   methods: {
@@ -391,6 +398,33 @@ export default {
     },
     handleNextLesson() {
       this.$emit("next");
+    },
+    showImg(e) {
+      if (e.target.tagName == "IMG") {
+        this.imgPreview = e.target.src;
+        setTimeout(() => {
+          this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
+          document.oncontextmenu = function() {
+            return false;
+          };
+        }, 0);
+      }
+    },
+    handleNoteImgs(note) {
+      const rule = /(?<=src=").*?(?=")/gi;
+      let imgs = (note.match(rule) || []).map(item => {
+        const prefix = item.indexOf("?") === -1 ? "?" : "&";
+        const param = "x-oss-process=style/pc_note_1200w";
+        return `${item}${prefix}${param}`;
+      });
+      return imgs;
+    },
+    waterMark(html, rule) {
+      return html.replace(/src="(.*?)"/g, (t, v) => {
+        const prefix = t.indexOf("?") === -1 ? "?" : "&";
+        const param = "x-oss-process=style/" + rule;
+        return `src="${v}${prefix}${param}"`;
+      });
     }
   }
 };
@@ -870,6 +904,7 @@ export default {
     img {
       max-width: 100%;
       height: auto !important;
+      cursor: pointer;
     }
   }
 }

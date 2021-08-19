@@ -47,7 +47,6 @@
         :preview-src-list="noteImgs"
         :src="imgPreview"
         ref="noteImg"
-        class="img"
       >
       </el-image>
     </el-drawer>
@@ -127,12 +126,15 @@ export default {
         this.imgPreview = e.target.src;
         setTimeout(() => {
           this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
+          document.oncontextmenu = function() {
+            return false;
+          };
         }, 0);
       }
     },
     handleNoteImgs(note) {
       const rule = /(?<=src=").*?(?=")/gi;
-      let imgs = (note.match(rule) || []).map( item => {
+      let imgs = (note.match(rule) || []).map(item => {
         const prefix = item.indexOf("?") === -1 ? "?" : "&";
         const param = "x-oss-process=style/pc_note_1200w";
         return `${item}${prefix}${param}`;
@@ -147,11 +149,6 @@ export default {
 .category-list {
   padding: 0 20px 0 60px;
   width: 100%;
-}
-
-.img {
-  width: 500px;
-  height: 500px;
 }
 
 /deep/ .note-drawer {
