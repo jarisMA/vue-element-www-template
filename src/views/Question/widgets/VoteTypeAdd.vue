@@ -329,7 +329,7 @@ export default {
               content,
               images,
               resource_type,
-              vote_closed_at: formatDate(new Date(vote_closed_at), 'yyyy-MM-DD'),
+              vote_closed_at: formatDate(new Date(vote_closed_at), 'YYYY-MM-DD'),
               vote_type,
               vote_options,
               channel_id: channel ? channel.id : null
