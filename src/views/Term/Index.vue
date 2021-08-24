@@ -263,7 +263,7 @@ export default {
         }
       }
       .el-tabs__nav-wrap::after {
-        background-color:  #efefef;
+        background-color: #efefef;
       }
     }
   }

@@ -327,8 +327,10 @@ export default {
     .card-header-desc {
       color: #4d5652 !important;
     }
-    .card-header-count, .card-header-duration, .card-header-date{
-       color: #72807a !important;
+    .card-header-count,
+    .card-header-duration,
+    .card-header-date {
+      color: #72807a !important;
     }
 
     /deep/ .el-collapse-item__arrow {

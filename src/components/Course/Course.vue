@@ -6,7 +6,7 @@
           :class="[
             'page-header-left_icon',
             'menu-icon',
-            showMenu ? 'close' : 'show',
+            showMenu ? 'close' : 'show'
           ]"
           @click="showMenu = !showMenu"
         ></i>
@@ -49,7 +49,7 @@
                     section.id
                       ? 'active'
                       : '',
-                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : '',
+                    [4].indexOf(sectionStatus(section)) > -1 ? 'completed' : ''
                   ]"
                   v-for="(section, sIndex) of chapter.sections"
                   :key="section.id"
@@ -58,7 +58,7 @@
                   <i
                     :class="[
                       'page-menu-item_icon',
-                      sectionStatusIconClass(section),
+                      sectionStatusIconClass(section)
                     ]"
                   ></i>
                   <h4 class="page-menu-item_name ellipsis">
@@ -72,7 +72,7 @@
                         :class="[
                           [2].indexOf(sectionStatus(section)) > -1
                             ? 'primary'
-                            : '',
+                            : ''
                         ]"
                         >{{ secondsUpdate(section.last_play_position) }}</span
                       >/ </template
@@ -138,13 +138,13 @@
             <img src="~/images/course/note-empty.svg" class="empty-img" />
             <p>这节课没有笔记可查阅噢</p>
           </div>
-          <el-image
+          <!-- <el-image
             v-show="false"
             :preview-src-list="noteImgs"
             :src="imgPreview"
             ref="noteImg"
           >
-          </el-image>
+          </el-image> -->
         </div>
       </div>
     </div>
@@ -161,24 +161,24 @@ export default {
   props: {
     course: {
       type: Object,
-      required: true,
+      required: true
     },
     courseChapters: {
       type: Array,
-      required: true,
+      required: true
     },
     chapterIndex: {
       type: Number,
-      required: true,
+      required: true
     },
     sectionIndex: {
       type: Number,
-      required: true,
+      required: true
     },
     next: {
       type: Object,
-      default: () => null,
-    },
+      default: () => null
+    }
   },
   data() {
     return {
@@ -194,7 +194,7 @@ export default {
   watch: {
     course() {
       this.getData();
-    },
+    }
   },
   created() {
     this.getData();
@@ -202,7 +202,7 @@ export default {
   computed: {
     sectionStatus() {
       // 4 播放完成，3 播放过，2 正在播放，1 未播放
-      return (section) => {
+      return section => {
         const last_play_position = section.last_play_position || 0;
         const play_second_duration = section.play_second_duration || 0;
         return section.id ===
@@ -216,7 +216,7 @@ export default {
       };
     },
     sectionStatusIconClass() {
-      return (section) => {
+      return section => {
         const status = this.sectionStatus(section);
         let iconClass = "unplay-icon";
         switch (status) {
@@ -237,18 +237,18 @@ export default {
       };
     },
     secondsUpdate() {
-      return (last_play_position) => {
+      return last_play_position => {
         return formatSeconds(last_play_position || 0);
       };
-    },
-    noteImgs() {
-      return this.handleNoteImgs(
-        this.chapters[this.chapterIndex].sections[this.sectionIndex].note
-          ? this.chapters[this.chapterIndex].sections[this.sectionIndex].note
-              .content
-          : ""
-      );
     }
+    // noteImgs() {
+    //   return this.handleNoteImgs(
+    //     this.chapters[this.chapterIndex].sections[this.sectionIndex].note
+    //       ? this.chapters[this.chapterIndex].sections[this.sectionIndex].note
+    //           .content
+    //       : ""
+    //   );
+    // }
   },
   methods: {
     formatSeconds,
@@ -268,7 +268,7 @@ export default {
       this.updatingTimer = setTimeout(() => {
         this.$set(chapters[chapterIndex].sections, sectionIndex, {
           ...chapters[chapterIndex].sections[sectionIndex],
-          last_play_position: Math.floor(second),
+          last_play_position: Math.floor(second)
         });
         clearTimeout(this.updatingTimer);
         this.updatingTimer = null;
@@ -292,26 +292,26 @@ export default {
     handleNextLesson() {
       this.$emit("next");
     },
-    showImg(e) {
-      if (e.target.tagName == "IMG") {
-        this.imgPreview = e.target.src;
-        setTimeout(() => {
-          this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
-          document.oncontextmenu = function() {
-            return false;
-          };
-        }, 0);
-      }
-    },
-    handleNoteImgs(note) {
-      const rule = /(?<=src=").*?(?=")/gi;
-      let imgs = (note.match(rule) || []).map(item => {
-        const prefix = item.indexOf("?") === -1 ? "?" : "&";
-        const param = "x-oss-process=style/pc_note_1200w";
-        return `${item}${prefix}${param}`;
-      });
-      return imgs;
-    },
+    // showImg(e) {
+    //   if (e.target.tagName == "IMG") {
+    //     this.imgPreview = e.target.src;
+    //     setTimeout(() => {
+    //       this.$refs.noteImg.$el.getElementsByTagName("img")[0].click();
+    //       document.oncontextmenu = function() {
+    //         return false;
+    //       };
+    //     }, 0);
+    //   }
+    // },
+    // handleNoteImgs(note) {
+    //   const rule = /(?<=src=").*?(?=")/gi;
+    //   let imgs = (note.match(rule) || []).map(item => {
+    //     const prefix = item.indexOf("?") === -1 ? "?" : "&";
+    //     const param = "x-oss-process=style/pc_note_1200w";
+    //     return `${item}${prefix}${param}`;
+    //   });
+    //   return imgs;
+    // },
     waterMark(html, rule) {
       return html.replace(/src="(.*?)"/g, (t, v) => {
         const prefix = t.indexOf("?") === -1 ? "?" : "&";
