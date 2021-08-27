@@ -5,7 +5,7 @@
 </template>
 <script>
 import { isChrome } from "utils/browser-support";
-import douxiGif from "images/douxi4.gif";
+import douxiGif from "images/common/douxi4.gif";
 export default {
   name: "App",
   created() {
@@ -23,17 +23,4 @@ export default {
   }
 };
 </script>
-<style lang="less">
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
-    "Hiragino Sans GB", "Source Han Sans CN", "Microsoft YaHei", "SimHei",
-    "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol";
-}
-body {
-  min-width: 1200px;
-}
-</style>
+<style lang="less"></style>

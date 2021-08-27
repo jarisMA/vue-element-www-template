@@ -58,8 +58,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~styles/variable.less";
-
 .notification-container {
   position: fixed;
   top: 16px;

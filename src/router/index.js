@@ -27,21 +27,16 @@ const appRouter = new VueRouter({
 appRouter.firstInit = false;
 appRouter.beforeEach(async (to, from, next) => {
   NProgress.start();
-  if (["EditPlan", "DrawPlan", "AdminEditPlan"].indexOf(to.name) > -1) {
-    Store.commit("updateHeaderTheme", "primary");
-  } else {
-    Store.commit("updateHeaderTheme", "default");
-  }
   if (to.meta.title) document.title = to.meta.title;
-  const TOKEN = cookies.get("web_token");
+  const TOKEN = cookies.get(process.env.VUE_APP_TOKEN);
   if (TOKEN && !appRouter.firstInit) {
     try {
       const userInfo = await userService.getUserInfo();
-      Store.commit("USERINFO", userInfo);
+      Store.commit("updateUserInfo", userInfo);
       if (!userInfo.phone && isChrome()) {
-        Store.commit("UPDATA_LOGINDIAL_VISIBLE", 2);
+        Store.commit("updateLoginDialogVisible", 2);
       } else if (!userInfo.identity && isChrome()) {
-        Store.commit("UPDATA_LOGINDIAL_VISIBLE", 3);
+        Store.commit("updateLoginDialogVisible", 3);
       }
       appRouter.firstInit = true;
     } catch (e) {

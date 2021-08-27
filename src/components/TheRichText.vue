@@ -17,7 +17,7 @@ import ImageResize from "quill-image-resize-module";
 Quill.register("modules/imageResize", ImageResize);
 
 import ossService from "service/oss";
-import unfoldSvg from "images/question/unfold.svg";
+import unfoldSvg from "images/common/unfold.svg";
 
 const uploadConfig = {
   accept: "image/jpeg image/gif image/png",

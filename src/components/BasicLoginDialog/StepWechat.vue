@@ -2,26 +2,32 @@
   <div class="wx-login_container">
     <div class="header">
       <img
-        src="~images/close_logo.svg"
+        src="~images/common/close_logo.svg"
         alt=""
         class="header-cancel"
         @click="handleClose"
       />
     </div>
-    <img src="~images/logo_2.svg" alt="" class="logo" />
+    <img src="~images/common/logo.svg" alt="logo" class="logo" />
     <p class="title">请用微信扫码登录 / 注册</p>
     <div class="qrcode-container" id="qrcode"></div>
-    <img v-if="false" src="~images/wx-QR_code.svg" alt="" class="image" />
-    <p v-if="false" class="desc">扫码后关注暖刻公众号，完成登录</p>
+    <img
+      v-if="false"
+      src="~images/wx-QR_code.svg"
+      alt="qr-code"
+      class="image"
+    />
   </div>
 </template>
 
 <script type="text/javascript">
+import { mapMutations } from "vuex";
 export default {
   mounted() {
     this.showQrCode();
   },
   methods: {
+    ...mapMutations(["updateLoginDialogVisible", "logout"]),
     showQrCode() {
       const appid = process.env.VUE_APP_WECHAT_APPID;
       this.$nextTick(function() {
@@ -30,20 +36,17 @@ export default {
           appid: appid,
           height: "200px",
           scope: "snsapi_login",
-          //self_redirect:true,
-          // redirect_uri: "http://www.home-plan.cn/social/callback/wechat",
           redirect_uri:
             `${process.env.VUE_APP_HOST}/api/web/oauth/social/wechat/callback?redirect_uri=` +
             window.location.href,
           state: "born2code",
-          // href: "https://passport.jiker.vip/css/qrcode.css"
           href:
             "data:text/css;base64,LmltcG93ZXJCb3ggLnFyY29kZSB7d2lkdGg6IDIyMHB4O30KLmltcG93ZXJCb3ggLnRpdGxlIHtkaXNwbGF5OiBub25lO30KLmltcG93ZXJCb3ggLmluZm8ge3dpZHRoOiAyMjBweDt9Ci5zdGF0dXNfaWNvbiB7ZGlzcGxheTogbm9uZX0KLmltcG93ZXJCb3ggLnN0YXR1cyB7dGV4dC1hbGlnbjogY2VudGVyO30g"
         });
       });
     },
     handleClose() {
-      this.$store.commit("UPDATA_LOGINDIAL_VISIBLE", 0);
+      this.updateLoginDialogVisible(0);
     }
   }
 };
@@ -63,8 +66,7 @@ export default {
     }
   }
   .logo {
-    width: 100px;
-    height: 83px;
+    width: 200px;
     margin: 29px auto;
   }
   .title {

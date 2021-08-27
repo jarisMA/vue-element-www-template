@@ -60,7 +60,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import "~styles/variable";
 .the-fold-wrapper {
   position: relative;
   overflow-x: visible;

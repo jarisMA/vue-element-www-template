@@ -3,7 +3,7 @@ import cookies from "js-cookie";
 import Store from "@/store/index.js";
 import { goRoute } from "utils/routes";
 import Vue from "vue";
-import douxiGif from "images/douxi2.gif";
+import douxiGif from "images/common/douxi2.gif";
 
 const axiosInstance = axios.create();
 axiosInstance.defaults.timeout = 20000;
@@ -21,7 +21,7 @@ axiosInstance.interceptors.request.use(
         request_time: new Date().toLocaleString()
       }
     };
-    const TOKEN = cookies.get("web_token");
+    const TOKEN = cookies.get(process.env.VUE_APP_TOKEN);
     if (TOKEN) {
       newConfig["headers"]["Authorization"] = "Bearer " + TOKEN;
     }
@@ -41,7 +41,7 @@ const handleErrorRequest = error => {
         type: "danger",
         title: "登录状态已过期，请重新登录"
       });
-      Store.commit("LOGOUT");
+      Store.commit("logout");
     } else if (status === 402) {
       Vue.prototype.$msgBox.showMsgBox({
         theme: "chrome_other_tips",
@@ -52,7 +52,7 @@ const handleErrorRequest = error => {
         showCloseBtn: false,
         maskCancel: true
       });
-      Store.commit("LOGOUT");
+      Store.commit("logout");
     } else if (status === 403) {
       Vue.prototype.$notice({
         type: "danger",

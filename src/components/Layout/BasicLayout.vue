@@ -1,33 +1,24 @@
 <template>
   <div class="page-basic-layout">
-    <BasicLayoutHeader class="page-basic-header" :theme="headerTheme" />
-    <router-view :class="['page-basic-body', headerTheme]" />
-    <BasicLayoutFooter :theme="headerTheme" />
-    <BasicLoginDialog />
-    <temporaryIndex />
-    <broadcast-dialog />
+    <basic-layout-header class="page-basic-header" />
+    <router-view :class="['page-basic-body']" />
+    <basic-layout-footer />
+    <basic-login-dialog />
   </div>
 </template>
 <script type="text/javascript">
-import BasicLayoutHeader from "./BasicLayoutHeader.vue";
-import BasicLayoutFooter from "./BasicLayoutFooter.vue";
-import BasicLoginDialog from "./../BasicLoginDialog/Index.vue";
-import temporaryIndex from "./../BasicLoginDialog/temporaryIndex";
-import BroadcastDialog from "./../BroadCast/BroadcastDialog";
-import { mapState } from "vuex";
+import BasicLayoutHeader from "./BasicLayoutHeader";
+import BasicLayoutFooter from "./BasicLayoutFooter";
+import BasicLoginDialog from "../BasicLoginDialog/Index";
 
 export default {
   name: "BasicLayout",
   components: {
     BasicLayoutHeader,
     BasicLayoutFooter,
-    BasicLoginDialog,
-    temporaryIndex,
-    BroadcastDialog
+    BasicLoginDialog
   },
-  computed: {
-    ...mapState(["headerTheme"])
-  }
+  computed: {}
 };
 </script>
 

@@ -12,6 +12,12 @@ module.exports = {
     host: `www-test${process.env.VUE_APP_DOMAIN}`
     // port: 8080
   },
+  pluginOptions: {
+    "style-resources-loader": {
+      preProcessor: "less",
+      patterns: [path.resolve(__dirname, "./src/assets/styles/variable.less")]
+    }
+  },
   css: {
     loaderOptions: {
       less: {
@@ -46,6 +52,7 @@ module.exports = {
       .set("images", resolve("src/assets/images"))
       .set("styles", resolve("src/assets/styles"))
       .set("components", resolve("src/components"))
+      .set("views", resolve("src/views"))
       .set("plugins", resolve("src/plugins"))
       .set("utils", resolve("src/utils"))
       .set("request", resolve("src/global/request"))

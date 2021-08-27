@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import userLogo from "images/user_logo.svg";
+import userLogo from "images/common/user_logo.svg";
 export default {
   name: "TheAvatar",
   props: {

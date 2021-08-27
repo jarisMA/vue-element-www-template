@@ -7,36 +7,22 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     loginDialogVisible: 0,
-    userInfo: null,
-    headerTheme: "default",
-    headerUnfold: false
+    userInfo: null
   },
   mutations: {
-    USERINFO(state, userInfo) {
+    updateUserInfo(state, userInfo) {
       state.userInfo = userInfo;
     },
-    UPDATA_LOGINDIAL_VISIBLE(state, loginDialogVisible) {
+    updateLoginDialogVisible(state, loginDialogVisible) {
       state.loginDialogVisible = loginDialogVisible;
     },
-    UPDATA_PHONE(state, phone) {
-      state.userInfo.phone = phone;
-    },
-    END_DIALOG_SHOW(state) {
-      state.loginDialogVisible = 0;
-    },
-    LOGOUT(state) {
-      cookies.remove("web_token", {
+    logout(state) {
+      cookies.remove(process.env.VUE_APP_TOKEN, {
         path: "/",
         domain: process.env.VUE_APP_DOMAIN
       });
       state.userInfo = null;
       goHome();
-    },
-    updateHeaderTheme(state, theme) {
-      state.headerTheme = theme;
-    },
-    updateHeaderUnfold(state, unfold) {
-      state.headerUnfold = unfold;
     }
   },
   actions: {},

@@ -8,7 +8,7 @@
       <img
         v-if="showCloseBtn"
         class="close-icon"
-        src="~images/close_logo.svg"
+        src="~images/common/close_logo.svg"
         @click="cancel"
       />
       <div :class="['message-modal-body', bodyClass]">
@@ -138,7 +138,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-@import "~styles/variable.less";
 @width: 672px;
 @height: 500px;
 .message-box {
